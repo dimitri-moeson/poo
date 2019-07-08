@@ -1,0 +1,139 @@
+.echo{
+
+
+}
+
+#equipement {
+
+    background-repeat: no-repeat;
+}
+/**
+#equipement.homme {
+    background-image: url("?img=dessin-final-corps-homme-face.jpg");
+    background-position: 3px 0px;
+    background-size:200px;
+}
+
+#equipement.femme {
+    background-image: url("?img=dessin-final-corps-femme-face.jpg");
+    background-position: 15px 21px;
+    background-size:80% 250px;
+
+}
+**/
+#equipement td {
+
+    width: 30%;
+    height: 50px;
+
+}
+#equipement td form button[type=submit],
+#equipement td form {
+
+    width: 99%;
+    margin:0 auto;
+    padding:0;
+    height: 40px;
+}
+
+#equipement td form {
+
+    background-color: red;
+
+}
+
+#equipement td#botte form button[type=submit],
+#equipement td#botte form {
+
+    font-size: 120%;
+
+}
+
+#equipement td#ceinture form button[type=submit],
+#equipement td#ceinture form {
+
+    height: 30px;
+    font-size: 120%;
+
+}
+
+#equipement td form button[type=submit]{
+
+    font-weight: bolder;
+    font-size: 250%;
+}
+/**
+#equipement form input[type=submit] {
+
+    margin: 0 auto;
+    padding:0;
+    width: 20%;
+    height: 20%;
+    border-radius: 25px;
+}
+**/
+#equipement #casque form button[type=submit],
+#equipement #casque form {
+
+   /* border-top-right-radius: 25px;
+    border-top-left-radius: 25px;*/
+
+}
+#equipement #casque form{
+
+    /*width: 50%;*/
+
+}
+#equipement #casque form button[type=submit]{
+
+    content : 'T';
+}
+
+#equipement #torse form button[type=submit],
+#equipement #torse form {
+
+    /*border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;*/
+
+
+}
+/**
+#equipement #torse form:before {
+
+    background-color: white;
+    width: 50%;
+    height: 20%;
+    margin:0 auto;
+    content: 'u';
+}
+**/
+
+select[name="*_length"]{
+
+    width:3%
+}
+
+/* Tooltip */
+.test + .tooltip > .tooltip-inner {
+    background-color: #73AD21;
+    color: #FFFFFF;
+    border: 1px solid green;
+    padding: 15px;
+    font-size: 20px;
+}
+/* Tooltip on top */
+.test + .tooltip.top > .tooltip-arrow {
+    border-top: 5px solid green;
+}
+/* Tooltip on bottom */
+.test + .tooltip.bottom > .tooltip-arrow {
+    border-bottom: 5px solid blue;
+}
+/* Tooltip on left */
+.test + .tooltip.left > .tooltip-arrow {
+    border-left: 5px solid red;
+}
+/* Tooltip on right */
+.test + .tooltip.right > .tooltip-arrow {
+    border-right: 5px solid black;
+}

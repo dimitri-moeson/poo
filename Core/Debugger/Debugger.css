@@ -1,0 +1,17 @@
+
+#debug-bar {
+
+    position: fixed;
+    bottom:0;
+}
+
+.debug {
+
+    max-height: 500px;
+    min-height: 100px;
+    /*height:200px;*/
+    overflow: auto;
+    position: fixed;
+    bottom:30px;
+    display:none;
+}
