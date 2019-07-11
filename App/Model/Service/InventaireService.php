@@ -50,21 +50,15 @@ class InventaireService extends Service
 
             if ($item instanceof ItemEntity) {
 
-                $return .= "<div class='col-sm-1'>".Render::getInstance()->block("item.btn",array(
+                $return .= "<div class='col-sm-3'>".Render::getInstance()->block("item.btn",array(
 
                     "equip" => $item,
                     "block" => $name,
 
                 ))."</div>";
-
-                /*$return .= ("<li>");
-                $return .= ('<span data-placement="top" data-toggle="tooltip"  title="' . $item->getDescription() . '">' . $item->getName() . '</span>');
-                $return .= (" : " . $item->getVal());
-                $return .= ("</li>");*/
             }
 
         }
-        //$return .= ("</ul>");
 
         return $return;
     }
@@ -85,17 +79,19 @@ class InventaireService extends Service
 
             Debugger::getInstance()->add($datas);
 
-            if ($this->InventaireBase instanceof InventaireTable) {
-                /*if (!isset($item->val) || !is_null($item->val) || $item->val == 0 || empty($item->val))
+            if ($this->InventaireBase instanceof InventaireTable)
+            {
+                /**
+                 * if (!isset($item->val) || !is_null($item->val) || $item->val == 0 || empty($item->val))
                     $this->InventaireBase->delete($item->inventaire_id);
-                else*/
-                if (isset($item->inventaire_id) && !is_null($item->inventaire_id)) {
-                    echo "update...";
+                else
+                 */
+                if (isset($item->inventaire_id) && !is_null($item->inventaire_id))
+                {
                     $this->InventaireBase->update($item->inventaire_id, $datas);
                 }
                 else
                 {
-                    echo "create...";
                     $this->InventaireBase->create($datas);
                 }
             }

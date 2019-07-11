@@ -67,7 +67,7 @@ use Core\Render\Render;
 
                         <?php echo Render::getInstance()->block("boussole", array(
 
-                                "center" => '<i class="fa fa-male"></i>'
+                                "center" => '<i class="fa fa-male"></i>',
                         )) ?>
                     </div>
                 </div>
@@ -82,20 +82,15 @@ use Core\Render\Render;
                         <div class="panel-title">Carte</div>
                     </div>
 
-                    <div class="panel-body">
-
-                        <?php
-
-                        echo Render::getInstance()->block("map", array(
+                    <div class="panel-body"><?php echo Render::getInstance()->block("map", array(
 
                             'x' => $legolas->getPosition()->x,
                             'y' =>  $legolas->getPosition()->y,
                             'alentours' => $alentours,
                             'block' => 'game',
                             'MapService' => $MapService ,
-                        ))
-                        ?>
-                    </div>
+
+                        )); ?></div>
                 </div>
 
             </div>

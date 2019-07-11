@@ -74,6 +74,7 @@ class Request
             $javascript->read();
             die;
         }
+
         if(Get::getInstance()->has('css')) {
 
             $css = Get::getInstance()->val('css');
@@ -85,10 +86,10 @@ class Request
 
         if(Get::getInstance()->has('img')) {
 
-            $css = Get::getInstance()->val('img');
+            $img = Get::getInstance()->val('img');
 
-            $stylesheet = new Picture($css);
-            $stylesheet->read();
+            $picture = new Picture($img);
+            $picture->read();
             die;
         }
 
@@ -96,7 +97,7 @@ class Request
 
         $this->page = explode('.', $p );
 
-        if(count($this->page)== 1 )
+            if(count($this->page)== 1 )
         {
             $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'Controller';
             $this->ctrl = $this->page[0] ?? "default";
@@ -114,7 +115,6 @@ class Request
             $this->ctrl = $this->page[1] ?? "default" ;
             $this->action = $this->page[2] ?? "index";
         }
-
     }
 
     /**

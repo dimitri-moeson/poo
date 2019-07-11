@@ -226,7 +226,7 @@ class App
 
         foreach ( $this->css as $action   ){
 
-            $script .='<link rel="stylesheet" href="?css='.$action.'" crossorigin="anonymous" />'  ;
+            $script .= /** @lang html */ '<link rel="stylesheet" href="?css='.$action.'" crossorigin="anonymous" type="text/css" media="screen" />'  ;
         }
 
         return $script ;

@@ -1,0 +1,9 @@
+db_name = name
+db_user = user
+db_pass = pass
+
+# localhost , 127.0.0.1
+db_host = host
+
+# mysql , ...
+db_type = mysql

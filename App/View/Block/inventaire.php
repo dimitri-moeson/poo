@@ -2,7 +2,7 @@
 
 <?php foreach ( $sacoche as $item) { ?>
 
-    <div class="col-sm-1">
+    <div class="col-sm-3">
     <?php echo Render::getInstance()->block("item.btn",array(
 
         "equip" => $item,

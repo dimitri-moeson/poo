@@ -14,6 +14,7 @@ $blog_rub = $ctl_ === "article" || $ctl_ === "categorie";
 $game_rub = $ctl_ === "personnage" || $ctl_ === "map"  || $ctl_ === "item";
 $item_rub = $ctl_ === "item";
 $sql_rub  = $ctl_ === "sql";
+$file_rub  = $ctl_ === "file";
 
 ?><!doctype html>
 <html lang="fr">
@@ -23,22 +24,21 @@ $sql_rub  = $ctl_ === "sql";
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/dist/css/bootstrap.min.css" />
 
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"/>
     <!-- rpg awesome -->
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="https://nagoshiashumari.github.io/Rpg-Awesome/stylesheets/rpg-awesome.min.css">
+    <link rel="stylesheet" href="https://nagoshiashumari.github.io/Rpg-Awesome/stylesheets/rpg-awesome.min.css"
+          type="text/css" media="screen"/>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="https://getbootstrap.com/docs/3.3/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/assets/css/ie10-viewport-bug-workaround.css" />
 
     <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/3.3/examples/starter-template/starter-template.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/examples/starter-template/starter-template.css" />
 
-    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -109,6 +109,7 @@ $sql_rub  = $ctl_ === "sql";
             <nav id="sidebar" class="col-sm-4">
 
                 <ul class="nav nav-sidebar">
+
                     <li>
                         <a href="#blogSubmenu" data-toggle="collapse" aria-expanded="<?php echo $blog_rub ? "true" : "false" ?>" class="dropdown-toggle">Blog<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul class="<?php echo $blog_rub ? "in" : "collapse" ?>" id="blogSubmenu">
@@ -146,6 +147,15 @@ $sql_rub  = $ctl_ === "sql";
                     </li>
 
                     <li><a href="?p=admin.user.index">user</a></li>
+
+                    <li>
+                        <a href="#fileSubmenu" data-toggle="collapse" aria-expanded="<?php echo $file_rub ? "true" : "false" ?>" class="dropdown-toggle">Fichier<i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                        <ul class="<?php echo $file_rub ? "in" : "collapse" ?>" id="fileSubmenu">
+                            <li><a href="?p=admin.file.picture">Image</a></li>
+                            <li><a href="?p=admin.file.style">Css</a></li>
+                            <li><a href="?p=admin.file.script">Js</a></li>
+                        </ul>
+                    </li>
 
                     <li>
                         <a href="#otherSubmenu" data-toggle="collapse" aria-expanded="<?php echo $sql_rub ? "true" : "false" ?>" class="dropdown-toggle">Base de données<i class="fa fa-fw fa-angle-down pull-right"></i></a>

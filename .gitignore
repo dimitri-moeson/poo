@@ -1,4 +1,7 @@
 
 
 /.idea/
-/Config/*
+/Config/Config.ini
+/App/View/Assets/Pictures/*
+/App/View/Assets/Scripts/*
+/App/View/Assets/Styles/*

@@ -7,9 +7,16 @@
  */
 namespace Core\Model\Entity ;
 
+/**
+ * Class Entity
+ * @package Core\Model\Entity
+ */
 class Entity
 {
-
+    /**
+     * @param $name
+     * @return mixed
+     */
     function __get($name)
     {
         $method = 'get' . ucfirst($name);

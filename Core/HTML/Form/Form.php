@@ -174,7 +174,7 @@ class Form
      */
     public function __toString()
     {
-        $string = "<form method='" . ( $this->configs["method"] ?? "post" ) . "' " . ($this->configs["attr"] ?? '') . " action='" . ($this->configs["action"] ?? '') . "'>";
+        $string = "<form enctype='multipart/form-data' method='" . ( $this->configs["method"] ?? "post" ) . "' " . ($this->configs["attr"] ?? '') . " action='" . ($this->configs["action"] ?? '') . "'>";
         foreach ($this->inputs as $name => $html_input) {
             $string .= "<p>".$html_input."</p><br/>";
         }

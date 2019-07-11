@@ -175,6 +175,11 @@ class MapService extends Service
 
             if($info)
             {
+                if ($place->structure == 'mairie'){
+
+                    $link = "?p=test.quest&id=".$place->i_id;
+
+                }
                 if ($place->structure == 'ecole'){
 
                     $link = "?p=test.apprentissage&id=".$place->i_id;

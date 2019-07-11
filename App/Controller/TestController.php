@@ -19,9 +19,12 @@ use App\Model\Service\ItemService;
 use App\Model\Service\MapService;
 use App\Model\Service\MovementService;
 use App\Model\Service\PersonnageService;
+
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
+
 use Core\Debugger\Debugger;
+
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
@@ -74,6 +77,7 @@ class TestController extends AppController
 
 
     }
+
     /**
      *
      */
@@ -165,6 +169,24 @@ class TestController extends AppController
                 $this->viewText = $this->legolas->getName() . " ramasse " . $item->getName() . "<br/>";
             }
         }
+    }
+
+    /**
+     *
+     */
+    public function remove()
+    {
+        if (Get::getInstance()->has('id'))
+        {
+            if($this->Inventaire instanceof InventaireTable )
+            {
+                $_id = Get::getInstance()->val('id');
+
+                $this->Inventaire->delete($_id);
+            }
+        }
+
+        Redirect::redirect("fiche");
     }
 
     /**

@@ -3,12 +3,13 @@ namespace App\Model\Entity\Game\Inventaire;
 
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Entity\Journal;
+use Core\Model\Entity\Entity;
 
 /**
  * Class InventaireEntity
  * @package App\InventaireEntity
  */
-class InventaireEntity implements \ArrayAccess, \Countable  {
+class InventaireEntity extends Entity implements \ArrayAccess, \Countable  {
 
     protected $container = array();
 
@@ -16,7 +17,6 @@ class InventaireEntity implements \ArrayAccess, \Countable  {
 
     public function __toString()
     {
-        // TODO: Implement __toString() method.
         return $this->container;
     }
 
@@ -47,7 +47,6 @@ class InventaireEntity implements \ArrayAccess, \Countable  {
 
     public function disponible(ItemEntity $item){
 
-        //$key = array_search($item, $this->container);
         return $this->offsetExists($item->inventaire_id);
     }
 

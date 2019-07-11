@@ -19,14 +19,14 @@ use Core\Render\Render;
 
             <thead>
 
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Icone</th>
-                <th>
-                    <a href="?p=admin.item.add" class="btn btn-success">Add</a>
-                </th>
-            </tr>
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>Icone</th>
+                    <th>
+                        <a href="?p=admin.item.add" class="btn btn-success">Add</a>
+                    </th>
+                </tr>
 
             </thead>
             <tbody>

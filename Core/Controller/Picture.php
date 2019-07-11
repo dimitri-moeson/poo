@@ -16,11 +16,8 @@ class Picture
      */
     public function __construct($path){
 
-        //$page = explode('.', $path );
 
-
-        $this->path = '/App/View/Assets/Pictures/'.$path ; // implode('/', array_map("ucfirst", $page));
-        //$this->ext = $ext ;
+        $this->path = '/App/View/Assets/Pictures/'.$path ;
     }
 
     /**

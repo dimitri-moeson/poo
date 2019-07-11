@@ -21,7 +21,7 @@ class Controller
 {
     public function render(Array $page = array() ){
 
-        echo "render::".print_r($page,1);
+        //echo "render::".print_r($page,1);
         Render::getInstance($page)->exec($this);
     }
 

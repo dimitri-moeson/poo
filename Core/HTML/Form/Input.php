@@ -109,6 +109,10 @@ class Input
         $html_label = $this->getLabel();
         $html_option = $this->string_options();
         switch ($this->type) {
+            case 'file':
+                $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='file' id='" . $this->type . "-" . $this->name . "' name='" . $this->name . "' value='" . $this->value . "' />";
+
+                break;
             case 'submit':
                 $html_input = "<button class='btn btn-info' ".$html_option." name='" . $this->name . "' id='button-" . $this->name . "' type='" . $this->type . "'>" .
                     $this->value . "</button>";

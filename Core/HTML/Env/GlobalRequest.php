@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Core\HTML\Env;
 
 
@@ -59,7 +58,8 @@ class GlobalRequest
      */
     public function val($key, $value = null)
     {
-        if (!is_null($value)) {
+        if (!is_null($value))
+        {
             if ($this->call == "Post") {
 
                 $_POST[$key] = $value;
@@ -76,12 +76,19 @@ class GlobalRequest
         }
 
         if (self::has($key)) {
+
             if ($this->call == "Post") {
+
                 return $_POST[$key] ?? null;
+
             } elseif ($this->call == "Get") {
+
                 return $_GET[$key] ?? null;
+
             } else {
+
                 return $_REQUEST[$key] ?? null;
+
             }
             return;
         }
