@@ -50,21 +50,24 @@ class FileController extends AppController
 
             if(File::getInstance()->save()) {
 
-                $rec = array(
+                $exists = $this->File->sourced(File::getInstance()->getName());
 
-                    'nom' => Post::getInstance()->val('nom'),
-                    'type' => 'picture',
-                    'src' => File::getInstance()->getName()
+                if(!$exists) {
 
-                );
+                    $rec = array(
 
-                if($this->File->create( $rec )){
+                        'nom' => Post::getInstance()->val('nom'),
+                        'src' => File::getInstance()->getName(),
+                        'type' => 'picture',
 
+                    );
 
+                    if ($this->File->create($rec)) {
 
-                    header("location:?p=admin.file.picture&id=" . App::getInstance()->getDb()->lasInsertId());
-
-                    Redirect::redirect("picture", "file", "admin", App::getInstance()->getDb()->lasInsertId());
+                        Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
+                            ->setDom('admin')->setAct('picture')->setCtl('file')
+                            ->send();
+                    }
                 }
             }
 
@@ -95,9 +98,9 @@ class FileController extends AppController
                         'name' => File::getInstance()->getName()
                     ));
 
-                    header("location:?p=admin.file.style&id=" . App::getInstance()->getDb()->lasInsertId());
-
-                    Redirect::redirect("style", "file", "admin", App::getInstance()->getDb()->lasInsertId());
+                    Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
+                        ->setDom('admin')->setAct('style')->setCtl('file')
+                        ->send();
                 }
             }
 
@@ -128,9 +131,9 @@ class FileController extends AppController
                         'name' => File::getInstance()->getName()
                     ));
 
-                    header("location:?p=admin.file.script&id=" . App::getInstance()->getDb()->lasInsertId());
-
-                    Redirect::redirect("script", "file", "admin", App::getInstance()->getDb()->lasInsertId());
+                    Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
+                        ->setDom('admin')->setAct('script')->setCtl('file')
+                        ->send();
                 }
             }
 

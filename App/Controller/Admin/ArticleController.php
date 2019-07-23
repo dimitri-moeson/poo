@@ -54,8 +54,9 @@ class ArticleController extends AppController
 
             if($this->Article->create( Post::content('post'))){
 
-                header("location: ?p=admin.article.edit&id=".App::getInstance()->getDb()->lasInsertId());
-                Render::getInstance()->redirect("single");
+                Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
+                    ->setAct("edit")->setCtl("article")->setDom("admin")
+                    ->send();
             }
         }
 
@@ -97,7 +98,7 @@ class ArticleController extends AppController
             if($this->Article->update(Get::getInstance()->val('id'), Post::content("post")))
             {
                 $this->success = true ;
-                //Redirect::reload();
+                Redirect::reload();
 
             }
         }

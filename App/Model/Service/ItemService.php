@@ -163,7 +163,7 @@ class ItemService extends Service
                 $composants[] = $composant;
 
             }
-            Debugger::getInstance()->add($composants);
+            //Debugger::getInstance()->add($composants);
 
             if($potion instanceof ItemEntity) {
 

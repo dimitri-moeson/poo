@@ -18,7 +18,9 @@ class ItemTable extends GameTable
 
     public function get($id, $model = null )
     {
-        $statement = Query::from("item")->select('*')->where(" id = :id");
+        $statement = Query::from("item")->select('*')
+            ->where('deleteAt is null')
+            ->where(" id = :id");
 
         return $this->db->prepare($statement,array( 'id' => $id),$model,  true );
     }
@@ -34,6 +36,7 @@ class ItemTable extends GameTable
         $statement = QueryBuilder::init()
             ->select('e.*')
             ->from("item",'e')
+            ->where('e.deleteAt is null')
         ;
 
         $attrib = array();
@@ -62,6 +65,8 @@ class ItemTable extends GameTable
             ->select('e.*','i.id as inventaire_id','i.type as inventaire_type','i.rubrique as inventaire_rubrique', 'i.val','i.caract')
             ->from("item",'e')
             ->join('inventaire', ' i.child_id = e.id ', 'left', 'i')
+            ->where('e.deleteAt is null')
+            ->where('i.deleteAt is null')
         ;
 
         $attrib = array();
@@ -102,6 +107,8 @@ class ItemTable extends GameTable
             ->from("item",'e')
             ->join('inventaire', ' i.child_id = e.id ', 'left', 'i')
             ->where("e.id = :id")
+            ->where('e.deleteAt is null')
+            ->where('i.deleteAt is null')
         ;
 
         $attrib = array( "id" => $id );
@@ -136,6 +143,8 @@ class ItemTable extends GameTable
             ->from("item",'e')
             ->join('inventaire', ' i.child_id = e.id ', 'left', 'i')
             ->where("i.id = :id")
+            ->where('e.deleteAt is null')
+            ->where('i.deleteAt is null')
         ;
 
         $attrib = array( "id" => $id_inventaire );

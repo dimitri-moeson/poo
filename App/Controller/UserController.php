@@ -53,11 +53,9 @@ class UserController extends AppController
             if($this->auth->login($log,$mdp)){
 
                 if($this->auth->hasRole('admin'))
-                    //header("location:?p=admin.article.index");
-                    Redirect::redirect('index','article','admin');
+                    Redirect::getInstance()->setDom("admin")->setCtl("article")->setAct("index")->send();
                 else
-                    //header("location:?p=test.fiche");
-                    Redirect::redirect('fiche','test');
+                    Redirect::getInstance()->setCtl("test")->setAct("fiche")->send();
             }
             else
             {

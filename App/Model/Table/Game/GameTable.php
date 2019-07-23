@@ -20,13 +20,17 @@ class GameTable extends Table
      */
     protected function getEntity($id, $repo = null ):?String
     {
-        Debugger::getInstance()->add("$id, $repo");
+        //Debugger::getInstance()->add("$id, $repo");
 
-        $statement = QueryBuilder::init()->select("type")->from($this->getTable())->where("id = :id");
+        $statement = QueryBuilder::init()->select("type")
+            ->from($this->getTable())
+            ->where("id = :id")
+            ->where('deleteAt is null')
+        ;
 
         $pClasse = $this->db->prepare($statement,array("id"=> $id),null,true );
 
-        Debugger::getInstance()->add($pClasse);
+        //Debugger::getInstance()->add($pClasse);
 
         if($pClasse !== false )
             return $this->entityOf($pClasse->type,$repo);
@@ -51,11 +55,15 @@ class GameTable extends Table
 
     public function allOf($type){
 
-        $statement = QueryBuilder::init()->select("*")->from($this->getTable())->where("type = :type");
+        $statement = QueryBuilder::init()->select("*")
+            ->from($this->getTable())
+            ->where("type = :type")
+            ->where('deleteAt is null')
+        ;
 
         $ent = $this->entityOf($type);
 
-        Debugger::getInstance()->add($ent);
+        //Debugger::getInstance()->add($ent);
 
         return  $this->db->prepare($statement, array("type"=> $type),$ent );
 
@@ -77,11 +85,15 @@ class GameTable extends Table
 
         //Debugger::getInstance()->add($id,$tbl,$repo,$ent);
 
-        $statement = QueryBuilder::init()->select("*")->from($tbl)->where("id = :id");
+        $statement = QueryBuilder::init()->select("*")
+            ->from($tbl)
+            ->where("id = :id")
+            ->where('deleteAt is null')
+        ;
 
         $result = $this->db->prepare($statement, array("id"=> $id), $entity ,true );
 
-       // echo "resultGet<br/>";
+        // echo "resultGet<br/>";
         //var_dump($result);
 
         return $result ;

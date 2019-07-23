@@ -8,16 +8,17 @@ class MapTable extends GameTable
 {
     function search( int $x , int $y ){
 
-        $statement = QueryBuilder::init()->select('*')->from($this->getTable())->where('x = :x')->where('y = :y');
-
-        //echo $statement;
+        $statement = QueryBuilder::init()->select('*')
+            ->from($this->getTable())
+            ->where('x = :x')
+            ->where('y = :y')
+            ->where('deletedAt is null')
+        ;
 
         $attrs = array(
             'x' => $x,
             'y' => $y
         );
-
-        //var_dump($attrs);
 
         return $this->request($statement,$attrs,true);
     }
@@ -33,9 +34,12 @@ class MapTable extends GameTable
             ->join("item","e.id = i.child_id ","left","e")
             ->where('x between :min_x and :max_x')
             ->where('y between :min_y and :max_y')
+            ->where('e.deleteAt is null')
+            ->where('i.deleteAt is null')
+            ->where('t.deleteAt is null')
+            ->where('p.deleteAt is null')
+            ->where('m.deleteAt is null')
         ;
-
-
 
         $attrs = array(
             'min_x' => $min_x ,
@@ -43,8 +47,6 @@ class MapTable extends GameTable
             'min_y' => $min_y ,
             'max_y' => $max_y
         );
-
-        //var_dump($attrs);
 
         return $this->request($statement,$attrs,false);
     }

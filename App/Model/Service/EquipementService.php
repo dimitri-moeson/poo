@@ -11,6 +11,7 @@ use App\Model\Entity\Game\Item\ItemEquipementEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use App\Model\Entity\Journal;
 use App\Model\Service;
+use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
 use App\Model\Table\Game\Personnage\PersonnageTable;
 use Core\Debugger\Debugger;
@@ -200,12 +201,14 @@ class EquipementService extends Service
     {
         $emplacements = InventaireEquipementEntity::getPlaces();
 
-        if (!is_null($place)) {
+        if($this->InventaireBase instanceof InventaireTable) {
+            if (!is_null($place)) {
 
-            return $this->InventaireBase->itemListing($this->personnage->id, "personnage", "sac", array($place) , ItemEquipementEntity::class);
+                return $this->InventaireBase->itemListing($this->personnage->id, "personnage", "sac", array($place), ItemEquipementEntity::class);
+            }
+
+            return $this->InventaireBase->itemListing($this->personnage->id, "personnage", "sac", $emplacements, ItemEquipementEntity::class);
         }
-
-        return $this->InventaireBase->itemListing($this->personnage->id, "personnage", "sac", $emplacements, ItemEquipementEntity::class);
     }
 
     /**

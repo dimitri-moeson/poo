@@ -73,11 +73,6 @@ class TestController extends AppController
             $this->sacoche = $this->Inventaire->itemListing($this->legolas->id , "personnage" , "sac", null, ItemEntity::class );
     }
 
-    private function equipement(){
-
-
-    }
-
     /**
      *
      */
@@ -93,7 +88,7 @@ class TestController extends AppController
 
                 $type = Post::getInstance()->val('change');
 
-                if (Post::getInstance()->has('retire', 'post')) {
+                if (Post::getInstance()->has('retire')) {
                     $equip = $this->EquipementService->getRangeable(Post::getInstance()->val('place'));
                     $this->EquipementService->retire($equip);
                 }
@@ -182,11 +177,26 @@ class TestController extends AppController
             {
                 $_id = Get::getInstance()->val('id');
 
-                $this->Inventaire->delete($_id);
+                $inv = $this->Inventaire->find($_id);
+
+                if($inv) {
+
+                    if ($this->Item instanceof ItemTable) {
+
+                        $itm = $this->Item->find($inv->child_id);
+
+                    }
+
+                    $this->Inventaire->archive($_id);
+
+                    if($itm) {
+                        Redirect::getInstance()->setAct("fiche")->setParams(array("place" => $itm->type))->send();
+                    }
+                }
             }
         }
 
-        Redirect::redirect("fiche");
+        Redirect::getInstance()->setAct("fiche")->send();
     }
 
     /**
@@ -262,7 +272,7 @@ class TestController extends AppController
 
                     $_SESSION['defi'] = serialize($defi);
 
-                    Redirect::redirect('combat');
+                    Redirect::getInstance()->setAct('combat')->send();
                 }
             }
         }

@@ -73,11 +73,11 @@ class MapService extends Service
                 "caract" => ""
             );
 
-            Debugger::getInstance()->add($datas);
+            //Debugger::getInstance()->add($datas);
 
             if ($this->InventaireBase instanceof InventaireTable) {
                 /*if (!isset($item->val) || !is_null($item->val) || $item->val == 0 || empty($item->val))
-                    $this->InventaireBase->delete($item->inventaire_id);
+                    $this->InventaireBase->archive($item->inventaire_id);
                 else*/
                 if (!is_null($item->inventaire_id))
                     $this->InventaireBase->update($item->inventaire_id, $datas);

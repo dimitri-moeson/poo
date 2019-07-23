@@ -20,8 +20,8 @@ class ImgController extends AppController
     /**
      *
      */
-    function index(){
-
+    function index()
+    {
         $name = Get::getInstance()->val("src");
 
         $file = $this->File->named($name);
@@ -30,7 +30,7 @@ class ImgController extends AppController
     }
 
     /**
-     *
+     * @param $path
      */
     private function read($path)
     {
@@ -71,7 +71,6 @@ class ImgController extends AppController
 
         imagegif($im);
         imagedestroy($im);
-
     }
 
 }

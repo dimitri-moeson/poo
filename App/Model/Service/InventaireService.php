@@ -77,7 +77,7 @@ class InventaireService extends Service
                 "caract" => $item->caract
             );
 
-            Debugger::getInstance()->add($datas);
+            //Debugger::getInstance()->add($datas);
 
             if ($this->InventaireBase instanceof InventaireTable)
             {
@@ -108,11 +108,11 @@ class InventaireService extends Service
     function saveInventaire(InventaireEntity $inventaire, Int $personnage_id)
     {
         Debugger::getInstance()->add(" saveInventaire " . $inventaire->count());
-        Debugger::getInstance()->add($inventaire);
+       // Debugger::getInstance()->add($inventaire);
 
         foreach ($inventaire->getContainer() as $x => $item) {
 
-            Debugger::getInstance()->add($x, $item);
+            //Debugger::getInstance()->add($x, $item);
 
             if ($item instanceof ItemEntity) {
 

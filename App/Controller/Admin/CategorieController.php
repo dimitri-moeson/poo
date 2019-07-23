@@ -64,7 +64,9 @@ class CategorieController extends AppController
 
                 header("location:?p=admin.categorie.edit&id=".App::getInstance()->getDb()->lasInsertId());
 
-                Redirect::redirect("edit","article","admin", App::getInstance()->getDb()->lasInsertId());
+                Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
+                    ->setDom("admin")->setAct("edit")->setCtl("article")
+                    ->send();
             }
 
         }
