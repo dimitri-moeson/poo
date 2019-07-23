@@ -62,10 +62,8 @@ class CategorieController extends AppController
 
             if($this->Categorie->create( Post::getInstance()->content())){
 
-                header("location:?p=admin.categorie.edit&id=".App::getInstance()->getDb()->lasInsertId());
-
                 Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
-                    ->setDom("admin")->setAct("edit")->setCtl("article")
+                    ->setDom("admin")->setAct("edit")->setCtl("categorie")
                     ->send();
             }
 
@@ -95,7 +93,9 @@ class CategorieController extends AppController
 
                 if ($this->Categorie->delete(Post::getInstance()->val('id'))) {
 
-                    header("location: admin.php");
+                    Redirect::getInstance()
+                        ->setDom("admin")->setAct("index")->setCtl("categorie")
+                        ->send();
 
                 }
             }
@@ -116,7 +116,10 @@ class CategorieController extends AppController
 
             if($this->Categorie->update(Get::getInstance()->val('id'), Post::getInstance()->content())){
 
-                $this->success = true ;
+                //$this->success = true ;
+                Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
+                    ->setDom("admin")->setAct("edit")->setCtl("categorie")
+                    ->send();
 
             }
 

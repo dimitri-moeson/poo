@@ -34,11 +34,6 @@ class MapTable extends GameTable
             ->join("item","e.id = i.child_id ","left","e")
             ->where('x between :min_x and :max_x')
             ->where('y between :min_y and :max_y')
-            ->where('e.deleteAt is null')
-            ->where('i.deleteAt is null')
-            ->where('t.deleteAt is null')
-            ->where('p.deleteAt is null')
-            ->where('m.deleteAt is null')
         ;
 
         $attrs = array(

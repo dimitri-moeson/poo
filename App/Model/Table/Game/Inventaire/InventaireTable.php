@@ -21,8 +21,6 @@ class InventaireTable extends GameTable
             ->select('e.*','i.id as inventaire_id','i.type as inventaire_type','i.rubrique as inventaire_rubrique', 'i.val', 'i.caract')
             ->from("item",'e')
             ->join('inventaire', ' i.child_id = e.id ', 'inner', 'i')
-            ->where('e.deleteAt is null')
-            ->where('i.deleteAt is null')
         ;
 
         $attrib = array();
@@ -64,7 +62,6 @@ class InventaireTable extends GameTable
         $statement = QueryBuilder::init()
             ->select('id','child_id' ,'type','rubrique', 'val','caract')
             ->from("inventaire")
-            ->where('deleteAt is null')
             ->where("parent_id = :id","rubrique = :rub");
 
         $attrib = array("id" => $id ,"rub" => $rubrique );
@@ -93,7 +90,6 @@ class InventaireTable extends GameTable
         $statement = QueryBuilder::init()
             ->select('child_id' ,'type')
             ->from("inventaire")
-            ->where('deleteAt is null')
             ->where("parent_id = :id","rubrique = :rub","type = :type");
         $attrib = array("id" => $id ,"rub" => $rubrique, "type" => $type );
 

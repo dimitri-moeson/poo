@@ -25,7 +25,6 @@ class GameTable extends Table
         $statement = QueryBuilder::init()->select("type")
             ->from($this->getTable())
             ->where("id = :id")
-            ->where('deleteAt is null')
         ;
 
         $pClasse = $this->db->prepare($statement,array("id"=> $id),null,true );
@@ -58,7 +57,6 @@ class GameTable extends Table
         $statement = QueryBuilder::init()->select("*")
             ->from($this->getTable())
             ->where("type = :type")
-            ->where('deleteAt is null')
         ;
 
         $ent = $this->entityOf($type);
@@ -88,7 +86,6 @@ class GameTable extends Table
         $statement = QueryBuilder::init()->select("*")
             ->from($tbl)
             ->where("id = :id")
-            ->where('deleteAt is null')
         ;
 
         $result = $this->db->prepare($statement, array("id"=> $id), $entity ,true );

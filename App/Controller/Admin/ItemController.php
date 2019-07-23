@@ -14,6 +14,7 @@ use App\View\Form\ItemForm;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
+use Core\Redirect\Redirect;
 use Core\Render\Render;
 
 class ItemController extends AppController
@@ -70,8 +71,10 @@ class ItemController extends AppController
 
             if($this->Item->create( Post::getInstance()->content('post'))){
 
-                header("location: ?p=admin.item.single&id=".App::getInstance()->getDb()->lasInsertId());
-                Render::getInstance()->redirect("single");
+                Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
+                    ->setDom("admin")->setAct("single")->setCtl("item")
+                    ->send();
+
             }
         }
 
@@ -98,7 +101,9 @@ class ItemController extends AppController
 
                     $this->success = true ;
 
-                    Render::getInstance()->redirect("index");
+                    Redirect::getInstance()
+                        ->setDom("admin")->setAct("index")->setCtl("item")
+                        ->send();
 
                 }
             }
@@ -115,7 +120,10 @@ class ItemController extends AppController
 
             if($this->Item->update( Get::getInstance()->val('id'), Post::getInstance()->content("post")))
             {
-                $this->success = true ;
+                //$this->success = true ;
+                Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
+                    ->setDom("admin")->setAct("single")->setCtl("item")
+                    ->send();
             }
         }
 

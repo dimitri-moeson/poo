@@ -12,7 +12,6 @@
             {
                 if (file_exists(ROOT . "/App/View/Assets/" . ucfirst($file->type . "s") . "/" . $file->src))
                 {
-                    var_dump($file);
                     ?><img src="?p=img.index&src=<?php echo $file->nom ?>"/><?php
                 }
             }

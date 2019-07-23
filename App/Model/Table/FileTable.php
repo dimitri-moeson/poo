@@ -16,8 +16,7 @@ class FileTable extends Table
      */
     function named($name)
     {
-        $statement = QueryBuilder::init()->select("*")->from($this->getTable())->where("nom = :nom")            ->where('deleteAt is null')
-        ;
+        $statement = QueryBuilder::init()->select("*")->from($this->getTable())->where("nom = :nom") ;
 
         return  $this->request( $statement , array("nom"=> $name) , true,FileEntity::class );
     }
@@ -28,8 +27,7 @@ class FileTable extends Table
      */
     function sourced($src)
     {
-        $statement = QueryBuilder::init()->select("*")->from($this->getTable())->where("src = :src")            ->where('deleteAt is null')
-        ;
+        $statement = QueryBuilder::init()->select("*")->from($this->getTable())->where("src = :src")  ;
 
         return  $this->request( $statement , array("src"=> $src) , true,FileEntity::class );
     }
@@ -39,8 +37,7 @@ class FileTable extends Table
      */
     function allOf($type)
     {
-        $statement = QueryBuilder::init()->select("*")->from($this->getTable())->where("type = :type")            ->where('deleteAt is null')
-        ;
+        $statement = QueryBuilder::init()->select("*")->from($this->getTable())->where("type = :type") ;
 
         return  $this->db->prepare($statement, array("type"=> $type),FileEntity::class );
     }

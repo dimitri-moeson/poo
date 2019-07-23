@@ -71,8 +71,8 @@ class App
             $ctrl_name = $request->getCtrlName();
             $action = $request->getAction();
 
-            Debugger::getInstance()->app('controller', $ctrl_name);
-            Debugger::getInstance()->app('action', $action);
+            //Debugger::getInstance()->app('controller', $ctrl_name);
+            //Debugger::getInstance()->app('action', $action);
 
             $ctrl = new $ctrl_name();
 

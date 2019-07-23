@@ -1,7 +1,10 @@
 
-
 /.idea/
 /Config/Config.ini
-/App/View/Assets/Pictures/*
-/App/View/Assets/Scripts/*
-/App/View/Assets/Styles/*
+
+*.jpg
+*.jpeg
+*.gif
+*.png
+*.css
+*.js

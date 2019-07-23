@@ -96,7 +96,10 @@ class Table
      */
     public function find($id) {
 
-        $statement = Query::from($this->getTable())->select('*')->where(" id = :id");
+        $statement = Query::from($this->getTable())
+            ->select('*')
+            ->where(" id = :id")
+        ;
 
         return $this->request($statement, array( 'id' => $id), true );
 
@@ -121,6 +124,15 @@ class Table
 
         }
 
+        if(is_null($id)){
+
+            $sql_parts['createAt'] = " createAt = :createAt ";
+            $attrs['createAt'] = date("Y-m-d H:i:s");
+
+        }
+
+        $sql_parts['updateAt'] = " updateAt = :updateAt ";
+        $attrs['updateAt'] = date("Y-m-d H:i:s");
 
         return array ( $sql_parts , $attrs );
     }
@@ -145,11 +157,21 @@ class Table
      * @param $id
      * @return array|mixed
      */
-    public function delete($id ){
-
+    public function delete($id )
+    {
         $statement = Query::delete($this->getTable())->where("id = :id");
-
         return $this->request($statement, array( 'id' => $id) , true );
+    }
+
+    public function archive($id){
+
+        list( $sql_parts , $attrs ) = $this->formatSet(array(
+            'deleteAt' => date("Y-m-d H:i:s")
+        ) , $id);
+
+        $statement = QueryBuilder::init()->update($this->getTable())->where("id = :id")->set($sql_parts);
+
+        return $this->request($statement, $attrs, true );
 
     }
 

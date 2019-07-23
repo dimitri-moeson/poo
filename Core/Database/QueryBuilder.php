@@ -90,8 +90,10 @@ class QueryBuilder
     public function from($table, $alias = null):self{
         if(is_null($alias)){
             $this->from[] = $table;
+            $this->conditions[] = "$table.deleteAt IS NULL" ;
         }else{
             $this->from[] = "$table AS $alias";
+            $this->conditions[] = "$alias.deleteAt IS NULL" ;
         }
         return $this;
     }
@@ -107,8 +109,10 @@ class QueryBuilder
     {
         if(is_null($alias)){
             $this->jointure[] = "$way JOIN $table ON $conditions ";
+            $this->conditions[] = "$table.deleteAt IS NULL" ;
         }else{
             $this->jointure[] = "$way JOIN $table AS $alias ON $conditions ";
+            $this->conditions[] = "$alias.deleteAt IS NULL" ;
         }
         return $this;
     }

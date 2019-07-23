@@ -14,6 +14,7 @@ use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
+use Core\Redirect\Redirect;
 use Core\Render\Render;
 
 /**
@@ -71,8 +72,9 @@ class UserController extends AppController
 
             if($this->User->create( Post::content('post'))){
 
-                header("location: ?p=admin.user.edit&id=".App::getInstance()->getDb()->lasInsertId());
-                Render::getInstance()->redirect("single");
+                Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
+                    ->setDom("admin")->setAct("edit")->setCtl("user")
+                    ->send();
             }
         }
 
@@ -98,8 +100,10 @@ class UserController extends AppController
 
                 if ($this->User->delete(Post::get('id'))) {
 
-                    //header("location: ?p=admin.article.index");
-                    Render::getInstance()->redirect("index");
+                    Redirect::getInstance()
+                        ->setDom("admin")->setAct("index")->setCtl("user")
+                        ->send();
+
 
                 }
             }

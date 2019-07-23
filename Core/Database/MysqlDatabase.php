@@ -86,27 +86,9 @@ class MysqlDatabase extends Database
     private function isMod($statement){
 
         if(stripos($statement,"update")===0 || stripos($statement,"insert")===0 || stripos($statement,"delete")===0 ){
-
             return true ;
         }
-
         return false ;
-    }
-
-    public function headers( PDOStatement $res){
-
-        /*         $total_column = $res->columnCount();
-                //var_dump($total_column);
-
-               /* for ($counter = 0; $counter < $total_column; $counter ++) {
-                    $meta = $res->getColumnMeta($counter);
-                    $column[] = $meta['name'];
-                }
-                return ($column);*/
-
-        return array_keys($res);
-
-
     }
 
     public function result( PDOStatement $res,$one = false ){

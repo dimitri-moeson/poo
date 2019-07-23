@@ -14,6 +14,7 @@ use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
+use Core\Session\FlashBuilder;
 
 class ArticleController extends AppController
 {
@@ -54,6 +55,8 @@ class ArticleController extends AppController
 
             if($this->Article->create( Post::content('post'))){
 
+                FlashBuilder::create("article créé","success");
+
                 Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
                     ->setAct("edit")->setCtl("article")->setDom("admin")
                     ->send();
@@ -81,7 +84,9 @@ class ArticleController extends AppController
 
                 if ($this->Article->delete(Post::getInstance()->val('id')))
                 {
-                    Render::getInstance()->redirect("index");
+                    Redirect::getInstance()
+                        ->setDom("admin")->setAct("index")->setCtl("article")
+                        ->send();
                 }
             }
         }
