@@ -16,7 +16,7 @@ class FlashBuilder
 
     public function __construct($message = null, $type = "success", Session $session = null)
     {
-        $this->session = $session ?? App::getInstance()->getSession();
+        $this->session =  $_SESSION[self::KEY] ?? array();//$session ?? App::getInstance()->getSession();
         if (!is_null($message)) {
             $this->set($message, $type);
         }
@@ -24,19 +24,24 @@ class FlashBuilder
 
     public function set($message, $type = "success")
     {
-        $this->session->setValue(
+       /** $this->session->setValue(
             self::KEY, [
             'message' => $message,
             'type' => $type,
-        ]);
+        ]);**/
+
+        $_SESSION[self::KEY] =  [
+            'message' => $message,
+            'type' => $type,
+        ] ;
     }
 
     public function get()
     {
-        $flash = $this->session->getValue(self::KEY);
+        $flash = $_SESSION[self::KEY] ?? array(); //$this->session->getValue(self::KEY);
         if (!empty($flash)) {
-            $this->session->delValue(self::KEY);
-            return "<p class='alert " . $flash['type'] . "'>" . $flash['message'] . "</p>";
+            $_SESSION[self::KEY] = array(); // $this->session->delValue(self::KEY);
+            return "<div class='alert alert-" . $flash['type'] . "'>" . $flash['message'] . "</div>";
         }
     }
 

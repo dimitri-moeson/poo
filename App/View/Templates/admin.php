@@ -2,11 +2,12 @@
 
 use App\Model\Entity\Game\Item\ItemEntity;
 use Core\Auth\DatabaseAuth;
+use Core\HTML\Header\Header;
 use Core\Request\Request;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
-$title = App::getInstance()->getTitle();
+$title = Header::getInstance()->getTitle();
 
 $auth = new DatabaseAuth(App::getInstance()->getDb());
 
@@ -59,9 +60,9 @@ $file_rub  = $ctl_ === "file";
     <script>tinymce.init({selector: 'textarea.editor'});</script>
 
 
-    <?php echo App::getInstance()->call_css(); ?>
+    <?php echo Header::getInstance()->call_css(); ?>
 
-    <title><?php echo App::getInstance()->getTitle() ?></title>
+    <title><?php echo Header::getInstance()->getTitle() ?></title>
 
 </head>
 <body>
@@ -99,7 +100,7 @@ $file_rub  = $ctl_ === "file";
 <div class="container">
 
     <div class="container-fluid">
-        <h1><?php echo App::getInstance()->getTitle() ?></h1>
+        <h1><?php echo Header::getInstance()->getTitle() ?></h1>
         <div class="row">
 
             <div class="col-sm-8">
@@ -178,7 +179,7 @@ $file_rub  = $ctl_ === "file";
 <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 
-<?php echo App::getInstance()->call_js(); ?>
+<?php echo Header::getInstance()->call_js(); ?>
 
 
 </body>

@@ -8,6 +8,7 @@ use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
+use Core\Session\FlashBuilder;
 
 class FileController extends AppController
 {
@@ -64,6 +65,8 @@ class FileController extends AppController
 
                     if ($this->File->create($rec)) {
 
+                        FlashBuilder::create("fichier ajouté","success");
+
                         Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
                             ->setDom('admin')->setAct('picture')->setCtl('file')
                             ->send();
@@ -98,6 +101,8 @@ class FileController extends AppController
                         'name' => File::getInstance()->getName()
                     ));
 
+                    FlashBuilder::create("fichier ajouté","success");
+
                     Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
                         ->setDom('admin')->setAct('style')->setCtl('file')
                         ->send();
@@ -130,6 +135,8 @@ class FileController extends AppController
 
                         'name' => File::getInstance()->getName()
                     ));
+
+                    FlashBuilder::create("fichier ajouté","success");
 
                     Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
                         ->setDom('admin')->setAct('script')->setCtl('file')

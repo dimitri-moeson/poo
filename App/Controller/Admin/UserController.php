@@ -14,8 +14,10 @@ use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
+use Core\HTML\Header\Header;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
+use Core\Session\FlashBuilder;
 
 /**
  * Class UserController
@@ -98,7 +100,7 @@ class UserController extends AppController
 
             if(Post::has('conf')) {
 
-                if ($this->User->delete(Post::get('id'))) {
+                if ($this->User->archive(Post::get('id'))) {
 
                     Redirect::getInstance()
                         ->setDom("admin")->setAct("index")->setCtl("user")
@@ -123,7 +125,11 @@ class UserController extends AppController
 
             if($this->User->update(Get::getInstance()->val('id'), Post::content("post")))
             {
-                $this->success = true ;
+                FlashBuilder::create("item ajouté","success");
+
+                Redirect::getInstance()->setParams(array("id" => Get::getInstance()->val('id') ))
+                    ->setDom("admin")->setAct("single")->setCtl("user")
+                    ->send();
             }
         }
 
@@ -133,7 +139,7 @@ class UserController extends AppController
             if (!$this->post) App::notFound();
         }
 
-        App::getInstance()->setTitle($this->post->titre);
+        Header::getInstance()->setTitle($this->post->titre);
 
         $this->form = $this->form_article($this->post);
 

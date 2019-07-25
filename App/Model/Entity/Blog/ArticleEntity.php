@@ -14,7 +14,10 @@ class ArticleEntity extends Entity
 
     public function getUrl(){
 
-        return "?p=blog.article.show&id=".$this->id ;
+        if($this->type == "article")  $type = "blog.article.show";
+        if($this->type == "categorie")  $type = "blog.article.categorie";
+
+        return "?p=".$type."&id=".$this->id ;
     }
 
     public function getExtrait(){

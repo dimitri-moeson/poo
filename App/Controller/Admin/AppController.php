@@ -9,6 +9,7 @@ namespace App\Controller\Admin;
 
 use App;
 use Core\Auth\DatabaseAuth;
+use Core\HTML\Header\Header;
 use Core\Render\Render;
 
 class AppController extends \App\Controller\AppController
@@ -19,7 +20,6 @@ class AppController extends \App\Controller\AppController
     {
         parent::__construct();
 
-        // Auth
         $auth = new DatabaseAuth(App::getInstance()->getDb());
 
         if(!$auth->logged()){
@@ -28,8 +28,8 @@ class AppController extends \App\Controller\AppController
         }
 
         Render::getInstance()->setTemplate( 'admin') ;
-        App::getInstance()->add_js("tooltip");
-        App::getInstance()->add_css("blade");
+        Header::getInstance()->add_js("tooltip");
+        Header::getInstance()->add_css("blade");
 
         $this->success = false ;
 

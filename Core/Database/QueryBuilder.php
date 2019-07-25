@@ -14,6 +14,10 @@ namespace Core\Database;
  */
 class QueryBuilder
 {
+    /**
+     * @var array
+     */
+    private $groups = [];
     private $fields = [];
     private $conditions = [];
     private $from = [];
@@ -23,6 +27,7 @@ class QueryBuilder
     private $insert = false ;
     private $update = false ;
     private $delete = false ;
+
 
     /**
      * @return $this
@@ -88,12 +93,37 @@ class QueryBuilder
      * @return $this
      */
     public function from($table, $alias = null):self{
-        if(is_null($alias)){
-            $this->from[] = $table;
-            $this->conditions[] = "$table.deleteAt IS NULL" ;
-        }else{
-            $this->from[] = "$table AS $alias";
+        if(is_null($alias))
+        {
+            $this->from[] = "`$table`";
+            $this->conditions[] = "`$table`.deleteAt IS NULL" ;
+        }
+        else
+        {
+            $this->from[] = "`$table` AS $alias";
             $this->conditions[] = "$alias.deleteAt IS NULL" ;
+        }
+        return $this;
+    }
+
+    /**
+     * @param $field
+     * @param string $sens
+     * @return QueryBuilder
+     */
+    public function order($field, $sens = "ASC"):self{
+
+        $this->orders[] = "$field $sens";
+
+        return $this;
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function orders():self{
+        foreach(func_get_args() as $arg){
+            $this->orders[] = $arg;
         }
         return $this;
     }
@@ -108,13 +138,24 @@ class QueryBuilder
     public function join($table,$conditions,$way = null, $alias = null ):self
     {
         if(is_null($alias)){
-            $this->jointure[] = "$way JOIN $table ON $conditions ";
-            $this->conditions[] = "$table.deleteAt IS NULL" ;
+            $this->jointure[] = "$way JOIN `$table` ON $conditions AND `$table`.deleteAt IS NULL ";
+            //$this->conditions[] = "`$table`.deleteAt IS NULL" ;
         }else{
-            $this->jointure[] = "$way JOIN $table AS $alias ON $conditions ";
-            $this->conditions[] = "$alias.deleteAt IS NULL" ;
+            $this->jointure[] = "$way JOIN `$table` AS $alias ON $conditions AND $alias.deleteAt IS NULL ";
+            //$this->conditions[] = "$alias.deleteAt IS NULL" ;
         }
         return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function group():self{
+
+        foreach(func_get_args() as $arg){
+            $this->groups[] = $arg;
+        }
+        return $this ;
     }
 
     /**
@@ -155,31 +196,37 @@ class QueryBuilder
         $where = null ;
         $join = null ;
         $init = null ;
+        $order = null ;
+        $group = null ;
 
         if($this->describe){
             $init = "DESCRIBE ".$this->from[0] ;
 
         }elseif($this->insert){
-            $init = "INSERT INTO `".$this->from[0]."` SET ".implode(', ', $this->set) ;
+            $init = "INSERT INTO ".$this->from[0]." SET ".implode(', ', $this->set) ;
 
         }elseif ($this->update){
 
-            $init = "UPDATE `".$this->from[0]."` SET ".implode(', ', $this->set) ;
+            $init = "UPDATE ".$this->from[0]." SET ".implode(', ', $this->set) ;
 
         }elseif ($this->delete){
             $init = 'DELETE FROM ' . $this->from[0];
 
         }else{
             $init = 'SELECT DISTINCT '. implode(', ', $this->fields)
-                . ' FROM ' . implode(', ', $this->from);
+                . ' FROM ' . implode(', ', $this->from).' ';
         }
         if(!empty($this->jointure)) $join = ' '.implode(' ', $this->jointure);
 
-        if(!empty($this->conditions)) $where = ' WHERE ' . implode(' AND ', $this->conditions);
+        if(!empty($this->conditions) and !$this->insert) $where = ' WHERE ' . implode(' AND ', $this->conditions);
 
-        $sql = $init.$join.$where ;
+        if(!empty($this->groups)) $group = ' GROUP BY ' . implode(', ', $this->groups);
 
-        //echo $sql ;
+        if(!empty($this->orders)) $order = ' ORDER BY ' . implode(', ', $this->orders);
+
+        $sql = $init.$join.$where.$group.$order ;
+
+        //echo "sql => $sql<br/>" ;
         //echo "init => $init<br/>" ;
         //echo "join => $join<br/>" ;
         //echo "where => $where<br/>" ;

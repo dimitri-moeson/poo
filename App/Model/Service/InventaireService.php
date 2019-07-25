@@ -83,7 +83,7 @@ class InventaireService extends Service
             {
                 /**
                  * if (!isset($item->val) || !is_null($item->val) || $item->val == 0 || empty($item->val))
-                    $this->InventaireBase->delete($item->inventaire_id);
+                    $this->InventaireBase->archive($item->inventaire_id);
                 else
                  */
                 if (isset($item->inventaire_id) && !is_null($item->inventaire_id))

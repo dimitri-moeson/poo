@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App;
 use App\Model\Entity\Game\Item\ItemConsommableEntity;
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Entity\Game\Item\ItemEquipementEntity;
@@ -33,6 +34,7 @@ use App\Model\Service\EquipementService;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
 use Core\Request\Request;
+use Core\Session\FlashBuilder;
 
 /**
  * Class TestController
@@ -103,8 +105,13 @@ class TestController extends AppController
                     $this->EquipementService->arme($equip);
                 }
 
-                $this->viewText = $this->legolas->getName() . " change d'equipement " . $equip->getName() . "<br/>";
-                Redirect::reload();
+                //$this->viewText = $this->legolas->getName() . " change d'equipement " . $equip->getName() . "<br/>";
+                //Redirect::reload();
+
+                FlashBuilder::create( $this->legolas->getName() . " change d'equipement " . $equip->getName(),"success");
+
+                Redirect::getInstance()->setAct("fiche")->send();
+
             }
 
             $this->equipables = $this->EquipementService->listEquipable(Get::getInstance()->val('place'));
@@ -139,7 +146,10 @@ class TestController extends AppController
                     if( $this->MovementService instanceof MovementService)
                         $this->MovementService->move( $pos);
 
-                    $this->viewText = $this->legolas->getName() . " se deplace " . print_r($coord, 1) . "<br/>";
+                    //$this->viewText = $this->legolas->getName() . " se deplace " . print_r($coord, 1) . "<br/>";
+                    FlashBuilder::create( $this->legolas->getName() . " se deplace " . print_r($coord, 1) ,"success");
+
+                    Redirect::getInstance()->setAct("fiche")->send();
                 }
             }
 
@@ -161,7 +171,12 @@ class TestController extends AppController
 
             if ($this->PersonnageService->ramasse($this->legolas, $item)) {
 
-                $this->viewText = $this->legolas->getName() . " ramasse " . $item->getName() . "<br/>";
+                //$this->viewText = $this->legolas->getName() . " ramasse " . $item->getName() . "<br/>";
+
+                FlashBuilder::create( $this->legolas->getName() . " ramasse " . $item->getName(),"success");
+
+                Redirect::getInstance()->setAct("fiche")->send();
+
             }
         }
     }
@@ -190,7 +205,9 @@ class TestController extends AppController
                     $this->Inventaire->archive($_id);
 
                     if($itm) {
-                        Redirect::getInstance()->setAct("fiche")->setParams(array("place" => $itm->type))->send();
+                        Redirect::getInstance()->setParams(array("place" => $itm->type))
+                            ->setAct("fiche")
+                            ->send();
                     }
                 }
             }
@@ -213,7 +230,10 @@ class TestController extends AppController
 
                 $this->PersonnageService->apprendre($this->legolas, $potion);
 
-                $this->viewText = $this->legolas->getName() . " apprend la recette " . $potion->getName() . "<br/>";
+                //$this->viewText = $this->legolas->getName() . " apprend la recette " . $potion->getName() . "<br/>";
+                FlashBuilder::create( $this->legolas->getName() . " apprend la recette " . $potion->getName(),"success");
+
+                Redirect::getInstance()->setAct("fiche")->send();
             }
         }
         if($this->ItemService instanceof ItemService)
@@ -236,10 +256,14 @@ class TestController extends AppController
                 if($this->PersonnageService instanceof PersonnageService)
                     $craft = $this->PersonnageService->craft($this->legolas, $potion);
 
-                    if ($craft === true)    $this->viewText = $this->legolas->getName() . " fabrique " . $potion->getName() . "<br/>";
-                elseif ($craft === 2)       $this->viewText = $this->name . " n'a pas tous les ingrédients à sa disposition.";
-                elseif ($craft === 3)       $this->viewText = $this->name . " ne connait pas la recette " . $potion->getName();
-                elseif ($craft === 4)       $this->viewText = " erreur inconnue ";
+                    if ($craft === true)    $viewText = $this->legolas->getName() . " fabrique " . $potion->getName() . "<br/>";
+                elseif ($craft === 2)       $viewText = $this->name . " n'a pas tous les ingrédients à sa disposition.";
+                elseif ($craft === 3)       $viewText = $this->name . " ne connait pas la recette " . $potion->getName();
+                elseif ($craft === 4)       $viewText = " erreur inconnue ";
+
+                FlashBuilder::create( "$viewText","success");
+
+                Redirect::getInstance()->setAct("fiche")->send();
             }
 
             $this->craftables = $this->ItemService->listCraftable($this->legolas->id);
@@ -271,6 +295,7 @@ class TestController extends AppController
                     $defi = new Defi(array($this->legolas, $strum));
 
                     $_SESSION['defi'] = serialize($defi);
+                    FlashBuilder::create( "combat lancé","success");
 
                     Redirect::getInstance()->setAct('combat')->send();
                 }
@@ -318,7 +343,7 @@ class TestController extends AppController
                     {
                         $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));//$this->Personnage->find(Post::getInstance()->val('cible'));
 
-                        var_dump($cible);
+                        //var_dump($cible);
 
                         $this->CombatService->ciblage($this->defi, $cible);
                     }
@@ -328,19 +353,34 @@ class TestController extends AppController
                     }
                     elseif ( Post::getInstance()->val('action') == 'fuite')
                     {
-                        Journal::getInstance()->add($this->legolas->getName() . "a fui combat");
-                        header('location:?p=test.fiche');
+                        //Journal::getInstance()->add($this->legolas->getName() . "a fui combat");
+                        //header('location:?p=test.fiche');
+
+                        FlashBuilder::create( $this->legolas->getName() . "a fui combat" ,"success");
+
+                        Redirect::getInstance()->setAct("fiche");
                     }
                 }
                 else if (Post::getInstance()->has('bilan')) {
 
-                    Journal::getInstance()->add($this->defi->current()->getName() . "est sorti vainqueur du combat");
+                    $mess = null ;
 
+                    $player = $this->defi->current();
+
+                    $mess .= $player->getName() . "est sorti vainqueur du combat";
                     unset($_SESSION['defi']);
 
                     $potion = ItemConsommableEntity::init("potion", "soin", "vie", 15);
 
-                    $this->defi->current()->ajoute($potion);
+                    if( $player instanceof PersonnageEntity) {
+                        if ($this->PersonnageService->ramasse($player, $potion)) {
+
+                            $mess .= $player->getName() . " ramasse " . $potion->getName();
+                            FlashBuilder::create( $mess ,"success");
+
+                            Redirect::getInstance()->setAct("fiche")->send();
+                        }
+                    }
                 }
             }
         }

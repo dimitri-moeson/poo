@@ -6,6 +6,11 @@ use Core\Request\Request;
 
 class Redirect
 {
+    /**
+     * @var Redirect
+     */
+    private static $_instance;
+
     public $act ;
     public $ctl ;
     public $dom = null  ;

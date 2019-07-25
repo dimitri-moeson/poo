@@ -14,8 +14,10 @@ use App\View\Form\ItemForm;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
+use Core\HTML\Header\Header;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
+use Core\Session\FlashBuilder;
 
 class ItemController extends AppController
 {
@@ -71,6 +73,8 @@ class ItemController extends AppController
 
             if($this->Item->create( Post::getInstance()->content('post'))){
 
+                FlashBuilder::create("item ajouté","success");
+
                 Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
                     ->setDom("admin")->setAct("single")->setCtl("item")
                     ->send();
@@ -86,7 +90,6 @@ class ItemController extends AppController
     
     public function delete(){
 
-
         if(Post::getInstance()->submited()) {
 
             if(Post::getInstance()->has('id')) {
@@ -97,9 +100,11 @@ class ItemController extends AppController
 
             if(Post::getInstance()->has('conf')) {
 
-                if ($this->Item->delete(Post::getInstance()->val('id'))) {
+                if ($this->Item->archive(Post::getInstance()->val('id'))) {
 
                     $this->success = true ;
+
+                    FlashBuilder::create("item supprimé","success");
 
                     Redirect::getInstance()
                         ->setDom("admin")->setAct("index")->setCtl("item")
@@ -120,7 +125,8 @@ class ItemController extends AppController
 
             if($this->Item->update( Get::getInstance()->val('id'), Post::getInstance()->content("post")))
             {
-                //$this->success = true ;
+                FlashBuilder::create("item modifié","success");
+
                 Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
                     ->setDom("admin")->setAct("single")->setCtl("item")
                     ->send();
@@ -133,7 +139,7 @@ class ItemController extends AppController
             if (!$this->post) App::notFound();
         }
 
-        App::getInstance()->setTitle($this->post->titre);
+        Header::getInstance()->setTitle($this->post->titre);
 
         $this->posts = $this->Item->all();
 

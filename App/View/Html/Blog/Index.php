@@ -24,10 +24,16 @@
         <ul>
         <?php foreach ($categories as $categorie) { ?>
 
-                <li><a href="<?php echo $categorie->url ?>"><?php echo $categorie->nom ?></a></li>
+                <li><a href="<?php echo $categorie->url ?>"><?php echo $categorie->titre ?></a></li>
 
         <?php } // endforeach ?>
         </ul>
+
+            <?php foreach ($clouds as $key) { ?>
+
+                <a href="<?php echo $categorie->url ?>"><?php echo $key->mot ?></a>(<?php echo $key->called ?>)
+
+            <?php } // endforeach ?>
 
     </div>
 </div>

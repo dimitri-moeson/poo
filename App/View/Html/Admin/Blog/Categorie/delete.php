@@ -32,7 +32,7 @@ use Core\Render\Render;
             <tbody>
             <?php foreach ($categories as $post) { ?>
 
-                <?php if ($post instanceof CategorieEntity) { ?>
+                <?php if ($post instanceof ArticleEntity) { ?>
                     <tr>
                         <th><a href="<?php echo $post->url ?>"><?php echo $post->nom ?></a></th>
                         <td><?php echo Render::getInstance()->block("admin.list.btn", array(

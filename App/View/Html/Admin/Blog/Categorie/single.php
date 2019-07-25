@@ -1,7 +1,11 @@
-<h1><?php use App\Model\Entity\Blog\CategorieEntity;
-    use Core\Render\Render;
+<?php
 
-    echo $post->nom ?></h1>
+    use App\Model\Entity\Blog\ArticleEntity;
+    use App\Model\Entity\Blog\CategorieEntity;
+    use Core\Render\Render;
+    ?>
+
+<h1><?php echo $post->nom ?></h1>
 
 <?php if ($success) { ?>
 
@@ -31,17 +35,17 @@
         <tr>
             <th>Titre</th>
             <th>
-                <a href="?p=admin.item.add" class="btn btn-success">Add</a>
+                <a href="?p=admin.categorie.add" class="btn btn-success">Add</a>
             </th>
         </tr>
 
         </thead>
         <tbody>
-        <?php foreach ($categories as $post) { ?>
+        <?php foreach( $categories as $post ) { ?>
 
-            <?php if ($post instanceof CategorieEntity) { ?>
+            <?php if ($post instanceof ArticleEntity) { ?>
                 <tr>
-                    <th><a href="<?php echo $post->url ?>"><?php echo $post->nom ?></a></th>
+                    <th><a href="<?php echo $post->url ?>"><?php echo $post->titre ?></a></th>
                     <td><?php echo Render::getInstance()->block("admin.list.btn", array(
 
                             "p" => "categorie",

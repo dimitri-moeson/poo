@@ -20,12 +20,12 @@ class Flash
      *
      * @return Flash
      */
-    public static function __callStatic($name, $arguments): Flash
+    public static function __callStatic($name, $arguments): FlashBuilder
     {
         // Note : la valeur de $name est sensible à la casse.
         echo "Appel de la méthode statique '$name' "
             . implode(', ', $arguments) . "\n";
-        $query = new Flash();
+        $query = new FlashBuilder();
         return call_user_func_array([$query, $name], $arguments);
     }
 }

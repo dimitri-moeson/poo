@@ -1,6 +1,9 @@
-<h1><?php use Core\Render\Render;
+<?php
+use Core\Render\Render;
+use Core\Session\FlashBuilder;
+?>
 
-    echo isset($post) ? $post->titre : "blog - Ajout" ?></h1>
+<h1><?php  echo isset($post) ? $post->titre : "blog - Ajout" ?></h1>
 
 <?php if ($success) { ?>
 
@@ -10,6 +13,8 @@
 
 
 <?php } ?>
+
+<?php echo FlashBuilder::create()->get() ?>
 
 <div class="col-sm-7">
 

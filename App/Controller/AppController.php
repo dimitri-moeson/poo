@@ -9,6 +9,7 @@ namespace App\Controller;
 
 use App;
 use Core\Controller\Controller;
+use Core\HTML\Header\Header;
 use Core\Render\Render;
 
 class AppController extends Controller
@@ -21,8 +22,8 @@ class AppController extends Controller
         Render::getInstance()->setTemplate('default');
         Render::getInstance()->setViewPath( realpath(ROOT."/App/View/Html/"));
 
-        App::getInstance()->add_js("tooltip");
-        App::getInstance()->add_css("blade");
+        Header::getInstance()->add_js("tooltip");
+        Header::getInstance()->add_css("blade");
     }
 
     /**

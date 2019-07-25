@@ -12,8 +12,10 @@ use App;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
+use Core\HTML\Header\Header;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
+use Core\Session\FlashBuilder;
 
 class CategorieController extends AppController
 {
@@ -24,19 +26,24 @@ class CategorieController extends AppController
     {
         parent::__construct();
 
-        $this->loadModel("Blog\Categorie");
         $this->loadModel("Blog\Article");
+        $this->loadModel("Blog\Keyword");
+
+        $this->categories =  $this->Article->allOf("categorie");
+        $this->loadService("Article");
     }
 
     /**
      * @param $post
      * @return Form
      */
-    private function form_categorie($post)
+    private function form_categorie($post,$keywords)
     {
         $form = new Form($post);
 
-        $form->input("nom", array('label' => "Titre Cat"))
+        $form->input("titre", array('label' => "Titre Cat"))
+            ->input("keyword", array('type' => 'textarea', 'label' => "keyword (séparés par des virgules)", "value" => implode(",",$keywords) ))
+            ->input("type",array("type"=>"hidden" ,"value" =>"categorie"))
             ->submit("Enregistrer");
 
         return $form ;
@@ -47,8 +54,7 @@ class CategorieController extends AppController
      */
     public function index()
     {
-        $this->posts = $this->Article->all();
-        $this->categories = $this->Categorie->all();
+        $this->posts = $this->Article->allOf("article");
 
         Render::getInstance()->setView("Admin/Blog/Categorie/home");
     }
@@ -60,7 +66,11 @@ class CategorieController extends AppController
 
         if(Post::getInstance()->submited()) {
 
-            if($this->Categorie->create( Post::getInstance()->content())){
+            Post::getInstance()->val("type","categorie");
+
+            if($this->ArticleService->record()){
+
+                FlashBuilder::create("catégorie créé","success");
 
                 Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
                     ->setDom("admin")->setAct("edit")->setCtl("categorie")
@@ -68,8 +78,6 @@ class CategorieController extends AppController
             }
 
         }
-
-        $this->categories = $this->Categorie->all();
 
         $this->form = $this->form_categorie(Post::getInstance()->content());
 
@@ -85,24 +93,23 @@ class CategorieController extends AppController
 
             if(Post::getInstance()->has('id')) {
 
-                $post = $this->Categorie->find(Post::getInstance()->val('id'));
+                $post = $this->Article->find(Post::getInstance()->val('id'));
                 if (!$post) App::notFound();
             }
 
             if(Post::getInstance()->has('conf')) {
 
-                if ($this->Categorie->delete(Post::getInstance()->val('id'))) {
+                if ($this->Article->archive(Post::getInstance()->val('id'))) {
+
+                    FlashBuilder::create("catégorie supprimé","success");
 
                     Redirect::getInstance()
                         ->setDom("admin")->setAct("index")->setCtl("categorie")
                         ->send();
-
                 }
             }
 
         }
-
-        $this->categories = $this->Categorie->all();
 
         Render::getInstance()->setView("Admin/Blog/Categorie/delete");
     }
@@ -114,28 +121,29 @@ class CategorieController extends AppController
 
         if(Post::getInstance()->submited()) {
 
-            if($this->Categorie->update(Get::getInstance()->val('id'), Post::getInstance()->content())){
+            Post::getInstance()->val("type","categorie");
 
-                //$this->success = true ;
+            if($this->ArticleService->record(Get::getInstance()->val('id'))){
+
+                FlashBuilder::create("catégorie modifié","success");
+
                 Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
                     ->setDom("admin")->setAct("edit")->setCtl("categorie")
                     ->send();
-
             }
 
         }
 
         if(Get::getInstance()->has('id')) {
 
-            $this->post = $this->Categorie->find(Get::getInstance()->val('id'));
+            $this->post = $this->Article->find(Get::getInstance()->val('id'));
             if (!$this->post) App::notFound();
         }
+        $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
 
-        $this->categories = $this->Categorie->all();
+        Header::getInstance()->setTitle($this->post->titre);
 
-        App::getInstance()->setTitle($this->post->titre);
-
-        $this->form = $this->form_categorie($this->post);
+        $this->form = $this->form_categorie($this->post,$keywords);
 
         Render::getInstance()->setView("Admin/Blog/Categorie/single");
     }

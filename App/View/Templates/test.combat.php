@@ -2,10 +2,12 @@
 
 
 use Core\Auth\DatabaseAuth;
+use Core\HTML\Header\Header;
+use Core\Request\Request ;
 
-$ctl_ = \Core\Request\Request::getInstance()->getCtrl();
-$act_ = \Core\Request\Request::getInstance()->getAction();
-    $title = App::getInstance()->getTitle();
+$ctl_ = Request::getInstance()->getCtrl();
+$act_ = Request::getInstance()->getAction();
+    $title = Header::getInstance()->getTitle();
 
     $auth = new DatabaseAuth(App::getInstance()->getDb());
 
@@ -51,7 +53,7 @@ $act_ = \Core\Request\Request::getInstance()->getAction();
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
-    <?php echo App::getInstance()->call_css(); ?>
+    <?php echo Header::getInstance()->call_css(); ?>
 
     <title><?php echo $title ?></title>
 
@@ -110,7 +112,7 @@ $act_ = \Core\Request\Request::getInstance()->getAction();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-<?php echo App::getInstance()->call_js(); ?>
+<?php echo Header::getInstance()->call_js(); ?>
 
 </body>
 </html>

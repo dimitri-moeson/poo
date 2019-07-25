@@ -12,30 +12,46 @@ use App;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
+use Core\HTML\Header\Header;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
 use Core\Session\FlashBuilder;
 
 class ArticleController extends AppController
 {
+    /**
+     * ArticleController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
 
-        $this->loadModel("Blog\Categorie");
         $this->loadModel("Blog\Article");
+        $this->loadModel("Blog\Keyword");
+        $this->loadModel("Blog\Indexion");
+
+        $this->loadService("Article");
+
+        $this->categories = $this->Article->allOf("categorie");
+        $this->posts = $this->Article->allOf("article");
     }
 
-    private function form_article($post)
+    /**
+     * @param $post
+     * @return Form
+     */
+    private function form_article($post,$keywords)
     {
         $form = new Form($post);
 
-        $categories = $this->Categorie->list('id','nom');
+        $categories = $this->Article->listing('categorie');
 
         $form->input("titre", array('label' => "titre article"))
-            ->select("categorie_id", array('options' => $categories, 'label' => "Categorie"),$categories)
+            ->input("keyword", array('type' => 'textarea', 'label' => "keyword (séparés par des virgules)", "value" => implode(",",$keywords) ))
+            ->select("parent_id", array('options' => $categories, 'label' => "Categorie"),$categories)
             ->input("date", array('type' => 'date', 'label' => "ajouté"))
             ->input("contenu", array('type' => 'textarea', 'label' => "contenu", "class" => "editor"))
+            ->input("type",array("type"=>"hidden", "value"=>"article"))
             ->submit("Enregistrer");
 
         return $form ;
@@ -43,17 +59,16 @@ class ArticleController extends AppController
 
     public function index()
     {
-        $this->posts = $this->Article->all();
-        $this->categories = $this->Categorie->all();
-
         Render::getInstance()->setView("Admin/Blog/home"); // , compact('posts','categories'));
     }
     
     public function add(){
 
-        if(Post::submited()) {
+        if(Post::getInstance()->submited()) {
 
-            if($this->Article->create( Post::content('post'))){
+            Post::getInstance()->val("type","article");
+
+            if($this->ArticleService->record()){
 
                 FlashBuilder::create("article créé","success");
 
@@ -64,8 +79,6 @@ class ArticleController extends AppController
         }
 
         $this->form = $this->form_article(Post::content('post'));
-        $this->categories = $this->Categorie->list('id','nom');
-        $this->posts = $this->Article->all();
 
         Render::getInstance()->setView("Admin/Blog/single"); // , compact('form','categories'));
     }
@@ -82,8 +95,10 @@ class ArticleController extends AppController
 
             if(Post::getInstance()->has('conf')) {
 
-                if ($this->Article->delete(Post::getInstance()->val('id')))
+                if ($this->Article->archive(Post::getInstance()->val('id')))
                 {
+                    FlashBuilder::create("article supprimé","success");
+
                     Redirect::getInstance()
                         ->setDom("admin")->setAct("index")->setCtl("article")
                         ->send();
@@ -91,35 +106,37 @@ class ArticleController extends AppController
             }
         }
 
-        $this->posts = $this->Categorie->all();
-
         Render::getInstance()->setView("Admin/Blog/delete"); // , compact('posts','categories'));
     }
     
     public function single(){
 
-        if(Post::submited("post")) {
+        if(Post::getInstance()->submited()) {
 
-            if($this->Article->update(Get::getInstance()->val('id'), Post::content("post")))
+            Post::getInstance()->val("type","article");
+
+            //if($this->Article->update(Get::getInstance()->val('id'), Post::getInstance()->content()))
+            if($this->ArticleService->record(Get::getInstance()->val('id')))
             {
-                $this->success = true ;
-                Redirect::reload();
-
+                FlashBuilder::create("article modifié","success");
             }
+            Redirect::getInstance()->setParams(array("id" => Get::getInstance()->val('id') ))
+                ->setAct("edit")->setCtl("article")->setDom("admin")
+                ->send();
         }
 
         if(Get::getInstance()->has('id')){
 
             $this->post = $this->Article->find(Get::getInstance()->val('id'));
             if (!$this->post) App::notFound();
+
+            $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
+
+            Header::getInstance()->setTitle($this->post->titre);
+
+            $this->form = $this->form_article($this->post,$keywords);
         }
 
-        $this->categories = $this->Categorie->list('id','nom');
-        $this->posts = $this->Article->all();
-
-        App::getInstance()->setTitle($this->post->titre);
-
-        $this->form = $this->form_article($this->post, $this->categories);
 
         Render::getInstance()->setView("Admin/Blog/single"); // , compact('post','categories','success','form'));
     }

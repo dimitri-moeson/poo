@@ -15,7 +15,6 @@ class App
 {
     private static $database;
 
-    private $title = "Test";
 
     private static $_instance;
 
@@ -121,21 +120,6 @@ class App
     }
 
 
-    /**
-     * @return mixed
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title): void
-    {
-        $this->title = $title . " | " . $this->title;
-    }
 
     /**
      * Factory
@@ -196,40 +180,5 @@ class App
         return $this->act;
     }
 
-    public function add_js($action){
-
-        $this->js[] = $action ;
-
-    }
-
-    public function call_js(){
-
-        $script = "";
-
-        foreach ( $this->js as $action   ){
-
-            $script .='<script src="?js='.$action.'" type="application/x-javascript"></script>'  ;
-        }
-
-        return $script ;
-    }
-
-    public function add_css($action){
-
-        $this->css[] = $action ;
-
-    }
-
-    public function call_css(){
-
-        $script = "";
-
-        foreach ( $this->css as $action   ){
-
-            $script .= /** @lang html */ '<link rel="stylesheet" href="?css='.$action.'" crossorigin="anonymous" type="text/css" media="screen" />'  ;
-        }
-
-        return $script ;
-    }
 
 }

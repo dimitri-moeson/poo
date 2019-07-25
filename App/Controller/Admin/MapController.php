@@ -14,6 +14,7 @@ use Core\HTML\Env\GlobalRequest;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
+use Core\Session\FlashBuilder;
 
 class MapController extends AppController
 {
@@ -56,6 +57,9 @@ class MapController extends AppController
         }
     }
 
+    /**
+     *
+     */
     public function edit(){
 
         $x = Get::getInstance()->val('x');
@@ -76,6 +80,7 @@ class MapController extends AppController
 
             $this->MapService->install($map,$itm);
 
+            FlashBuilder::create("map edité","success");
             Redirect::reload();
         }
 

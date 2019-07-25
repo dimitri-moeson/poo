@@ -7,7 +7,10 @@ use App;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
+use Core\HTML\Header\Header;
+use Core\Redirect\Redirect;
 use Core\Render\Render;
+use Core\Session\FlashBuilder;
 
 class PersonnageController extends AppController
 {
@@ -46,9 +49,13 @@ class PersonnageController extends AppController
 
             if(Post::getInstance()->has('conf')) {
 
-                if ($this->Personnage->delete(Post::getInstance()->val('id'))) {
+                if ($this->Personnage->archive(Post::getInstance()->val('id'))) {
 
-                    header("location: admin.php");
+                    FlashBuilder::create("perso suppr","success");
+
+                    Redirect::getInstance()
+                        ->setDom("admin")->setAct("index")->setCtl("personnage")
+                        ->send();
 
                 }
             }
@@ -56,6 +63,9 @@ class PersonnageController extends AppController
         }
     }
 
+    /**
+     *
+     */
     public function single()
     {
         if(Post::getInstance()->submited()) {
@@ -76,7 +86,7 @@ class PersonnageController extends AppController
 
         $this->categories = $this->Personnage->list('id','nom');
 
-        App::getInstance()->setTitle($this->post->titre);
+        Header::getInstance()->setTitle($this->post->titre);
 
         $this->form = $this->form_categorie($this->post);
     }
