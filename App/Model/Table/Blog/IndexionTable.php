@@ -40,11 +40,7 @@ class IndexionTable extends Table
             ->join('keyword','k.id = i.keyword_id','left','k')
             ->where('k.mot = :mot','i.article_id = :a_id');
 
-        echo $statement ;
-
         $mot = $this->request( $statement , array("mot" => $key,"a_id" => $a_id), true , IndexionEntity::class );
-
-        var_dump($mot);
 
         if($mot) $this->archive($mot->id);
 

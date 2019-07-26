@@ -63,6 +63,12 @@ $file_rub  = $ctl_ === "file";
     <?php echo Header::getInstance()->call_css(); ?>
 
     <title><?php echo Header::getInstance()->getTitle() ?></title>
+    <meta name="description" content="<?php echo Header::getInstance()->getDescription() ?>" />
+    <meta name="keywords" content="<?php echo Header::getInstance()->getKeywords() ?>" />
+    <meta name="DC.Title" lang="fr" content="<?php echo Header::getInstance()->getTitle() ?>" />
+    <meta name="DC.Date.created" scheme="W3CDTF" content="<?php echo Header::getInstance()->getCreated()->format("Y-m-d") ?>" />
+    <meta name="DC.Date.modified" scheme="W3CDTF" content="<?php echo Header::getInstance()->getUpdated()->format("Y-m-d") ?>" />
+    <meta name="robots" content="none" />
 
 </head>
 <body>
@@ -120,6 +126,8 @@ $file_rub  = $ctl_ === "file";
 
                         </ul>
                     </li>
+
+                    <li><a href="?p=admin.page.index">page</a></li>
 
                     <li>
                         <a href="#gameSubmenu" data-toggle="collapse" aria-expanded="<?php echo $game_rub ? "true" : "false" ?>" class=" active dropdown-toggle">Game<i class="fa fa-fw fa-angle-down pull-right"></i></a>

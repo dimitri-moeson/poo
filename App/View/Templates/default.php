@@ -56,6 +56,12 @@ $auth = new DatabaseAuth(App::getInstance()->getDb());
     <?php echo Header::getInstance()->call_css(); ?>
 
     <title><?php echo $title ?></title>
+    <meta name="description" content="<?php echo Header::getInstance()->getDescription() ?>" />
+    <meta name="keywords" content="<?php echo Header::getInstance()->getKeywords() ?>" />
+    <meta name="DC.Title" lang="fr" content="<?php echo Header::getInstance()->getTitle() ?>" />
+    <meta name="DC.Date.created" scheme="W3CDTF" content="<?php echo Header::getInstance()->getCreated()->format("Y-m-d") ?>" />
+    <meta name="DC.Date.modified" scheme="W3CDTF" content="<?php echo Header::getInstance()->getUpdated()->format("Y-m-d") ?>" />
+    <meta name="robots" content="index, follow, archive" />
 
 </head>
 <body>

@@ -46,7 +46,8 @@ class Redirect
 
     static function buildQuery( $params = array())
     {
-        $query = http_build_query($params);
+        http_build_str($params);
+        return http_build_query($params);
     }
 
     /**
@@ -160,7 +161,7 @@ class Redirect
      * @param array $params
      * @return Redirect
      */
-    public function setParams(array $params): Redirect
+    public function setParams(array $params = array()): Redirect
     {
         $this->params = $params;
         return $this;

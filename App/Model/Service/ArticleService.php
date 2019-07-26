@@ -41,7 +41,9 @@ class ArticleService extends Service
 
         }
 
-        foreach ($keys as $key){
+        foreach ($keys as $keyword){
+
+            $key = strtolower(trim($keyword));
 
             if($this->KeywordBase->exists($key)){
 
@@ -67,11 +69,14 @@ class ArticleService extends Service
 
         $arr = array(
 
-            "titre"     => Post::getInstance()->val("titre"),
-            "parent_id" => (Post::getInstance()->val("parent_id") ?? null ),
-            "date"      => (Post::getInstance()->val("date") ?? date("Y-m-d")),
-            "contenu"   => (Post::getInstance()->val("contenu") ?? "null" ) ,
-            "type"      => Post::getInstance()->val("type"),
+            "titre"         =>  Post::getInstance()->val("titre"),
+            "parent_id"     => (Post::getInstance()->val("parent_id") ?? null ),
+            "date"          => (Post::getInstance()->val("date") ?? date("Y-m-d")),
+            "contenu"       => (Post::getInstance()->val("contenu") ?? "null" ) ,
+            "type"          =>  Post::getInstance()->val("type"),
+            "description"   =>  Post::getInstance()->val("description"),
+            "default"       => (Post::getInstance()->val("default") ?? 0 ),
+
         );
 
         if(is_null($id))
@@ -84,6 +89,12 @@ class ArticleService extends Service
         {
             $this->ArticleBase->update( $id , $arr );
         }
+
+        $this->ArticleBase->update( $id , array(
+
+            "slug" => $this->slugify($id."-".Post::getInstance()->val("titre"))
+
+        ) );
 
        $this->key_record($id);
 

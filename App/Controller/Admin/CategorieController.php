@@ -43,6 +43,7 @@ class CategorieController extends AppController
 
         $form->input("titre", array('label' => "Titre Cat"))
             ->input("keyword", array('type' => 'textarea', 'label' => "keyword (séparés par des virgules)", "value" => implode(",",$keywords) ))
+            ->input("description", array('type' => 'textarea', 'label' => "Description" ))
             ->input("type",array("type"=>"hidden" ,"value" =>"categorie"))
             ->submit("Enregistrer");
 

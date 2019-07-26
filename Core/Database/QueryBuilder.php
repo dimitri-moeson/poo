@@ -23,16 +23,17 @@ class QueryBuilder
     private $from = [];
     private $jointure = [];
 
-    private $describe = false ;
-    private $insert = false ;
-    private $update = false ;
-    private $delete = false ;
+    private $describe = false;
+    private $insert = false;
+    private $update = false;
+    private $delete = false;
 
 
     /**
      * @return $this
      */
-    public function select():self{
+    public function select(): self
+    {
         $this->fields = func_get_args();
         return $this;
     }
@@ -41,47 +42,52 @@ class QueryBuilder
      * @param $table
      * @return $this
      */
-    public function describe($table):self{
-        $this->describe = true ;
+    public function describe($table): self
+    {
+        $this->describe = true;
         $this->from($table);
-        return $this ;
+        return $this;
     }
 
     /**
      * @param $table
      * @return $this
      */
-    public function insert($table):self{
-        $this->insert = true ;
+    public function insert($table): self
+    {
+        $this->insert = true;
         $this->from($table);
-        return $this ;
+        return $this;
     }
 
     /**
      * @param $table
      * @return $this
      */
-    public function update($table):self{
-        $this->update = true ;
+    public function update($table): self
+    {
+        $this->update = true;
         $this->from($table);
-        return $this ;
+        return $this;
     }
 
     /**
      * @param $table
      * @return $this
      */
-    public function delete($table):self{
-        $this->delete = true ;
+    public function delete($table): self
+    {
+        $this->delete = true;
         $this->from($table);
-        return $this ;
+        return $this;
     }
 
     /**
      * @return $this
      */
-    public function where():self{
-        foreach(func_get_args() as $arg){
+    public function where(): self
+    {
+        foreach (func_get_args() as $arg) {
             $this->conditions[] = $arg;
         }
         return $this;
@@ -92,16 +98,14 @@ class QueryBuilder
      * @param null $alias
      * @return $this
      */
-    public function from($table, $alias = null):self{
-        if(is_null($alias))
-        {
+    public function from($table, $alias = null): self
+    {
+        if (is_null($alias)) {
             $this->from[] = "`$table`";
-            $this->conditions[] = "`$table`.deleteAt IS NULL" ;
-        }
-        else
-        {
+            $this->conditions[] = "`$table`.`deleteAt` IS NULL";
+        } else {
             $this->from[] = "`$table` AS $alias";
-            $this->conditions[] = "$alias.deleteAt IS NULL" ;
+            $this->conditions[] = "$alias.`deleteAt` IS NULL";
         }
         return $this;
     }
@@ -111,9 +115,10 @@ class QueryBuilder
      * @param string $sens
      * @return QueryBuilder
      */
-    public function order($field, $sens = "ASC"):self{
+    public function order($field, $sens = "ASC"): self
+    {
 
-        $this->orders[] = "$field $sens";
+        $this->orders[] = "`$field` $sens";
 
         return $this;
     }
@@ -121,8 +126,9 @@ class QueryBuilder
     /**
      * @return QueryBuilder
      */
-    public function orders():self{
-        foreach(func_get_args() as $arg){
+    public function orders(): self
+    {
+        foreach (func_get_args() as $arg) {
             $this->orders[] = $arg;
         }
         return $this;
@@ -135,14 +141,14 @@ class QueryBuilder
      * @param null $alias
      * @return $this
      */
-    public function join($table,$conditions,$way = null, $alias = null ):self
+    public function join($table, $conditions, $way = null, $alias = null): self
     {
-        if(is_null($alias)){
-            $this->jointure[] = "$way JOIN `$table` ON $conditions AND `$table`.deleteAt IS NULL ";
-            //$this->conditions[] = "`$table`.deleteAt IS NULL" ;
-        }else{
-            $this->jointure[] = "$way JOIN `$table` AS $alias ON $conditions AND $alias.deleteAt IS NULL ";
-            //$this->conditions[] = "$alias.deleteAt IS NULL" ;
+        if (is_null($alias)) {
+            $this->jointure[] = "$way JOIN `$table` ON $conditions AND `$table`.`deleteAt` IS NULL ";
+            $this->conditions[] = "`$table`.`deleteAt` IS NULL";
+        } else {
+            $this->jointure[] = "$way JOIN `$table` AS $alias ON $conditions AND $alias.`deleteAt` IS NULL ";
+            $this->conditions[] = "$alias.`deleteAt` IS NULL";
         }
         return $this;
     }
@@ -150,29 +156,32 @@ class QueryBuilder
     /**
      * @return $this
      */
-    public function group():self{
+    public function group(): self
+    {
 
-        foreach(func_get_args() as $arg){
+        foreach (func_get_args() as $arg) {
             $this->groups[] = $arg;
         }
-        return $this ;
+        return $this;
     }
 
     /**
      * @param array $sql_parts
      * @return $this
      */
-    public function set($sql_parts = array()):self {
+    public function set($sql_parts = array()): self
+    {
 
         $this->set = $sql_parts;
-        return $this ;
+        return $this;
 
     }
 
     /**
      * @return QueryBuilder
      */
-    public static function init():self{
+    public static function init(): self
+    {
         return new self();
     }
 
@@ -185,52 +194,48 @@ class QueryBuilder
     {
         $query = new self();
         return call_user_func_array([$query, $name], $arguments);
-
     }
 
     /**
      * @return string
      */
-    public function __toString(){
+    public function __toString()
+    {
 
-        $where = null ;
-        $join = null ;
-        $init = null ;
-        $order = null ;
-        $group = null ;
+        $where = null;
+        $join = null;
+        $init = null;
+        $set = null;
+        $order = null;
+        $group = null;
 
-        if($this->describe){
-            $init = "DESCRIBE ".$this->from[0] ;
-
-        }elseif($this->insert){
-            $init = "INSERT INTO ".$this->from[0]." SET ".implode(', ', $this->set) ;
-
-        }elseif ($this->update){
-
-            $init = "UPDATE ".$this->from[0]." SET ".implode(', ', $this->set) ;
-
-        }elseif ($this->delete){
+        if ($this->describe) {
+            $init = "DESCRIBE " . $this->from[0];
+        } elseif ($this->insert) {
+            $init = "INSERT INTO " . $this->from[0];
+        } elseif ($this->update) {
+            $init = "UPDATE " . $this->from[0];
+        } elseif ($this->delete) {
             $init = 'DELETE FROM ' . $this->from[0];
-
-        }else{
-            $init = 'SELECT DISTINCT '. implode(', ', $this->fields)
-                . ' FROM ' . implode(', ', $this->from).' ';
+        } else {
+            $init = 'SELECT DISTINCT ' . implode(', ', $this->fields)
+                . ' FROM ' . implode(', ', $this->from) . ' ';
         }
-        if(!empty($this->jointure)) $join = ' '.implode(' ', $this->jointure);
 
-        if(!empty($this->conditions) and !$this->insert) $where = ' WHERE ' . implode(' AND ', $this->conditions);
+        if (!empty($this->set) && ($this->insert || $this->update)) {
 
-        if(!empty($this->groups)) $group = ' GROUP BY ' . implode(', ', $this->groups);
+            $set = " SET " . implode(', ', $this->set);
+        }
 
-        if(!empty($this->orders)) $order = ' ORDER BY ' . implode(', ', $this->orders);
+        if (!$this->insert) {
+            if (!empty($this->jointure)) $join = ' ' . implode(' ', $this->jointure);
+            if (!empty($this->conditions)) $where = ' WHERE ' . implode(' AND ', $this->conditions);
+            if (!empty($this->groups)) $group = ' GROUP BY ' . implode(', ', $this->groups);
+            if (!empty($this->orders)) $order = ' ORDER BY ' . implode(', ', $this->orders);
+        }
 
-        $sql = $init.$join.$where.$group.$order ;
+        $sql = $init . $set . $join . $where . $group . $order;
 
-        //echo "sql => $sql<br/>" ;
-        //echo "init => $init<br/>" ;
-        //echo "join => $join<br/>" ;
-        //echo "where => $where<br/>" ;
-
-        return $sql ;
+        return $sql;
     }
 }

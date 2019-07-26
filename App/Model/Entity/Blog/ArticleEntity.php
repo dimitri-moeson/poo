@@ -28,4 +28,9 @@ class ArticleEntity extends Entity
         return  $html ;
     }
 
+    public function generateSlug(){
+
+        return $this->slugify($this->id."-".$this->titre);
+    }
+
 }

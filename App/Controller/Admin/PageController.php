@@ -17,7 +17,7 @@ use Core\Redirect\Redirect;
 use Core\Render\Render;
 use Core\Session\FlashBuilder;
 
-class ArticleController extends AppController
+class PageController extends AppController
 {
     /**
      * ArticleController constructor.
@@ -32,8 +32,7 @@ class ArticleController extends AppController
 
         $this->loadService("Article");
 
-        $this->categories = $this->Article->allOf("categorie");
-        $this->posts = $this->Article->allOf("article");
+        $this->posts = $this->Article->allOf("page");
     }
 
     /**
@@ -44,13 +43,14 @@ class ArticleController extends AppController
     {
         $form = new Form($post);
 
-        $categories = $this->Article->listing('categorie');
+        $categories = $this->Article->listing('page');
 
         $form->input("titre", array('label' => "titre article"))
             ->input("keyword", array('type' => 'textarea', 'label' => "keyword (séparés par des virgules)", "value" => implode(",",$keywords) ))
             ->input("description", array('type' => 'textarea', 'label' => "Description/Extrait" ))
-            ->select("parent_id", array('options' => $categories, 'label' => "Categorie"),$categories)
-            ->input("date", array('type' => 'date', 'label' => "ajouté"))
+            //->select("parent_id", array('options' => $categories, 'label' => "Page parente"),$categories)
+            //->input("date", array('type' => 'date', 'label' => "ajouté"))
+                ->choice("default",array( "type" => "radio"),array( 1 => "Oui", 0 => "Non"))
             ->input("contenu", array('type' => 'textarea', 'label' => "contenu", "class" => "editor"))
             ->input("type",array("type"=>"hidden", "value"=>"article"))
             ->submit("Enregistrer");
@@ -60,28 +60,28 @@ class ArticleController extends AppController
 
     public function index()
     {
-        Render::getInstance()->setView("Admin/Blog/home"); // , compact('posts','categories'));
+        Render::getInstance()->setView("Admin/Page/home"); // , compact('posts','categories'));
     }
     
     public function add(){
 
         if(Post::getInstance()->submited()) {
 
-            Post::getInstance()->val("type","article");
+            Post::getInstance()->val("type","page");
 
             if($this->ArticleService->record()){
 
-                FlashBuilder::create("article créé","success");
+                FlashBuilder::create("page créé","success");
 
                 Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
-                    ->setAct("edit")->setCtl("article")->setDom("admin")
+                    ->setAct("single")->setCtl("page")->setDom("admin")
                     ->send();
             }
         }
 
         $this->form = $this->form_article(Post::getInstance()->content('post'));
 
-        Render::getInstance()->setView("Admin/Blog/single"); // , compact('form','categories'));
+        Render::getInstance()->setView("Admin/Page/single"); // , compact('form','categories'));
     }
     
     public function delete(){
@@ -98,31 +98,30 @@ class ArticleController extends AppController
 
                 if ($this->Article->archive(Post::getInstance()->val('id')))
                 {
-                    FlashBuilder::create("article supprimé","success");
+                    FlashBuilder::create("Page supprimé","success");
 
                     Redirect::getInstance()
-                        ->setDom("admin")->setAct("index")->setCtl("article")
+                        ->setDom("admin")->setAct("index")->setCtl("page")
                         ->send();
                 }
             }
         }
 
-        Render::getInstance()->setView("Admin/Blog/delete"); // , compact('posts','categories'));
+        Render::getInstance()->setView("Admin/Page/delete"); // , compact('posts','categories'));
     }
     
     public function single(){
 
         if(Post::getInstance()->submited()) {
 
-            Post::getInstance()->val("type","article");
+            Post::getInstance()->val("type","page");
 
-            //if($this->Article->update(Get::getInstance()->val('id'), Post::getInstance()->content()))
             if($this->ArticleService->record(Get::getInstance()->val('id')))
             {
-                FlashBuilder::create("article modifié","success");
+                FlashBuilder::create("Page modifié","success");
             }
             Redirect::getInstance()->setParams(array("id" => Get::getInstance()->val('id') ))
-                ->setAct("edit")->setCtl("article")->setDom("admin")
+                ->setAct("single")->setCtl("page")->setDom("admin")
                 ->send();
         }
 
@@ -139,6 +138,6 @@ class ArticleController extends AppController
         }
 
 
-        Render::getInstance()->setView("Admin/Blog/single"); // , compact('post','categories','success','form'));
+        Render::getInstance()->setView("Admin/Page/single"); // , compact('post','categories','success','form'));
     }
 }

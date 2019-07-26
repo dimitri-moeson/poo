@@ -7,9 +7,9 @@ use Core\Request\Request ;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
-    $title = Header::getInstance()->getTitle();
+$title = Header::getInstance()->getTitle();
 
-    $auth = new DatabaseAuth(App::getInstance()->getDb());
+$auth = new DatabaseAuth(App::getInstance()->getDb());
 
 
 ?><!doctype html>

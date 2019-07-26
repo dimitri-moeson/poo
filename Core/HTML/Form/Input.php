@@ -107,7 +107,7 @@ class Input
     public function __toString()
     {
         $html_label = $this->getLabel();
-        $html_option = $this->string_options();
+        $html_option = ""; //$this->string_options();
         switch ($this->type) {
             case 'file':
                 $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='file' id='" . $this->type . "-" . $this->name . "' name='" . $this->name . "' value='" . $this->value . "' />";
@@ -118,7 +118,7 @@ class Input
                     $this->value . "</button>";
                 break;
             case 'select':
-                $html_input = "<select class='form-control " . $this->class . "' ".$html_option."  id='select-" . $this->name . "' name='" . $this->name . "'><option>--Select--</option>" . "\n\r";
+                $html_input = "<select class='form-control " . $this->class . "' ".$html_option."  id='select-" . $this->name . "' name='" . $this->name . "'><option disabled selected value>--Select--</option>" . "\n\r";
                 $html_input .= $this->recurcive_option($this->choices,$this->value);
                 $html_input .= "</select>" ;
                 break;
@@ -127,7 +127,7 @@ class Input
                 $html_input = "";
                 foreach ($this->choices as $k => $v) {
                     $attr = ($k == $this->value ? "checked" : "");
-                    $html_input .= "<input class='form-control " . $this->class . "' ".$html_option." type='" . $this->type . "' " . $attr . " name='" . $this->name . "' value='" . $k . "' />" . $v;
+                    $html_input .= "<input class='form-check-input " . $this->class . "' ".$html_option." type='" . $this->type . "' " . $attr . " name='" . $this->name . "' value='" . $k . "' />&nbsp;" . $v."&nbsp;";
                 }
                 break;
             case 'textarea':
@@ -136,10 +136,8 @@ class Input
             case 'date':
             case 'datetime':
 
-                $date = \DateTime::createFromFormat("Y-m-d",$this->value);
-                $html_input = "<input class='form-control " . $this->class . " datepicker' data-date-format='dd/mm/yyyy'  ".$html_option." placeholder='" . $this->label . "' id='date-" . $this->name . "' name='" . $this->name . "' value='".$date->format("Y-m-d")."' />";
-                //$html_input .= "current : ". $this->value->getValue()->format("Y-m-d") ;
-                //  type='" . $this->type . "'
+                $date = \DateTime::createFromFormat("Y-m-d",($this->value ?? date("Y-m-d")));
+                $html_input = "<input type='text' class='form-control " . $this->class . " datepicker' data-date-format='dd/mm/yyyy'  ".$html_option." placeholder='" . $this->label . "' id='date-" . $this->name . "' name='" . $this->name . "' value='".$date->format("Y-m-d")."' />";
                 break;
             default:
                 $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='" . $this->type . "' id='" . $this->type . "-" . $this->name . "' name='" . $this->name . "' value='" . $this->value . "' />";

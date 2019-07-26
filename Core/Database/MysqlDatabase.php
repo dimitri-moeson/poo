@@ -41,6 +41,9 @@ class MysqlDatabase extends Database
         $this->db_host = $db_host ;
     }
 
+    /**
+     * @return PDO
+     */
     private function getPDO ():\PDO {
 
         if(is_null($this->pdo)) {
@@ -53,7 +56,6 @@ class MysqlDatabase extends Database
 
                 $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
 
-
             } catch (\PDOException $e) {
                 echo $dsn."<br/>";
                 echo 'Connexion échouée : ' . $e->getMessage();
@@ -64,6 +66,11 @@ class MysqlDatabase extends Database
 
     }
 
+    /**
+     * @param $statement
+     * @param null $attrs
+     * @return array
+     */
     public function exec($statement, $attrs = null){
 
         if(is_null($attrs))
@@ -83,6 +90,10 @@ class MysqlDatabase extends Database
 
     }
 
+    /**
+     * @param $statement
+     * @return bool
+     */
     private function isMod($statement){
 
         if(stripos($statement,"update")===0 || stripos($statement,"insert")===0 || stripos($statement,"delete")===0 ){
@@ -91,6 +102,11 @@ class MysqlDatabase extends Database
         return false ;
     }
 
+    /**
+     * @param PDOStatement $res
+     * @param bool $one
+     * @return array|mixed
+     */
     public function result( PDOStatement $res,$one = false ){
 
         if($one)
@@ -99,26 +115,39 @@ class MysqlDatabase extends Database
             return $res->fetchAll();
     }
 
+    /**
+     * @param PDOStatement $res
+     * @param null $class_name
+     * @return PDOStatement
+     */
     public function setFetchMode( PDOStatement $res, $class_name = null ){
 
-        if(!is_null($class_name) ) {
-
-            if(is_object($class_name)) {
-                //echo "<br/>fetch_mode into...<br/>";
-                $res->setFetchMode(PDO::FETCH_INTO, $class_name);
-            }
-            elseif(class_exists($class_name)) {
-               // echo "<br/>fetch_mode class...<br/>";
-                $res->setFetchMode(PDO::FETCH_CLASS, $class_name);
-            }
-        }
-        else {
-            //echo "<br/>fetch_mode obj...<br/>";
+        if(is_null($class_name) )
+        {
             $res->setFetchMode(PDO::FETCH_OBJ);
         }
+        elseif(is_object($class_name))
+        {
+            $res->setFetchMode(PDO::FETCH_INTO, $class_name);
+        }
+        elseif(class_exists($class_name))
+        {
+            $res->setFetchMode(PDO::FETCH_CLASS, $class_name);
+        }
+        else
+        {
+            $res->setFetchMode(PDO::FETCH_OBJ);
+        }
+
         return $res ;
     }
 
+    /**
+     * @param $statement
+     * @param null $class_name
+     * @param bool $one
+     * @return array|mixed|PDOStatement
+     */
     public function query($statement, $class_name = null , $one = false){
 
         Debugger::getInstance()->sql($statement);
@@ -136,6 +165,13 @@ class MysqlDatabase extends Database
 
     }
 
+    /**
+     * @param $statement
+     * @param $attrs
+     * @param null $class_name
+     * @param bool $one
+     * @return array|mixed
+     */
     public function prepare($statement, $attrs,$class_name = null , $one = false)
     {
         Debugger::getInstance()->sql($statement, $attrs);
@@ -152,11 +188,17 @@ class MysqlDatabase extends Database
        return $this->result($req,$one);
     }
 
+    /**
+     * @return string
+     */
     public function lasInsertId()
     {
         return $this->getPDO()->lastInsertId();
     }
 
+    /**
+     * @return string
+     */
     function dump()
     {
         $tables = $this->query("SHOW TABLES");

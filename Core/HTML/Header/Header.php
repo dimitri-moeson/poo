@@ -92,7 +92,7 @@ class Header
     /**
      * @param string $keywords
      */
-    public function setKeywords(string $keywords): void
+    public function setKeywords($keywords): void
     {
         $this->keywords = $keywords;
     }
@@ -108,9 +108,18 @@ class Header
     /**
      * @param string $description
      */
-    public function setDescription(string $description): void
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
 
+    public function getCreated():\DateTime
+    {
+        return new \DateTime();
+    }
+
+    public function getUpdated():\DateTime
+    {
+        return new \DateTime();
+    }
 }

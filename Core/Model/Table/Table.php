@@ -74,6 +74,13 @@ class Table
         return $this->request( $statement );
     }
 
+    /**
+     * @param $key
+     * @param $value
+     * @param null $statement
+     * @param null $attrs
+     * @return array
+     */
     public function list($key,$value, $statement = null, $attrs = null  )
     {
         if(is_null($statement))
@@ -118,7 +125,7 @@ class Table
         foreach( $fields as $k => $v){
 
             if($k != "submit"){
-                $sql_parts[$k] = " $k = :$k ";
+                $sql_parts[$k] = " `$k` = :$k ";
                 $attrs[$k] = $v;
             }
 

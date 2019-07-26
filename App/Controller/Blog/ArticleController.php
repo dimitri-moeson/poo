@@ -51,6 +51,7 @@ class ArticleController extends AppController
         Render::getInstance()->setView("Blog/Index");
         Header::getInstance()->setTitle($this->categorie->titre);
         Header::getInstance()->setKeywords(implode(",",$keywords ));
+        Header::getInstance()->setDescription($this->categorie->description);
     }
 
     public function show(){
@@ -61,14 +62,12 @@ class ArticleController extends AppController
 
         $this->categorie = $this->Article->find($this->post->parent_id);
 
-        var_dump($this->post);
-        var_dump($this->categorie);
-
         $keywords = $this->Keyword->index($_id);
 
         Render::getInstance()->setView("Blog/Show");
         Header::getInstance()->setTitle($this->post->titre);
         Header::getInstance()->setKeywords(implode(",",$keywords ));
+        Header::getInstance()->setDescription($this->post->description);
 
     }
 }

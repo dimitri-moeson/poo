@@ -1,6 +1,6 @@
 <?php
 
-use Core\Database\Query;
+// use Core\Database\Query;
 ?>
 <div class="row">
 
@@ -12,16 +12,21 @@ use Core\Database\Query;
         <div class="panel panel-info">
 
             <div class="panel-heading">
-                <div class="panel-title">-+-</div>
+                <div class="panel-title"><?php echo $page->titre ?></div>
             </div>
 
             <div class="panel-body"><?php
 
-                echo Query::from('article','a')
+                /**echo Query::from('article','a')
                         ->where('id = 1')
-                        ->select('id','titre','contenu') ;
+                        ->select('id','titre','contenu') ;*/
 
-            ?></div>
+            ?>
+            <br/>
+                <?php echo $page->contenu ?>
+
+                <a href="/?slug=<?php echo $page->slug ?>">reload</a>
+            </div>
         </div>
     </div>
 

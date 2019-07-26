@@ -10,6 +10,8 @@
 
             <div class="panel-body">
 
+                <i><?php echo nl2br($post->description) ?></i>
+                <hr/>
                 <p><?php echo nl2br($post->contenu) ?></p>
 
             </div>
@@ -27,13 +29,13 @@
 
             <?php } // endforeach ?>
         </ul>
-
+        <p>
         <?php foreach ($clouds as $key) { ?>
 
-            <a href="<?php echo $categorie->url ?>"><?php echo $key->mot ?></a>(<?php echo $key->called ?>)
+            <a style="font-size:<?php echo ($key->called+1)*6 ?>px" href="?p=blog.article.keyword&id=<?php echo $key->id ?>">[<?php echo trim($key->mot) ?>]</a>
 
         <?php } // endforeach ?>
-
+        </p>
 
     </div>
 </div>

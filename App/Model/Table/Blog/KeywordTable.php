@@ -10,6 +10,9 @@ use Core\Model\Table\Table;
 
 class KeywordTable extends Table
 {
+    /**
+     * @return array|mixed
+     */
     public function cloud(){
 
         $statement = QueryBuilder::init()->select('k.*','count(i.id) as called')
@@ -21,6 +24,10 @@ class KeywordTable extends Table
         return $this->request( $statement );
     }
 
+    /**
+     * @param $id
+     * @return array|mixed
+     */
     public function index($id){
 
         $statement = QueryBuilder::init()->select('k.*')
@@ -32,6 +39,10 @@ class KeywordTable extends Table
         return $this->request( $statement , array("id" => $id), false , KeywordEntity::class);
     }
 
+    /**
+     * @param $key
+     * @return bool
+     */
     public function exists($key){
 
         $mot =  $this->get($key);
@@ -41,6 +52,10 @@ class KeywordTable extends Table
         return false ;
     }
 
+    /**
+     * @param $key
+     * @return array|mixed
+     */
     public function get($key){
 
         $statement = QueryBuilder::init()->select('k.*')

@@ -28,7 +28,26 @@ class ArticleTable extends Table
         return $this->request( $statement, array('type' => $type),false,ArticleEntity::class );
     }
 
+    public function recup($slug){
 
+        $statement = QueryBuilder::init()->select('a.*')
+            ->from('article','a')
+            ->where('a.slug = :slug ')
+            ->orders("date DESC");
+
+        return $this->request( $statement, array('slug' => $slug),true,ArticleEntity::class );
+    }
+
+    public function default(){
+
+        $statement = QueryBuilder::init()->select('a.*')
+            ->from('article','a')
+            ->where('a.type = "page" ')
+            ->where('a.default = 1 ')
+            ->orders("a.id DESC");
+
+        return $this->request( $statement, null ,true,ArticleEntity::class );
+    }
 
     public function all(){
 
