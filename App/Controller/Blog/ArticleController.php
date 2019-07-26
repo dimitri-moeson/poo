@@ -17,6 +17,9 @@ use Core\Render\Render;
 
 class ArticleController extends AppController
 {
+    /**
+     * ArticleController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -29,6 +32,9 @@ class ArticleController extends AppController
         $this->clouds = $this->Keyword->cloud();
     }
 
+    /**
+     *
+     */
     public function index(){
 
         $this->posts = $this->Article->allOf("article");
@@ -37,11 +43,14 @@ class ArticleController extends AppController
 
     }
 
+    /**
+     *
+     */
     public function categorie(){
 
-        $_id = Get::getInstance()->val('id');
+        $_id = Get::getInstance()->val('slug');
 
-        $this->categorie =  $this->Article->find($_id);
+        $this->categorie =  $this->Article->recup($_id);
         if(!$this->categorie) $this->notFound();
 
         $this->posts = $this->Article->getListByCategorie($_id);
@@ -54,10 +63,13 @@ class ArticleController extends AppController
         Header::getInstance()->setDescription($this->categorie->description);
     }
 
+    /**
+     *
+     */
     public function show(){
 
-        $_id = Get::getInstance()->val('id');
-        $this->post = $this->Article->find($_id);
+        $_id = Get::getInstance()->val('slug');
+        $this->post = $this->Article->recup($_id);
         if(!$this->post) $this->notFound();
 
         $this->categorie = $this->Article->find($this->post->parent_id);

@@ -24,6 +24,10 @@ class AppController extends Controller
 
         Header::getInstance()->add_js("tooltip");
         Header::getInstance()->add_css("blade");
+
+        $this->loadModel("Blog\Article");
+
+        $this->menu = $this->Article->allOf("page");
     }
 
     /**

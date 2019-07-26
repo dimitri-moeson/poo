@@ -46,6 +46,7 @@ class PageController extends AppController
         $categories = $this->Article->listing('page');
 
         $form->input("titre", array('label' => "titre article"))
+            ->input("menu", array('label' => "menu article"))
             ->input("keyword", array('type' => 'textarea', 'label' => "keyword (séparés par des virgules)", "value" => implode(",",$keywords) ))
             ->input("description", array('type' => 'textarea', 'label' => "Description/Extrait" ))
             //->select("parent_id", array('options' => $categories, 'label' => "Page parente"),$categories)

@@ -1,12 +1,14 @@
 <?php
 
 use Core\Auth\DatabaseAuth;
+use Core\HTML\Env\Get;
 use Core\HTML\Header\Header;
 use Core\Request\Request;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
     $title = Header::getInstance()->getTitle();
+$slg = Get::getInstance()->val('slug');
 
     $auth = new DatabaseAuth(App::getInstance()->getDb());
 
@@ -76,7 +78,14 @@ $act_ = Request::getInstance()->getAction();
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li <?php echo $ctl_ == "article" ? 'class="active"' : '' ?> ><a href="?p=blog.article.index">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <?php foreach ($menu as $link){ ?>
+                    <?php if(!$link->default) { ?>
+                        <li><a <?php echo $slg == $link->slug ? 'class="active"' : '' ?> href="<?php echo $link->url ?>"><?php echo $link->menu ?></a></li>
+                    <?php } ?>
+                <?php } ?>
+
+                <!--li><a href="#contact">Contact</a></li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -89,7 +98,7 @@ $act_ = Request::getInstance()->getAction();
                         <li><a href="#">Separated link</a></li>
                         <li><a href="#">One more separated link</a></li>
                     </ul>
-                </li>
+                </li-->
             </ul>
 <?php if($auth->logged()) {?>
             <form method="post" action="?p=user.logout" class="navbar-form navbar-right">

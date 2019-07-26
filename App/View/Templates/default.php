@@ -1,6 +1,7 @@
 <?php
 
 use Core\Auth\DatabaseAuth;
+use Core\HTML\Env\Get;
 use Core\HTML\Header\Header;
 use Core\Request\Request;
 
@@ -8,7 +9,7 @@ $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
 $title = Header::getInstance()->getTitle();
 $auth = new DatabaseAuth(App::getInstance()->getDb());
-
+$slg = Get::getInstance()->val('slug');
 
 ?><!doctype html>
 <html lang="fr">
@@ -76,12 +77,24 @@ $auth = new DatabaseAuth(App::getInstance()->getDb());
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="?p=test.fiche">Project</a>
+            <a class="navbar-brand" href="/">Project</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li <?php echo $ctl_ == "article" ? 'class="active"' : '' ?> ><a href="?p=blog.article.index">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li <?php echo $ctl_ == "article" ? 'class="active"' : '' ?> ><a href="/?p=blog.article.index">About</a></li>
+
+                <?php foreach ($menu as $link){ ?>
+                    <?php if(!$link->default) { ?>
+                        <li <?php echo $slg == $link->slug ? 'class="active"' : '' ?> ><a  href="<?php echo $link->url ?>"><?php echo $link->menu ?></a></li>
+                    <?php } ?>
+                <?php } ?>
+
+                <?php if($auth->logged()) {?>
+                    <li <?php echo $ctl_ == "test" ? 'class="active"' : '' ?> ><a href="?p=test.fiche">Fiche</a></li>
+                <?php } ?>
+
+                <!--li><a href="#contact">Contact</a></li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -94,7 +107,7 @@ $auth = new DatabaseAuth(App::getInstance()->getDb());
                         <li><a href="#">Separated link</a></li>
                         <li><a href="#">One more separated link</a></li>
                     </ul>
-                </li>
+                </li-->
             </ul>
 
             <?php if($auth->logged()) {?>

@@ -11,13 +11,14 @@ use Core\Model\Entity\Entity;
 
 class ArticleEntity extends Entity
 {
-
     public function getUrl(){
+
+        if($this->type == "page")  return "/?slug=".$this->slug ;
 
         if($this->type == "article")  $type = "blog.article.show";
         if($this->type == "categorie")  $type = "blog.article.categorie";
 
-        return "?p=".$type."&id=".$this->id ;
+        return "/?p=".$type."&slug=".$this->slug ;
     }
 
     public function getExtrait(){
@@ -27,10 +28,4 @@ class ArticleEntity extends Entity
 
         return  $html ;
     }
-
-    public function generateSlug(){
-
-        return $this->slugify($this->id."-".$this->titre);
-    }
-
 }

@@ -76,6 +76,7 @@ class ArticleService extends Service
             "type"          =>  Post::getInstance()->val("type"),
             "description"   =>  Post::getInstance()->val("description"),
             "default"       => (Post::getInstance()->val("default") ?? 0 ),
+            "menu"          =>  Post::getInstance()->val("menu"),
 
         );
 
