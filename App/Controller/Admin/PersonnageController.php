@@ -39,12 +39,12 @@ class PersonnageController extends AppController
 
     public function delete(){
 
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             if(Post::getInstance()->has('id')) {
 
                 $post = $this->Personnage->find(Post::getInstance()->val('id'));
-                if (!$post) App::notFound();
+                if (!$post) $this->notFound();
             }
 
             if(Post::getInstance()->has('conf')) {
@@ -68,7 +68,7 @@ class PersonnageController extends AppController
      */
     public function single()
     {
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             if($this->Personnage->update(Get::getInstance()->val('id'), Post::getInstance()->content())){
 
@@ -81,7 +81,7 @@ class PersonnageController extends AppController
         if(Get::getInstance()->has('id')) {
 
             $this->post = $this->Personnage->find(Get::getInstance()->val('id'));
-            if (!$this->post) App::notFound();
+            if (!$this->post) $this->notFound();
         }
 
         $this->categories = $this->Personnage->list('id','nom');

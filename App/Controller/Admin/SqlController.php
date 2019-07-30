@@ -66,7 +66,7 @@ class SqlController extends AppController
      */
     public function index()
     {
-        if(Post::getInstance()->submited("post"))
+        if(Post::getInstance()->submit())
         {
             $this->result = \App::getInstance()->getDb()->query(Post::getInstance()->val("request"));
         }

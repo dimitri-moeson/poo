@@ -51,6 +51,7 @@ class Redirect
     }
 
     /**
+     *
      * @param null $_act
      * @param null $_ctl
      * @param null $dom
@@ -81,7 +82,7 @@ class Redirect
      */
     private static function location($url)
     {
-        header("location:?".$url);
+        header("location:/?".$url);
         die;
     }
 
@@ -91,7 +92,7 @@ class Redirect
         $_act = $this->getAct();
         $params = $this->getParams();
 
-        $url = "p=".$_ctrl.".".$_act."&".self::buildQuery($params);
+        $url = "p=".$_ctrl.".".$_act.( isset($params) && !empty($params) ? "&".self::buildQuery($params) : '') ;
 
         if(!is_null($this->dom))
         {

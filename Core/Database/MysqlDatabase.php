@@ -222,7 +222,9 @@ class MysqlDatabase extends Database
                                                     $content[$x]  =  "`".$column->Field ."` ".$column->Type ;
                 if($column->Key == 'PRI')           $content[$x] .=  ' PRIMARY KEY ';
                 if($column->Null == 'No')           $content[$x] .=  " NOT NULL ";
-                if(trim($column->Default) != '')    $content[$x] .=  " default ".$column->Default ;
+                if($column->Null == 'Yes')          $content[$x] .=  " NULL ";
+                if(trim($column->Default) != '')    $content[$x] .=  " DEFAULT ".$column->Default ;
+                if(trim($column->Extra) != '')      $content[$x] .=  " ".$column->Extra ;
             }
 
             $return .= "\n\r"."-- ".strtoupper($name);
@@ -233,13 +235,14 @@ class MysqlDatabase extends Database
 
             $statement = Query::from($name)->select('*');
 
-            $recs = $this->query('select * from ' . $name);
+            $recs = $this->query($statement); // 'select * from ' . $name);
 
-            foreach($recs as $rec){
-
+            foreach($recs as $rec)
+            {
                 $set = $into = $values = array();
 
-                foreach($rec as $col => $val) {
+                foreach($rec as $col => $val)
+                {
                     $set[] = " `$col` = '" . addslashes($val) . "' ";
                     $into[] = " `$col` ";
                     $values[] = "'" . addslashes($val) . "'";

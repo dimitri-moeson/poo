@@ -10,7 +10,7 @@ use Core\Render\Render;
                     <th>Id</th>
                     <th>Titre</th>
                     <th>Categorie</th>
-                    <th>extrait</th>
+                    <th colspan="2">Position</th>
                     <th>
                         <a href="?p=admin.article.add" class="btn btn-success">Add</a>
                     </th>
@@ -18,22 +18,27 @@ use Core\Render\Render;
 
             </thead>
             <tbody>
-            <?php
+            <?php foreach ($posts as $post) { ?>
 
-            foreach ($posts as $post) { ?>
+                <tr>
+                    <td><?php echo $post->id ?></td>
+                    <th><a href="<?php echo $post->url ?>"><?php echo $post->titre ?></a></th>
+                    <td><?php echo $post->cat_titre ?></td>
+                    <td><?php echo $post->position ?></td>
+                    <td><?php echo Render::getInstance()->block("admin.position.btn", array(
 
-                    <tr>
-                        <td><?php echo $post->id ?></td>
-                        <th><a href="<?php echo $post->url ?>"><?php echo $post->titre ?></a></th>
-                        <td><?php echo $post->cat_titre ?></td>
-                        <td><?php //echo $post->extrait ?></td>
-                        <td><?php echo Render::getInstance()->block("admin.list.btn", array(
+                            "p" => "page",
+                            "id" => $post->id
 
-                                "p" => "page",
-                                "id" => $post->id
+                        )); ?></td>
+                    <td><?php echo Render::getInstance()->block("admin.list.btn", array(
 
-                            )); ?></td>
-                    </tr>
+                            "p" => "page",
+                            "id" => $post->id
+
+                        )); ?></td>
+
+                </tr>
 
             <?php } // endforeach ?>
             </tbody>

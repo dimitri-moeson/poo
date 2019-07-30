@@ -12,7 +12,6 @@ class MapTable extends GameTable
             ->from($this->getTable())
             ->where('x = :x')
             ->where('y = :y')
-            ->where('deletedAt is null')
         ;
 
         $attrs = array(

@@ -69,7 +69,7 @@ class ItemController extends AppController
     
     public function add(){
 
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             if($this->Item->create( Post::getInstance()->content('post'))){
 
@@ -90,12 +90,12 @@ class ItemController extends AppController
     
     public function delete(){
 
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             if(Post::getInstance()->has('id')) {
 
                 $this->post = $this->Item->find(Post::getInstance()->val('id'));
-                if (!$this->post) App::notFound();
+                if (!$this->post) $this->notFound();
             }
 
             if(Post::getInstance()->has('conf')) {
@@ -121,7 +121,7 @@ class ItemController extends AppController
     
     public function single(){
 
-        if(Post::getInstance()->submited("post")) {
+        if(Post::getInstance()->submit()) {
 
             if($this->Item->update( Get::getInstance()->val('id'), Post::getInstance()->content("post")))
             {
@@ -136,7 +136,7 @@ class ItemController extends AppController
         if(Get::getInstance()->has('id')) {
 
             $this->post = $this->Item->find(Get::getInstance()->val('id'));
-            if (!$this->post) App::notFound();
+            if (!$this->post) $this->notFound();
         }
 
         Header::getInstance()->setTitle($this->post->titre);

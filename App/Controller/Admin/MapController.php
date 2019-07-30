@@ -69,7 +69,7 @@ class MapController extends AppController
             $this->alentours = $this->MapService->arround($x,$y, 4);
         }
 
-        if(Post::submited("post"))
+        if(Post::getInstance()->submit())
         {
             $ter = $this->Item->find(Post::getInstance()->val('terrain'));
             $itm = $this->Item->find(Post::getInstance()->val('install'));

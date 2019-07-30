@@ -62,27 +62,50 @@ class ArticleTable extends Table
     /**
      * @return QueryBuilder
      */
-    private function queryType(){
+    private function queryType($parent = null ){
 
-        return QueryBuilder::init()->select('a.*')->from('article','a')->where('a.type = :type') ;
+        $statement = QueryBuilder::init()->select('a.*')
+            ->from('article','a')
+            ->where('a.`type` = :type')
+            ->order("position","desc")
+        ;
+
+        if(!is_null($parent))$statement->where('parent_id = :parent');
+
+        return $statement ;
     }
 
     /**
      * @param $type
      * @return array|mixed
      */
-    public function allOf($type){
+    public function allOf($type , $parent = null){
 
-        return $this->request( $this->queryType() ,array("type" => $type),false,ArticleEntity::class );
+        $statement = $this->queryType($parent);
+
+        $attr = array("type" => $type);
+
+        if(!is_null($parent)){
+            $attr["parent"] = $parent;
+        }
+
+        return $this->request( $statement ,$attr,false,ArticleEntity::class );
     }
 
     /**
      * @param $type
      * @return array
      */
-    public function listing($type){
+    public function listing($type, $parent = null ){
 
-        return $this->list("id","titre", $this->queryType() ,array("type" => $type));
+        $attr = array("type" => $type);
+
+        if(!is_null($parent)){
+            $attr["parent"] = $parent;
+        }
+
+
+        return $this->list("id","titre", $this->queryType($parent) ,$attr);
 
     }
 
@@ -102,6 +125,45 @@ class ArticleTable extends Table
         return $this->request( $statement ,array("id" => $id,"type" => $type),false,ArticleEntity::class);
     }
 
+    /**
+     * @param string $type
+     * @return array|mixed
+     */
+    public function lastPosition( $type = "page",$parent = null){
 
+        $statement = QueryBuilder::init()->select('max(position) as lasted')
+            ->from('article')
+            ->where('type = :type ');
+
+        $attr = array("type" => $type);
+
+        if(!is_null($parent)){
+            $statement->where('parent_id = :parent');
+            $attr["parent"] = $parent;
+        }
+
+        return $this->request( $statement ,$attr,true);
+    }
+
+    public function countPosition( $type = "page",$parent = null){
+
+        $statement = QueryBuilder::init()->select('count(id) as counted')->from('article')->where('type = :type ');
+
+        $attr = array("type" => $type);
+
+        if(!is_null($parent)){
+            $statement->where('parent_id = :parent');
+            $attr["parent"] = $parent;
+        }
+
+        return $this->request( $statement ,$attr,true);
+    }
+
+    public function ranked($position,$type = "page"){
+
+        $statement = QueryBuilder::init()->select('*')->from('article')->where('type = :type ')->where(' position = :position ');
+
+        return $this->request( $statement ,array("position" => $position ,"type" => $type),true,ArticleEntity::class);
+    }
 
 }

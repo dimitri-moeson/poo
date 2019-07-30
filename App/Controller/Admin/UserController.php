@@ -70,7 +70,7 @@ class UserController extends AppController
      */
     public function add(){
 
-        if(Post::submited()) {
+        if(Post::getInstance()->submit()) {
 
             if($this->User->create( Post::content('post'))){
 
@@ -95,7 +95,7 @@ class UserController extends AppController
             if(Post::has('id')) {
 
                 $post = $this->User->find(Post::get('id'));
-                if (!$post) App::notFound();
+                if (!$post) $this->notFound();
             }
 
             if(Post::has('conf')) {
@@ -121,7 +121,7 @@ class UserController extends AppController
      */
     public function single(){
 
-        if(Post::submited("post")) {
+        if(Post::getInstance()->submit()) {
 
             if($this->User->update(Get::getInstance()->val('id'), Post::content("post")))
             {
@@ -136,7 +136,7 @@ class UserController extends AppController
         if(Get::getInstance()->has('id')) {
 
             $this->post = $this->User->find(Get::getInstance()->val('id'));
-            if (!$this->post) App::notFound();
+            if (!$this->post) $this->notFound();
         }
 
         Header::getInstance()->setTitle($this->post->titre);

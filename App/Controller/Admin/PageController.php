@@ -32,7 +32,7 @@ class PageController extends AppController
 
         $this->loadService("Article");
 
-        $this->posts = $this->Article->allOf("page");
+        $this->posts = $this->Article->allOf("page","position");
     }
 
     /**
@@ -51,7 +51,7 @@ class PageController extends AppController
             ->input("description", array('type' => 'textarea', 'label' => "Description/Extrait" ))
             //->select("parent_id", array('options' => $categories, 'label' => "Page parente"),$categories)
             //->input("date", array('type' => 'date', 'label' => "ajouté"))
-                ->choice("default",array( "type" => "radio"),array( 1 => "Oui", 0 => "Non"))
+            ->choice("default",array( "type" => "radio"),array( 1 => "Oui", 0 => "Non"))
             ->input("contenu", array('type' => 'textarea', 'label' => "contenu", "class" => "editor"))
             ->input("type",array("type"=>"hidden", "value"=>"article"))
             ->submit("Enregistrer");
@@ -59,14 +59,20 @@ class PageController extends AppController
         return $form ;
     }
 
+    /**
+     *
+     */
     public function index()
     {
         Render::getInstance()->setView("Admin/Page/home"); // , compact('posts','categories'));
     }
-    
+
+    /**
+     *
+     */
     public function add(){
 
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             Post::getInstance()->val("type","page");
 
@@ -84,16 +90,13 @@ class PageController extends AppController
 
         Render::getInstance()->setView("Admin/Page/single"); // , compact('form','categories'));
     }
-    
+
+    /**
+     *
+     */
     public function delete(){
 
-        if(Post::getInstance()->submited()) {
-
-            if(Post::getInstance()->has('id'))
-            {
-                $this->post = $this->Article->find(Post::getInstance()->val('id'));
-                if (!$this->post) App::notFound();
-            }
+        if(Post::getInstance()->submit()) {
 
             if(Post::getInstance()->has('conf')) {
 
@@ -106,14 +109,23 @@ class PageController extends AppController
                         ->send();
                 }
             }
+
+            if(Post::getInstance()->has('id'))
+            {
+                $this->post = $this->Article->find(Post::getInstance()->val('id'));
+                if (!$this->post) $this->notFound();
+            }
         }
 
         Render::getInstance()->setView("Admin/Page/delete"); // , compact('posts','categories'));
     }
-    
+
+    /**
+     *
+     */
     public function single(){
 
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             Post::getInstance()->val("type","page");
 
@@ -129,7 +141,7 @@ class PageController extends AppController
         if(Get::getInstance()->has('id')){
 
             $this->post = $this->Article->find(Get::getInstance()->val('id'));
-            if (!$this->post) App::notFound();
+            if (!$this->post) $this->notFound();
 
             $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
 
@@ -138,7 +150,21 @@ class PageController extends AppController
             $this->form = $this->form_article($this->post,$keywords);
         }
 
-
         Render::getInstance()->setView("Admin/Page/single"); // , compact('post','categories','success','form'));
+    }
+
+    /**
+     *
+     */
+    public function position(){
+
+        if(Post::getInstance()->has("pos-mov")){
+
+            list($id,$sens) = explode("|",Post::getInstance()->val("pos-mov"));
+
+            $this->ArticleService->setPosition($id,$sens);
+
+            Redirect::getInstance()->setDom("admin")->setAct("index")->send();
+        }
     }
 }

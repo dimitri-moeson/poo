@@ -66,7 +66,7 @@ class CategorieController extends AppController
      */
     public function add(){
 
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             Post::getInstance()->val("type","categorie");
 
@@ -91,12 +91,12 @@ class CategorieController extends AppController
      */
     public function delete(){
 
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             if(Post::getInstance()->has('id')) {
 
                 $post = $this->Article->find(Post::getInstance()->val('id'));
-                if (!$post) App::notFound();
+                if (!$post) $this->notFound();
             }
 
             if(Post::getInstance()->has('conf')) {
@@ -121,7 +121,7 @@ class CategorieController extends AppController
      */
     public function single(){
 
-        if(Post::getInstance()->submited()) {
+        if(Post::getInstance()->submit()) {
 
             Post::getInstance()->val("type","categorie");
 
@@ -139,7 +139,7 @@ class CategorieController extends AppController
         if(Get::getInstance()->has('id')) {
 
             $this->post = $this->Article->find(Get::getInstance()->val('id'));
-            if (!$this->post) App::notFound();
+            if (!$this->post) $this->notFound();
         }
         $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
 

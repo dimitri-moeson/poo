@@ -7,8 +7,8 @@ class Post extends GlobalRequest
      * confirme l'envoie du formulaire
      * @return bool
      */
-    public function submited(){
+    public function submit(){
 
-        return !empty($_POST);
+        return isset($_POST) && !empty($_POST);
     }
 }

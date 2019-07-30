@@ -54,8 +54,8 @@ class InscriptionController extends AppController
     public function classe(){
         if(Post::getInstance()->submitted()){
 
-        Redirect::getInstance()->setAct("race")->send();
-    }
+            Redirect::getInstance()->setAct("race")->send();
+        }
     }
     public function race(){
 

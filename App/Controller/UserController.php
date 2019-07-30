@@ -29,7 +29,7 @@ class UserController extends AppController
      */
     public function logout()
     {
-        if(Post::submited("post"))
+        if(Post::getInstance()->submit())
         {
             $this->auth->logout();
             header("location:?p=test.fiche");
@@ -45,7 +45,7 @@ class UserController extends AppController
 
         $this->error = false ;
 
-        if(Post::getInstance()->submited()){
+        if(Post::getInstance()->submit()){
 
             $log = Post::getInstance()->val("login");
             $mdp = Post::getInstance()->val("pswd");

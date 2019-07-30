@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Model\Table\Blog\ArticleTable;
 use Core\Database\Query;
 use Core\Database\QueryBuilder;
 use Core\HTML\Env\Get;
@@ -39,14 +40,13 @@ class DefaultController extends AppController
      */
     public function index()
     {
-        if(Get::getInstance()->has("slug"))
-        {
-            $slug = Get::getInstance()->val("slug");
-            $this->page = $this->Article->recup($slug);
-        }
-        else
-        {
-            $this->page = $this->Article->default();
+        if($this->Article instanceof ArticleTable) {
+            if (Get::getInstance()->has("slug")) {
+                $slug = Get::getInstance()->val("slug");
+                $this->page = $this->Article->recup($slug);
+            } else {
+                $this->page = $this->Article->default();
+            }
         }
 
         $keywords = $this->Keyword->index($this->page->id);

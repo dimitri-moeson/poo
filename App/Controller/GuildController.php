@@ -24,7 +24,7 @@ class GuildController extends AppController
      */
     public function creer()
     {
-        if(Post::getInstance()->submited()){
+        if(Post::getInstance()->submit()){
 
         }
     }

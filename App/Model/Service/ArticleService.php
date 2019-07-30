@@ -6,6 +6,7 @@ namespace App\Model\Service;
 
 use App;
 use App\Model\Service;
+use Core\Database\QueryBuilder;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 
@@ -67,6 +68,11 @@ class ArticleService extends Service
      */
     public function record($id= null){
 
+        $last = $this->ArticleBase->lastPosition(Post::getInstance()->val("type"));
+        $count = $this->ArticleBase->countPosition(Post::getInstance()->val("type"));
+
+        $max = $count->counted > $last->lasted ? $count->counted : $last->lasted ;
+
         $arr = array(
 
             "titre"         =>  Post::getInstance()->val("titre"),
@@ -77,6 +83,7 @@ class ArticleService extends Service
             "description"   =>  Post::getInstance()->val("description"),
             "default"       => (Post::getInstance()->val("default") ?? 0 ),
             "menu"          =>  Post::getInstance()->val("menu"),
+            "position"      => ($max+1),
 
         );
 
@@ -100,5 +107,63 @@ class ArticleService extends Service
        $this->key_record($id);
 
         return true ;
+    }
+
+    public function setPosition($id,$sens = "+"){
+
+        $art =  $this->ArticleBase->find( $id );
+
+        $pos = $art->position;
+        $typ = $art->type ;
+
+        $last = $this->ArticleBase->lastPosition(Post::getInstance()->val("type"));
+        $count = $this->ArticleBase->countPosition(Post::getInstance()->val("type"));
+
+        $max = $count->counted > $last->lasted ? $count->counted : $last->lasted ;
+
+        $upd = false ;
+
+        if($sens == "+"){
+
+            $mov = $this->ArticleBase->ranked(($pos+1),$typ);
+
+            if($mov)
+            {
+                $mov->position--;
+                $art->position++;
+            }
+        elseif(($art->position+1 <= $max))
+            {
+                $art->position++;
+                $upd = true ;
+            }
+
+        }
+
+        if($sens == "-"){
+
+            $mov = $this->ArticleBase->ranked(($pos-1),$typ);
+
+            if($mov)
+            {
+                $mov->position++;
+                $art->position--;
+            }
+        elseif(($art->position-1 >= 1))
+            {
+                $art->position--;
+                $upd = true ;
+            }
+        }
+
+        if($mov)
+        {
+            $this->ArticleBase->update( $mov->id , array("position" => $mov->position ) );
+            $this->ArticleBase->update( $art->id , array("position" => $art->position ) );
+        }
+    elseif($upd)
+        {
+            $this->ArticleBase->update( $art->id , array("position" => $art->position ) );
+        }
     }
 }

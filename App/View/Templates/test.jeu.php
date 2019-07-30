@@ -7,10 +7,10 @@ use Core\Request\Request;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
-    $title = Header::getInstance()->getTitle();
+$title = Header::getInstance()->getTitle();
 $slg = Get::getInstance()->val('slug');
 
-    $auth = new DatabaseAuth(App::getInstance()->getDb());
+$auth = new DatabaseAuth(App::getInstance()->getDb());
 
 
 ?><!doctype html>
@@ -143,21 +143,6 @@ $slg = Get::getInstance()->val('slug');
                         <a href="?p=test.sac"><i class="ra ra-ammo-bag"></i>&nbsp;Sac</a>
                     </li>
 
-                    <!--li role="presentation" <?php echo $act_ == "combat" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.combat"><i class="ra ra-crossed-swords"></i>&nbsp;Combat</a>
-                    </li-->
-
-                    <!--li role="presentation" <?php echo $act_ == "recolte" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.recolte"><i class="ra ra-sickle"></i>&nbsp;Recolte</a>
-                    </li-->                    <!--li role="presentation" <?php echo $act_ == "apprentissage" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.apprentissage"><i class="ra ra-scroll-unfurled"></i>&nbsp;Apprentissage</a>
-                    </li-->
-                    <!--li role="presentation" <?php echo $act_ == "craft" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.craft"><i class="ra ra-anvil"></i>&nbsp;Craft</a>
-                    </li-->
-                    <!--li role="presentation" <?php echo $act_ == "quest" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.quest"><i class="ra ra-book"></i>&nbsp;Quetes</a>
-                    </li-->
                 </ul>
 
             </div>

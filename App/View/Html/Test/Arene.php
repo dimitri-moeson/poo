@@ -3,7 +3,9 @@
     <div class="panel panel-info">
 
         <div class="panel-heading">
-            <div class="panel-title">Equipement</div>
+            <div class="panel-title">Equipement
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            </div>
         </div>
 
         <div class="panel-body">
@@ -20,6 +22,7 @@
 
         <div class="panel-heading">
             <div class="panel-title"><?php echo ($viewText ?? '') ; ?></div>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         </div>
 
         <div class="panel-body">

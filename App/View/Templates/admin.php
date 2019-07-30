@@ -127,7 +127,7 @@ $file_rub  = $ctl_ === "file";
                         </ul>
                     </li>
 
-                    <li><a href="?p=admin.page.index">page</a></li>
+                    <li><a href="?p=admin.page.index">Page</a></li>
 
                     <li>
                         <a href="#gameSubmenu" data-toggle="collapse" aria-expanded="<?php echo $game_rub ? "true" : "false" ?>" class=" active dropdown-toggle">Game<i class="fa fa-fw fa-angle-down pull-right"></i></a>
@@ -155,7 +155,7 @@ $file_rub  = $ctl_ === "file";
                         </ul>
                     </li>
 
-                    <li><a href="?p=admin.user.index">user</a></li>
+                    <li><a href="?p=admin.user.index">User</a></li>
 
                     <li>
                         <a href="#fileSubmenu" data-toggle="collapse" aria-expanded="<?php echo $file_rub ? "true" : "false" ?>" class="dropdown-toggle">Fichier<i class="fa fa-fw fa-angle-down pull-right"></i></a>

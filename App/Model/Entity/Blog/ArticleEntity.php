@@ -11,6 +11,9 @@ use Core\Model\Entity\Entity;
 
 class ArticleEntity extends Entity
 {
+    /**
+     * @return string
+     */
     public function getUrl(){
 
         if($this->type == "page")  return "/?slug=".$this->slug ;
@@ -21,9 +24,13 @@ class ArticleEntity extends Entity
         return "/?p=".$type."&slug=".$this->slug ;
     }
 
+    /**
+     * @return string
+     */
     public function getExtrait(){
 
-        $html = "<p>".substr($this->contenu,0 ,200 )."...</p>";
+        $html = "<p>".$this->description."</p>";
+        $html .= "<p>".substr($this->contenu,0 ,200 )."...</p>";
         $html .= "<a href='".$this->getUrl()."'>Voir la suite</a>";
 
         return  $html ;

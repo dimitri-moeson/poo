@@ -49,11 +49,12 @@ class AppController extends Controller
 
         $name = end($model_part)."Service";
 
-        try{
+        try
+        {
             $this->{$name} = App::getInstance()->getService($service);
-
-        }catch (\Exception $e){
-
+        }
+        catch (\Exception $e)
+        {
             var_dump($e);
             throw $e ;
         }

@@ -41,13 +41,53 @@ class FileController extends AppController
     }
 
     /**
+     * @param string $type
+     * @return Form
+     */
+    private function generate($type = 'picture'){
+
+        if(Post::getInstance()->submit()) {
+
+            if(File::getInstance()->save()) {
+
+                $exists = $this->File->sourced(File::getInstance()->getName());
+
+                if(!$exists) {
+
+                    $rec = array(
+
+                        'nom' => Post::getInstance()->val('nom'),
+                        'src' => File::getInstance()->getName(),
+                        'type' => $type,
+
+                    );
+
+                    if ($this->File->create($rec)) {
+
+                        FlashBuilder::create("fichier ajouté","success");
+
+                        Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
+                            ->setDom('admin')->setAct(''.$type )->setCtl('file')
+                            ->send();
+                    }
+                }
+            }
+
+        }
+
+        $this->files = $this->File->allOf($type);
+
+        return $this->form_file("".$type);
+    }
+
+    /**
      *
      */
     function picture(){
 
         File::getInstance()->setUploadDir(ROOT."/App/View/Assets/Pictures");
-
-        if(Post::getInstance()->submited()) {
+/**
+        if(Post::getInstance()->submit()) {
 
             if(File::getInstance()->save()) {
 
@@ -75,10 +115,10 @@ class FileController extends AppController
             }
 
         }
-
+**
         $this->files = $this->File->allOf("picture");
-
-        $this->form = $this->form_file("picture");
+**/
+        $this->form = $this->generate("picture" ); //form_file("picture");
 
         Render::getInstance()->setView("Admin/File");
     }
@@ -89,8 +129,8 @@ class FileController extends AppController
     function style(){
 
         File::getInstance()->setUploadDir(ROOT."/App/View/Assets/Styles");
-
-        if(Post::getInstance()->submited()) {
+/**
+        if(Post::getInstance()->submit()) {
 
             if($this->File->create( Post::getInstance()->content())){
 
@@ -110,10 +150,10 @@ class FileController extends AppController
             }
 
         }
-
+**
         $this->files = $this->File->allOf("style");
-
-        $this->form = $this->form_file("style");
+**/
+        $this->form = $this->generate("style" ); //form_file("style");
 
         Render::getInstance()->setView("Admin/File");
     }
@@ -124,8 +164,8 @@ class FileController extends AppController
     function script(){
 
         File::getInstance()->setUploadDir(ROOT."/App/View/Assets/Scripts");
-
-        if(Post::getInstance()->submited()) {
+/**
+        if(Post::getInstance()->submit()) {
 
             if($this->File->create( Post::getInstance()->content())){
 
@@ -145,10 +185,10 @@ class FileController extends AppController
             }
 
         }
-
+**
         $this->files = $this->File->allOf("script");
-
-        $this->form = $this->form_file("script");
+**/
+        $this->form = $this->generate("script" ); //form_file("script");
 
         Render::getInstance()->setView("Admin/File");
     }

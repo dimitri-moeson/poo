@@ -37,7 +37,7 @@ class GlobalRequest
      * @param $key
      * @return bool
      */
-    public function has($key)
+    public function has(string $key = "index")
     {
         if ($this->call == "Post") {
             return isset($_POST[$key]) && !empty($_POST[$key]);
@@ -56,7 +56,7 @@ class GlobalRequest
      * @param null $value
      * @return mixed
      */
-    public function val($key, $value = null)
+    public function val(string $key = "index", $value = null)
     {
         if (!is_null($value))
         {
@@ -92,7 +92,6 @@ class GlobalRequest
             }
             return;
         }
-
     }
 
     /**
