@@ -28,6 +28,10 @@ class ArticleTable extends Table
         return $this->request( $statement, array('type' => $type),false,ArticleEntity::class );
     }
 
+    /**
+     * @param $slug
+     * @return array|mixed
+     */
     public function recup($slug){
 
         $statement = QueryBuilder::init()->select('a.*')
@@ -60,6 +64,7 @@ class ArticleTable extends Table
     }
 
     /**
+     * @param null $parent
      * @return QueryBuilder
      */
     private function queryType($parent = null ){
