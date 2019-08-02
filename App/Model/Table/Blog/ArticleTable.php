@@ -18,6 +18,10 @@ use Core\Model\Table\Table;
  */
 class ArticleTable extends Table
 {
+    /**
+     * @param $type
+     * @return array|mixed
+     */
     public function recent($type){
 
         $statement = QueryBuilder::init()->select('a.id','a.titre')
@@ -42,6 +46,9 @@ class ArticleTable extends Table
         return $this->request( $statement, array('slug' => $slug),true,ArticleEntity::class );
     }
 
+    /**
+     * @return array|mixed
+     */
     public function default(){
 
         $statement = QueryBuilder::init()->select('a.*')
@@ -150,6 +157,11 @@ class ArticleTable extends Table
         return $this->request( $statement ,$attr,true);
     }
 
+    /**
+     * @param string $type
+     * @param null $parent
+     * @return array|mixed
+     */
     public function countPosition( $type = "page",$parent = null){
 
         $statement = QueryBuilder::init()->select('count(id) as counted')->from('article')->where('type = :type ');
@@ -164,6 +176,11 @@ class ArticleTable extends Table
         return $this->request( $statement ,$attr,true);
     }
 
+    /**
+     * @param $position
+     * @param string $type
+     * @return array|mixed
+     */
     public function ranked($position,$type = "page"){
 
         $statement = QueryBuilder::init()->select('*')->from('article')->where('type = :type ')->where(' position = :position ');

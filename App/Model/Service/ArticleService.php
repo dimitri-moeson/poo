@@ -132,7 +132,7 @@ class ArticleService extends Service
                 $mov->position--;
                 $art->position++;
             }
-        elseif(($art->position+1 <= $max))
+        elseif(($pos+1 <= $max))
             {
                 $art->position++;
                 $upd = true ;
@@ -149,7 +149,7 @@ class ArticleService extends Service
                 $mov->position++;
                 $art->position--;
             }
-        elseif(($art->position-1 >= 1))
+        elseif(($pos-1 >= 1))
             {
                 $art->position--;
                 $upd = true ;

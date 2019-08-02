@@ -32,21 +32,24 @@ class DatabaseAuth
     }
 
     /**
+     * @param $var
+     * @return mixed
+     */
+    public function getUser($var)
+    {
+        if($this->logged()) {
+            return $_SESSION['auth'][$var];
+        }
+    }
+
+    /**
      * @param $login
      * @param $pswd
      * @return bool
      */
-    public function login($login,$pswd)
+    public function login( UserAuth $user = null )
     {
-        $statement = QueryBuilder::init()->select('*')->from('user')->where("login = :login");
-
-        $user = $this->db->prepare($statement, array("login" =>$login),UserAuth::class, true );
-
        if($user){
-
-           $cryptor =  CryptAuth::getInstance($this->encryption_key);
-
-           if( $cryptor->decrypt($user->pswd) === $pswd ){
 
                $_SESSION['auth']['id'] = $user->getId();
                $_SESSION['auth']['roles'] = explode(",", $user->getRoles());
@@ -54,7 +57,6 @@ class DatabaseAuth
                $_SESSION['auth']['forbiddens'] = explode(",", $user->getForbiddens());
 
                return true ;
-           }
        }
 
        return false ;

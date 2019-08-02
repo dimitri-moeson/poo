@@ -13,8 +13,8 @@
         <p><a href="index.php">home</a></p>
     </div>
 
-    <div class="col-sm-4">
-        <ul>
+    <div class="col-sm-4 sidebar">
+        <ul class="nav nav-sidebar">
             <?php foreach ($categories as $categorie) { ?>
 
                     <li><a href="<?php echo $categorie->url ?>"><?php echo $categorie->titre ?></a></li>

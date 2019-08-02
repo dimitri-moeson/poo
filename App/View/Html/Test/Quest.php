@@ -1,23 +1,55 @@
-<div class="row">
-        <div class="col-md-4">
-            <?php echo $PersonnageService->status($legolas); ?>
-            <?php echo $InventaireService->listing("Inventaire",$legolas->getInventaire()); ?>
+<?php
+
+use App\Model\Service\InventaireService;
+use App\Model\Service\PersonnageService;
+
+?><div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-info">
+
+            <div class="panel-heading">
+                <div class="panel-title"><?php echo $legolas->getName() ?></div>
+            </div>
+
+            <div class="panel-body">
+                <?php if ($PersonnageService instanceof PersonnageService) echo $PersonnageService->status($legolas); ?>
+            </div>
         </div>
+        <div class="panel panel-info">
+
+            <div class="panel-heading">
+                <div class="panel-title"><?php echo $legolas->getName() ?></div>
+            </div>
+
+            <div class="panel-body">
+                <?php if ($InventaireService instanceof InventaireService) echo $InventaireService->listing("Inventaire", $legolas->getInventaire()); ?>
+            </div>
+        </div>
+    </div>
     <div class="col-md-8">
 
-        <?php echo ($viewText ?? '') ; ?>
-<?php foreach ($questable as $quest) {?>
-        <h2><?php echo $quest->getName()?></h2>
+        <?php echo($viewText ?? ''); ?>
 
-        <p><?php echo nl2br($quest->getDescription()); ?></p>
+        <?php foreach ($questable as $quest) { ?>
+            <div class="panel panel-info">
 
-       <?php if( !$legolas->getQuestBook()->disponible($quest)  ) { ?>
-        <form method="post">
-            <input name="quest" type="hidden" value="<?php echo $quest->id ?>"/>
-            <input name="accept" type="submit" value="Accepter"/>
-        </form>
+                <div class="panel-heading">
+                    <div class="panel-title"><?php echo $quest->getName() ?></div>
+                </div>
+
+                <div class="panel-body">
+                    <p><?php echo nl2br($quest->getDescription()); ?></p>
+
+                    <?php if (!$legolas->getQuestBook()->disponible($quest)) { ?>
+                        <form method="post">
+                            <input name="quest" type="hidden" value="<?php echo $quest->id ?>"/>
+                            <input name="accept" type="submit" value="Accepter"/>
+                        </form>
+                    <?php } ?>
+
+                </div>
+            </div>
         <?php } ?>
-<?php } ?>
     </div>
 
     <pre><?php var_dump($legolas->getQuestBook()) ?></pre>

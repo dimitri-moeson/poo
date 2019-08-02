@@ -21,9 +21,11 @@ use App\Model\Service\MapService;
 use App\Model\Service\MovementService;
 use App\Model\Service\PersonnageService;
 
+use App\Model\Service\QuestService;
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
 
+use Core\Auth\DatabaseAuth;
 use Core\Debugger\Debugger;
 
 use Core\HTML\Env\Get;
@@ -49,30 +51,34 @@ class TestController extends AppController
     {
         parent::__construct();
 
-        Render::getInstance()->setTemplate('default');
+        if($this->ctrLog()) {
 
-        $this->loadModel("Game\Personnage\Personnage");
-        $this->loadModel("Game\Item\Item");
-        $this->loadModel("Game\Inventaire\Inventaire");
+            Render::getInstance()->setTemplate('default');
 
-        $this->loadService("Item");
-        $this->loadService("Combat");
-        $this->loadService("Map");
-        $this->loadService("Personnage");
-        $this->loadService("Equipement");
-        $this->loadService("Inventaire");
-        $this->loadService("Movement");
-        $this->loadService("Monstre");
+            $this->loadModel("Game\Personnage\Personnage");
+            $this->loadModel("Game\Item\Item");
+            $this->loadModel("Game\Inventaire\Inventaire");
+
+            $this->loadService("Item");
+            $this->loadService("Combat");
+            $this->loadService("Map");
+            $this->loadService("Personnage");
+            $this->loadService("Equipement");
+            $this->loadService("Inventaire");
+            $this->loadService("Movement");
+            $this->loadService("Monstre");
+            $this->loadService("Quest");
 
 
-        if ($this->PersonnageService instanceof PersonnageService) {
-            $this->legolas = $this->PersonnageService->recup(1);
+            if ($this->PersonnageService instanceof PersonnageService) {
+                $this->legolas = $this->PersonnageService->recup(1);
+            }
+
+            if (!$this->legolas) $this->notFound("personnage");
+
+            if ($this->Inventaire instanceof InventaireTable)
+                $this->sacoche = $this->Inventaire->itemListing($this->legolas->id, "personnage", "sac", null, ItemEntity::class);
         }
-
-        if (!$this->legolas) $this->notFound("personnage");
-
-        if($this->Inventaire instanceof InventaireTable )
-            $this->sacoche = $this->Inventaire->itemListing($this->legolas->id , "personnage" , "sac", null, ItemEntity::class );
     }
 
     /**
@@ -171,9 +177,13 @@ class TestController extends AppController
 
             if ($this->PersonnageService->ramasse($this->legolas, $item)) {
 
-                //$this->viewText = $this->legolas->getName() . " ramasse " . $item->getName() . "<br/>";
+                $message = $this->legolas->getName() . " ramasse " . $item->getName();
 
-                FlashBuilder::create( $this->legolas->getName() . " ramasse " . $item->getName(),"success");
+                if ($this->QuestService instanceof QuestService) {
+                    if($this->QuestService->verifProgress($this->legolas, $item));
+                }
+
+                FlashBuilder::create( "$message","success");
 
                 Redirect::getInstance()->setAct("fiche")->send();
 
@@ -230,6 +240,9 @@ class TestController extends AppController
 
                 $this->PersonnageService->apprendre($this->legolas, $potion);
 
+                if ($this->QuestService instanceof QuestService) {
+                    $this->QuestService->verifProgress($this->legolas, $potion);
+                }
                 //$this->viewText = $this->legolas->getName() . " apprend la recette " . $potion->getName() . "<br/>";
                 FlashBuilder::create( $this->legolas->getName() . " apprend la recette " . $potion->getName(),"success");
 
@@ -256,9 +269,12 @@ class TestController extends AppController
                 if($this->PersonnageService instanceof PersonnageService)
                     $craft = $this->PersonnageService->craft($this->legolas, $potion);
 
+                if ($this->QuestService instanceof QuestService) {
+                    $this->QuestService->verifProgress($this->legolas, $potion);
+                }
                     if ($craft === true)    $viewText = $this->legolas->getName() . " fabrique " . $potion->getName() . "<br/>";
-                elseif ($craft === 2)       $viewText = $this->name . " n'a pas tous les ingrédients à sa disposition.";
-                elseif ($craft === 3)       $viewText = $this->name . " ne connait pas la recette " . $potion->getName();
+                elseif ($craft === 2)       $viewText = $this->legolas->getName() . " n'a pas tous les ingrédients à sa disposition pour fabriquer " . $potion->getName() . ".<br/>";
+                elseif ($craft === 3)       $viewText = $this->legolas->getName() . " ne connait pas la recette " . $potion->getName();
                 elseif ($craft === 4)       $viewText = " erreur inconnue ";
 
                 FlashBuilder::create( "$viewText","success");
@@ -395,7 +411,8 @@ class TestController extends AppController
     {
         if (Post::getInstance()->has("accept")) {
             $quest2 = $this->ItemService->getQuest(Post::getInstance()->val('quest'));
-            $this->PersonnageService->accepte($this->legolas, $quest2);
+            if($this->PersonnageService instanceof PersonnageService )
+                $this->PersonnageService->accepte($this->legolas, $quest2);
         }
 
         $this->questable = $this->ItemService->listQuest();

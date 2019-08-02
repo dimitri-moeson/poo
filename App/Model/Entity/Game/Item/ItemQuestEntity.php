@@ -69,8 +69,12 @@ class ItemQuestEntity extends ItemEntity
                     Journal::getInstance()->add("etape de quete accompli<br/>");
                     $this->complete[$key] = true;
                 }
+
+                return true ;
             }
         }
+
+        return false ;
 
     }
 

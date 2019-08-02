@@ -8,6 +8,7 @@
 namespace App\Controller;
 
 use App;
+use Core\Auth\DatabaseAuth;
 use Core\Controller\Controller;
 use Core\HTML\Header\Header;
 use Core\Render\Render;
@@ -28,6 +29,7 @@ class AppController extends Controller
         $this->loadModel("Blog\Article");
 
         $this->menu = $this->Article->allOf("page");
+        $this->auth = new DatabaseAuth(App::getInstance()->getDb());
     }
 
     /**
@@ -58,5 +60,15 @@ class AppController extends Controller
             var_dump($e);
             throw $e ;
         }
+    }
+
+    protected function ctrLog(){
+
+        if(!$this->auth->logged()){
+
+            $this->forbidden();
+        }
+
+        return true ;
     }
 }

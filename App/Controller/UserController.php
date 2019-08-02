@@ -22,6 +22,8 @@ class UserController extends AppController
     public function __construct()
     {
         $this->auth = new DatabaseAuth(App::getInstance()->getDb());
+
+        $this->loadService("User");
     }
 
     /**
@@ -50,12 +52,15 @@ class UserController extends AppController
             $log = Post::getInstance()->val("login");
             $mdp = Post::getInstance()->val("pswd");
 
-            if($this->auth->login($log,$mdp)){
+            if($this->UserService->login($log,$mdp)){
 
-                if($this->auth->hasRole('admin'))
-                    Redirect::getInstance()->setDom("admin")->setCtl("article")->setAct("index")->send();
-                else
-                    Redirect::getInstance()->setCtl("test")->setAct("fiche")->send();
+                if( $this->auth->login( $this->UserService->getUser() ) ) {
+
+                    if ($this->auth->hasRole('admin'))
+                        Redirect::getInstance()->setDom("admin")->setCtl("article")->setAct("index")->send();
+                    else
+                        Redirect::getInstance()->setCtl("test")->setAct("fiche")->send();
+                }
             }
             else
             {
@@ -69,4 +74,5 @@ class UserController extends AppController
 
         $this->categories = App::getInstance()->getTable("Blog\Categorie")->all();
     }
+
 }

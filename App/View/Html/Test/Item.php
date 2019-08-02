@@ -12,11 +12,9 @@
         ?></div>
     <div class="col-md-8">
 
-        <?php var_dump($item) ?>
-<hr/>
-        <?php var_dump($obj) ?>
-<hr/>
-        <?php var_dump($properties) ?>
+<br/><?php var_dump($item) ?>
+<hr/><?php var_dump($obj) ?>
+<hr/><?php var_dump($properties) ?>
 
         <?php //echo App\Model\Entity\Journal::getInstance()->view(); ?>
 

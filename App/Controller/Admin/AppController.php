@@ -20,18 +20,13 @@ class AppController extends \App\Controller\AppController
     {
         parent::__construct();
 
-        $auth = new DatabaseAuth(App::getInstance()->getDb());
+        if($this->ctrLog()) {
 
-        if(!$auth->logged()){
+            Render::getInstance()->setTemplate('admin');
+            Header::getInstance()->add_js("tooltip");
+            Header::getInstance()->add_css("blade");
 
-            $this->forbidden();
+            $this->success = false;
         }
-
-        Render::getInstance()->setTemplate( 'admin') ;
-        Header::getInstance()->add_js("tooltip");
-        Header::getInstance()->add_css("blade");
-
-        $this->success = false ;
-
     }
 }
