@@ -359,8 +359,6 @@ class TestController extends AppController
                     {
                         $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));//$this->Personnage->find(Post::getInstance()->val('cible'));
 
-                        //var_dump($cible);
-
                         $this->CombatService->ciblage($this->defi, $cible);
                     }
                     elseif ( Post::getInstance()->val('action') == 'combat')
@@ -369,9 +367,6 @@ class TestController extends AppController
                     }
                     elseif ( Post::getInstance()->val('action') == 'fuite')
                     {
-                        //Journal::getInstance()->add($this->legolas->getName() . "a fui combat");
-                        //header('location:?p=test.fiche');
-
                         FlashBuilder::create( $this->legolas->getName() . "a fui combat" ,"success");
 
                         Redirect::getInstance()->setAct("fiche");

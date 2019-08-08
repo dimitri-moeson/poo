@@ -91,7 +91,7 @@ class App
         }
         else {
             $ctrl = new Controller();
-            $ctrl->notFound("call");
+            $ctrl->notFound("call:".$request->getCtrlName()."->".$request->getAction());
 
         }
 
@@ -156,7 +156,7 @@ class App
 
             return $var::getInstance();
 
-        }catch( \Exception $e){
+        }catch(Exception $e){
 
             throw $e ;
 

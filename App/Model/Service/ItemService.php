@@ -18,6 +18,7 @@ use App\Model\Service;
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
 use Core\Debugger\Debugger;
+use Exception;
 
 class ItemService extends Service
 {
@@ -36,7 +37,7 @@ class ItemService extends Service
             $this->loadService("Inventaire");
 
         }
-        catch(\Exception $e) {
+        catch(Exception $e) {
 
             throw $e ;
 
@@ -202,7 +203,7 @@ class ItemService extends Service
      *
      * @param ItemEntity $item
      * @return ItemEntity
-     * @throws \Exception
+     * @throws Exception
      */
     function generateRandomCharac(ItemEntity $item){
 

@@ -5,7 +5,14 @@ namespace Core\Debugger ;
 
 
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
+use Error;
+use ErrorException;
+use Exception;
 
+/**
+ * Class Debugger
+ * @package Core\Debugger
+ */
 class Debugger
 {
     /** @var PersonnageEntity à mettre dans APP, pas dans Core !!! */
@@ -14,8 +21,14 @@ class Debugger
     /** @var  */
     private $history = array();
 
+    /**
+     * @var array
+     */
     private $sql = array();
 
+    /**
+     * @var array
+     */
     private $appli = array();
 
     /** @var  */
@@ -92,6 +105,10 @@ class Debugger
         }
     }
 
+    /**
+     * @param $statement
+     * @param array $attrs
+     */
     public function sql($statement, $attrs = array() ){
 
             $this->sql[] = array(
@@ -103,12 +120,19 @@ class Debugger
             );
     }
 
+    /**
+     * @param PersonnageEntity $personnage
+     */
     public function perso(PersonnageEntity $personnage){
 
         $this->personnage = $personnage;
     }
 
-    public function app($index,$value){
+    /**
+     * @param $index
+     * @param $value
+     */
+    public function app($index, $value){
         $this->appli[$index] = $value;
     }
 
@@ -174,14 +198,14 @@ class Debugger
      */
     function log_error( $num, $str, $file, $line, $context = null )
     {
-        $this->log_exception( new \ErrorException( $str, 0, $num, $file, $line ) );
+        $this->log_exception( new ErrorException( $str, 0, $num, $file, $line ) );
     }
 
     /**
      * Uncaught exception handler.
-     * @param \Exception $e
-     * @param \Error $e
-     * @param \ErrorException $e
+     * @param Exception $e
+     * @param Error $e
+     * @param ErrorException $e
      */
     function log_exception( $e )
     {

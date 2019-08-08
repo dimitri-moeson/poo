@@ -16,12 +16,13 @@ use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Header\Header;
 use Core\Render\Render;
+use Exception;
 
 class DefaultController extends AppController
 {
     /**
      * DefaultController constructor.
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {
@@ -32,7 +33,6 @@ class DefaultController extends AppController
         $this->loadModel("Blog\Indexion");
 
         $this->loadService("Article");
-
     }
 
     /**

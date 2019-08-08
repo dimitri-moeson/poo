@@ -9,6 +9,7 @@ use App\Model\Service;
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use Core\Debugger\Debugger;
 use Core\Render\Render;
+use Exception;
 
 class InventaireService extends Service
 {
@@ -22,7 +23,7 @@ class InventaireService extends Service
 
             $this->loadModel("Game\Inventaire\Inventaire");
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             var_dump($e);
         }
     }

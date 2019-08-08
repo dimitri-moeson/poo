@@ -9,11 +9,16 @@
 namespace App\Controller;
 
 use App;
+use App\Model\Service\UserService;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
 
+/**
+ * Class UserController
+ * @package App\Controller
+ */
 class UserController extends AppController
 {
     /**
@@ -34,7 +39,8 @@ class UserController extends AppController
         if(Post::getInstance()->submit())
         {
             $this->auth->logout();
-            header("location:?p=test.fiche");
+
+            Redirect::getInstance()->setCtl("default")->setAct("index")->send();
 
             die("deconnexion...<br/>");
         }
@@ -52,23 +58,25 @@ class UserController extends AppController
             $log = Post::getInstance()->val("login");
             $mdp = Post::getInstance()->val("pswd");
 
-            if($this->UserService->login($log,$mdp)){
-
-                if( $this->auth->login( $this->UserService->getUser() ) ) {
-
-                    if ($this->auth->hasRole('admin'))
-                        Redirect::getInstance()->setDom("admin")->setCtl("article")->setAct("index")->send();
-                    else
-                        Redirect::getInstance()->setCtl("test")->setAct("fiche")->send();
+            if($this->UserService instanceof UserService)
+            {
+                if ($this->UserService->login($log, $mdp))
+                {
+                    if ($this->auth->login($this->UserService->getUser()))
+                    {
+                        if ($this->auth->hasRole('admin'))
+                        {
+                            Redirect::getInstance()->setCtl("article")->setAct("index")->setDom("admin");
+                        }
+                        else
+                        {
+                            Redirect::getInstance()->setCtl("test")->setAct("fiche");
+                        }
+                        Redirect::getInstance()->send();
+                    }
                 }
             }
-            else
-            {
-               $this->error = true ;
-            }
         }
-
-        die();
 
         $this->form = new Form(Post::getInstance()->content());
 

@@ -3,13 +3,15 @@ namespace App\Model\Entity\Game\Inventaire;
 
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Entity\Journal;
+use ArrayAccess;
 use Core\Model\Entity\Entity;
+use Countable;
 
 /**
  * Class InventaireEntity
  * @package App\InventaireEntity
  */
-class InventaireEntity extends Entity implements \ArrayAccess, \Countable  {
+class InventaireEntity extends Entity implements ArrayAccess, Countable  {
 
     protected $container = array();
 

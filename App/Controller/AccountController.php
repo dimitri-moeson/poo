@@ -3,18 +3,22 @@
 
 namespace App\Controller;
 
-
 use App\Model\Table\UserTable;
 use Core\Auth\CryptAuth;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Render\Render;
+use Exception;
 
+/**
+ * Class AccountController
+ * @package App\Controller
+ */
 class AccountController extends AppController
 {
     /**
      * AccountController constructor.
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {

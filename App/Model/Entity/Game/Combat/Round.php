@@ -3,12 +3,13 @@ namespace App\Model\Entity\Game\Combat ;
 
 use App\Model\Entity\Journal;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
+use Iterator;
 
 /**
  * Class Round
  * @package App\Combat
  */
-class Round implements \Iterator
+class Round implements Iterator
 {
     private $array = array();
 

@@ -9,6 +9,8 @@
 namespace Core\HTML\Form;
 
 
+use DateTime;
+
 class Input
 {
     private $type;
@@ -86,6 +88,14 @@ class Input
     }
 
     /**
+     * @return mixed|string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * @return string
      */
     private function string_options(){
@@ -136,7 +146,7 @@ class Input
             case 'date':
             case 'datetime':
 
-                $date = \DateTime::createFromFormat("Y-m-d",($this->value ?? date("Y-m-d")));
+                $date = DateTime::createFromFormat("Y-m-d",($this->value ?? date("Y-m-d")));
                 $html_input = "<input type='text' class='form-control " . $this->class . " datepicker' data-date-format='dd/mm/yyyy'  ".$html_option." placeholder='" . $this->label . "' id='date-" . $this->name . "' name='" . $this->name . "' value='".$date->format("Y-m-d")."' />";
                 break;
             default:

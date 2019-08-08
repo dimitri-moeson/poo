@@ -8,6 +8,7 @@
 
 namespace App\Model\Service;
 
+use App;
 use App\Model\Entity\Game\Inventaire\InventaireEntity;
 use App\Model\Entity\Game\Inventaire\InventaireEquipementEntity;
 use App\Model\Entity\Game\Inventaire\InventaireStatEntity;
@@ -26,6 +27,7 @@ use App\Model\Table\Game\Item\ItemTable;
 use Core\Debugger\Debugger;
 use Core\HTML\Form\Form;
 use Core\Render\Render;
+use Exception;
 
 /**
  * Class PersonnageService
@@ -54,7 +56,7 @@ class PersonnageService extends Service
             $this->loadService("Inventaire");
             $this->loadService("Item");
 
-        } catch(\Exception $e){
+        } catch(Exception $e){
 
            throw $e ;
 
@@ -121,7 +123,7 @@ class PersonnageService extends Service
             }
 
         }
-        catch (\Exception $e){
+        catch (Exception $e){
             var_dump($e);
         }
     }
@@ -159,7 +161,7 @@ class PersonnageService extends Service
 	from item stat
 	where stat.type in ("'.self::TYPE_STAT.'","'.self::TYPE_RES.'")';
 
-        $res = \App::getInstance()->getDb()->query($sql,ItemEntity::class);
+        $res = App::getInstance()->getDb()->query($sql,ItemEntity::class);
 
         foreach ($res as $composant )
         {
@@ -386,7 +388,7 @@ class PersonnageService extends Service
         if($this->InventaireService instanceof InventaireService) {
             $this->InventaireService->recordItemInInventaire($personnage->id, $item);
 
-            $item->inventaire_id = \App::getInstance()->getDb()->lasInsertId();
+            $item->inventaire_id = App::getInstance()->getDb()->lasInsertId();
         }
 
         if($this->ItemService instanceof ItemService )

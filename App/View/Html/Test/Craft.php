@@ -7,7 +7,9 @@
         <div class="panel panel-info">
 
             <div class="panel-heading">
-                <div class="panel-title"><?php echo $legolas->getName() ?></div>
+                <div class="panel-title"><?php use Core\Render\Render;
+
+                    echo $legolas->getName() ?></div>
             </div>
 
             <div class="panel-body">
@@ -36,7 +38,7 @@
         <?php foreach ($craftables as $craftable) { ?>
 
         <div class="col-sm-1">
-            <?php echo \Core\Render\Render::getInstance()->block("item.btn", array(
+            <?php echo Render::getInstance()->block("item.btn", array(
 
                 "equip" => $craftable,
                 "block" => "fabrique",

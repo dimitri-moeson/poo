@@ -2,11 +2,15 @@
 
 namespace Core\Session;
 
+use function _gc;
 use Core\Database\Database;
 use Core\Database\MysqlDatabase;
 use Core\Database\QueryBuilder;
+use SessionHandlerInterface;
+use SessionIdInterface;
+use SessionUpdateTimestampHandlerInterface;
 
-class Session implements \SessionHandlerInterface, \SessionIdInterface, \SessionUpdateTimestampHandlerInterface
+class Session implements SessionHandlerInterface, SessionIdInterface, SessionUpdateTimestampHandlerInterface
 {
     private static $instance;
     protected $savePath;
@@ -217,7 +221,7 @@ class Session implements \SessionHandlerInterface, \SessionIdInterface, \Session
         $this->confirm_path();
 
         if(function_exists()){
-            \_gc( get_cfg_var("session.gc_maxlifetime")) ;
+            _gc( get_cfg_var("session.gc_maxlifetime")) ;
         }
         foreach (glob($this->savePath . "/sess_*") as $file) {
             if (filemtime($file) + $maxlifetime < time() && file_exists($file)) {

@@ -1,6 +1,8 @@
 <?php
 namespace Core\HTML\Header;
 
+use DateTime;
+
 class Header
 {
     /**
@@ -113,13 +115,13 @@ class Header
         $this->description = $description;
     }
 
-    public function getCreated():\DateTime
+    public function getCreated(): DateTime
     {
-        return new \DateTime();
+        return new DateTime();
     }
 
-    public function getUpdated():\DateTime
+    public function getUpdated(): DateTime
     {
-        return new \DateTime();
+        return new DateTime();
     }
 }

@@ -9,7 +9,9 @@
         </div>
 
         <div class="panel-body">
-            <?php echo $EquipementService->equiped(); ?>
+            <?php use Core\Render\Render;
+
+            echo $EquipementService->equiped(); ?>
         </div>
     </div>
 
@@ -29,7 +31,7 @@
             <?php foreach ($sacoche as $craftable) { ?>
 
                 <div class="col-sm-1">
-                    <?php echo \Core\Render\Render::getInstance()->block("item.btn", array(
+                    <?php echo Render::getInstance()->block("item.btn", array(
 
                         "equip" => $craftable,
                         "block" => "arene",

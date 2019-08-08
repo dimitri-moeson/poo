@@ -4,6 +4,7 @@
 namespace App\Controller\Admin;
 
 
+use App;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Render\Render;
@@ -41,7 +42,7 @@ class SqlController extends AppController
 
     public function dump(){
 
-        echo nl2br(\App::getInstance()->getDb()->dump());
+        echo nl2br(App::getInstance()->getDb()->dump());
 
         die();
 
@@ -55,7 +56,7 @@ class SqlController extends AppController
         header( "Content-Type: application/x-sql" );
         header( 'Content-Disposition: attachment; filename="' . date("Y-m-d_H:i:s").'.sql' . '"' );
 
-        echo \App::getInstance()->getDb()->dump();
+        echo App::getInstance()->getDb()->dump();
 
         exit(0);
 
@@ -68,7 +69,7 @@ class SqlController extends AppController
     {
         if(Post::getInstance()->submit())
         {
-            $this->result = \App::getInstance()->getDb()->query(Post::getInstance()->val("request"));
+            $this->result = App::getInstance()->getDb()->query(Post::getInstance()->val("request"));
         }
 
         $this->form = $this->form_sql(Post::getInstance()->content());

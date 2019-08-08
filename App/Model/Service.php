@@ -7,6 +7,12 @@
  */
 namespace App\Model ;
 
+use App;
+
+/**
+ * Class Service
+ * @package App\Model
+ */
 class Service
 {
     const TYPE_RECETTE = "recette";
@@ -24,6 +30,9 @@ class Service
 
     private static $instances = array();
 
+    /**
+     * @return mixed
+     */
     public static function getInstance()
     {
         $class = get_called_class();
@@ -51,7 +60,7 @@ class Service
 
         $model_part = explode("\\",$model_name);
 
-        $this->{end($model_part)."Base"} = \App::getInstance()->getTable($model_name);
+        $this->{end($model_part)."Base"} = App::getInstance()->getTable($model_name);
     }
 
     /**
@@ -61,9 +70,14 @@ class Service
 
         $model_part = explode("\\",$service);
 
-        $this->{end($model_part)."Service"} = \App::getInstance()->getService($service);
+        $this->{end($model_part)."Service"} = App::getInstance()->getService($service);
     }
 
+    /**
+     * @param $string
+     * @param string $delimiter
+     * @return false|string|string[]|null
+     */
     public function slugify($string, $delimiter = '-') {
         $oldLocale = setlocale(LC_ALL, '0');
         setlocale(LC_ALL, 'en_US.UTF-8');

@@ -21,7 +21,6 @@ class Controller
 {
     public function render(Array $page = array() ){
 
-        //echo "render::".print_r($page,1);
         Render::getInstance($page)->exec($this);
     }
 
@@ -32,6 +31,10 @@ class Controller
     {
         header('HTTP/1.0 404 Not Found');
         require_once ROOT.'/Core/HTML/Error/404.notFound.php';
+        if (DEBUG)
+        {
+            Debugger::getInstance()->view();
+        }
         die("Introuvable : ".$ref);
     }
 
@@ -42,6 +45,10 @@ class Controller
 
         header('HTTP/1.0 403 Forbidden' );
         require_once ROOT.'/Core/HTML/Error/403.forbidden.php';
+        if (DEBUG)
+        {
+            Debugger::getInstance()->view();
+        }
         die("Interdit");
     }
 

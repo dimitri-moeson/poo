@@ -10,7 +10,8 @@
 
                 <tr>
 
-                    <th>request(<?php use Core\HTML\Env\Get;
+                    <th>request(<?php use App\Model\Entity\Game\Personnage\PersonnageEntity;
+                        use Core\HTML\Env\Get;
                         use Core\HTML\Env\Post;
 
                         echo count($this->sql) ?>)</th>
@@ -125,6 +126,36 @@
     </div>
 </div>
 
+<div id="session-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover table-condensed">
+
+        <thead>
+
+        <tr>
+
+            <th>var</th>
+            <th>content</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <?php foreach ($_SESSION as $var => $content) { ?>
+
+            <tr>
+                <td><?php echo($var) ?></td>
+                <td><pre><?php var_dump($content) ?></pre></td>
+            </tr>
+
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+</div>
+
 <div id="get-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-condensed">
@@ -215,7 +246,7 @@
     </div>
 </div>
 
-<?php if(isset($this->personnage) && $this->personnage instanceof \App\Model\Entity\Game\Personnage\PersonnageEntity ) { ?>
+<?php if(isset($this->personnage) && $this->personnage instanceof PersonnageEntity ) { ?>
 <div id="perso-debug" class="debug well"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-condensed">
@@ -302,13 +333,14 @@
 <?php } ?>
 
 <div id="debug-bar"><!-- style="position: absolute;bottom:0;"-->
-    <a onclick="javascript:showDebug('app');" class="btn btn-info ">App</a>
-    <a onclick="javascript:showDebug('log');" class="btn btn-info ">Logs</a>
-    <a onclick="javascript:showDebug('get');" class="btn btn-info">get</a>
-    <a onclick="javascript:showDebug('post');" class="btn btn-info">post</a>
-    <a onclick="javascript:showDebug('server');" class="btn btn-info">server</a>
-    <a onclick="javascript:showDebug('sql');" class="btn btn-info">sql</a>
-    <a onclick="javascript:showDebug('perso');" class="btn btn-info">perso</a>
+    <a onclick="showDebug('app');" class="btn btn-info ">App</a>
+    <a onclick="showDebug('log');" class="btn btn-info ">Logs</a>
+    <a onclick="showDebug('get');" class="btn btn-info">get</a>
+    <a onclick="showDebug('session');" class="btn btn-info">session</a>
+    <a onclick="showDebug('post');" class="btn btn-info">post</a>
+    <a onclick="showDebug('server');" class="btn btn-info">server</a>
+    <a onclick="showDebug('sql');" class="btn btn-info">sql</a>
+    <a onclick="showDebug('perso');" class="btn btn-info">perso</a>
 </div>
 
 <!-- end debug -->

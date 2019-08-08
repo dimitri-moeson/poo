@@ -12,9 +12,29 @@ use Core\Auth\DatabaseAuth;
 use Core\Auth\UserAuth;
 use Core\Database\QueryBuilder;
 use Core\HTML\Env\Post;
+use Exception;
 
+/**
+ * Class UserService
+ * @package App\Model\Service
+ */
 class UserService extends Service
 {
+    /**
+     * @var DatabaseAuth
+     */
+    private static $auth ;
+
+    /**
+     * @var CryptAuth
+     */
+    private static $cryptor ;
+
+    /**
+     * @var
+     */
+    private $user;
+
     /**
      * PersonnageService constructor.
      */
@@ -26,50 +46,57 @@ class UserService extends Service
 
             $this->loadModel("User");
 
-            $this->loadService("Map");
-            $this->loadService("Inventaire");
-            $this->loadService("Item");
+            self::$auth = new DatabaseAuth(App::getInstance()->getDb());
+            self::$cryptor = CryptAuth::getInstance( self::$auth->getEncryptionKey());
 
-            $auth = new DatabaseAuth(App::getInstance()->getDb());
-
-            if($auth->logged()){
+            if(self::$auth->logged()){
 
                 $statement = QueryBuilder::init()->select('*')->from('user')->where("id = :id");
 
-                $this->user = $this->db->prepare($statement, array("id" => $auth->getUser('id')), UserEntity::class, true);
+                $this->user = $this->UserBase->request($statement, array("id" => self::$auth->getUser('id')),true, UserEntity::class);
 
             }
 
-        } catch(\Exception $e){
+        } catch(Exception $e){
 
             throw $e ;
 
         }
     }
 
+    /**
+     * @param $old
+     * @param $new
+     * @param $rep
+     */
     public function pswd($old,$new,$rep)
     {
         if($new === $rep)
         {
-            if ($this->cryptor->decrypt($this->player->pswd) === $old ) {
+            if (self::$cryptor->decrypt($this->player->pswd) === $old ) {
 
-                $this->User->update( $this->user->id , array(
+                $this->UserBase->update( $this->user->id , array(
 
-                    "pswd" => $this->cryptor->encrypt( $new )
+                    "pswd" => self::$cryptor->encrypt( $new )
                 ) );
             }
         }
     }
 
+    /**
+     * @param $pswd
+     * @param $new_mail
+     * @param $rep_mail
+     */
     public function email($pswd ,$new_mail ,$rep_mail ){
 
         if($new_mail ===$rep_mail)
         {
             if (filter_var($new_mail, FILTER_VALIDATE_EMAIL)) {
 
-                if ($this->cryptor->decrypt($this->player->pswd) === $pswd) {
+                if (self::$cryptor->decrypt($this->user->pswd) === $pswd) {
 
-                    $this->User->update( $this->user->id , array(
+                    $this->UserBase->update( $this->user->id , array(
 
                         "mail" => $new_mail
 
@@ -80,17 +107,21 @@ class UserService extends Service
         }
     }
 
+    /**
+     * find user current login ...
+     * @param $login
+     * @param $pswd
+     * @return bool
+     */
     public function login($login,$pswd)
     {
         $statement = QueryBuilder::init()->select('*')->from('user')->where("login = :login");
 
-        $this->user = $this->db->prepare($statement, array("login" => $login), UserEntity::class, true);
+        $this->user = $this->UserBase->request($statement, array("login" => $login),true, UserEntity::class);
 
         if ($this->user) {
 
-            $cryptor = CryptAuth::getInstance($this->encryption_key);
-
-            if ($cryptor->decrypt($this->user->pswd) === $pswd) {
+            if (self::$cryptor->decrypt($this->user->pswd) === $pswd) {
 
                 return true ;
             }
@@ -99,5 +130,13 @@ class UserService extends Service
         unset($this->user);
         return false;
 
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

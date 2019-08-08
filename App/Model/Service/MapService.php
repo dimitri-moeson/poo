@@ -4,6 +4,7 @@
 namespace App\Model\Service;
 
 
+use App;
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Entity\Game\Map\MapEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
@@ -112,7 +113,7 @@ class MapService extends Service
             } else {
                 //echo "create launch";
                 $this->MapBase->create($datas);
-                return \App::getInstance()->getDb()->lasInsertId();
+                return App::getInstance()->getDb()->lasInsertId();
             }
         }
 

@@ -39,6 +39,9 @@ class Request
         return self::$instance ;
     }
 
+    /**
+     * Request constructor.
+     */
     private function __construct()
     {
         if(DEBUG) {
@@ -96,6 +99,7 @@ class Request
         $p = Get::getInstance()->val('p') ?? 'default.index';
 
         $this->page = explode('.', $p );
+
 
             if(count($this->page)== 1 )
         {

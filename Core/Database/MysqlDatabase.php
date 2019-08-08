@@ -10,6 +10,7 @@ namespace Core\Database;
 
 use Core\Debugger\Debugger;
 use \PDO;
+use PDOException;
 use PDOStatement;
 
 /**
@@ -44,7 +45,8 @@ class MysqlDatabase extends Database
     /**
      * @return PDO
      */
-    private function getPDO ():\PDO {
+    private function getPDO (): PDO
+    {
 
         if(is_null($this->pdo)) {
             try {
@@ -52,11 +54,11 @@ class MysqlDatabase extends Database
                 /* Connexion à une base MySQL avec l'invocation de pilote */
                 $dsn = $this->db_type.':dbname='.$this->db_name.';host='.$this->db_host;
 
-                $this->pdo = new \PDO($dsn, $this->db_user, $this->db_pass);
+                $this->pdo = new PDO($dsn, $this->db_user, $this->db_pass);
 
-                $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
+                $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-            } catch (\PDOException $e) {
+            } catch (PDOException $e) {
                 echo $dsn."<br/>";
                 echo 'Connexion échouée : ' . $e->getMessage();
             }
@@ -203,9 +205,9 @@ class MysqlDatabase extends Database
     {
         $tables = $this->query("SHOW TABLES");
 
-        $return = "CREATE DATABASE ".$this->db_name.";";
+        $return = "\r"."CREATE DATABASE ".$this->db_name.";"."\r";
 
-        $return .= "\n\r"."USE ".$this->db_name.";";
+        $return .= "\r"."USE ".$this->db_name.";"."\r";
 
         foreach($tables as $table)
         {
@@ -227,11 +229,11 @@ class MysqlDatabase extends Database
                 if(trim($column->Extra) != '')      $content[$x] .=  " ".$column->Extra ;
             }
 
-            $return .= "\n\r"."-- ".strtoupper($name);
-            $return .= "\n\r"." DROP Table IF EXISTS `".$name."` ; " ;
-            $return .= "\n\r"." create table `".$name."` ( ";
-            $return .= "\n\r".implode(",\n\r", $content);
-            $return .= "\n\r"." ) ;";
+            $return .= "\r"."-- ".strtoupper($name)."\r" ;
+            $return .= "\r"." DROP Table IF EXISTS `".$name."` ; "."\r" ;
+            $return .= "\r"." create table `".$name."` ( ";
+            $return .= "\r".implode(",\r", $content);
+            $return .= "\r"." ) ;"."\r" ;
 
             $statement = Query::from($name)->select('*');
 
@@ -248,11 +250,11 @@ class MysqlDatabase extends Database
                     $values[] = "'" . addslashes($val) . "'";
                 }
 
-                $return .= "\n\r"."insert ignore into `$name`( " ;
-                $return .= "\n\r".implode(",\n\r", $into) ;
-                $return .= "\n\r".") values (" ;
-                $return .= "\n\r".implode(",\n\r", $values) ;
-                $return .= "\n\r".");"."\n\r" ;
+                $return .= "\r"."insert ignore into `$name`( " ;
+                $return .= "\r".implode(", ", $into) ;
+                $return .= "\r".") values (" ;
+                $return .= "\r".implode(",\r", $values) ;
+                $return .= "\r".");" ;
             }
         }
 

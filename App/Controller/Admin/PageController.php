@@ -32,7 +32,7 @@ class PageController extends AppController
 
         $this->loadService("Article");
 
-        $this->posts = $this->Article->allOf("page","position");
+        $this->posts = $this->Article->allOf("page",null,"position");
     }
 
     /**
@@ -65,6 +65,8 @@ class PageController extends AppController
     public function index()
     {
         Render::getInstance()->setView("Admin/Page/home"); // , compact('posts','categories'));
+
+        $this->max = count($this->posts);
     }
 
     /**

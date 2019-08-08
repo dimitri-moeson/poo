@@ -19,6 +19,15 @@
 
         <p><a href="index.php">home</a></p>
 
+        <p><?php echo $form ?></p>
+
+        <hr/>
+        <?php foreach ($comments as $comment) { ?>
+
+            <li><?php echo $comment->contenu ?></li>
+
+        <?php } // endforeach ?>
+
     </div>
 
     <div class="col-sm-4">

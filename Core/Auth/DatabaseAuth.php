@@ -49,14 +49,14 @@ class DatabaseAuth
      */
     public function login( UserAuth $user = null )
     {
-       if($user){
+       if(!is_null($user)){
 
-               $_SESSION['auth']['id'] = $user->getId();
-               $_SESSION['auth']['roles'] = explode(",", $user->getRoles());
-               $_SESSION['auth']['alloweds'] = explode(",", $user->getAlloweds());
-               $_SESSION['auth']['forbiddens'] = explode(",", $user->getForbiddens());
+           $_SESSION['auth']['id'] = $user->id ;
+           $_SESSION['auth']['roles'] = explode(",", $user->getRoles());
+           $_SESSION['auth']['alloweds'] = explode(",", $user->getAlloweds());
+           $_SESSION['auth']['forbiddens'] = explode(",", $user->getForbiddens());
 
-               return true ;
+           return true ;
        }
 
        return false ;
@@ -80,8 +80,6 @@ class DatabaseAuth
             if (in_array($page, $_SESSION['auth']['forbiddens'])) return false;
 
             if (in_array($page, $_SESSION['auth']['alloweds'])) return true;
-
-            //return true ;
         }
 
         return false ;
@@ -102,7 +100,7 @@ class DatabaseAuth
      */
     public function logged()
     {
-        return isset($_SESSION['auth']) ;
+        return isset($_SESSION['auth']) && !empty($_SESSION['auth']) ;
     }
 
     /**

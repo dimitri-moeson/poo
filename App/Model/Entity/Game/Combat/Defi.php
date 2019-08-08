@@ -3,12 +3,15 @@ namespace App\Model\Entity\Game\Combat ;
 
 use App\Model\Entity\Journal;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
+use ArrayAccess;
+use Countable;
+use Iterator;
 
 /**
  * Class Combat
  * @package App\Combat
  */
-class Defi implements \Iterator, \ArrayAccess,\Countable
+class Defi implements Iterator, ArrayAccess, Countable
 {
     private $array = array();
     private $position = 0;

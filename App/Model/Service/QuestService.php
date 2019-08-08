@@ -9,6 +9,7 @@ use App\Model\Entity\Game\Item\ItemQuestEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use App\Model\Service;
 use App\Model\Table\Game\Inventaire\InventaireTable;
+use Exception;
 
 class QuestService extends Service
 {
@@ -27,7 +28,7 @@ class QuestService extends Service
             $this->loadService("Inventaire");
 
         }
-        catch(\Exception $e) {
+        catch(Exception $e) {
 
             throw $e ;
 

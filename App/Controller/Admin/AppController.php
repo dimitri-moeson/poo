@@ -12,6 +12,10 @@ use Core\Auth\DatabaseAuth;
 use Core\HTML\Header\Header;
 use Core\Render\Render;
 
+/**
+ * Class AppController
+ * @package App\Controller\Admin
+ */
 class AppController extends \App\Controller\AppController
 {
     protected $template = 'admin';

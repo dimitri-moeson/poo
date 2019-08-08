@@ -12,6 +12,7 @@ use Core\Auth\DatabaseAuth;
 use Core\Controller\Controller;
 use Core\HTML\Header\Header;
 use Core\Render\Render;
+use Exception;
 
 class AppController extends Controller
 {
@@ -55,7 +56,7 @@ class AppController extends Controller
         {
             $this->{$name} = App::getInstance()->getService($service);
         }
-        catch (\Exception $e)
+        catch (Exception $e)
         {
             var_dump($e);
             throw $e ;

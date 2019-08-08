@@ -175,8 +175,16 @@ class Form
     public function __toString()
     {
         $string = "<form enctype='multipart/form-data' method='" . ( $this->configs["method"] ?? "post" ) . "' " . ($this->configs["attr"] ?? '') . " action='" . ($this->configs["action"] ?? '') . "'>";
-        foreach ($this->inputs as $name => $html_input) {
-            $string .= "<p>".$html_input."</p><br/>";
+        foreach ($this->inputs as $name => $html_input)
+        {
+            if( ($this->inputs[$name] instanceof Input) && $this->inputs[$name]->getType() ==="hidden")
+            {
+                $string .= $html_input ;
+            }
+            else
+            {
+                $string .= "<p>".$html_input."</p><br/>";
+            }
         }
         $string .= "</form>";
         return $string;

@@ -53,7 +53,7 @@ class ArticleController extends AppController
             ->select("parent_id", array('options' => $categories, 'label' => "Categorie"),$categories)
             ->input("date", array('type' => 'date', 'label' => "ajouté"))
             ->input("contenu", array('type' => 'textarea', 'label' => "contenu", "class" => "editor"))
-            ->input("type",array("type"=>"hidden", "value"=>"article"))
+            //->input("type",array("type"=>"hidden", "value"=>"article"))
             ->submit("Enregistrer");
 
         return $form ;
@@ -117,7 +117,6 @@ class ArticleController extends AppController
 
             Post::getInstance()->val("type","article");
 
-            //if($this->Article->update(Get::getInstance()->val('id'), Post::getInstance()->content()))
             if($this->ArticleService->record(Get::getInstance()->val('id')))
             {
                 FlashBuilder::create("article modifié","success");

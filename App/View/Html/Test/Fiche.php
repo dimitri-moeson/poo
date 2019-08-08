@@ -141,6 +141,7 @@ use Core\Render\Render;
         <ul class="nav nav-sidebar">
 
             <?php foreach ($legolas->getEquipement()->getContainer() as $place => $osef) { ?>
+
                 <li role="presentation" <?php echo $_place == $place ? 'class="active"' : '' ?> >
                     <a href="?p=test.fiche&place=<?php echo $place ?>"><?php echo $place ?></a>
                 </li>

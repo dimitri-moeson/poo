@@ -14,23 +14,27 @@ $min_y = $y - 5;
 ?>
 
 <div class="row">
-    <div class="col-md-2"><?php
-echo Render::getInstance()->block("boussole", array(
+    <div class="col-md-3"><?php
 
-    "center" => "<div class='row' >t</div>"
-));
+                echo Render::getInstance()->block("boussole", array(
+
+                    "center" => "<div class='row' >t</div>"
+                ));
+
         ?></div>
 
-    <div class="col-md-10">
+    <div class="col-md-9">
         <?php
 
-echo Render::getInstance()->block("map",array(
+                echo Render::getInstance()->block("map",array(
 
-    'x' => $x,
-    'y' => $y,
-    'alentours' => $alentours,
-    'block' => 'admin',
+                    'x' => $x,
+                    'y' => $y,
+                    'alentours' => $alentours,
+                    'block' => 'admin',
 
-));
+                ));
+
         ?></div>
+
 </div>

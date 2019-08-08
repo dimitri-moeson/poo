@@ -74,12 +74,12 @@ class ArticleTable extends Table
      * @param null $parent
      * @return QueryBuilder
      */
-    private function queryType($parent = null ){
+    private function queryType($parent = null, $order = "position" ){
 
         $statement = QueryBuilder::init()->select('a.*')
             ->from('article','a')
             ->where('a.`type` = :type')
-            ->order("position","desc")
+            ->order("".$order,"desc")
         ;
 
         if(!is_null($parent))$statement->where('parent_id = :parent');
@@ -91,9 +91,9 @@ class ArticleTable extends Table
      * @param $type
      * @return array|mixed
      */
-    public function allOf($type , $parent = null){
+    public function allOf($type , $parent = null, $order = "position"){
 
-        $statement = $this->queryType($parent);
+        $statement = $this->queryType($parent,$order);
 
         $attr = array("type" => $type);
 
@@ -108,7 +108,9 @@ class ArticleTable extends Table
      * @param $type
      * @return array
      */
-    public function listing($type, $parent = null ){
+    public function listing($type, $parent = null, $order = "position" ){
+
+        $statement = $this->queryType($parent,$order);
 
         $attr = array("type" => $type);
 
@@ -116,8 +118,7 @@ class ArticleTable extends Table
             $attr["parent"] = $parent;
         }
 
-
-        return $this->list("id","titre", $this->queryType($parent) ,$attr);
+        return $this->list("id","titre", $statement ,$attr);
 
     }
 

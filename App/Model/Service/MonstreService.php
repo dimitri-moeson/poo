@@ -9,6 +9,7 @@ use App\Model\Entity\Game\Item\ItemMonstreEntity;
 use App\Model\Service;
 use App\Model\Table\Game\Item\ItemTable;
 use Core\Render\Render;
+use Exception;
 
 class MonstreService extends Service
 {
@@ -26,7 +27,7 @@ class MonstreService extends Service
 
             $this->loadModel("Game\Item\Item");
             $this->loadService("Item");
-        }catch(\Exception $e){
+        }catch(Exception $e){
 
             throw $e ;
 

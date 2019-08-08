@@ -46,7 +46,7 @@ class Redirect
 
     static function buildQuery( $params = array())
     {
-        http_build_str($params);
+        //http_build_str($params);
         return http_build_query($params);
     }
 

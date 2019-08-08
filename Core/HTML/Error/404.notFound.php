@@ -29,7 +29,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <title>Acces interdit</title>
+    <title>Page non trouvé</title>
 
 </head>
 <body>
@@ -56,7 +56,7 @@
 
             <h1>Page non trouvée</h1>
 
-            <p>vous n'avez pas le droit d'acceder à cette page.</p>
+            <p>Cette page n'existe pas...</p>
 
         </div>
     </div>

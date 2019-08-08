@@ -9,6 +9,7 @@ class Post extends GlobalRequest
      */
     public function submit(){
 
-        return isset($_POST) && !empty($_POST);
+        if(strtoupper($_SERVER['REQUEST_METHOD']) === 'POST')
+            return isset($_POST) && !empty($_POST);
     }
 }

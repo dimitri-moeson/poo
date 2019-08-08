@@ -3,23 +3,17 @@
 
 namespace Core\Auth;
 
-
 use Core\Model\Entity\Entity;
 
+/**
+ * Class UserAuth
+ * @package Core\Auth
+ */
 class UserAuth extends Entity
 {
-    private $id ;
     private $roles  ;
     private $alloweds  ;
     private $forbiddens  ;
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @return array
