@@ -7,7 +7,10 @@ use Core\Controller\Stylesheet;
 use Core\Debugger\Debugger;
 use Core\HTML\Env\Get;
 
-
+/**
+ * Class Request
+ * @package Core\Request
+ */
 class Request
 {
     /** @var Request */
@@ -29,6 +32,9 @@ class Request
      */
     private $page = array();
 
+    /**
+     * @return Request
+     */
     public static function getInstance()
     {
         if(is_null(self::$instance))
@@ -100,8 +106,9 @@ class Request
 
         $this->page = explode('.', $p );
 
+        Debugger::getInstance()->app("page",$this->getPage());
 
-            if(count($this->page)== 1 )
+        if(count($this->page)== 1 )
         {
             $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'Controller';
             $this->ctrl = $this->page[0] ?? "default";

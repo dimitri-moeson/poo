@@ -246,6 +246,36 @@
     </div>
 </div>
 
+<div id="request-debug" class="debug" ><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover table-condensed">
+
+        <thead>
+
+        <tr>
+
+            <th>var</th>
+            <th>content</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <?php foreach (\Core\Request\Request::getInstance() as $var => $content) { ?>
+
+            <tr>
+                <td><?php echo($var) ?></td>
+                <td><pre><?php var_dump( \Core\Request\Request::getInstance()->{"get".ucfirst($var)."()"}) ?></pre></td>
+            </tr>
+
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+</div>
+
 <?php if(isset($this->personnage) && $this->personnage instanceof PersonnageEntity ) { ?>
 <div id="perso-debug" class="debug well"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
     <div class="table-responsive">
@@ -340,6 +370,7 @@
     <a onclick="showDebug('post');" class="btn btn-info">post</a>
     <a onclick="showDebug('server');" class="btn btn-info">server</a>
     <a onclick="showDebug('sql');" class="btn btn-info">sql</a>
+    <a onclick="showDebug('request');" class="btn btn-info">request</a>
     <a onclick="showDebug('perso');" class="btn btn-info">perso</a>
 </div>
 

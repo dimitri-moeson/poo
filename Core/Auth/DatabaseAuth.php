@@ -62,6 +62,9 @@ class DatabaseAuth
        return false ;
     }
 
+    /**
+     *
+     */
     public function logout()
     {
         unset($_SESSION['auth']);

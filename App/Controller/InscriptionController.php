@@ -11,6 +11,10 @@ use Core\Redirect\Redirect;
 use Core\Render\Render;
 use Exception;
 
+/**
+ * Class InscriptionController
+ * @package App\Controller
+ */
 class InscriptionController extends AppController
 {
     /**
@@ -42,10 +46,12 @@ class InscriptionController extends AppController
 
         $this->form = new Form();
 
-        //$this->form->input("login")->input("pswd_new")->input("pswd_cop");
-
-        echo "setvew<br/>";
-        Render::getInstance()->setView("Inscription\default");
+        $this->form
+            ->input("login")
+            ->input("email")
+            ->pswd("pswd_new", array("conf" => true ))
+            ->submit("suivant")
+        ;
     }
 
     /**

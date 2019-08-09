@@ -104,8 +104,9 @@ class Form
     public function input(string $name, array $options = []):?self
     {
         $value    = $options['value'] ?? $this->getValue($name);
-        $surround = $options['surround'] ?? 'p';
-        $type = $options['type'] ?? "text";
+        //$surround = $options['surround'] ?? 'p';
+
+        $options['type'] = $options['type'] ?? "text";
         $this->inputs[$name] = new Input($name, $options);
         if( $this->inputs[$name] instanceof Input)
         {
@@ -113,6 +114,35 @@ class Form
         }
         return $this;
     }
+
+    public function pswd(string $name, array $options = []):?self
+    {
+        $value    = $options['value'] ?? $this->getValue($name);
+        //$surround = $options['surround'] ?? 'p';
+
+        $options['type'] = $options['type'] ?? "password";
+
+        $this->inputs[$name] = new Input($name, $options);
+        if( $this->inputs[$name] instanceof Input)
+        {
+            $this->inputs[$name]->setValue($value);//->surround($surround);
+        }
+
+        if($options['conf'])
+        {
+            $options['label '] = "Confirmer ".$options['label '] ;
+
+            $this->inputs[$name."_conf"] = new Input($name."_conf", $options);
+            if( $this->inputs[$name."_conf"] instanceof Input)
+            {
+                $this->inputs[$name."_conf"]->setValue($value);//->surround($surround);
+            }
+            $options['conf'] = false ;
+        }
+
+        return $this;
+    }
+
     /**
      * @param       $name
      * @param array $options

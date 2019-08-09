@@ -13,14 +13,19 @@ use Core\Config;
 
 class App
 {
+    /**
+     * @var MysqlDatabase $database
+     */
     private static $database;
 
-
+    /**
+     * @var App $_instance
+     */
     private static $_instance;
 
-    private $ctrl;
-    private $act;
-
+    /**
+     * @return App
+     */
     public static function getInstance()
     {
         if (is_null(self::$_instance)) {
@@ -39,7 +44,7 @@ class App
     }
 
     /**
-     *
+     * @brief inclusion des autoloader - session - debugger
      */
     public function load()
     {
@@ -59,6 +64,7 @@ class App
     }
 
     /**
+     * @brief execute la request utilisateur.
      * @return $this
      */
     public function exec()
@@ -70,29 +76,26 @@ class App
             $ctrl_name = $request->getCtrlName();
             $action = $request->getAction();
 
-            //Debugger::getInstance()->app('controller', $ctrl_name);
-            //Debugger::getInstance()->app('action', $action);
+            Debugger::getInstance()->app('controller', $ctrl_name);
+            Debugger::getInstance()->app('action', $action);
 
             $ctrl = new $ctrl_name();
 
             if ($ctrl instanceof AppController) {
 
-                $this->act = $action;
+                //$this->act = $action;
 
-                $ctrl->$action();
+                call_user_func(array($ctrl, $action));
 
                 Render::getInstance($request->getPage())->exec($ctrl);
             }
 
-            if (DEBUG)
-            {
+            if (DEBUG) {
                 Debugger::getInstance()->view();
             }
-        }
-        else {
+        } else {
             $ctrl = new Controller();
-            $ctrl->notFound("call:".$request->getCtrlName()."->".$request->getAction());
-
+            $ctrl->notFound("call:" . $request->getCtrlName() . "->" . $request->getAction());
         }
 
         return $this;
@@ -120,7 +123,6 @@ class App
     }
 
 
-
     /**
      * Factory
      * @param $name
@@ -128,16 +130,13 @@ class App
      */
     public function getTable($name): Table
     {
-
         $ord = explode("\\", $name);
         $ord = array_map('ucfirst', $ord);
         $name = implode("\\", $ord);
 
-
         $class_name = "\App\Model\Table\\" . $name . "Table";
 
         return new $class_name($this->getDb());
-
     }
 
     /**
@@ -152,33 +151,12 @@ class App
 
         $var = "\App\Model\Service\\" . ucfirst(strtolower($service)) . "Service";
 
-        try{
-
+        try {
             return $var::getInstance();
-
-        }catch(Exception $e){
-
-            throw $e ;
-
+        } catch (Exception $e) {
+            throw $e;
         }
 
     }
-
-    /**
-     * @return mixed
-     */
-    public function getCtrl()
-    {
-        return $this->ctrl;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAct()
-    {
-        return $this->act;
-    }
-
 
 }

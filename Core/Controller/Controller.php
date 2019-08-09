@@ -8,10 +8,8 @@
 
 namespace Core\Controller;
 
-use Core\Auth\CryptAuth;
 use Core\Debugger\Debugger;
 use Core\HTML\Template\Template;
-use Core\Render\Render;
 
 /**
  * Class Controller
@@ -19,11 +17,6 @@ use Core\Render\Render;
  */
 class Controller
 {
-    public function render(Array $page = array() ){
-
-        Render::getInstance($page)->exec($this);
-    }
-
     /**
      * @param $ref
      */

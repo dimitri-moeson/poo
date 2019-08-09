@@ -1,5 +1,13 @@
-<form method="post" action="?p=admin.<?php echo $p ?>.delete">
-    <a title='Edit <?php echo $p ?>' href="?p=admin.<?php echo $p ?>.single&id=<?php echo $id ?>" class="btn btn-primary">
+<?php
+use Core\Render\Url;
+
+$urldel = Url::generate("delete",$p,"admin");
+$urlEdi = Url::generate("single",$p,"admin")->setParams(array('id' => $id ));
+?>
+
+
+<form method="post" action="?p=<?php echo $urldel ?>">
+    <a title='Edit <?php echo $p ?>' href="?p=<?php echo $urlEdi ?>" class="btn btn-primary">
         <i class="glyphicon glyphicon-pencil"></i>
     </a>
     <input type="hidden" name="id" value="<?php echo $id ?>">

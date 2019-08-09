@@ -112,14 +112,10 @@ class Render
         $view_filename = $this->viewPath . "/" . $this->view . ".php";
         $template_filename = ROOT . "/App/View/Templates/" . $this->template . ".php";
 
-        echo "$view_filename<br/>";
-        echo "$template_filename<br/>";
-
         $content = "chargement échoué ??";
 
         try
         {
-            echo $view_filename;
             if(file_exists($view_filename))
             {
                 ob_start();
@@ -129,8 +125,6 @@ class Render
                 $content = ob_get_clean();
             }
             else{
-
-                //ob_end_clean();
 
                 $controller->notFound($this->view);
             }

@@ -74,7 +74,7 @@ class AccountController extends AppController
 
                 Post::getInstance()->val("old_pswd") ,
                 Post::getInstance()->val("new_pswd") ,
-                Post::getInstance()->val("rep_pswd")
+                Post::getInstance()->val("new_pswd_conf")
 
             );
         }
@@ -82,9 +82,8 @@ class AccountController extends AppController
         $this->form = new Form($this->player);
 
         $this->form//->init()
-            ->input("old_pswd",array("type" => "password","label" => "Ancien Mot de passe"))
-            ->input("new_pswd",array("type" => "password","label" => "Nouveau Mot de passe"))
-            ->input("rep_pswd",array("type" => "password","label" => "Confirmer Mot de passe"))
+            ->pswd("old_pswd",array("conf" => false ,"label" => "Ancien Mot de passe"))
+            ->pswd("new_pswd",array("conf" => true,"label" => "Nouveau Mot de passe"))
         ;
 
         Render::getInstance()->setView("Account/form");

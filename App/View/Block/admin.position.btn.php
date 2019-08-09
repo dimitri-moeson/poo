@@ -1,7 +1,9 @@
+<?php
+use Core\Render\Url;
+?>
 
 
-
-<form method="post" class="btn-group" action="?p=admin.<?php echo $p ?>.position">
+<form method="post" class="btn-group" action="?p=<?php echo Url::getInstance()->getPath("position",$p,"admin") ?>">
 
     <?php if( $index < $max  ) { ?>
 
