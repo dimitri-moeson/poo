@@ -74,8 +74,7 @@ class Url
 
         if( Request::getInstance()->is_callable($ctrl,$act) )
         {
-            echo "aa";
-            return $this->ctl_Construct($_ctl ,$dom).".".$act.( isset($params) && !empty($params) ? "&".self::buildQuery($params) : '') ;
+            return "/?p=".$this->ctl_Construct($_ctl ,$dom).".".$act.( isset($params) && !empty($params) ? "&".self::buildQuery($params) : '') ;
         }
 
         return "error...";
@@ -106,6 +105,10 @@ class Url
         return $ctrl ;
     }
 
+    /**
+     * @param array $params
+     * @return string
+     */
     function buildQuery( $params = array())
     {
         return http_build_query($params ?? $this->getParams() );

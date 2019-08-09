@@ -49,7 +49,7 @@ class Redirect extends Url
     {
         if($this->verif($_act, $_ctl ,$dom ))
         {
-            self::location("p=".$this->getPath($_act, $_ctl ,$dom));
+            self::location("".$this->getPath($_act, $_ctl ,$dom));
         }
     }
 
@@ -58,7 +58,7 @@ class Redirect extends Url
      */
     private static function location($url)
     {
-        header("location:/?".$url);
+        header("location:".$url);
         die;
     }
 
@@ -70,13 +70,11 @@ class Redirect extends Url
     {
         $_ctrl = is_null($this->dom) ? $this->getCtl() : $this->dom.".".$this->getCtl() ;
         $_act = $this->getAct();
-        $params = $this->getParams();
+        //$params = $this->getParams();
 
-        if($this->url->verif($_act, $_ctrl ))
+        if($this->verif($_act, $_ctrl ))
         {
-            $url = "p=".$this->url->getPath($_act, $_ctrl).( isset($params) && !empty($params) ? "&".self::buildQuery($params) : '') ;
-
-            self::location($url);
+            self::location($this->getPath());
         }
 
         return false ;

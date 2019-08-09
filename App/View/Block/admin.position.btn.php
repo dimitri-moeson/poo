@@ -1,9 +1,11 @@
 <?php
 use Core\Render\Url;
+
+$urlMov = Url::generate("position",$p,"admin");
 ?>
 
 
-<form method="post" class="btn-group" action="?p=<?php echo Url::getInstance()->getPath("position",$p,"admin") ?>">
+<form method="post" class="btn-group" action="<?php echo $urlMov ?>">
 
     <?php if( $index < $max  ) { ?>
 

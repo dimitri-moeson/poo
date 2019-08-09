@@ -3,6 +3,7 @@
 use App\Model\Entity\Blog\ArticleEntity;
 use App\Model\Entity\Blog\CategorieEntity;
 use Core\Render\Render;
+use Core\Render\Url;
 
 
 ?>
@@ -16,7 +17,7 @@ use Core\Render\Render;
                     <th>Id</th>
                     <th>Titre</th>
                     <th>
-                        <a href="?p=admin.categorie.add" class="btn btn-success">Add</a>
+                        <a href="<?php echo Url::generate("add","categorie","admin"); ?>" class="btn btn-success">Add</a>
                     </th>
                 </tr>
 
