@@ -59,7 +59,8 @@ class Header
 
         foreach ( $this->js as $action   ){
 
-            $script .='<script src="?js='.$action.'" type="application/x-javascript"></script>'  ;
+            /** @lang html script-$action.js => ?js='.$action.' */
+            $script .='<script src="script-'.$action.'.js" type="application/x-javascript"></script>'  ;
         }
 
         return $script ;
@@ -77,7 +78,8 @@ class Header
 
         foreach ( $this->css as $action   ){
 
-            $script .= /** @lang html */ '<link rel="stylesheet" href="?css='.$action.'" crossorigin="anonymous" type="text/css" media="screen" />'  ;
+            /** @lang html style-$action.css => ?css='.$action.' */
+            $script .=  '<link rel="stylesheet" href="style-'.$action.'.css" crossorigin="anonymous" type="text/css" media="screen" />'  ;
         }
 
         return $script ;

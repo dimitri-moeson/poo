@@ -3,7 +3,7 @@
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Get;
 use Core\HTML\Header\Header;
-use Core\Request\Request;
+use Core\Render\Url;use Core\Request\Request;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
@@ -81,7 +81,9 @@ $slg = Get::getInstance()->val('slug');
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li <?php echo $ctl_ == "article" ? 'class="active"' : '' ?> ><a href="/?p=blog.article.index">About</a></li>
+                <li <?php echo $ctl_ == "article" ? 'class="active"' : '' ?> >
+                    <a href="<?php echo Url::generate("index", "article","blog") ?>">About</a>
+                </li>
 
                 <?php foreach ($menu as $link){ ?>
                     <?php if(!$link->default) { ?>
@@ -90,7 +92,7 @@ $slg = Get::getInstance()->val('slug');
                 <?php } ?>
 
                 <?php if($auth->logged()) {?>
-                    <li <?php echo $ctl_ == "test" ? 'class="active"' : '' ?> ><a href="?p=test.fiche">Fiche</a></li>
+                    <li <?php echo $ctl_ == "test" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("fiche","test") ?>">Fiche</a></li>
                 <?php } ?>
 
                 <!--li><a href="#contact">Contact</a></li>
@@ -111,13 +113,13 @@ $slg = Get::getInstance()->val('slug');
             </ul>
 
             <?php if($auth->logged()) {?>
-                <form method="post" action="?p=user.logout" class="navbar-form navbar-right">
-                    <a href="?p=admin.item.index" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
+                <form method="post" action="<?php echo Url::generate("logout","user") ?>" class="navbar-form navbar-right">
+                    <a href="<?php echo Url::generate("index","item","admin") ?>" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
                     <button type="submit" name="logout" value="logout" class="btn btn-success"><span class="glyphicon glyphicon-off"></span>Sign out</button>
                 </form>
 
             <?php } else { ?>
-                <form method="post" action="?p=user.login" class="navbar-form navbar-right">
+                <form method="post" action="<?php echo Url::generate("login","user") ?>" class="navbar-form navbar-right">
                     <div class="form-group">
                         <input type="text" placeholder="login" name="login" class="form-control">
                     </div>

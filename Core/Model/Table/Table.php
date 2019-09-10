@@ -17,7 +17,6 @@ use Core\Model\Entity\Entity;
 
 class Table
 {
-
     protected $table ;
 
     protected $db ;

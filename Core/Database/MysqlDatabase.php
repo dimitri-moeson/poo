@@ -47,8 +47,8 @@ class MysqlDatabase extends Database
      */
     private function getPDO (): PDO
     {
-
-        if(is_null($this->pdo)) {
+        if(is_null($this->pdo))
+        {
             try {
 
                 /* Connexion à une base MySQL avec l'invocation de pilote */
@@ -209,53 +209,75 @@ class MysqlDatabase extends Database
 
         $return .= "\r"."USE ".$this->db_name.";"."\r";
 
-        foreach($tables as $table)
-        {
-            $name = $table->{'Tables_in_'.$this->db_name};
+        foreach($tables as $table) {
+            $name = $table->{'Tables_in_' . $this->db_name};
 
             $statement = Query::describe($name);
 
-            $tb = $this->query('DESCRIBE ' . $name );
+            $tb = $this->query('DESCRIBE ' . $name);
 
             $content = array();
 
-            foreach($tb as $x => $column)
-            {
-                                                    $content[$x]  =  "`".$column->Field ."` ".$column->Type ;
-                if($column->Key == 'PRI')           $content[$x] .=  ' PRIMARY KEY ';
-                if($column->Null == 'No')           $content[$x] .=  " NOT NULL ";
-                if($column->Null == 'Yes')          $content[$x] .=  " NULL ";
-                if(trim($column->Default) != '')    $content[$x] .=  " DEFAULT ".$column->Default ;
-                if(trim($column->Extra) != '')      $content[$x] .=  " ".$column->Extra ;
+            foreach ($tb as $x => $column) {
+                $content[$x] = "`" . $column->Field . "` " . $column->Type;
+                if ($column->Key == 'PRI') $content[$x] .= ' PRIMARY KEY ';
+                if ($column->Null == 'No') $content[$x] .= " NOT NULL ";
+                if ($column->Null == 'Yes') $content[$x] .= " NULL ";
+                if (trim($column->Default) != '') {
+                    if ($column->Default != 'current_timestamp()') {
+                        $content[$x] .= " DEFAULT '" . $column->Default . "'";
+                    } else {
+                        $content[$x] .= " DEFAULT " . $column->Default;
+                    }
+                }
+                if (trim($column->Extra) != '') $content[$x] .= " " . $column->Extra;
             }
 
-            $return .= "\r"."-- ".strtoupper($name)."\r" ;
-            $return .= "\r"." DROP Table IF EXISTS `".$name."` ; "."\r" ;
-            $return .= "\r"." create table `".$name."` ( ";
-            $return .= "\r".implode(",\r", $content);
-            $return .= "\r"." ) ;"."\r" ;
+            $return .= "\r" . "-- table " . strtoupper($name) . " -- \r";
+            $return .= "\r" . " DROP Table IF EXISTS `" . $name . "` ; " . "\r";
+            $return .= "\r" . " create table `" . $name . "` ( ";
+            $return .= "\r" . implode(",\r", $content);
+            $return .= "\r" . " ) ;" . "\r";
 
             $statement = Query::from($name)->select('*');
 
             $recs = $this->query($statement); // 'select * from ' . $name);
 
-            foreach($recs as $rec)
-            {
+            $chaines = array();
+
+            foreach ($recs as $r => $rec) {
                 $set = $into = $values = array();
 
-                foreach($rec as $col => $val)
-                {
+                foreach ($rec as $col => $val) {
                     $set[] = " `$col` = '" . addslashes($val) . "' ";
                     $into[] = " `$col` ";
                     $values[] = "'" . addslashes($val) . "'";
                 }
 
-                $return .= "\r"."insert ignore into `$name`( " ;
-                $return .= "\r".implode(", ", $into) ;
-                $return .= "\r".") values (" ;
-                $return .= "\r".implode(",\r", $values) ;
-                $return .= "\r".");" ;
+                if ($r === 0) {
+                    $return .= "\r" . "insert ignore into `$name`(" . implode(", ", $into) . ") values ";
+                }
+                $chaines[] = "(" . implode(",", $values) . ")";
             }
+
+            $return .= "\r" . implode(",\r", $chaines) . ";" . "\r";
+        }
+        foreach($tables as $table)
+        {
+            $name = $table->{'Tables_in_'.$this->db_name};
+
+            $sql_foreign = "SELECT
+                TABLE_NAME,
+                COLUMN_NAME,
+                CONSTRAINT_NAME,
+                REFERENCED_TABLE_NAME,
+                REFERENCED_COLUMN_NAME
+            FROM
+                INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+            WHERE
+                REFERENCED_TABLE_SCHEMA = '".$this->db_name."'
+                AND REFERENCED_TABLE_NAME = '" . $name . "';";
+
         }
 
         return $return ;

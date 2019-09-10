@@ -8,6 +8,7 @@ use App\Model\Entity\Game\Map\MapEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use App\Model\Entity\Journal;
 use App\Model\Service;
+use Core\Redirect\Redirect;
 
 class MovementService extends Service
 {
@@ -45,7 +46,7 @@ class MovementService extends Service
 
         if($random<=25){
             // declenche un combat aleatoire
-            header('location:?p=test.combat');
+            Redirect::getInstance()->setAct("combat")->setCtl("test")->send();
         }
     }
 

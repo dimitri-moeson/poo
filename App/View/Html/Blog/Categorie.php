@@ -1,4 +1,6 @@
-<h1><?php echo $categorie->nom ?></h1>
+<h1><?php use Core\Render\Url;
+
+    echo $categorie->nom ?></h1>
 <div class="row">
     <div class="col-sm-8">
 
@@ -10,7 +12,7 @@
 
         <?php } // endforeach ?>
 
-        <p><a href="index.php">home</a></p>
+        <p><a href="/">home</a></p>
     </div>
 
     <div class="col-sm-4 sidebar">
@@ -24,7 +26,8 @@
 
         <?php foreach ($clouds as $key) { ?>
 
-            <a style="font-size:<?php echo ($key->called+1)*6 ?>px" href="?p=blog.article.keyword&id=<?php echo $key->id ?>">[<?php echo trim($key->mot) ?>]</a>
+            <a style="font-size:<?php echo ($key->called+1)*6 ?>px"
+               href="<?php echo Url::generate("keyword", "article","blog", $key->id ) ?>">[<?php echo trim($key->mot) ?>]</a>
 
         <?php } // endforeach ?>
 

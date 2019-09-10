@@ -3,6 +3,7 @@
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Get;
 use Core\HTML\Header\Header;
+use Core\Render\Url;
 use Core\Request\Request;
 
 $ctl_ = Request::getInstance()->getCtrl();
@@ -73,7 +74,7 @@ $auth = new DatabaseAuth(App::getInstance()->getDb());
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="?p=test.fiche">Project</a>
+            <a class="navbar-brand" href="<?php echo Url::generate("fiche","test") ?>">Project</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -101,13 +102,13 @@ $auth = new DatabaseAuth(App::getInstance()->getDb());
                 </li-->
             </ul>
 <?php if($auth->logged()) {?>
-            <form method="post" action="?p=user.logout" class="navbar-form navbar-right">
-                <a href="?p=admin.item.index" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
+            <form method="post" action="<?php echo Url::generate("logout","user") ?>" class="navbar-form navbar-right">
+                <a href="<?php echo Url::generate("index","item","admin") ?>" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
                 <button type="submit" name="logout" value="logout" class="btn btn-success"><i class="glyphicon glyphicon-off"></i>Sign out</button>
             </form>
 
 <?php } else { ?>
-            <form method="post" action="?p=user.login" class="navbar-form navbar-right">
+            <form method="post" action="<?php echo Url::generate("login","user") ?>" class="navbar-form navbar-right">
                 <div class="form-group">
                     <input type="text" placeholder="login" name="login" class="form-control">
                 </div>
@@ -131,16 +132,16 @@ $auth = new DatabaseAuth(App::getInstance()->getDb());
 
                 <ul class="nav nav-tabs">
                     <li role="presentation" <?php echo $act_ == "fiche" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.fiche"><i class="ra ra-aura"></i>&nbsp;Fiche</a>
+                        <a href="<?php echo Url::generate("fiche","test") ?>"><i class="ra ra-aura"></i>&nbsp;Fiche</a>
                     </li>
                     <li role="presentation" <?php echo $act_ == "deplacer" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.deplacer"><i class="ra ra-compass"></i>&nbsp;Deplacer</a>
+                        <a href="<?php echo Url::generate("deplacer","test") ?>"><i class="ra ra-compass"></i>&nbsp;Deplacer</a>
                     </li>
                     <li role="presentation" <?php echo $act_ == "equiper" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.equiper"><i class="ra ra-vest"></i>&nbsp;Equiper</a>
+                        <a href="<?php echo Url::generate("equiper","test") ?>"><i class="ra ra-vest"></i>&nbsp;Equiper</a>
                     </li>
                     <li role="presentation" <?php echo $act_ == "sac" ? 'class="active"' : '' ?> >
-                        <a href="?p=test.sac"><i class="ra ra-ammo-bag"></i>&nbsp;Sac</a>
+                        <a href="<?php echo Url::generate("sac","test") ?>"><i class="ra ra-ammo-bag"></i>&nbsp;Sac</a>
                     </li>
 
                 </ul>

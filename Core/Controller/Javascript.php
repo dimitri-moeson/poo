@@ -4,6 +4,8 @@
 namespace Core\Controller;
 
 
+use Core\Config;
+
 class Javascript
 {
     /**
@@ -14,7 +16,7 @@ class Javascript
         $page = explode('.', $path );
 
 
-        $this->path = '/App/View/Assets/Scripts/'.implode('/', array_map("ucfirst", $page)).'.js';
+        $this->path = Config::VIEW_DIR.'/Assets/Scripts/'.implode('/', array_map("ucfirst", $page)).'.js';
 
     }
 
@@ -25,16 +27,14 @@ class Javascript
     {
         header('Content-type: application/javascript');
 
-        //echo " // " .ROOT."/".$this->path."\n\r" ;
-
-        if(file_exists(ROOT.$this->path))
+        if(file_exists($this->path))
         {
-            readfile(ROOT . $this->path);
+            readfile($this->path);
         }
-        else
+        /*else
         {
             echo " src js['" . $this->path . "'] inacessible ...";
-        }
+        }*/
 
         die;
 

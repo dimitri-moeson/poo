@@ -115,7 +115,7 @@ class PageController extends AppController
             if(Post::getInstance()->has('id'))
             {
                 $this->post = $this->Article->find(Post::getInstance()->val('id'));
-                if (!$this->post) $this->notFound();
+                if (!$this->post) $this->notFound("del page");
             }
         }
 
@@ -143,7 +143,7 @@ class PageController extends AppController
         if(Get::getInstance()->has('id')){
 
             $this->post = $this->Article->find(Get::getInstance()->val('id'));
-            if (!$this->post) $this->notFound();
+            if (!$this->post) $this->notFound("single page");
 
             $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
 

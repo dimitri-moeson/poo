@@ -44,7 +44,7 @@ class PersonnageController extends AppController
             if(Post::getInstance()->has('id')) {
 
                 $post = $this->Personnage->find(Post::getInstance()->val('id'));
-                if (!$post) $this->notFound();
+                if (!$post) $this->notFound("delete perso");
             }
 
             if(Post::getInstance()->has('conf')) {
@@ -81,7 +81,7 @@ class PersonnageController extends AppController
         if(Get::getInstance()->has('id')) {
 
             $this->post = $this->Personnage->find(Get::getInstance()->val('id'));
-            if (!$this->post) $this->notFound();
+            if (!$this->post) $this->notFound("single perso");
         }
 
         $this->categories = $this->Personnage->list('id','nom');

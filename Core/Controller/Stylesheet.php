@@ -4,6 +4,8 @@
 namespace Core\Controller;
 
 
+use Core\Config;
+
 class Stylesheet
 {
     /**
@@ -13,8 +15,7 @@ class Stylesheet
 
         $page = explode('.', $path );
 
-
-        $this->path = '/App/View/Assets/Styles/'.implode('/', array_map("ucfirst", $page)).'.css';
+        $this->path = Config::VIEW_DIR.'/Assets/Styles/'.implode('/', array_map("ucfirst", $page)).'.css';
 
     }
 
@@ -25,16 +26,14 @@ class Stylesheet
     {
         header('content-type: text/css');
 
-        //echo " // " .ROOT."/".$this->path."\n\r" ;
-
-        if(file_exists(ROOT.$this->path))
+        if(file_exists($this->path))
         {
-            readfile(ROOT . $this->path);
+            readfile($this->path);
         }
-        else
+        /*else
         {
             echo " src js['" . $this->path . "'] inacessible ...";
-        }
+        }*/
 
         die;
 

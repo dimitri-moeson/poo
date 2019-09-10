@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use Core\Config;
 use Core\HTML\Env\Get;
 
 class ImgController extends AppController
@@ -36,7 +37,7 @@ class ImgController extends AppController
     {
         header('Content-Type: image/gif');
 
-        $imgName = ROOT."/App/View/Assets/Pictures/".$path ;
+        $imgName = Config::VIEW_DIR."/Assets/Pictures/".$path ;
 
         if(file_exists($imgName))
         {

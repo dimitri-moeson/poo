@@ -107,4 +107,17 @@ class GlobalRequest
             return $_REQUEST;
         }
     }
+
+    /**
+     * confirme l'envoie du formulaire
+     * @return bool
+     */
+    public function submit()
+    {
+        if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || strtoupper($_SERVER['REQUEST_METHOD']) === 'GET') {
+
+            return self::$instances[ $this->call ]->submit();
+
+        }
+    }
 }

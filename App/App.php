@@ -75,9 +75,11 @@ class App
 
             $ctrl_name = $request->getCtrlName();
             $action = $request->getAction();
+            $slug = $request->getSlug();
 
             Debugger::getInstance()->app('controller', $ctrl_name);
             Debugger::getInstance()->app('action', $action);
+            Debugger::getInstance()->app('slug', $slug);
 
             $ctrl = new $ctrl_name();
 
@@ -85,7 +87,7 @@ class App
 
                 //$this->act = $action;
 
-                call_user_func(array($ctrl, $action));
+                call_user_func(array($ctrl, $action),array($slug));
 
                 Render::getInstance($request->getPage())->exec($ctrl);
             }
@@ -122,7 +124,6 @@ class App
         return self::$database;
     }
 
-
     /**
      * Factory
      * @param $name
@@ -158,5 +159,4 @@ class App
         }
 
     }
-
 }

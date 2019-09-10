@@ -9,6 +9,8 @@
 namespace Core\Controller;
 
 
+use Core\Config;
+
 class Picture
 {
     /**
@@ -17,7 +19,7 @@ class Picture
     public function __construct($path){
 
 
-        $this->path = '/App/View/Assets/Pictures/'.$path ;
+        $this->path = Config::VIEW_DIR.'/Assets/Pictures/'.$path ;
     }
 
     /**
@@ -27,20 +29,20 @@ class Picture
     {
         header('Content-Type: image/gif');
 
-        if(file_exists(ROOT.$this->path))
+        if(file_exists($this->path))
         {
-            $mime = mime_content_type(ROOT.$this->path);
+            $mime = mime_content_type($this->path);
 
             if($mime == "image/gif"){
-                $im = @imagecreatefromgif(ROOT.$this->path);
+                $im = @imagecreatefromgif($this->path);
             }
 
             if($mime == "image/jpeg"){
-                $im = @imagecreatefromjpeg(ROOT.$this->path);
+                $im = @imagecreatefromjpeg($this->path);
             }
 
             if($mime == "image/png"){
-                $im = @imagecreatefrompng(ROOT.$this->path);
+                $im = @imagecreatefrompng($this->path);
             }
         }
 

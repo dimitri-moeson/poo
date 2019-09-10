@@ -10,6 +10,8 @@ namespace App\Controller\Blog;
 
 use App;
 use App\Controller\AppController;
+use App\Model\Service\ArticleService;
+use App\Model\Table\Blog\ArticleTable;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
@@ -52,18 +54,17 @@ class ArticleController extends AppController
         $this->posts = $this->Article->allOf("article");
 
         Render::getInstance()->setView("Blog/Index");
-
     }
 
     /**
      *
      */
-    public function categorie(){
+    public function categorie($_id){
 
-        $_id = Get::getInstance()->val('slug');
+        //$_id = Get::getInstance()->val('slug');
 
         $this->categorie =  $this->Article->recup($_id);
-        if(!$this->categorie) $this->notFound();
+        if(!$this->categorie) $this->notFound("categorie");
 
         $this->posts = $this->Article->getListByCategorie($_id);
 
@@ -86,13 +87,13 @@ class ArticleController extends AppController
 
             $form
                 ->input("contenu", array('type' => 'textarea', 'label' => "Commentaire", "class" => "editor"))
-/**
+        /**
                 //->input("titre", array("type" => "hidden", "value" => "commentaire-$parent_id"))
                 //->input("type", array("type" => "hidden", "value" => "commentaire"))
                 //->input("parent_id", array("type" => "hidden", "value" => $parent_id))
                 //->input("author_id", array("type" => "hidden", "value" => $this->auth->getUser('id')))
                 //->input("date", array("type" => "hidden", "value" => date("Y-m-d H:i:s")))
- * */
+        **/
                 ->submit("Enregistrer");
 
             return $form;
@@ -102,45 +103,54 @@ class ArticleController extends AppController
     /**
      *
      */
-    public function show(){
+    public function show($_id)
+    {
+        echo $_id ;
 
-        $_id = Get::getInstance()->val('slug');
-        $this->post = $this->Article->recup($_id);
-        if(!$this->post) $this->notFound();
+        if($this->Article instanceof ArticleTable)
+        {
+            echo "recup";
+            $this->post = $this->Article->recup($_id);
+            if (!$this->post) $this->notFound("Article not found");
 
-        if(Post::getInstance()->submit()) {
-
-            Post::getInstance()->val("titre", "commentaire-".$this->post->parent_id);
-            Post::getInstance()->val("type",  "commentaire");
-            Post::getInstance()->val("parent_id", $this->post->parent_id);
-            Post::getInstance()->val("author_id",  $this->auth->getUser('id'));
-            Post::getInstance()->val("date",  date("Y-m-d H:i:s"));
-
-            var_dump($_POST);
-
-            die;
-            if($this->ArticleService->record())
+            if (Post::getInstance()->submit())
             {
-                FlashBuilder::create("commentaire ajouté","success");
+                Post::getInstance()->val("titre", "commentaire-" . $this->post->id);
+                Post::getInstance()->val("type", "commentaire");
+                Post::getInstance()->val("parent_id", $this->post->id);
+                Post::getInstance()->val("author_id", $this->auth->getUser('id'));
+                Post::getInstance()->val("date", date("Y-m-d H:i:s"));
+
+                if($this->ArticleService  instanceof ArticleService)
+                {
+                    if ($this->ArticleService->record())
+                    {
+                        FlashBuilder::create("commentaire ajouté", "success");
+                    }
+                }
+                Redirect::getInstance()->setParams(array("slug" => $this->post->slug))
+                    ->setAct("show")->setCtl("article")->setDom("blog")
+                    ->send();
             }
-            Redirect::getInstance()->setParams(array("slug" => $this->post->slug ))
-                ->setAct("show")->setCtl("article")->setDom("blog")
-                ->send();
+
+            $this->categorie = $this->Article->find($this->post->parent_id);
+
+            $keywords = $this->Keyword->index($_id);
+
+            Render::getInstance()->setView("Blog/Show");
+            Header::getInstance()->setTitle($this->post->titre);
+            Header::getInstance()->setKeywords(implode(",", $keywords));
+            Header::getInstance()->setDescription($this->post->description);
+
+            $this->form = $this->auth->logged() ? $this->form_comment($this->post->id) : null;
+
+            $this->comments = $this->Article->allOf("commentaire", $this->post->id);
+
+            //echo "comments : ".count($this->comments);
         }
+    }
 
-        $this->categorie = $this->Article->find($this->post->parent_id);
+    public function keywords($word){
 
-        $keywords = $this->Keyword->index($_id);
-
-        Render::getInstance()->setView("Blog/Show");
-        Header::getInstance()->setTitle($this->post->titre);
-        Header::getInstance()->setKeywords(implode(",",$keywords ));
-        Header::getInstance()->setDescription($this->post->description);
-
-        if($this->auth->logged()){
-            $this->form = $this->form_comment($this->post->id);
-        }
-
-        $this->comments = $this->Article->allOf("commentaire", $this->post->id );
     }
 }

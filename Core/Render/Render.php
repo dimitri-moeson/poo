@@ -4,6 +4,7 @@
 namespace Core\Render;
 
 
+use Core\Config;
 use Core\Controller\Controller;
 use Core\Debugger\Debugger;
 use Core\HTML\Template\Template;
@@ -69,7 +70,7 @@ class Render
      */
     public function block($view_filename , Array $datas = array() )
     {
-        $view_file = ROOT . "/App/View/Block/" . $view_filename . ".php";
+        $view_file = Config::VIEW_DIR. "/Block/" . $view_filename . ".php";
 
         if(file_exists($view_file))
         {
@@ -110,7 +111,7 @@ class Render
     public function exec(Controller $controller)
     {
         $view_filename = $this->viewPath . "/" . $this->view . ".php";
-        $template_filename = ROOT . "/App/View/Templates/" . $this->template . ".php";
+        $template_filename = Config::VIEW_DIR. "/Templates/" . $this->template . ".php";
 
         $content = "chargement échoué ??";
 
@@ -126,7 +127,7 @@ class Render
             }
             else{
 
-                $controller->notFound($this->view);
+                $controller->notFound("view => ".$this->view);
             }
         }
         catch (Exception $e)

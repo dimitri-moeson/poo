@@ -194,7 +194,7 @@ class TestController extends AppController
     /**
      *
      */
-    public function remove()
+    public function jeter()
     {
         if (Get::getInstance()->has('id'))
         {

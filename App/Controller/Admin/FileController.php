@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App;
+use Core\Config;
 use Core\HTML\Env\File;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
@@ -85,7 +86,7 @@ class FileController extends AppController
      */
     function picture(){
 
-        File::getInstance()->setUploadDir(ROOT."/App/View/Assets/Pictures");
+        File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Pictures");
 /**
         if(Post::getInstance()->submit()) {
 
@@ -128,7 +129,7 @@ class FileController extends AppController
      */
     function style(){
 
-        File::getInstance()->setUploadDir(ROOT."/App/View/Assets/Styles");
+        File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Styles");
 /**
         if(Post::getInstance()->submit()) {
 
@@ -163,7 +164,7 @@ class FileController extends AppController
      */
     function script(){
 
-        File::getInstance()->setUploadDir(ROOT."/App/View/Assets/Scripts");
+        File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Scripts");
 /**
         if(Post::getInstance()->submit()) {
 

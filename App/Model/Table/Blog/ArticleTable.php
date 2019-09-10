@@ -60,6 +60,9 @@ class ArticleTable extends Table
         return $this->request( $statement, null ,true,ArticleEntity::class );
     }
 
+    /**
+     * @return array|mixed
+     */
     public function all(){
 
         $statement = QueryBuilder::init()->select('a.*')/** , 'c.nom as cat_titre' */
@@ -91,15 +94,13 @@ class ArticleTable extends Table
      * @param $type
      * @return array|mixed
      */
-    public function allOf($type , $parent = null, $order = "position"){
+    public function allOf($type = "article" , $parent = null, $order = "position"){
 
         $statement = $this->queryType($parent,$order);
 
         $attr = array("type" => $type);
 
-        if(!is_null($parent)){
-            $attr["parent"] = $parent;
-        }
+        if(!is_null($parent)) $attr["parent"] = $parent;
 
         return $this->request( $statement ,$attr,false,ArticleEntity::class );
     }

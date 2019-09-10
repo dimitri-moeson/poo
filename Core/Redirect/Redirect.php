@@ -54,11 +54,26 @@ class Redirect extends Url
     }
 
     /**
+     * lance une redirection depuis une entete web vers l'url passée en paramètre
      * @param $url
      */
     private static function location($url)
     {
         header("location:".$url);
+        die;
+    }
+    /**
+     * @Nom 		:	redirectPage
+     * @api  		:	lance une redirection depuis une page html vers l'url passée en paramètre
+     * @Paramètre 	:	une URL
+     * @Retourne 	:	rien
+     * @Créé le 	:	01/01/2010 par Sékou Traoré
+     * @Ex d'appel	:	redirectPage('mon.php');
+     * => redirige vers l'écran du monitoring
+     **/
+    function redirectPage($url)
+    {
+        echo('<meta http-equiv="refresh" content="0; URL='.$url.'">');
         die;
     }
 
@@ -80,6 +95,9 @@ class Redirect extends Url
         return false ;
     }
 
+    /**
+     * @return bool|string
+     */
     public function __toString()
     {
         return $this->send();

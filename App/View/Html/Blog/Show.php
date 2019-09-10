@@ -1,4 +1,8 @@
+<?php
 
+use Core\Render\Url;
+
+?>
 <h1><?php echo $post->titre ?></h1>
 <div class="row">
     <div class="col-sm-8">
@@ -17,17 +21,27 @@
             </div>
         </div>
 
-        <p><a href="index.php">home</a></p>
+        <p><a href="/">home</a></p>
 
-        <p><?php echo $form ?></p>
 
-        <hr/>
-        <?php foreach ($comments as $comment) { ?>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title"> <h3>Commentaires</h3></div>
+            </div>
+
+            <div class="panel-body">
+
+                <p><?php echo $form ?></p>
+
+                <hr/>
+                <?php foreach ($comments as $comment) { ?>
 
             <li><?php echo $comment->contenu ?></li>
 
         <?php } // endforeach ?>
 
+            </div>
+        </div>
     </div>
 
     <div class="col-sm-4">
@@ -41,7 +55,7 @@
         <p>
         <?php foreach ($clouds as $key) { ?>
 
-            <a style="font-size:<?php echo ($key->called+1)*6 ?>px" href="?p=blog.article.keyword&id=<?php echo $key->id ?>">[<?php echo trim($key->mot) ?>]</a>
+            <a style="font-size:<?php echo ($key->called+1)*6 ?>px" href="<?php echo Url::generate("keyword", "article","blog")->setParams(array("id" => $key->id )) ?>">[<?php echo trim($key->mot) ?>]</a>
 
         <?php } // endforeach ?>
         </p>

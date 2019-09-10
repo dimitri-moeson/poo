@@ -9,6 +9,7 @@ namespace App\Controller;
 
 use App;
 use Core\Auth\DatabaseAuth;
+use Core\Config;
 use Core\Controller\Controller;
 use Core\HTML\Header\Header;
 use Core\Render\Render;
@@ -21,8 +22,9 @@ class AppController extends Controller
      */
     public function __construct()
     {
+
         Render::getInstance()->setTemplate('default');
-        Render::getInstance()->setViewPath( realpath(ROOT."/App/View/Html/"));
+        Render::getInstance()->setViewPath( realpath(Config::VIEW_DIR."/Html/"));
 
         Header::getInstance()->add_js("tooltip");
         Header::getInstance()->add_css("blade");

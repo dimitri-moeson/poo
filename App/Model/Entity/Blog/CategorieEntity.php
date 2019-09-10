@@ -8,11 +8,12 @@
 namespace App\Model\Entity\Blog ;
 
 use Core\Model\Entity\Entity;
+use Core\Render\Url;
 
 class CategorieEntity extends Entity
 {
-    public function getUrl(){
-
-        return "Index.php?p=blog.article.categorie&id=".$this->id ;
+    public function getUrl()
+    {
+        return Url::generate("categorie","article","blog", $this->id );
     }
 }

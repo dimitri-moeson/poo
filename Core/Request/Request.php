@@ -13,7 +13,9 @@ use Core\HTML\Env\Get;
  */
 class Request
 {
-    /** @var Request */
+    /**
+     * @var Request
+     */
     private static $instance;
 
     /**
@@ -21,16 +23,25 @@ class Request
      */
     private $ctrl_name;
 
-    /** @var  */
+    /**
+     * @var
+     */
     private $ctrl ;
 
-    /** @var  */
+    /**
+     * @var
+     */
     private $action;
 
     /**
      * @var array
      */
     private $page = array();
+
+    /**
+     * @var string
+     */
+    private $slug;
 
     /**
      * @return Request
@@ -47,6 +58,7 @@ class Request
 
     /**
      * Request constructor.
+     * singleton
      */
     private function __construct()
     {
@@ -102,9 +114,9 @@ class Request
             die;
         }
 
-        $p = Get::getInstance()->val('p') ?? 'default.index';
+        $p = getenv('REQUEST_URI')=="/" ? 'default/index' :  getenv('REQUEST_URI') ;//Get::getInstance()->val('p') ?? 'default.index';
 
-        $this->page = explode('.', $p );
+        $this->page = explode('/', ltrim($p,"/") );
 
         Debugger::getInstance()->app("page",$this->getPage());
 
@@ -113,18 +125,28 @@ class Request
             $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'Controller';
             $this->ctrl = $this->page[0] ?? "default";
             $this->action = "index";
+            $this->slug = null ;
         }
         elseif(count($this->page)== 2 )
         {
             $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'Controller';
-            $this->ctrl = $this->page[0] ?? "default" ;
+            $this->ctrl = $this->page[0] ?? "default";
             $this->action = $this->page[1] ?? "index";
+            $this->slug = null ;
         }
         elseif(count($this->page)== 3 )
         {
             $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'\\'.ucfirst($this->page[1]).'Controller';
-            $this->ctrl = $this->page[1] ?? "default" ;
+            $this->ctrl = $this->page[1] ?? "default";
             $this->action = $this->page[2] ?? "index";
+            $this->slug = null ;
+        }
+        elseif(count($this->page)== 4 )
+        {
+            $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'\\'.ucfirst($this->page[1]).'Controller';
+            $this->ctrl = $this->page[1] ?? "default";
+            $this->action = $this->page[3] ?? "index";
+            $this->slug = $this->page[2] ?? "1";
         }
     }
 
@@ -181,5 +203,23 @@ class Request
     public function getPage(): array
     {
         return $this->page;
+    }
+
+    /**
+     * @param string $slug
+     * @return Request
+     */
+    public function setSlug(string $slug = null ): Request
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
     }
 }

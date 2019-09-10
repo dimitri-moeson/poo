@@ -1,5 +1,6 @@
 <?php use Core\Auth\CryptAuth;
-use Core\Render\Render; ?>
+use Core\Render\Render;
+use Core\Render\Url; ?>
 
         <table id="item-table" class="table">
 
@@ -10,7 +11,7 @@ use Core\Render\Render; ?>
                     <th>login</th>
                     <th>pswd</th>
                     <th>
-                        <a href="?p=admin.user.add" class="btn btn-success">Add</a>
+                        <a href="<?php echo Url::generate("add","user","admin") ?>" class="btn btn-success">Add</a>
                     </th>
                 </tr>
 

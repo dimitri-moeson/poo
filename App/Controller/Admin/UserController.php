@@ -95,7 +95,7 @@ class UserController extends AppController
             if(Post::has('id')) {
 
                 $post = $this->User->find(Post::get('id'));
-                if (!$post) $this->notFound();
+                if (!$post) $this->notFound("del user");
             }
 
             if(Post::has('conf')) {
@@ -136,7 +136,7 @@ class UserController extends AppController
         if(Get::getInstance()->has('id')) {
 
             $this->post = $this->User->find(Get::getInstance()->val('id'));
-            if (!$this->post) $this->notFound();
+            if (!$this->post) $this->notFound("single user");
         }
 
         Header::getInstance()->setTitle($this->post->titre);

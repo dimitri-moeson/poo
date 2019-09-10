@@ -3,7 +3,7 @@
 use App\Model\Entity\Game\Item\ItemEntity;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Header\Header;
-use Core\Request\Request;
+use Core\Render\Url;use Core\Request\Request;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
@@ -76,20 +76,20 @@ $file_rub  = $ctl_ === "file";
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="?p=test.fiche">Project</a>
+            <a class="navbar-brand" href="<?php echo Url::generate("fiche","test") ?>">Project</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
 
             <?php if ($auth->logged()) { ?>
-                <form method="post" action="?p=user.logout" class="navbar-form navbar-right">
-                    <a href="?p=test.fiche" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
+                <form method="post" action="<?php echo Url::generate("logout","user") ?>" class="navbar-form navbar-right">
+                    <a href="<?php echo Url::generate("index","item","admin") ?>" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
                     <button type="submit" name="logout" value="logout" class="btn btn-success"><span
                                 class="glyphicon glyphicon-off"></span>Sign out
                     </button>
                 </form>
 
             <?php } else { ?>
-                <form method="post" action="?p=user.login" class="navbar-form navbar-right">
+                <form method="post" action="<?php echo Url::generate("login","user") ?>" class="navbar-form navbar-right">
                     <div class="form-group">
                         <input type="text" placeholder="login" name="login" class="form-control">
                     </div>
@@ -121,19 +121,19 @@ $file_rub  = $ctl_ === "file";
                         <a href="#blogSubmenu" data-toggle="collapse" aria-expanded="<?php echo $blog_rub ? "true" : "false" ?>" class="dropdown-toggle">Blog<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul class="<?php echo $blog_rub ? "in" : "collapse" ?>" id="blogSubmenu">
 
-                            <li><a href="?p=admin.categorie.index">Categorie</a></li>
-                            <li><a href="?p=admin.article.index">Article</a></li>
+                            <li><a href="<?php echo Url::generate("index","categorie","admin") ?>">Categorie</a></li>
+                            <li><a href="<?php echo Url::generate("index","article","admin") ?>">Article</a></li>
 
                         </ul>
                     </li>
 
-                    <li><a href="?p=admin.page.index">Page</a></li>
+                    <li><a href="<?php echo Url::generate("index","page","admin") ?>">Page</a></li>
 
                     <li>
                         <a href="#gameSubmenu" data-toggle="collapse" aria-expanded="<?php echo $game_rub ? "true" : "false" ?>" class=" active dropdown-toggle">Game<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul class="<?php echo $game_rub ? "in" : "collapse" ?>" id="gameSubmenu">
-                            <li><a href="?p=admin.personnage.index">Personnage</a></li>
-                            <li><a class="active" href="?p=admin.map.index">Map</a></li>
+                            <li><a href="<?php echo Url::generate("index","personnage","admin") ?>">Personnage</a></li>
+                            <li><a class="active" href="<?php echo Url::generate("index","map","admin") ?>">Map</a></li>
                             <li><a href="#itmSubmenu" data-toggle="collapse" aria-expanded="<?php echo $item_rub ? "true" : "false" ?>" class="dropdown-toggle">Item<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                                 <ul class="<?php echo $item_rub ? "in" : "collapse" ?>" id="itmSubmenu">
                                     <?php foreach (ItemEntity::type_arr as $cat => $items) { ?>
@@ -143,7 +143,8 @@ $file_rub  = $ctl_ === "file";
                                             <ul class="collapse" id="<?php echo $cat ?>Submenu">
                                                 <?php foreach ($items as $k => $item) { ?>
                                                     <li>
-                                                        <a class="" href="?p=admin.item.index&type=<?php echo $item ?>"><?php echo ucfirst($item) ?></a>
+                                                        <a class="" href="<?php echo Url::generate("index","item","admin" , $item ) ?>">
+                                                            <?php echo ucfirst($item) ?></a>
                                                     </li>
                                                 <?php } ?>
                                             </ul>
@@ -155,22 +156,22 @@ $file_rub  = $ctl_ === "file";
                         </ul>
                     </li>
 
-                    <li><a href="?p=admin.user.index">User</a></li>
+                    <li><a href="<?php echo Url::generate("index","user","admin") ?>">User</a></li>
 
                     <li>
                         <a href="#fileSubmenu" data-toggle="collapse" aria-expanded="<?php echo $file_rub ? "true" : "false" ?>" class="dropdown-toggle">Fichier<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul class="<?php echo $file_rub ? "in" : "collapse" ?>" id="fileSubmenu">
-                            <li><a href="?p=admin.file.picture">Image</a></li>
-                            <li><a href="?p=admin.file.style">Css</a></li>
-                            <li><a href="?p=admin.file.script">Js</a></li>
+                            <li><a href="<?php echo Url::generate("picture","file","admin") ?>">Image</a></li>
+                            <li><a href="<?php echo Url::generate("style","file","admin") ?>">Css</a></li>
+                            <li><a href="<?php echo Url::generate("script","file","admin") ?>">Js</a></li>
                         </ul>
                     </li>
 
                     <li>
                         <a href="#otherSubmenu" data-toggle="collapse" aria-expanded="<?php echo $sql_rub ? "true" : "false" ?>" class="dropdown-toggle">Base de données<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul class="<?php echo $sql_rub ? "in" : "collapse" ?>" id="otherSubmenu">
-                            <li><a href="?p=admin.sql.index">Requête</a></li>
-                            <li><a href="?p=admin.sql.save">Export</a></li>
+                            <li><a href="<?php echo Url::generate("index","sql","admin") ?>">Requête</a></li>
+                            <li><a href="<?php echo Url::generate("save","sql","admin") ?>">Export</a></li>
                         </ul>
                     </li>
 

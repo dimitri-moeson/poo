@@ -2,7 +2,7 @@
 use Core\Render\Url;
 
 $urldel = Url::generate("delete",$p,"admin");
-$urlEdi = Url::generate("single",$p,"admin")->setParams(array('id' => $id ));
+$urlEdi = Url::generate("single",$p,"admin" , $id );
 
 ?>
 

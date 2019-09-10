@@ -1,5 +1,6 @@
 <?php
 use Core\Render\Render;
+use Core\Render\Url;
 use Core\Session\FlashBuilder;
 ?>
 
@@ -35,7 +36,7 @@ use Core\Session\FlashBuilder;
         <tr>
             <th>Titre</th>
             <th>
-                <a href="?p=admin.item.add" class="btn btn-success">Add</a>
+                <a href="<?php echo Url::generate("add","article","admin") ?>" class="btn btn-success">Add</a>
             </th>
         </tr>
 

@@ -15,14 +15,8 @@
                 <div class="panel-title"><?php echo $page->titre ?></div>
             </div>
 
-            <div class="panel-body"><?php
+            <div class="panel-body">
 
-                /**echo Query::from('article','a')
-                        ->where('id = 1')
-                        ->select('id','titre','contenu') ;*/
-
-            ?>
-            <br/>
                 <?php echo $page->contenu ?>
 
                 <a href="/?slug=<?php echo $page->slug ?>">reload</a>

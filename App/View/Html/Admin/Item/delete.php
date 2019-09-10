@@ -1,4 +1,5 @@
-<?php   use Core\Render\Render; ?>
+<?php   use Core\Render\Render;
+use Core\Render\Url; ?>
 <div class="col-sm-4">
     <?php
 
@@ -20,7 +21,7 @@
             <th>Titre</th>
             <th>Icone</th>
             <th>
-                <a href="?p=admin.item.add" class="btn btn-success">Add</a>
+                <a href="<?php echo Url::generate("add","item","admin") ?>" class="btn btn-success">Add</a>
             </th>
         </tr>
 

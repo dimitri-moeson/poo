@@ -18,6 +18,25 @@ class ItemEntity extends Entity
 
     const type_arr = array(
 
+        "politique" => array(
+
+            "faction",
+            "guilde",
+            "race"
+
+        ),
+
+        "classe" => array(
+
+            "cac",
+            "distant",
+            "caster",
+            "tank",
+            "healer",
+            "support",
+            "sapeur"
+        ),
+
         "arme_1_main" => array(
 
             "épée",

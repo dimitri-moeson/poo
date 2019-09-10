@@ -77,6 +77,7 @@ class ArticleService extends Service
 
             "titre"         =>  Post::getInstance()->val("titre"),
             "parent_id"     => (Post::getInstance()->val("parent_id") ?? null ),
+            "author_id"     => (Post::getInstance()->val("author_id") ?? null ),
             "date"          => (Post::getInstance()->val("date") ?? date("Y-m-d")),
             "contenu"       => (Post::getInstance()->val("contenu") ?? "null" ) ,
             "type"          =>  Post::getInstance()->val("type"),

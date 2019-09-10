@@ -8,6 +8,7 @@
 namespace App\Model\Entity\Blog ;
 
 use Core\Model\Entity\Entity;
+use Core\Render\Url;
 
 class ArticleEntity extends Entity
 {
@@ -16,12 +17,19 @@ class ArticleEntity extends Entity
      */
     public function getUrl(){
 
+        if($this->type == "article")
+        {
+            return Url::generate("show", "article","blog", $this->slug);
+        }
+
+        if($this->type == "categorie")
+        {
+            return Url::generate("categorie", "article","blog",$this->slug);
+        }
+
         if($this->type == "page")  return "/?slug=".$this->slug ;
 
-        if($this->type == "article")  $type = "blog.article.show";
-        if($this->type == "categorie")  $type = "blog.article.categorie";
-
-        return "/?p=".$type."&slug=".$this->slug ;
+        return "/?p=".$this->type."&slug=".$this->slug ;
     }
 
     /**

@@ -95,7 +95,7 @@ class ItemController extends AppController
             if(Post::getInstance()->has('id')) {
 
                 $this->post = $this->Item->find(Post::getInstance()->val('id'));
-                if (!$this->post) $this->notFound();
+                if (!$this->post) $this->notFound("del itm");
             }
 
             if(Post::getInstance()->has('conf')) {
@@ -136,7 +136,7 @@ class ItemController extends AppController
         if(Get::getInstance()->has('id')) {
 
             $this->post = $this->Item->find(Get::getInstance()->val('id'));
-            if (!$this->post) $this->notFound();
+            if (!$this->post) $this->notFound("single item");
         }
 
         Header::getInstance()->setTitle($this->post->titre);

@@ -104,7 +104,7 @@ if ($equip instanceof ItemEntity) {
 
     <ul class='right-click-menu'>
         <li><u><?php echo $equip->inventaire_id ?></u></li>
-        <li data-cible="<?php echo $equip->inventaire_id ?>" data-action="remove" >Jeter</li>
+        <li data-cible="<?php echo $equip->inventaire_id ?>" data-action="jeter" >Jeter</li>
         <!-- a href="?p=test.suppr&id=<?php //echo $equip->inventaire_id ?>" -->
     </ul>
 

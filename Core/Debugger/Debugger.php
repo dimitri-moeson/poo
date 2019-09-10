@@ -5,6 +5,7 @@ namespace Core\Debugger ;
 
 
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
+use Core\Config;
 use Error;
 use ErrorException;
 use Exception;
@@ -70,8 +71,9 @@ class Debugger
      */
     public function javascript(){
 
+
         header('Content-type: application/javascript');
-        readfile(ROOT.'/Core/Debugger/Debugger.js');
+        readfile(Config::CORE_DIR.'/Debugger/Debugger.js');
         die;
     }
 
@@ -82,7 +84,7 @@ class Debugger
 
         header('content-type: text/css');
         header('Cache-Control: max-age=31536000, must-revalidate');
-        readfile(ROOT.'/Core/Debugger/Debugger.css');
+        readfile(Config::CORE_DIR.'/Debugger/Debugger.css');
         die;
     }
 
@@ -141,7 +143,8 @@ class Debugger
      */
     public function view()
     {
-        if(DEBUG) require_once ROOT . '/Core/Debugger/Debugger.html.php';
+
+        if(DEBUG) require_once Config::CORE_DIR . '/Debugger/Debugger.html.php';
     }
 
     /**
@@ -201,6 +204,12 @@ class Debugger
         $this->log_exception( new ErrorException( $str, 0, $num, $file, $line ) );
     }
 
+    function protect_file($str){
+
+        return str_replace(ROOT,"",$str );
+
+    }
+
     /**
      * Uncaught exception handler.
      * @param Exception $e
@@ -249,7 +258,7 @@ class Debugger
             print "<table style='width: 800px; display: inline-block;'>";
             print "<tr style='background-color:rgb(230,230,230);'><th style='width: 80px;'>Type</th><td>" . get_class( $e ) . "</td></tr>";
             print "<tr style='background-color:rgb(240,240,240);'><th>Message</th><td>{$e->getMessage()}</td></tr>";
-            print "<tr style='background-color:rgb(230,230,230);'><th>File</th><td>".str_replace(ROOT,"",$e->getFile())."</td></tr>";
+            print "<tr style='background-color:rgb(230,230,230);'><th>File</th><td>".$this->protect_file($e->getFile())."</td></tr>";
             print "<tr style='background-color:rgb(240,240,240);'><th>Line</th><td>{$e->getLine()}</td></tr>";
             print "</table><hr/>";
             print "<table>";
@@ -257,7 +266,7 @@ class Debugger
             foreach( $e->getTrace() as $x => $trace){
 
                 print "<tr style='background-color:rgb(".( $x%2 == 0 ? '230,230,230' :'240,240,240').");'>
-                            <th>File</th><td>".str_replace(ROOT,"",$trace["file"])."</td>
+                            <th>File</th><td>".$this->protect_file($trace["file"])."</td>
                             <th>Line</th><td>{$trace["line"]}</td>
                             <th>function</th><td>{$trace["function"]}</td>
                             <th>args</th><td><pre>". print_r($trace["args"],1)." </pre></td></tr>";
@@ -269,7 +278,7 @@ class Debugger
         {
 
             $message = "Type: " . get_class( $e ) . "; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
-            file_put_contents( ROOT . "/tmp/log/".date("Ymd")."-exceptions.log", $message . PHP_EOL, FILE_APPEND );
+            file_put_contents( Config::TMP_DIR . "/log/".date("Ymd")."-exceptions.log", $message . PHP_EOL, FILE_APPEND );
             header( "Location:?p=error" );
         }
 
@@ -292,5 +301,13 @@ class Debugger
     public function getLimitTrace(): int
     {
         return $this->limit_trace;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSql(): array
+    {
+        return $this->sql;
     }
 }

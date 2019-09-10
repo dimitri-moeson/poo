@@ -1,37 +1,40 @@
+<?php
 
-<script src="?s=debug"></script>
-<link rel="stylesheet" href="?c=debug" crossorigin="anonymous">
+use App\Model\Entity\Game\Personnage\PersonnageEntity;
+use Core\Debugger\Debugger;
+use Core\HTML\Env\Get;
+use Core\HTML\Env\Post;
+
+?>
+
+<?php
+if($this instanceof Debugger){ ?>
+<script src="debug-script.js"></script>
+<link rel="stylesheet" href="debug-style.css" crossorigin="anonymous">
 
 <div id="sql-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
     <div class="table-responsive">
+
         <table class="table table-striped table-bordered table-hover table-condensed">
 
             <thead>
-
                 <tr>
-
-                    <th>request(<?php use App\Model\Entity\Game\Personnage\PersonnageEntity;
-                        use Core\HTML\Env\Get;
-                        use Core\HTML\Env\Post;
-
-                        echo count($this->sql) ?>)</th>
+                    <th>request(<?php echo count($this->sql) ?>)</th>
                     <th>attrib</th>
                     <th>File</th>
                     <th>Function</th>
                     <th>line</th>
-
                 </tr>
-
             </thead>
 
             <tbody>
 
-            <?php foreach ($this->sql as $log) { ?>
+            <?php foreach ($this->getSql() as $log) { ?>
 
                 <tr>
                     <td class="info" rowspan="<?php echo $this->getLimitTrace() ?> "><?php echo $log["content"] ?></td>
                     <td class="info" rowspan="<?php echo $this->getLimitTrace() ?> "><pre><?php var_dump($log["attrib"]) ?></pre></td>
-                    <td><?php echo str_replace(ROOT, "", $log["trace"][0]["file"]) ?></td>
+                    <td><?php echo $this->protect_file($log["trace"][0]["file"]) ?></td>
                     <td><?php echo($log["trace"][0]["function"]) ?></td>
                     <td><?php echo($log["trace"][0]["line"]) ?></td>
                 </tr>
@@ -39,7 +42,7 @@
                 <?php for ($i = 1; $i < $this->getLimitTrace(); $i++) { ?>
 
                     <tr>
-                        <td><?php echo str_replace(ROOT, "", $log["trace"][$i]["file"]) ?></td>
+                        <td><?php echo $this->protect_file( $log["trace"][$i]["file"]) ?></td>
                         <td><?php echo($log["trace"][$i]["function"]) ?></td>
                         <td><?php echo($log["trace"][$i]["line"]) ?></td>
                     </tr>
@@ -75,7 +78,7 @@
 
                 <tr>
                     <td class="info" rowspan="<?php echo $this->getLimitTrace() ?> "><pre><?php var_dump($log["content"]) ?></pre></td>
-                    <td><?php echo str_replace(ROOT, "", $log["trace"][0]["file"]) ?></td>
+                    <td><?php echo $this->protect_file( $log["trace"][0]["file"]) ?></td>
                     <td><?php echo($log["trace"][0]["function"]) ?></td>
                     <td><?php echo($log["trace"][0]["line"]) ?></td>
                 </tr>
@@ -83,7 +86,7 @@
                 <?php for ($i = 1; $i < $this->getLimitTrace(); $i++) { ?>
 
                     <tr>
-                        <td><?php echo str_replace(ROOT, "", $log["trace"][$i]["file"]) ?></td>
+                        <td><?php echo $this->protect_file($log["trace"][$i]["file"]) ?></td>
                         <td><?php echo($log["trace"][$i]["function"]) ?></td>
                         <td><?php echo($log["trace"][$i]["line"]) ?></td>
                     </tr>
@@ -375,3 +378,4 @@
 </div>
 
 <!-- end debug -->
+<?php } ?>

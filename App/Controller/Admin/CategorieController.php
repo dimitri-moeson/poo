@@ -96,7 +96,7 @@ class CategorieController extends AppController
             if(Post::getInstance()->has('id')) {
 
                 $post = $this->Article->find(Post::getInstance()->val('id'));
-                if (!$post) $this->notFound();
+                if (!$post) $this->notFound("del cat");
             }
 
             if(Post::getInstance()->has('conf')) {
@@ -139,7 +139,7 @@ class CategorieController extends AppController
         if(Get::getInstance()->has('id')) {
 
             $this->post = $this->Article->find(Get::getInstance()->val('id'));
-            if (!$this->post) $this->notFound();
+            if (!$this->post) $this->notFound("single cat");
         }
         $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
 

@@ -8,6 +8,7 @@
 
 namespace Core\Controller;
 
+use Core\Config;
 use Core\Debugger\Debugger;
 use Core\HTML\Template\Template;
 
@@ -23,7 +24,7 @@ class Controller
     public function notFound($ref = "content")
     {
         header('HTTP/1.0 404 Not Found');
-        require_once ROOT.'/Core/HTML/Error/404.notFound.php';
+        require_once Config::CORE_DIR.'/HTML/Error/404.notFound.php';
         if (DEBUG)
         {
             Debugger::getInstance()->view();
@@ -37,7 +38,7 @@ class Controller
     public function forbidden(){
 
         header('HTTP/1.0 403 Forbidden' );
-        require_once ROOT.'/Core/HTML/Error/403.forbidden.php';
+        require_once Config::CORE_DIR.'/HTML/Error/403.forbidden.php';
         if (DEBUG)
         {
             Debugger::getInstance()->view();

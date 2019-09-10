@@ -11,11 +11,19 @@ class CryptAuth
 
     private static $instance ;
 
+    /**
+     * @return int
+     */
     protected function iv_bytes()
     {
         return openssl_cipher_iv_length($this->method);
     }
 
+    /**
+     * @param bool $key
+     * @param bool $method
+     * @return CryptAuth
+     */
     public static function getInstance($key = FALSE, $method = FALSE){
 
         if(is_null(self::$instance)){
@@ -27,6 +35,11 @@ class CryptAuth
         return self::$instance ;
     }
 
+    /**
+     * CryptAuth constructor.
+     * @param bool $key
+     * @param bool $method
+     */
     private function __construct($key = FALSE, $method = FALSE)
     {
         if(!$key) {
@@ -47,13 +60,21 @@ class CryptAuth
         }
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     public function encrypt($data)
     {
         $iv = openssl_random_pseudo_bytes($this->iv_bytes());
         return bin2hex($iv) . openssl_encrypt($data, $this->method, $this->key, 0, $iv);
     }
 
-    // decrypt encrypted string
+    /**
+     * decrypt encrypted string
+     * @param $data
+     * @return bool|string
+     */
     public function decrypt($data)
     {
         $iv_strlen = 2  * $this->iv_bytes();

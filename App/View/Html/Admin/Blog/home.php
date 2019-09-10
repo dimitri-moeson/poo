@@ -1,5 +1,7 @@
 <?php
 use Core\Render\Render;
+use Core\Render\Url;
+
 ?>
 
         <table id="item-table" class="table">
@@ -12,7 +14,7 @@ use Core\Render\Render;
                     <th>Categorie</th>
                     <th>extrait</th>
                     <th>
-                        <a href="?p=admin.article.add" class="btn btn-success">Add</a>
+                        <a href="<?php echo Url::generate("add","article","admin") ?>" class="btn btn-success">Add</a>
                     </th>
                 </tr>
 

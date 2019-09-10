@@ -12,6 +12,7 @@ use App\Model\Service;
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Map\MapTable;
 use Core\Debugger\Debugger;
+use Core\Render\Url;
 
 class MapService extends Service
 {
@@ -146,20 +147,23 @@ class MapService extends Service
 
     function adminPlace($place = null , $a = null , $b = null )
     {
+
+        $link = Url::generate("edit","map","admin")->setParams(array("x" => $a, "y" => $b ));
+
         if(!is_null($place))
         {
             if (isset($place->name))
             {
-                return "<a title='" . $place->type . "/" . $place->structure . "/" . $place->name . "' href='?p=admin.map.edit&x=$a&y=$b'>" .
+                return "<a title='" . $place->type . "/" . $place->structure . "/" . $place->name . "' href='".$link."'>" .
                     "<i class='" . $place->img . "'></i>" .
                     "</a>";
             }
             else {
 
-                return "<a href='?p=admin.map.edit&x=$a&y=$b'>[+]</a>";
+                return "<a href='".$link."'>[+]</a>";
             }
         }
-            return "<a href='?p=admin.map.edit&x=$a&y=$b'>[x]</a>";
+            return "<a href='".$link."'>[x]</a>";
     }
 
     function place($place = null )

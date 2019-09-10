@@ -1,11 +1,9 @@
 <?php
-
-
 namespace Core\Render;
-
 
 use Core\Redirect\Redirect;
 use Core\Request\Request;
+use Core\Rewrite\Rewrite;
 
 class Url
 {
@@ -15,15 +13,28 @@ class Url
 
     public $params = array();
 
+    private $separator = "/";
+
     /**
      * @param null $_act
      * @param null $_ctl
      * @param null $dom
-     * @return Url
+     * @return Url/Rewrite/Redirect
      */
-    public static function generate($_act = null , $_ctl = null , $dom = null){
+    public static function generate($_act = null , $_ctl = null , $dom = null, $slug = null ){
 
-        return new self($_act , $_ctl , $dom);
+        $class = get_called_class();
+
+        $obj = new $class($_act , $_ctl , $dom);
+
+        if($obj instanceof Url)
+        {
+            if(!is_null($slug))
+            {
+                $obj->setParams(array($slug));
+            }
+        }
+        return $obj ;
     }
 
     /**
@@ -68,16 +79,41 @@ class Url
     public function getPath($_act = null ,$_ctl = null ,$dom = null )
     {
         $act = $_act ?? $this->getAct();
-
         $ctrl = $this->ctrl_Construct($_ctl ,$dom);
-        $params = $this->getParams();
 
         if( Request::getInstance()->is_callable($ctrl,$act) )
         {
-            return "/?p=".$this->ctl_Construct($_ctl ,$dom).".".$act.( isset($params) && !empty($params) ? "&".self::buildQuery($params) : '') ;
+            $params = $this->getParams();
+
+            if(isset($params[0]))
+            {
+                $test = implode(DIRECTORY_SEPARATOR, $params);
+
+                return DIRECTORY_SEPARATOR . $this->ctl_Construct($_ctl, $dom) . DIRECTORY_SEPARATOR . $params[0] . DIRECTORY_SEPARATOR . $act;
+            }
+            else
+            {
+                return DIRECTORY_SEPARATOR . $this->ctl_Construct($_ctl, $dom) . DIRECTORY_SEPARATOR . $act;
+            }
+/**
+            $_parameters = (isset($params) && !empty($params) ? "&" . self::buildQuery($params) : '');
+
+            if(REWRITE)
+            {
+                $r = Rewrite::generate($act, $this->getCtl() , ($this->getDom() ?? "default") );
+                $r->setParams($params);
+
+                return $r->getRewrite() ;
+            }
+            else
+            {
+                return "/?p=" . $this->ctl_Construct($_ctl, $dom) . $this->separator . $act . $_parameters ;
+            }
+ **/
         }
 
         return "error...";
+
     }
 
     /**
@@ -101,6 +137,10 @@ class Url
         {
             $ctrl = '\App\Controller\\'.ucfirst($_ctrl).'Controller';
         }
+        else//if($_ctrl)
+        {
+            $ctrl = '\App\Controller\\'.ucfirst($_ctrl).'Controller';
+        }
 
         return $ctrl ;
     }
@@ -113,6 +153,7 @@ class Url
     {
         return http_build_query($params ?? $this->getParams() );
     }
+
     /**
      * @param null $_ctl
      * @param null $dom
@@ -124,13 +165,17 @@ class Url
 
         if($dom)
         {
-            $ctl = strtolower($dom).'.'.strtolower($_ctrl);
+            $ctl = strtolower("".$dom.$this->separator.$_ctrl."");
         }
         elseif($this->getDom() != null )
         {
-            $ctl = strtolower($this->getDom()).'.'.strtolower($_ctrl);
+            $ctl = strtolower($this->getDom().$this->separator.$_ctrl);
         }
         elseif($_ctrl)
+        {
+            $ctl = strtolower($_ctrl);
+        }
+        else // if($_ctrl)
         {
             $ctl = strtolower($_ctrl);
         }
@@ -205,7 +250,7 @@ class Url
     }
 
     /**
-     * @return mixed
+     * @return mixed|null
      */
     public function getDom()
     {
@@ -213,6 +258,7 @@ class Url
     }
 
     /**
+     * lock
      * @return bool|string
      */
     public function __toString()

@@ -1,6 +1,8 @@
-<h1><?php use Core\Render\Render;
+<?php use Core\Render\Render;
+use Core\Render\Url;
+?>
 
-    echo isset($post) ? $post->titre : "Ajout item" ?></h1>
+<h1><?php echo isset($post) ? $post->titre : "Ajout item" ?></h1>
 
 <?php if ($success) { ?>
 
@@ -31,7 +33,7 @@
             <th>Titre</th>
             <th>Icone</th>
             <th>
-                <a href="?p=admin.item.add" class="btn btn-success">Add</a>
+                <a href="<?php echo Url::generate("add","item","admin") ?>" class="btn btn-success">Add</a>
             </th>
         </tr>
 
