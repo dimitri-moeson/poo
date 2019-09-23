@@ -35,7 +35,7 @@ class Controller
     /**
      *
      */
-    public function forbidden(){
+    public function forbidden($ref = "content"){
 
         header('HTTP/1.0 403 Forbidden' );
         require_once Config::CORE_DIR.'/HTML/Error/403.forbidden.php';
@@ -43,7 +43,7 @@ class Controller
         {
             Debugger::getInstance()->view();
         }
-        die("Interdit");
+        die("Interdit: ".$ref);
     }
 
 

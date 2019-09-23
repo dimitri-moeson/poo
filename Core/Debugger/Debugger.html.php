@@ -7,10 +7,9 @@ use Core\HTML\Env\Post;
 
 ?>
 
-<?php
-if($this instanceof Debugger){ ?>
-<script src="debug-script.js"></script>
-<link rel="stylesheet" href="debug-style.css" crossorigin="anonymous">
+<?php if($this instanceof Debugger){ ?>
+<script src="/debug/js"></script>
+<link rel="stylesheet" href="/debug/css" crossorigin="anonymous">
 
 <div id="sql-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
     <div class="table-responsive">
@@ -19,8 +18,8 @@ if($this instanceof Debugger){ ?>
 
             <thead>
                 <tr>
-                    <th>request(<?php echo count($this->sql) ?>)</th>
-                    <th>attrib</th>
+                    <th>Request(<?php echo $this->countSql() ?>)</th>
+                    <th>Attrib</th>
                     <th>File</th>
                     <th>Function</th>
                     <th>line</th>
@@ -61,20 +60,20 @@ if($this instanceof Debugger){ ?>
 
             <thead>
 
-            <tr>
+                <tr>
 
-                <th>Content</th>
-                <th>File</th>
-                <th>Function</th>
-                <th>line</th>
+                    <th>Content</th>
+                    <th>File</th>
+                    <th>Function</th>
+                    <th>line</th>
 
-            </tr>
+                </tr>
 
             </thead>
 
             <tbody>
 
-            <?php foreach ($this->history as $log) { ?>
+            <?php foreach ($this->getHistory() as $log) { ?>
 
                 <tr>
                     <td class="info" rowspan="<?php echo $this->getLimitTrace() ?> "><pre><?php var_dump($log["content"]) ?></pre></td>
@@ -236,7 +235,7 @@ if($this instanceof Debugger){ ?>
 
             <tbody>
 
-            <?php foreach ($this->appli as $var => $content) { ?>
+            <?php foreach ($this->getAppli() as $var => $content) { ?>
 
                 <tr>
                     <td><?php echo($var) ?></td>
@@ -279,91 +278,110 @@ if($this instanceof Debugger){ ?>
 </div>
 </div>
 
-<?php if(isset($this->personnage) && $this->personnage instanceof PersonnageEntity ) { ?>
-<div id="perso-debug" class="debug well"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover table-condensed">
+<?php if($this->getPersonnage() != null ) {
 
-            <thead>
+        $perso = $this->getPersonnage() ;
 
-            <tr>
+        if ($perso instanceof PersonnageEntity) { ?>
+            <div id="perso-debug" class="debug well">
+                <!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
 
-                <th>var</th>
-                <th >content</th>
+                        <thead>
 
-            </tr>
+                            <tr>
 
-            </thead>
+                                <th>var</th>
+                                <th>content</th>
 
-            <tbody>
-            <tr>
-                <th>nom</th>
-                <td><pre><?php var_dump($this->personnage->getName()) ?></pre></td>
-            </tr>
-            <tr>
-                <th>classe</th>
-                <td><pre><?php var_dump($this->personnage->getType()) ?></pre></td>
-            </tr>
-            <tr>
-                <th>vie</th>
-                <td><pre><?php var_dump($this->personnage->getVie()) ?></pre></td>
-            </tr>
+                            </tr>
 
-            <tr>
-                <th>stats</th>
-                <td><?php foreach($this->personnage->getStats()->getContainer() as $savoir) { ?>
-                   <?php //if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
-                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
-                    <?php //} ?>
-                <?php } ?></td>
-            </tr>
-            <tr>
-                <th>position</th>
-                <td><pre><?php var_dump($this->personnage->getPosition()) ?></pre></td>
-            </tr>
-            <tr>
-                <th>savoir</th>
-                <td> <?php foreach($this->personnage->getKnows()->getContainer() as $savoir) { ?>
-                    <?php // if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
-                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
-                    <?php // } ?>
-                <?php } ?></td>
-            </tr>
-            <tr>
-                <th>sac</th>
-                <td> <?php foreach($this->personnage->getInventaire()->getContainer() as $savoir) { ?>
-                        <?php // if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
-                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
-                        <?php // } ?>
-                    <?php } ?></td>
-            </tr>
+                        </thead>
 
-            <tr>
-                <th>grimoire</th>
-                <td> <?php foreach($this->personnage->getSpellBook()->getContainer() as $savoir) { ?>
-                        <?php // if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
-                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
-                        <?php // } ?>
-                    <?php } ?></td>
-            </tr>
-            <tr>
-                <th>quetes</th>
-                <td> <?php foreach($this->personnage->getQuestBook()->getContainer() as $savoir) { ?>
-                        <?php // if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
-                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
-                        <?php // } ?>
-                    <?php } ?></td>
-            </tr>
-            <tr>
-                <th>all</th>
-                <td><pre><?php var_dump($this->personnage) ?></pre></td>
-            </tr>
+                        <tbody>
+                            <tr>
+                                <th>nom</th>
+                                <td>
+                                    <pre><?php var_dump($perso->getName()) ?></pre>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>classe</th>
+                                <td>
+                                    <pre><?php var_dump($perso->getType()) ?></pre>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>vie</th>
+                                <td>
+                                    <pre><?php var_dump($perso->getVie()) ?></pre>
+                                </td>
+                            </tr>
 
-            </tbody>
-        </table>
-    </div>
-</div>
-<?php } ?>
+                            <tr>
+                                <th>stats</th>
+                                <td><?php foreach ($perso->getStats()->getContainer() as $savoir) { ?>
+                                        <?php //if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
+                                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
+                                        <?php //} ?>
+                                    <?php } ?></td>
+                            </tr>
+                            <tr>
+                                <th>position</th>
+                                <td>
+                                    <pre><?php var_dump($perso->getPosition()) ?></pre>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>savoir</th>
+                                <td> <?php foreach ($perso->getKnows()->getContainer() as $savoir) { ?>
+                                        <?php // if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
+                                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
+                                        <?php // } ?>
+                                    <?php } ?></td>
+                            </tr>
+                            <tr>
+                                <th>sac</th>
+                                <td> <?php foreach ($perso->getInventaire()->getContainer() as $savoir) { ?>
+                                        <?php // if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
+                                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
+                                        <?php // } ?>
+                                    <?php } ?></td>
+                            </tr>
+
+                            <tr>
+                                <th>grimoire</th>
+                                <td> <?php foreach ($perso->getSpellBook()->getContainer() as $savoir) { ?>
+                                        <?php // if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
+                                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
+                                        <?php // } ?>
+                                    <?php } ?></td>
+                            </tr>
+                            <tr>
+                                <th>quetes</th>
+                                <td> <?php foreach ($perso->getQuestBook()->getContainer() as $savoir) { ?>
+                                        <?php // if($savoir instanceof \App\Model\Entity\Game\Item\ItemEntity){ ?>
+                                        <li><?php echo $savoir->getName() ?> // <?php echo $savoir->getVal() ?></li>
+                                        <?php // } ?>
+                                    <?php } ?></td>
+                            </tr>
+                            <tr>
+                                <th>all</th>
+                                <td>
+                                    <pre><?php var_dump($perso) ?></pre>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+<?php
+        }
+
+    }
+?>
 
 <div id="debug-bar"><!-- style="position: absolute;bottom:0;"-->
     <a onclick="showDebug('app');" class="btn btn-info ">App</a>
@@ -374,7 +392,7 @@ if($this instanceof Debugger){ ?>
     <a onclick="showDebug('server');" class="btn btn-info">server</a>
     <a onclick="showDebug('sql');" class="btn btn-info">sql</a>
     <a onclick="showDebug('request');" class="btn btn-info">request</a>
-    <a onclick="showDebug('perso');" class="btn btn-info">perso</a>
+<?php if(isset($perso)){ ?><a onclick="showDebug('perso');" class="btn btn-info">perso</a><?php } ?>
 </div>
 
 <!-- end debug -->

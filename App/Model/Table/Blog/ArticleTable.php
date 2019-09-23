@@ -140,6 +140,24 @@ class ArticleTable extends Table
     }
 
     /**
+     * list des articles liés à un mot clés
+     * @param $id
+     * @return mixed
+     */
+    public function getListByKey($word, $type = "article"){
+
+        $statement = QueryBuilder::init()->select('a.*', 'c.titre as cat_titre')
+            ->from('article','a')
+            ->join('article','c.id = a.parent_id','left','c')
+            ->join('indexion','a.id = i.article_id','left','i')
+            ->join('keyword','k.id = i.keyword_id','left','k')
+            ->where('k.mot = :mot','a.type = :type ')
+        ;
+
+        return $this->request( $statement ,array("mot" => $word,"type" => $type),false,ArticleEntity::class);
+    }
+
+    /**
      * @param string $type
      * @return array|mixed
      */

@@ -47,6 +47,11 @@ class MapService extends Service
         return $map ;
     }
 
+    /**
+     * @param array $coord
+     * @param ItemEntity|null $terrain
+     * @return MapEntity
+     */
     public function search( Array $coord , ItemEntity $terrain = null ){
 
         $map = $this->MapBase->search( $coord['x'] , $coord['y'] );
@@ -61,6 +66,10 @@ class MapService extends Service
         return $map ;
     }
 
+    /**
+     * @param MapEntity $map
+     * @param ItemEntity $item
+     */
     function install(MapEntity $map, ItemEntity $item)
     {
         if (isset($item->record) && $item->record === true) {
@@ -182,30 +191,32 @@ class MapService extends Service
             {
                 if ($place->structure == 'mairie'){
 
-                    $link = "?p=test.quest&id=".$place->i_id;
+                    $link = Url::generate("quest", "test", null , $place->id );// "?p=test.quest&id=".$place->i_id;
 
                 }
                 if ($place->structure == 'ecole'){
 
-                    $link = "?p=test.apprentissage&id=".$place->i_id;
+                    $link =  Url::generate("apprentissage", "test", null , $place->id );// "?p=test.apprentissage&id=".$place->i_id;
 
                 }
                 if ($place->structure == 'forge'){
 
-                    $link = "?p=test.craft&id=".$place->i_id;
+                    $link = Url::generate("craft", "test", null , $place->id );// "?p=test.craft&id=".$place->i_id;
 
                 }
                 if ($place->structure == 'arene'){
 
-                    $link = "?p=test.arene&id=".$place->i_id;
+                    $link = Url::generate("arene", "test", null , $place->id );//"?p=test.arene&id=".$place->i_id;
 
                 }
                 if ($place->structure == 'quest'){
 
                     /** @var possibilité d'avoir plusieurs quetes au meme emplacement */
-                    $link = "?p=test.quest&id=".$place->i_id;
+                    $link = Url::generate("quest", "test", null , $place->id );//"?p=test.quest&id=".$place->i_id;
 
                 }
+
+                //$link = Url::generate("$action", "test", null , $place->id ); //"?p=test.quest&id=".$place->i_id;
 
                 return "<a href='".$link."' title='" . $place->type ."/" . $place->structure . "'><i class='" . $place->img . "'></i></a>";
             }

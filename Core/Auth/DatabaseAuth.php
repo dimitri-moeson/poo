@@ -7,6 +7,7 @@
  */
 namespace Core\Auth;
 
+use Core\Config;
 use Core\Database\Database;
 use Core\Database\MysqlDatabase;
 use Core\Database\QueryBuilder;
@@ -15,10 +16,11 @@ class DatabaseAuth
 {
     private $db ;
 
-    private  $encryption_key = 'CKXH2U9RPY3EFD70TLS1ZG4N8WQBOVI6AMJ5';
+    private  $encryption_key ;
 
     public function __construct(MysqlDatabase $db)
     {
+        $this->encryption_key =  Config::getInstance(ROOT . "/Config/config.ini")->get("crypt_key"); // CRYPT_KEY;
         $this->db = $db ;
     }
 

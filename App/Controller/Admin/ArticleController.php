@@ -111,27 +111,27 @@ class ArticleController extends AppController
         Render::getInstance()->setView("Admin/Blog/delete"); // , compact('posts','categories'));
     }
     
-    public function single(){
+    public function single($id){
 
         if(Post::getInstance()->submit()) {
 
             Post::getInstance()->val("type","article");
 
-            if($this->ArticleService->record(Get::getInstance()->val('id')))
+            if($this->ArticleService->record($id))
             {
                 FlashBuilder::create("article modifié","success");
             }
-            Redirect::getInstance()->setParams(array("id" => Get::getInstance()->val('id') ))
+            Redirect::getInstance()->setParams(array("id" => $id ))
                 ->setAct("edit")->setCtl("article")->setDom("admin")
                 ->send();
         }
 
-        if(Get::getInstance()->has('id')){
+        if(!is_null($id)){
 
-            $this->post = $this->Article->find(Get::getInstance()->val('id'));
+            $this->post = $this->Article->find($id);
             if (!$this->post) $this->notFound("single post");
 
-            $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
+            $keywords = $this->Keyword->index($id);
 
             Header::getInstance()->setTitle($this->post->titre);
 

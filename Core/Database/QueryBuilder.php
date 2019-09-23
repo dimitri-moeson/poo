@@ -84,6 +84,7 @@ class QueryBuilder
 
     /**
      * @return $this
+     * @params $conditions
      */
     public function where(): self
     {

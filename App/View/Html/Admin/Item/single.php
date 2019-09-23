@@ -1,8 +1,11 @@
-<?php use Core\Render\Render;
+<?php
+
+use Core\Render\Render;
 use Core\Render\Url;
+
 ?>
 
-<h1><?php echo isset($post) ? $post->titre : "Ajout item" ?></h1>
+<h1><?php echo isset($post) ? $post->titre : "Nouvel item" ?></h1>
 
 <?php if ($success) { ?>
 
@@ -13,45 +16,46 @@ use Core\Render\Url;
 
 <?php } ?>
 
-<div class="col-sm-5">
+<div class="col-sm-12">
 
-        <form action="" method="post">
+    <div class="col-sm-7 pull-right">
 
-            <?php echo $form ?>
+        <table id="item-list" class="table">
 
-        </form>
+            <thead>
 
-</div>
+                <tr>
+                    <th>Titre</th>
+                    <th>Icone</th>
+                    <th>
+                        <a href="<?php echo Url::generate("add","item","admin" ) ?>" class="btn btn-success">Add</a>
+                    </th>
+                </tr>
 
-<div class="col-sm-7">
+            </thead>
+            <tbody>
 
-    <table id="item-list" class="table">
+            <?php foreach ($posts as $post) { ?>
 
-        <thead>
+                <tr>
+                    <th><a href="<?php echo $post->url ?>"><?php echo $post->name ?></a></th>
+                    <td><i class="<?php echo $post->img ?>"></i></td>
+                    <td><?php echo Render::getInstance()->block("admin.list.btn", array(
 
-        <tr>
-            <th>Titre</th>
-            <th>Icone</th>
-            <th>
-                <a href="<?php echo Url::generate("add","item","admin") ?>" class="btn btn-success">Add</a>
-            </th>
-        </tr>
+                            "p" => "item",
+                            "id" => $post->id
 
-        </thead>
-        <tbody>
-        <?php foreach ($posts as $post) { ?>
+                        )); ?></td>
+                </tr>
 
-            <tr>
-                <th><a href="<?php echo $post->url ?>"><?php echo $post->name ?></a></th>
-                <td><i class="<?php echo $post->img ?>"></i></td>
-                <td><?php echo Render::getInstance()->block("admin.list.btn", array(
+            <?php } // endforeach ?>
 
-                        "p" => "item",
-                        "id" => $post->id
-                    )); ?></td>
-            </tr>
+            </tbody>
+        </table>
+    </div>
 
-        <?php } // endforeach ?>
-        </tbody>
-    </table>
+    <form action="" method="post">
+        <?php echo $form ?>
+    </form>
+
 </div>

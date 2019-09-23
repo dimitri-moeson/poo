@@ -71,7 +71,6 @@ class Debugger
      */
     public function javascript(){
 
-
         header('Content-type: application/javascript');
         readfile(Config::CORE_DIR.'/Debugger/Debugger.js');
         die;
@@ -125,7 +124,7 @@ class Debugger
     /**
      * @param PersonnageEntity $personnage
      */
-    public function perso(PersonnageEntity $personnage){
+    public function perso(PersonnageEntity $personnage = null ){
 
         $this->personnage = $personnage;
     }
@@ -143,7 +142,6 @@ class Debugger
      */
     public function view()
     {
-
         if(DEBUG) require_once Config::CORE_DIR . '/Debugger/Debugger.html.php';
     }
 
@@ -309,5 +307,37 @@ class Debugger
     public function getSql(): array
     {
         return $this->sql;
+    }
+
+    /**
+     * @return int
+     */
+    public function countSql(): int
+    {
+        return count($this->sql);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAppli(): array
+    {
+        return $this->appli;
+    }
+
+    /**
+     * @return PersonnageEntity|Null
+     */
+    public function getPersonnage(): ?PersonnageEntity
+    {
+        return $this->personnage;
     }
 }

@@ -27,7 +27,7 @@ class ArticleEntity extends Entity
             return Url::generate("categorie", "article","blog",$this->slug);
         }
 
-        if($this->type == "page")  return "/?slug=".$this->slug ;
+        if($this->type == "page")  return "/".$this->slug ;
 
         return "/?p=".$this->type."&slug=".$this->slug ;
     }

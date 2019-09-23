@@ -10,6 +10,9 @@ class Header
      */
     private static $_instance;
 
+    /**
+     * @var string
+     */
     private $title = "Test";
     private $keywords = "Test";
     private $description = "Test";
@@ -47,12 +50,18 @@ class Header
         $this->title = $title . " | " . $this->title;
     }
 
+    /**
+     * @param $action
+     */
     public function add_js($action){
 
         $this->js[] = $action ;
 
     }
 
+    /**
+     * @return string
+     */
     public function call_js(){
 
         $script = "";
@@ -60,18 +69,24 @@ class Header
         foreach ( $this->js as $action   ){
 
             /** @lang html script-$action.js => ?js='.$action.' */
-            $script .='<script src="script-'.$action.'.js" type="application/x-javascript"></script>'  ;
+            $script .='<script src="/js/'.$action.'" type="application/x-javascript"></script>'  ;
         }
 
         return $script ;
     }
 
+    /**
+     * @param $action
+     */
     public function add_css($action){
 
         $this->css[] = $action ;
 
     }
 
+    /**
+     * @return string
+     */
     public function call_css(){
 
         $script = "";
@@ -79,7 +94,7 @@ class Header
         foreach ( $this->css as $action   ){
 
             /** @lang html style-$action.css => ?css='.$action.' */
-            $script .=  '<link rel="stylesheet" href="style-'.$action.'.css" crossorigin="anonymous" type="text/css" media="screen" />'  ;
+            $script .=  '<link rel="stylesheet" href="/css/'.$action.'" crossorigin="anonymous" type="text/css" media="screen" />'  ;
         }
 
         return $script ;

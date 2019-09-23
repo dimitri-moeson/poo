@@ -119,29 +119,29 @@ class CategorieController extends AppController
     /**
      *
      */
-    public function single(){
+    public function single($id){
 
-        if(Post::getInstance()->submit()) {
+        if(Post::getInstance()->submit($id)) {
 
             Post::getInstance()->val("type","categorie");
 
-            if($this->ArticleService->record(Get::getInstance()->val('id'))){
+            if($this->ArticleService->record($id)){
 
                 FlashBuilder::create("catégorie modifié","success");
 
-                Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
+                Redirect::getInstance()->setParams(array("id" => $id ))
                     ->setDom("admin")->setAct("edit")->setCtl("categorie")
                     ->send();
             }
 
         }
 
-        if(Get::getInstance()->has('id')) {
+        if(!is_null($id)) {
 
-            $this->post = $this->Article->find(Get::getInstance()->val('id'));
+            $this->post = $this->Article->find($id);
             if (!$this->post) $this->notFound("single cat");
         }
-        $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
+        $keywords = $this->Keyword->index($id);
 
         Header::getInstance()->setTitle($this->post->titre);
 

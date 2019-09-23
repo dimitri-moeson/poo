@@ -1,7 +1,12 @@
+<?php use Core\Render\Render;
+            use Core\Render\Url;
+            ?>
+
 <h1>home</h1>
+
 <div class="row">
     <div class="col-sm-8">
-            <?php use Core\Render\Url;
+            <?php
 
             foreach ($posts as $post) { ?>
 
@@ -22,8 +27,8 @@
 
     </div>
 
-    <div class="col-sm-4">
-        <ul>
+    <div class="col-sm-4 sidebar">
+        <ul class="nav nav-sidebar">
         <?php foreach ($categories as $categorie) { ?>
 
                 <li><a href="<?php echo $categorie->url ?>"><?php echo $categorie->titre ?></a></li>
@@ -31,12 +36,9 @@
         <?php } // endforeach ?>
         </ul>
 
-            <?php foreach ($clouds as $key) { ?>
+        <?php echo Render::getInstance()->block("keywords.cloud", array(
 
-                <a style="font-size:<?php echo ($key->called+1)*6 ?>px"
-                   href="<?php echo Url::generate("keyword", "article","blog", $key->id ) ?>">[<?php echo trim($key->mot) ?>]</a>
-
-            <?php } // endforeach ?>
-
+            "clouds" => $clouds ,
+        )) ?>
     </div>
 </div>

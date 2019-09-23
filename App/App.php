@@ -48,8 +48,10 @@ class App
      */
     public function load()
     {
+
         require ROOT . '/App/Autoloader.php';
         App\Autoloader::register();
+
         require ROOT . '/Core/Autoloader.php';
         Core\Autoloader::register();
 
@@ -73,6 +75,8 @@ class App
 
         if ($request->is_callable()) {
 
+            echo "callable" ;
+
             $ctrl_name = $request->getCtrlName();
             $action = $request->getAction();
             $slug = $request->getSlug();
@@ -85,9 +89,8 @@ class App
 
             if ($ctrl instanceof AppController) {
 
-                //$this->act = $action;
-
-                call_user_func(array($ctrl, $action),array($slug));
+                echo "instanceof AppController";
+                call_user_func_array(array($ctrl, $action),array($slug));
 
                 Render::getInstance($request->getPage())->exec($ctrl);
             }
@@ -97,7 +100,7 @@ class App
             }
         } else {
             $ctrl = new Controller();
-            $ctrl->notFound("call:" . $request->getCtrlName() . "->" . $request->getAction());
+            $ctrl->notFound("call:" . $request->getCtrlName() . "(".$request->getCtrl().")->" . $request->getAction());
         }
 
         return $this;

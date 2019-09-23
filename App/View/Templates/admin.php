@@ -76,7 +76,7 @@ $file_rub  = $ctl_ === "file";
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="<?php echo Url::generate("fiche","test") ?>">Project</a>
+            <a class="navbar-brand" href="/">Project</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
 

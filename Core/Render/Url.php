@@ -83,32 +83,35 @@ class Url
 
         if( Request::getInstance()->is_callable($ctrl,$act) )
         {
+            $slug = array_shift( $this->params);
+
             $params = $this->getParams();
-
-            if(isset($params[0]))
-            {
-                $test = implode(DIRECTORY_SEPARATOR, $params);
-
-                return DIRECTORY_SEPARATOR . $this->ctl_Construct($_ctl, $dom) . DIRECTORY_SEPARATOR . $params[0] . DIRECTORY_SEPARATOR . $act;
-            }
-            else
-            {
-                return DIRECTORY_SEPARATOR . $this->ctl_Construct($_ctl, $dom) . DIRECTORY_SEPARATOR . $act;
-            }
-/**
-            $_parameters = (isset($params) && !empty($params) ? "&" . self::buildQuery($params) : '');
+            $_parameters = (isset($params) && !empty($params) ?  "/?".self::buildQuery($params) : '');
 
             if(REWRITE)
             {
-                $r = Rewrite::generate($act, $this->getCtl() , ($this->getDom() ?? "default") );
-                $r->setParams($params);
+                if(!is_null($slug))
+                {
+                    // -- $test = implode(DIRECTORY_SEPARATOR, $params);
 
-                return $r->getRewrite() ;
+                    return DIRECTORY_SEPARATOR . $this->ctl_Construct($_ctl, $dom) . DIRECTORY_SEPARATOR . $slug . DIRECTORY_SEPARATOR . $act . $_parameters ;
+                }
+                else
+                {
+                    return DIRECTORY_SEPARATOR . $this->ctl_Construct($_ctl, $dom) . DIRECTORY_SEPARATOR . $act  . $_parameters ;
+                }
             }
             else
             {
                 return "/?p=" . $this->ctl_Construct($_ctl, $dom) . $this->separator . $act . $_parameters ;
             }
+/**
+
+                $r = Rewrite::generate($act, $this->getCtl() , ($this->getDom() ?? "default") );
+                $r->setParams($params);
+
+                return $r->getRewrite() ;
+
  **/
         }
 

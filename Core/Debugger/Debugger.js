@@ -1,5 +1,5 @@
 /**
-
+tested
 if (jQuery) {
     alert("jquery is loaded");
 } else {

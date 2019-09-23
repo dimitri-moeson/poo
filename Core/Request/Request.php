@@ -44,6 +44,12 @@ class Request
     private $slug;
 
     /**
+     * @var string|null
+     */
+    private $dom;
+
+    /**
+     * singleton
      * @return Request
      */
     public static function getInstance()
@@ -62,106 +68,244 @@ class Request
      */
     private function __construct()
     {
-        if(DEBUG) {
+        $p = getenv('REDIRECT_URL') ==="/" ? '/default/index' :  getenv('REDIRECT_URL') ;
 
-            if(Get::getInstance()->has('c')) {
+        Debugger::getInstance()->app("request_uri",$p);
 
-                $s = Get::getInstance()->val('c');
+        $page = explode('/', ltrim($p,"/") );
 
-                if ($s === 'debug') {
+        Debugger::getInstance()->app("page",$page);
 
-                    Debugger::getInstance()->stylesheet();
-                    die;
-                }
-            }
-
-            if(Get::getInstance()->has('s')) {
-
-                $s = Get::getInstance()->val('s');
-
-                if ($s === 'debug') {
-
-                    Debugger::getInstance()->javascript();
-                    die;
-                }
-            }
-        }
-
-        if(Get::getInstance()->has('js')) {
-
-            $js = Get::getInstance()->val('js');
-
-            $javascript = new Javascript($js);
-            $javascript->read();
-            die;
-        }
-
-        if(Get::getInstance()->has('css')) {
-
-            $css = Get::getInstance()->val('css');
-
-            $stylesheet = new Stylesheet($css);
-            $stylesheet->read();
-            die;
-        }
-
-        if(Get::getInstance()->has('img')) {
-
-            $img = Get::getInstance()->val('img');
-
-            $picture = new Picture($img);
-            $picture->read();
-            die;
-        }
-
-        $p = getenv('REQUEST_URI')=="/" ? 'default/index' :  getenv('REQUEST_URI') ;//Get::getInstance()->val('p') ?? 'default.index';
-
-        $this->page = explode('/', ltrim($p,"/") );
-
-        Debugger::getInstance()->app("page",$this->getPage());
-
-        if(count($this->page)== 1 )
+        /**
+         * module debug
+         */
+        if(DEBUG && $page[0]=="debug")
         {
-            $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'Controller';
-            $this->ctrl = $this->page[0] ?? "default";
+
+            if($page[1]==="css") {
+
+                Debugger::getInstance()->stylesheet();
+                die;
+            }
+            elseif($page[1]==="js") {
+
+                Debugger::getInstance()->javascript();
+                die;
+            }
+            else {
+
+                die("no recognized debug file ".$page[1]."...");
+            }
+        }
+        /**
+         * module habillage
+         */
+        elseif($page[0] === "js") {
+
+                $javascript = new Javascript($page[1]);
+                $javascript->read();
+                die;
+            }
+        elseif($page[0] === "css") {
+
+                $stylesheet = new Stylesheet($page[1]);
+                $stylesheet->read();
+                die;
+            }
+        elseif($page[0] === "img") {
+
+                $picture = new Picture( $page[1]);
+                $picture->read();
+                die;
+            }
+        /**
+         * page request
+         */
+        else
+        {
+            $this->dispatch($page);
+
+                /**
+
+                if (count($page) == 1)
+            {
+                $this->ctrl_name = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
+                $this->dom = null ;
+                $this->ctrl = $page[0] ?? "default";
+                $this->action = "index";
+                $this->slug = null;
+            }
+            elseif (count($page) == 2) {
+                $this->ctrl_name = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
+                $this->dom = null ;
+                $this->ctrl = $page[0] ?? "default";
+                $this->action = $page[1] ?? "index";
+                $this->slug = null;
+            }
+            elseif (count($page) == 3) {
+
+                $ctr_path_a = '\App\Controller\\' . ucfirst($page[0]) . '\\' . ucfirst($page[1]) . 'Controller';
+                $ctr_path_b = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
+
+                if( class_exists($ctr_path_a) )
+                 {
+                     $this->ctrl_name = $ctr_path_a ;
+                     $this->dom = $page[0] ?? null ;
+                     $this->ctrl = $page[1] ?? "default";
+
+                     $this->slug = null;
+                     $this->action = $page[2] ?? "index";
+                 }
+                elseif( class_exists($ctr_path_b) )
+                {
+                    $this->ctrl_name = $ctr_path_b ;
+                    $this->dom = null ;
+                    $this->ctrl = $page[0] ?? "default";
+
+
+                    $this->slug = $page[1] ?? null;
+                    $this->action = $page[2] ?? "index";
+                }
+            }
+            elseif (count($page) == 4) {
+
+                $ctr_path_a = '\App\Controller\\' . ucfirst($page[0]) . '\\' . ucfirst($page[1]) . 'Controller';
+                //$ctr_path_b = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
+
+                if( class_exists($ctr_path_a) ) {
+                    $this->ctrl_name = $ctr_path_a;
+                    $this->dom = $page[0] ?? null;
+                    $this->ctrl = $page[1] ?? "default";
+                    $this->slug = $page[2] ?? null;
+                    $this->action = $page[3] ?? "index";
+                }
+            }
+
+                **/
+        }
+
+        $this->page = $page ;
+
+        //var_dump($this);
+    }
+
+    /**
+     *
+     *
+     * A3 -> /[dom]/[ctrl]/[slug]/[act]
+     * A2 -> /[dom]/[ctrl]/[act]
+     * A1 -> /[dom]/[ctrl]/
+     * B2 -> /[ctrl]/[slug]/[act]
+     * B1 -> /[ctrl]/[act]
+     * C0 -> /[dom]
+     * D0 -> /[ctrl]
+     * E0 -> /[slug]
+     *
+     *
+     */
+    private function dispatch($page){
+
+        if(isset($page[1]))     $ctr_path_a = '\App\Controller\\' . ucfirst($page[0]) . '\\' . ucfirst($page[1]) . 'Controller';
+        if(isset($page[0]))     $ctr_path_b = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
+        if(isset($page[0]))     $ctr_path_c = '\App\Controller\\' . ucfirst($page[0]) . '\DefaultController';
+                                $ctr_path_d = '\App\Controller\DefaultController';
+
+        if( isset($ctr_path_a) && class_exists($ctr_path_a) )
+        {
+            echo "a dispatch<br/>";
+            $this->ctrl_name = $ctr_path_a ;
+            $this->dom = $page[0] ?? null;
+            $this->ctrl = $page[1] ?? "default";
+
+            if( isset($page[3]) && method_exists($ctr_path_a, $page[3]))
+            {
+                echo "call3<br/>";
+                $this->slug = $page[2] ?? null;
+                $this->action = $page[3] ?? "index";
+            }
+            elseif( isset($page[2]) && method_exists($ctr_path_a, $page[2]))
+            {
+                echo "call2<br/>";
+                $this->slug = null;
+                $this->action = $page[2] ?? "index";
+            }
+            else
+            {
+                echo "call1<br/>";
+                $this->slug = null;
+                $this->action = "index";
+            }
+        }
+        elseif( isset($ctr_path_b) && class_exists($ctr_path_b) )
+        {
+            echo "b dispatch<br/>";
+            $this->ctrl_name = $ctr_path_b ;
+            $this->dom = null ;
+            $this->ctrl = $page[0] ?? "default";
+
+            if( isset($page[2]) && method_exists($ctr_path_a, $page[2]))
+            {
+                echo "call2<br/>";
+                $this->slug = $page[1] ?? null;
+                $this->action = $page[2] ?? "index";
+            }
+            elseif(  isset($page[1]) && method_exists($ctr_path_a, $page[1]))
+            {
+                echo "call1<br/>";
+                $this->slug = null;
+                $this->action = $page[1] ?? "index";
+            }
+            else
+            {
+                echo "call0<br/>";
+                $this->slug = null;
+                $this->action = "index";
+            }
+        }
+        elseif( isset($ctr_path_c) && class_exists($ctr_path_c) ) {
+            echo "c dispatch<br/>";
+            $this->ctrl_name = $ctr_path_c;
+            $this->dom = $page[0] ?? null;
+            $this->ctrl = "default";
+            $this->slug = null;
             $this->action = "index";
-            $this->slug = null ;
         }
-        elseif(count($this->page)== 2 )
-        {
-            $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'Controller';
-            $this->ctrl = $this->page[0] ?? "default";
-            $this->action = $this->page[1] ?? "index";
-            $this->slug = null ;
+        elseif( isset($ctr_path_d) && class_exists($ctr_path_d) ) {
+            echo "d dispatch<br/>";
+            $this->ctrl_name = $ctr_path_d;
+            $this->dom = null;
+            $this->ctrl = "default";
+            $this->slug = null;
+            $this->action = "index";
         }
-        elseif(count($this->page)== 3 )
+        else
         {
-            $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'\\'.ucfirst($this->page[1]).'Controller';
-            $this->ctrl = $this->page[1] ?? "default";
-            $this->action = $this->page[2] ?? "index";
-            $this->slug = null ;
-        }
-        elseif(count($this->page)== 4 )
-        {
-            $this->ctrl_name = '\App\Controller\\'.ucfirst($this->page[0]).'\\'.ucfirst($this->page[1]).'Controller';
-            $this->ctrl = $this->page[1] ?? "default";
-            $this->action = $this->page[3] ?? "index";
-            $this->slug = $this->page[2] ?? "1";
+            echo "default dispatch<br/>";
+            $this->ctrl_name = '\App\Controller\DefaultController';
+            $this->dom = null ;
+            $this->ctrl = "default";
+            $this->slug = $page[0] ?? null;
+            $this->action = "index";
         }
     }
 
     /**
      * @return bool
+     * valuable
      */
     public function is_callable($ctrl = null , $act = null ) {
 
         $ctrl_name = $ctrl ?? $this->getCtrlName();
+
+        //echo "is_callable(ctrl_name::".$ctrl_name.")<br/>" ;
 
         if(isset($ctrl_name))
         {
             if (class_exists($ctrl_name,true ))
             {
                 $action = $act ?? $this->getAction();
+
+                //echo "is_callable(action::".$action.")<br/>" ;
 
                 if (is_callable(array($ctrl_name, $action)))
                 {
@@ -206,20 +350,18 @@ class Request
     }
 
     /**
-     * @param string $slug
-     * @return Request
-     */
-    public function setSlug(string $slug = null ): Request
-    {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getSlug(): ?string
     {
         return $this->slug;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getDom(): ?string
+    {
+        return $this->dom;
     }
 }

@@ -1,27 +1,56 @@
 <?php
 
-
 namespace App\Model\Table\Blog;
-
 
 use App\Model\Entity\Blog\KeywordEntity;
 use Core\Database\QueryBuilder;
 use Core\Model\Table\Table;
 
+/**
+ * Class KeywordTable
+ * @package App\Model\Table\Blog
+ */
 class KeywordTable extends Table
 {
     /**
+     * list des mots clés present
+     *
      * @return array|mixed
      */
-    public function cloud(){
+    public function cloud($type = 'article'){
 
         $statement = QueryBuilder::init()->select('k.*','count(i.id) as called')
             ->from('keyword','k')
             ->join('indexion','k.id = i.keyword_id','left','i')
-            ->group('k.id')
+            ->join('article','a.id = i.article_id','left','a')
+            ->where('a.type = :type ')
+            ->group('k.mot')
+            ->order('mot')
         ;
 
-        return $this->request( $statement );
+        $array =  $this->request( $statement, array("type" => $type ), false , KeywordEntity::class );
+
+        // TODO : supprimer la génération de doublons ...
+
+        $key = array();
+
+        foreach ($array as $a => $r )
+        {
+            $mot = trim($r->mot) ;
+            $cal = $r->called ;
+
+            if(!isset($key[$mot]))
+            {
+                $key[$mot] = new KeywordEntity();
+                $key[$mot]->id = $r->id;
+                $key[$mot]->mot = $mot;
+                $key[$mot]->called = 0;
+            }
+
+            $key[$mot]->called += $cal ;
+        }
+
+        return $key ;
     }
 
     /**
@@ -64,5 +93,4 @@ class KeywordTable extends Table
 
         return  $this->request( $statement , array("mot" => $key), true, KeywordEntity::class );
     }
-
 }

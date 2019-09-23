@@ -1,5 +1,4 @@
 <?php
-
 define("DEBUG", true );
 define("REWRITE", true );
 

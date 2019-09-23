@@ -66,11 +66,11 @@ class PersonnageController extends AppController
     /**
      *
      */
-    public function single()
+    public function single($id)
     {
         if(Post::getInstance()->submit()) {
 
-            if($this->Personnage->update(Get::getInstance()->val('id'), Post::getInstance()->content())){
+            if($this->Personnage->update($id, Post::getInstance()->content())){
 
                 $this->success = true ;
 
@@ -78,9 +78,9 @@ class PersonnageController extends AppController
 
         }
 
-        if(Get::getInstance()->has('id')) {
+        if(!is_null($id)) {
 
-            $this->post = $this->Personnage->find(Get::getInstance()->val('id'));
+            $this->post = $this->Personnage->find($id);
             if (!$this->post) $this->notFound("single perso");
         }
 

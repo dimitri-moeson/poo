@@ -75,21 +75,27 @@ class MysqlDatabase extends Database
      */
     public function exec($statement, $attrs = null){
 
-        if(is_null($attrs))
-        {
-            $res = $this->getPDO()->query( $statement);
+        try {
+            if (is_null($attrs)) {
+                $res = $this->getPDO()->query($statement);
 
-            return [$res] ;
+                return [$res];
+            } else {
+                $req = $this->getPDO()->prepare($statement);
+                $res = $req->execute($attrs);
+
+                return [$req, $res];
+            }
         }
-        else
-        {
-            $req = $this->getPDO()->prepare($statement );
-            $res = $req->execute($attrs);
+        catch (PDOException $e) {
 
-            return [$req , $res];
-        }
+                echo $statement."<br/>";
+                if(!is_null($attrs)){
+                    echo print_r($attrs,1)."<br/>";
+                }
 
-
+                echo 'requete échouée : ' . $e->getMessage()."<br/>";
+            }
     }
 
     /**
@@ -111,10 +117,16 @@ class MysqlDatabase extends Database
      */
     public function result( PDOStatement $res,$one = false ){
 
-        if($one)
+        try {
+            if($one)
             return $res->fetch();
         else
             return $res->fetchAll();
+        }
+        catch (PDOException $e) {
+            echo 'fetch échouée : ' . $e->getMessage()."<br/>";
+
+        }
     }
 
     /**
@@ -123,25 +135,23 @@ class MysqlDatabase extends Database
      * @return PDOStatement
      */
     public function setFetchMode( PDOStatement $res, $class_name = null ){
+        try {
 
-        if(is_null($class_name) )
-        {
-            $res->setFetchMode(PDO::FETCH_OBJ);
-        }
-        elseif(is_object($class_name))
-        {
-            $res->setFetchMode(PDO::FETCH_INTO, $class_name);
-        }
-        elseif(class_exists($class_name))
-        {
-            $res->setFetchMode(PDO::FETCH_CLASS, $class_name);
-        }
-        else
-        {
-            $res->setFetchMode(PDO::FETCH_OBJ);
-        }
+            if (is_null($class_name)) {
+                $res->setFetchMode(PDO::FETCH_OBJ);
+            } elseif (is_object($class_name)) {
+                $res->setFetchMode(PDO::FETCH_INTO, $class_name);
+            } elseif (class_exists($class_name)) {
+                $res->setFetchMode(PDO::FETCH_CLASS, $class_name);
+            } else {
+                $res->setFetchMode(PDO::FETCH_OBJ);
+            }
 
-        return $res ;
+            return $res;
+        }  catch (PDOException $e) {
+                echo 'setMode échouée : ' . $e->getMessage()."<br/>";
+
+            }
     }
 
     /**
@@ -212,9 +222,7 @@ class MysqlDatabase extends Database
         foreach($tables as $table) {
             $name = $table->{'Tables_in_' . $this->db_name};
 
-            $statement = Query::describe($name);
-
-            $tb = $this->query('DESCRIBE ' . $name);
+            $tb = $this->query('DESCRIBE ' . $name) ; // Query::describe($name);
 
             $content = array();
 

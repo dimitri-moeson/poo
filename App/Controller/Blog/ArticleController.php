@@ -41,7 +41,7 @@ class ArticleController extends AppController
 
         $this->categories = $this->Article->allOf("categorie");
         $this->recents = $this->Article->recent("article");
-        $this->clouds = $this->Keyword->cloud();
+        $this->clouds = $this->Keyword->cloud("article");
 
         $this->auth = new DatabaseAuth(App::getInstance()->getDb());
     }
@@ -57,7 +57,7 @@ class ArticleController extends AppController
     }
 
     /**
-     *
+     * @param $_id
      */
     public function categorie($_id){
 
@@ -101,15 +101,12 @@ class ArticleController extends AppController
     }
 
     /**
-     *
+     * @param $_id
      */
     public function show($_id)
     {
-        echo $_id ;
-
         if($this->Article instanceof ArticleTable)
         {
-            echo "recup";
             $this->post = $this->Article->recup($_id);
             if (!$this->post) $this->notFound("Article not found");
 
@@ -145,12 +142,14 @@ class ArticleController extends AppController
             $this->form = $this->auth->logged() ? $this->form_comment($this->post->id) : null;
 
             $this->comments = $this->Article->allOf("commentaire", $this->post->id);
-
-            //echo "comments : ".count($this->comments);
         }
     }
 
     public function keywords($word){
 
+        if($this->Article instanceof ArticleTable) {
+            $this->posts = $this->Article->getListByKey($word);
+        }
+        Render::getInstance()->setView("Blog/Index");
     }
 }

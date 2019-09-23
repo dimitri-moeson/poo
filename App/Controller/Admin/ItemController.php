@@ -32,10 +32,12 @@ class ItemController extends AppController
     {
         $form = new Form($post);
 
-        $form->input("name", array('label' => "Nom"));
         $form->addInput("img", ItemForm::select_img(@$post->img) ) ;
         $form->addInput("type", ItemForm::select_typ(@$post->type) ) ;
         $form->addInput("objet", ItemForm::select_obj(@$post->objet) ) ;
+
+        $form->input("name", array('label' => "Nom"));
+        $form->input("vie", array('label' => "Moyenne"));
 
         //$form->select("type", array('options' => ItemEntity::type_arr , 'label' => "type"), ItemEntity::type_arr );
         //$form->select("objet", array('options' => ItemEntity::categorie_arr , 'label' => "Categorie"), ItemEntity::categorie_arr );
@@ -43,11 +45,10 @@ class ItemController extends AppController
         if(is_array($post) || !isset($post->id))
         {}
 
-        $form->input("description", array('type' => 'textarea', 'label' => "Descriptif", "class" => "editor"))
-            ->input("vie", array('label' => "Moyenne"));
+        $form->input("description", array('type' => 'textarea', 'label' => "Descriptif", "class" => "editor"));
 
 
-        /* if(is_object($post) && isset($post->id)){
+        /** if(is_object($post) && isset($post->id)){
 
          }*/
 
@@ -57,17 +58,17 @@ class ItemController extends AppController
         return $form ;
     }
 
-    public function index()
+    public function index($type = null )
     {
-        if(Get::getInstance()->has('type'))
-            $this->posts = $this->Item->typeListing([ Get::getInstance()->val('type') ]);
+        if(!is_null($type))
+            $this->posts = $this->Item->typeListing([ $type ]);
         else
             $this->posts = $this->Item->all();
 
         Render::getInstance()->setView("Admin/Item/home"); // , compact('posts','categories'));
     }
     
-    public function add(){
+    public function add($type = null ){
 
         if(Post::getInstance()->submit()) {
 
@@ -82,12 +83,19 @@ class ItemController extends AppController
             }
         }
 
-        $this->posts = $this->Item->all();
+        if(!is_null($type))
+            $this->posts = $this->Item->typeListing([ $type ]);
+        else
+            $this->posts = $this->Item->all();
+
         $this->form = $this->form_article(Post::getInstance()->content('post'));
 
         Render::getInstance()->setView("Admin/Item/single"); // , compact('form','categories'));
     }
-    
+
+    /**
+     *
+     */
     public function delete(){
 
         if(Post::getInstance()->submit()) {
@@ -96,6 +104,8 @@ class ItemController extends AppController
 
                 $this->post = $this->Item->find(Post::getInstance()->val('id'));
                 if (!$this->post) $this->notFound("del itm");
+
+                $type = $this->post->type;
             }
 
             if(Post::getInstance()->has('conf')) {
@@ -114,16 +124,22 @@ class ItemController extends AppController
             }
         }
 
-        $this->posts = $this->Item->all();
+        if(!is_null($type))
+            $this->posts = $this->Item->typeListing([ $type ]);
+        else
+            $this->posts = $this->Item->all();
 
         Render::getInstance()->setView("Admin/Item/delete"); // , compact('posts','categories'));
     }
-    
-    public function single(){
+
+    /**
+     * @param $id
+     */
+    public function single($id){
 
         if(Post::getInstance()->submit()) {
 
-            if($this->Item->update( Get::getInstance()->val('id'), Post::getInstance()->content("post")))
+            if($this->Item->update( $id, Post::getInstance()->content("post")))
             {
                 FlashBuilder::create("item modifié","success");
 
@@ -133,15 +149,20 @@ class ItemController extends AppController
             }
         }
 
-        if(Get::getInstance()->has('id')) {
+        if(!is_null($id)) {
 
-            $this->post = $this->Item->find(Get::getInstance()->val('id'));
+            $this->post = $this->Item->find($id);
             if (!$this->post) $this->notFound("single item");
+
+            $type = $this->post->type;
         }
 
         Header::getInstance()->setTitle($this->post->titre);
 
-        $this->posts = $this->Item->all();
+        if(!is_null($type))
+            $this->posts = $this->Item->typeListing([ $type ]);
+        else
+            $this->posts = $this->Item->all();
 
         $this->form = $this->form_article($this->post);
 

@@ -169,6 +169,10 @@ class Table
         return $this->request($statement, array( 'id' => $id) , true );
     }
 
+    /**
+     * @param $id
+     * @return array|mixed
+     */
     public function archive($id){
 
         list( $sql_parts , $attrs ) = $this->formatSet(array(

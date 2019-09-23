@@ -29,6 +29,10 @@ class MapController extends AppController
 
     }
 
+    /**
+     * @param $data
+     * @return Form
+     */
     private function formMap($data)
     {
         $form = new Form($data);
@@ -50,6 +54,9 @@ class MapController extends AppController
         return $form ;
     }
 
+    /**
+     *
+     */
     public function index(){
 
         if ($this->MapService instanceof MapService) {

@@ -19,7 +19,7 @@
 
                 <?php echo $page->contenu ?>
 
-                <a href="/?slug=<?php echo $page->slug ?>">reload</a>
+                <a href="/<?php echo $page->slug ?>">reload</a>
             </div>
         </div>
     </div>

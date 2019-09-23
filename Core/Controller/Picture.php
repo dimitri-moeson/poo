@@ -16,9 +16,8 @@ class Picture
     /**
      * readfile
      */
-    public function __construct($path){
-
-
+    public function __construct($path)
+    {
         $this->path = Config::VIEW_DIR.'/Assets/Pictures/'.$path ;
     }
 

@@ -123,29 +123,29 @@ class PageController extends AppController
     }
 
     /**
-     *
+     * @param $id
      */
-    public function single(){
+    public function single($id){
 
         if(Post::getInstance()->submit()) {
 
             Post::getInstance()->val("type","page");
 
-            if($this->ArticleService->record(Get::getInstance()->val('id')))
+            if($this->ArticleService->record($id))
             {
                 FlashBuilder::create("Page modifié","success");
             }
-            Redirect::getInstance()->setParams(array("id" => Get::getInstance()->val('id') ))
+            Redirect::getInstance()->setParams(array("id" => $id ))
                 ->setAct("single")->setCtl("page")->setDom("admin")
                 ->send();
         }
 
-        if(Get::getInstance()->has('id')){
+        if(!is_null($id)){
 
-            $this->post = $this->Article->find(Get::getInstance()->val('id'));
+            $this->post = $this->Article->find($id);
             if (!$this->post) $this->notFound("single page");
 
-            $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
+            $keywords = $this->Keyword->index($id);
 
             Header::getInstance()->setTitle($this->post->titre);
 
