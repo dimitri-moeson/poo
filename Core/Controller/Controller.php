@@ -19,15 +19,19 @@ use Core\HTML\Template\Template;
 class Controller
 {
     /**
-     * @param $ref
+     * @param string $ref
      */
-    public function notFound($ref = "content")
+    public function notFound(?string $ref = "content")
     {
         header('HTTP/1.0 404 Not Found');
-        if(file_exists(Config::VIEW_DIR.'/Html/Error/404.notFound.php'))
-            require_once Config::VIEW_DIR.'/Html/Error/404.notFound.php';
-        else
-            require_once Config::CORE_DIR.'/HTML/Error/404.notFound.php';
+
+        if(file_exists(Config::VIEW_DIR.'/Html/Error/404.notFound.php')) {
+            require_once Config::VIEW_DIR . '/Html/Error/404.notFound.php';
+        }
+        else {
+            require_once Config::CORE_DIR . '/HTML/Error/404.notFound.php';
+        }
+
         if (DEBUG)
         {
             Debugger::getInstance()->view();
@@ -36,15 +40,19 @@ class Controller
     }
 
     /**
-     *
+     * @param string $ref
      */
-    public function forbidden($ref = "content"){
+    public function forbidden(?string $ref = "content"){
 
         header('HTTP/1.0 403 Forbidden' );
-        if(file_exists(Config::VIEW_DIR.'/Html/Error/403.forbidden.php'))
-            require_once Config::VIEW_DIR.'/Html/Error/403.forbidden.php';
-        else
-            require_once Config::CORE_DIR.'/HTML/Error/403.forbidden.php';
+
+        if(file_exists(Config::VIEW_DIR.'/Html/Error/403.forbidden.php')) {
+            require_once Config::VIEW_DIR . '/Html/Error/403.forbidden.php';
+        }
+        else{
+                require_once Config::CORE_DIR . '/HTML/Error/403.forbidden.php';
+            }
+
         if (DEBUG)
         {
             Debugger::getInstance()->view();
