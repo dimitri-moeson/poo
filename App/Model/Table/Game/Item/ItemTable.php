@@ -16,7 +16,7 @@ use Core\Database\QueryBuilder;
 class ItemTable extends GameTable
 {
 
-    public function get($id, $model = null )
+    public function get($id, $model = ItemEntity::class )
     {
         $statement = Query::from("item")->select('*')
             ->where(" id = :id");

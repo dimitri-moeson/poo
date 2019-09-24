@@ -82,7 +82,7 @@ $file_rub  = $ctl_ === "file";
 
             <?php if ($auth->logged()) { ?>
                 <form method="post" action="<?php echo Url::generate("logout","user") ?>" class="navbar-form navbar-right">
-                    <a href="<?php echo Url::generate("index","item","admin") ?>" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
+                    <a href="<?php echo Url::generate("index","default","admin") ?>" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
                     <button type="submit" name="logout" value="logout" class="btn btn-success"><span
                                 class="glyphicon glyphicon-off"></span>Sign out
                     </button>

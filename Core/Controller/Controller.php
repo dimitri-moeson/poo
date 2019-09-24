@@ -50,8 +50,8 @@ class Controller
             require_once Config::VIEW_DIR . '/Html/Error/403.forbidden.php';
         }
         else{
-                require_once Config::CORE_DIR . '/HTML/Error/403.forbidden.php';
-            }
+            require_once Config::CORE_DIR . '/HTML/Error/403.forbidden.php';
+        }
 
         if (DEBUG)
         {

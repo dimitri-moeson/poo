@@ -124,64 +124,6 @@ class Request
         else
         {
             $this->dispatch($page);
-
-                /**
-
-                if (count($page) == 1)
-            {
-                $this->ctrl_name = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
-                $this->dom = null ;
-                $this->ctrl = $page[0] ?? "default";
-                $this->action = "index";
-                $this->slug = null;
-            }
-            elseif (count($page) == 2) {
-                $this->ctrl_name = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
-                $this->dom = null ;
-                $this->ctrl = $page[0] ?? "default";
-                $this->action = $page[1] ?? "index";
-                $this->slug = null;
-            }
-            elseif (count($page) == 3) {
-
-                $ctr_path_a = '\App\Controller\\' . ucfirst($page[0]) . '\\' . ucfirst($page[1]) . 'Controller';
-                $ctr_path_b = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
-
-                if( class_exists($ctr_path_a) )
-                 {
-                     $this->ctrl_name = $ctr_path_a ;
-                     $this->dom = $page[0] ?? null ;
-                     $this->ctrl = $page[1] ?? "default";
-
-                     $this->slug = null;
-                     $this->action = $page[2] ?? "index";
-                 }
-                elseif( class_exists($ctr_path_b) )
-                {
-                    $this->ctrl_name = $ctr_path_b ;
-                    $this->dom = null ;
-                    $this->ctrl = $page[0] ?? "default";
-
-
-                    $this->slug = $page[1] ?? null;
-                    $this->action = $page[2] ?? "index";
-                }
-            }
-            elseif (count($page) == 4) {
-
-                $ctr_path_a = '\App\Controller\\' . ucfirst($page[0]) . '\\' . ucfirst($page[1]) . 'Controller';
-                //$ctr_path_b = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
-
-                if( class_exists($ctr_path_a) ) {
-                    $this->ctrl_name = $ctr_path_a;
-                    $this->dom = $page[0] ?? null;
-                    $this->ctrl = $page[1] ?? "default";
-                    $this->slug = $page[2] ?? null;
-                    $this->action = $page[3] ?? "index";
-                }
-            }
-
-                **/
         }
 
         $this->page = $page ;
@@ -216,59 +158,59 @@ class Request
 
             if( isset($ctr_path_a) && class_exists($ctr_path_a))
             {
-                echo "a dispatch<br/>";
+                //echo "a dispatch<br/>";
                 $this->ctrl_name = $ctr_path_a ;
                 $this->dom = $page[0] ?? null;
                 $this->ctrl = $page[1] ?? "default";
 
                 if( isset($page[3]) && method_exists($ctr_path_a, $page[3]))
                 {
-                    echo "call3<br/>";
+                    //echo "call3<br/>";
                     $this->slug = $page[2] ?? null;
                     $this->action = $page[3] ?? "index";
                 }
                 elseif( isset($page[2]) && method_exists($ctr_path_a, $page[2]))
                 {
-                    echo "call2<br/>";
+                    //echo "call2<br/>";
                     $this->slug = null;
                     $this->action = $page[2] ?? "index";
                 }
                 else
                 {
-                    echo "call1<br/>";
+                    //echo "call1<br/>";
                     $this->slug =  $page[2] ?? null;
                     $this->action = "index";
                 }
             }
         elseif( isset($ctr_path_b) && class_exists($ctr_path_b))
             {
-                echo "b dispatch<br/>";
+                ///echo "b dispatch : ".print_r($page,1)."<br/>";
                 $this->ctrl_name = $ctr_path_b ;
                 $this->dom = null ;
                 $this->ctrl = $page[0] ?? "default";
 
-                if( isset($page[2]) && method_exists($ctr_path_a, $page[2]))
+                if( isset($page[2]) && method_exists($ctr_path_b, $page[2]))
                 {
-                    echo "call2<br/>";
+                    //echo "call2<br/>";
                     $this->slug = $page[1] ?? null;
                     $this->action = $page[2] ?? "index";
                 }
-                elseif(  isset($page[1]) && method_exists($ctr_path_a, $page[1]))
+                elseif(  isset($page[1]) && method_exists($ctr_path_b, $page[1]))
                 {
-                    echo "call1<br/>";
+                    //echo "call1<br/>";
                     $this->slug = null;
                     $this->action = $page[1] ?? "index";
                 }
                 else
                 {
-                    echo "call0<br/>";
+                   // echo "call0<br/>";
                     $this->slug =  $page[1] ?? null;
                     $this->action = "index";
                 }
             }
         elseif( isset($ctr_path_c) && class_exists($ctr_path_c))
             {
-                echo "c dispatch<br/>";
+                //echo "c dispatch<br/>";
                 $this->ctrl_name = $ctr_path_c;
                 $this->dom = $page[0] ?? null;
                 $this->ctrl = "default";
@@ -277,7 +219,7 @@ class Request
             }
         elseif( isset($ctr_path_d) && class_exists($ctr_path_d))
             {
-                echo "d dispatch<br/>";
+                //echo "d dispatch<br/>";
                 $this->ctrl_name = $ctr_path_d;
                 $this->dom = null;
                 $this->ctrl = "default";
@@ -286,7 +228,7 @@ class Request
             }
         else
             {
-                echo "default dispatch<br/>";
+                //echo "default dispatch<br/>";
                 $this->ctrl_name = '\App\Controller\DefaultController';
                 $this->dom = null ;
                 $this->ctrl = "default";
@@ -299,32 +241,32 @@ class Request
 
         if( isset($path) && class_exists($path))
         {
-            echo "a dispatch<br/>";
+            //echo "a dispatch<br/>";
             $this->ctrl_name = $path ;
             $this->dom = $page[0] ?? null;
             $this->ctrl = $page[1] ?? "default";
 
             if( isset($page[3]) && method_exists($path, $page[3]))
             {
-                echo "call3<br/>";
+                //echo "call3<br/>";
                 $this->slug = $page[2] ?? null;
                 $this->action = $page[3] ?? "index";
             }
             elseif( isset($page[2]) && method_exists($path, $page[2]))
             {
-                echo "call2<br/>";
+                //echo "call2<br/>";
                 $this->slug = null;
                 $this->action = $page[2] ?? "index";
             }
             elseif(  isset($page[1]) && method_exists($path, $page[1]))
             {
-                echo "call1<br/>";
+                //echo "call1<br/>";
                 $this->slug = null;
                 $this->action = $page[1] ?? "index";
             }
             else
             {
-                echo "call0<br/>";
+                //echo "call0<br/>";
                 $this->slug = null;
                 $this->action = "index";
             }

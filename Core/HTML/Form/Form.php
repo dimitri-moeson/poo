@@ -130,7 +130,7 @@ class Form
 
         if($options['conf'])
         {
-            $options['label '] = "Confirmer ".$options['label '] ;
+            $options['label'] = "Confirmer ".strtolower($options['label']);
 
             $this->inputs[$name."_conf"] = new Input($name."_conf", $options);
             if( $this->inputs[$name."_conf"] instanceof Input)

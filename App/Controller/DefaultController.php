@@ -41,8 +41,6 @@ class DefaultController extends AppController
      */
     public function index($slug = null )
     {
-        echo $slug ;
-
         if($this->Article instanceof ArticleTable) {
             if(!is_null($slug) && $slug != "index") { // (Get::getInstance()->has("slug")) {
                 // $slug = Get::getInstance()->val("slug");

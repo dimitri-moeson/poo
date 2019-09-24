@@ -45,6 +45,7 @@ class UserService extends Service
             parent::__construct();
 
             $this->loadModel("User");
+            $this->loadModel("Game\Personnage\Personnage");
 
             self::$auth = new DatabaseAuth(App::getInstance()->getDb());
             self::$cryptor = CryptAuth::getInstance( self::$auth->getEncryptionKey());
@@ -63,6 +64,86 @@ class UserService extends Service
 
         }
     }
+
+    public function save($user,$step = "login" , $id = null ){
+
+        if($step == "login") {
+
+            if(trim($user['login'])!=='') {
+                if (filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
+                    if ($this->UserBase->exists_login($user['login']) == false) {
+                        if ($this->UserBase->exists_mail($user['email']) == false) {
+                            if ($user['pswd_new'] === $user['pswd_new_conf']) {
+                                $this->UserBase->create(array(
+                                    "login" => $user['login'],
+                                    "mail" => $user['email'],
+                                    "pswd" => self::$cryptor->encrypt($user['pswd_new'])
+                                ));
+
+                                $_SESSION['inscription']['user_id'] = App::getInstance()->getDb()->lasInsertId();
+
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+
+            if(!is_null($id)){
+
+                $test1 = ( isset($_SESSION['inscription']['user_id'])  && $id == $_SESSION['inscription']['user_id']) ;
+                $test2 = ( isset($_SESSION['inscription']['perso_id']) && $id == $_SESSION['inscription']['perso_id']) ;
+
+                    if($test1 && $step == "faction")
+                {
+
+                    $this->PersonnageBase->create(array(
+                        "user_id" => $id,
+                        "faction_id" => $user['faction']
+                    ));
+
+                    unset($_SESSION['inscription']['user_id']);
+                    $_SESSION['inscription']['perso_id'] = App::getInstance()->getDb()->lasInsertId();
+
+                    return true;
+                }
+                elseif($test2 && $step == "classe")
+                {
+                    $this->PersonnageBase->update(  $id , array(
+                        "classe_id" => $user['faction']
+                    ));
+                    return true;
+                }
+                elseif($test2 && $step == "race")
+                {
+                    $this->PersonnageBase->update(  $id , array(
+                        "race_id" => $user['faction']
+                    ));
+                    return true;
+                }
+                elseif($test2 && $step == "sexe")
+                {
+                    $this->PersonnageBase->update(  $id , array(
+                        "sexe" => $user['faction']
+                    ));
+                    return true;
+                }
+                elseif($test2 && $step == "personnage")
+                {
+                    $this->PersonnageBase->update(  $id , array(
+                        "name" => $user['faction']
+                    ));
+                    return true;
+                }
+
+            }
+
+        }
+        return false;
+    }
+
 
     /**
      * @param $old

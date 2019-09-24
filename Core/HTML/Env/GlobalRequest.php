@@ -114,7 +114,11 @@ class GlobalRequest
      */
     public function submit()
     {
-        if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || strtoupper($_SERVER['REQUEST_METHOD']) === 'GET') {
+
+        $called = strtoupper($this->call);
+
+        //if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || strtoupper($_SERVER['REQUEST_METHOD']) === 'GET') {
+        if (strtoupper($_SERVER['REQUEST_METHOD']) === $called){
 
             return self::$instances[ $this->call ]->submit();
 

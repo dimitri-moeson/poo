@@ -125,7 +125,7 @@ class Input
                 break;
             case 'submit':
                 $html_input = "<button class='btn btn-info' ".$html_option." name='" . $this->name . "' id='button-" . $this->name . "' type='" . $this->type . "'>" .
-                    $this->value . "</button>";
+                    ( $this->label ?? $this->value ) . "</button>";
                 break;
             case 'select':
                 $html_input = "<select class='form-control " . $this->class . "' ".$html_option."  id='select-" . $this->name . "' name='" . $this->name . "'><option disabled selected value>--Select--</option>" . "\n\r";

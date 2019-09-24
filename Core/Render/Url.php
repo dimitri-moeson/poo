@@ -86,25 +86,31 @@ class Url
             $slug = array_shift( $this->params);
 
             $params = $this->getParams();
-            $_parameters = (isset($params) && !empty($params) ?  "/?".self::buildQuery($params) : '');
+            $_parameters = (isset($params) && !empty($params) ?  DIRECTORY_SEPARATOR."?".self::buildQuery($params) : '');
 
-            if(REWRITE)
-            {
+            return $this->dom_Construct($dom).
+                $this->ctl_Construct($_ctl) .
+                $this->slug_Construct($slug) .
+                $this->act_Construct($act) . $_parameters ;
+
+
+            /*if(REWRITE)
+            {*/
                 if(!is_null($slug))
                 {
                     // -- $test = implode(DIRECTORY_SEPARATOR, $params);
 
-                    return DIRECTORY_SEPARATOR . $this->ctl_Construct($_ctl, $dom) . DIRECTORY_SEPARATOR . $slug . DIRECTORY_SEPARATOR . $act . $_parameters ;
+                    return $this->dom_Construct($dom).$this->ctl_Construct($_ctl) . DIRECTORY_SEPARATOR . $slug . $this->act_Construct($act) . $_parameters ;
                 }
                 else
                 {
-                    return DIRECTORY_SEPARATOR . $this->ctl_Construct($_ctl, $dom) . DIRECTORY_SEPARATOR . $act  . $_parameters ;
+                    return $this->dom_Construct($dom).$this->ctl_Construct($_ctl) . $this->act_Construct($act) . $_parameters ;
                 }
-            }
+           /* }
             else
             {
-                return "/?p=" . $this->ctl_Construct($_ctl, $dom) . $this->separator . $act . $_parameters ;
-            }
+                return "/?p=" . $this->ctl_Construct($_ctl, $dom) . $this->act_Construct($act) . $_parameters ;
+            }*/
 /**
 
                 $r = Rewrite::generate($act, $this->getCtl() , ($this->getDom() ?? "default") );
@@ -157,36 +163,63 @@ class Url
         return http_build_query($params ?? $this->getParams() );
     }
 
+    public function dom_Construct($dom= null){
+
+        if($dom)
+        {
+            $ctl = DIRECTORY_SEPARATOR .strtolower("".$dom."");
+        }
+        elseif($this->getDom() != null )
+        {
+            $ctl = DIRECTORY_SEPARATOR .strtolower($this->getDom());
+        }
+
+        return $ctl ;
+
+    }
+
     /**
      * @param null $_ctl
      * @param null $dom
      * @return string
      */
-    public function ctl_Construct($_ctl = null , $dom = null )
+    public function ctl_Construct($_ctl = null)
     {
+        if(strtolower($_ctl) == "default" || is_null($_ctl) ){
+
+            return "";
+        }
+
         $_ctrl =  $_ctl ?? $this->getCtl();
 
-        if($dom)
-        {
-            $ctl = strtolower("".$dom.$this->separator.$_ctrl."");
-        }
-        elseif($this->getDom() != null )
-        {
-            $ctl = strtolower($this->getDom().$this->separator.$_ctrl);
-        }
-        elseif($_ctrl)
-        {
-            $ctl = strtolower($_ctrl);
-        }
-        else // if($_ctrl)
-        {
-            $ctl = strtolower($_ctrl);
-        }
+        $ctl = DIRECTORY_SEPARATOR .strtolower($_ctrl);
 
         return $ctl ;
     }
 
+    /**
+     * @param null $_act
+     * @return string
+     */
+    public function act_Construct($_act = null){
 
+        if(strtolower($_act) == "index" || is_null($_act) ){
+
+            return "";
+        }
+
+        return DIRECTORY_SEPARATOR . $_act  ;
+
+    }
+
+    public function slug_Construct($_slg = null){
+
+        if( is_null($_slg) ){
+
+            return "";
+        }
+        return DIRECTORY_SEPARATOR . $_slg;
+    }
     /**
      * @param mixed $ctl
      * @return Redirect
