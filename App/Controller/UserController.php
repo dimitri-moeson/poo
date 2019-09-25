@@ -66,7 +66,7 @@ class UserController extends AppController
                     {
                         if ($this->auth->hasRole('admin'))
                         {
-                            Redirect::getInstance()->setCtl("article")->setAct("index")->setDom("admin");
+                            Redirect::getInstance()->setCtl("default")->setAct("index")->setDom("admin");
                         }
                         else
                         {

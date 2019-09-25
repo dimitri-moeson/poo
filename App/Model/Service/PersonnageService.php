@@ -118,6 +118,9 @@ class PersonnageService extends Service
                 $personnage = $this->getEquipement($personnage);
                 $personnage = $this->getPosition($personnage);
                 $personnage = $this->getCaracteristique($personnage);
+                $personnage = $this->getFaction($personnage);
+                $personnage = $this->getRace($personnage);
+                $personnage = $this->getClasse($personnage);
 
                 return $personnage;
             }
@@ -180,6 +183,42 @@ class PersonnageService extends Service
 
         return $personnage;
 
+    }
+
+    function getClasse(PersonnageEntity $personnage) :PersonnageEntity
+    {
+        if(!isset($personnage->classe) or empty($personnage->classe) ) {
+            if (!empty($personnage->type)) {
+                $map = $this->ItemBase->find($personnage->type);
+
+                $personnage->classe = $map;
+            }
+        }
+        return $personnage ;
+    }
+
+    function getRace(PersonnageEntity $personnage) :PersonnageEntity
+    {
+        if(!isset($personnage->race) or empty($personnage->race) ) {
+            if (!empty($personnage->race_id)) {
+                $map = $this->ItemBase->find($personnage->race_id);
+
+                $personnage->race = $map;
+            }
+        }
+        return $personnage ;
+    }
+
+    function getFaction(PersonnageEntity $personnage) :PersonnageEntity
+    {
+        if(!isset($personnage->faction) or empty($personnage->faction) ) {
+            if (!empty($personnage->faction_id)) {
+                $map = $this->ItemBase->find($personnage->faction_id);
+
+                $personnage->faction = $map;
+            }
+        }
+        return $personnage ;
     }
 
     function getPosition(PersonnageEntity $personnage) : PersonnageEntity

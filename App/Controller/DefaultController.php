@@ -41,11 +41,14 @@ class DefaultController extends AppController
      */
     public function index($slug = null )
     {
-        if($this->Article instanceof ArticleTable) {
-            if(!is_null($slug) && $slug != "index") { // (Get::getInstance()->has("slug")) {
-                // $slug = Get::getInstance()->val("slug");
+        if($this->Article instanceof ArticleTable)
+        {
+            if(!is_null($slug) && $slug != "index")
+            {
                 $this->page = $this->Article->recup($slug);
-            } else {
+            }
+            else
+            {
                 $this->page = $this->Article->default();
             }
         }

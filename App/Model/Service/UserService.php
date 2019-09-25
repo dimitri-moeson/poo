@@ -12,6 +12,7 @@ use Core\Auth\DatabaseAuth;
 use Core\Auth\UserAuth;
 use Core\Database\QueryBuilder;
 use Core\HTML\Env\Post;
+use Core\Session\FlashBuilder;
 use Exception;
 
 /**
@@ -69,78 +70,107 @@ class UserService extends Service
 
         if($step == "login") {
 
-            if(trim($user['login'])!=='') {
-                if (filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
-                    if ($this->UserBase->exists_login($user['login']) == false) {
-                        if ($this->UserBase->exists_mail($user['email']) == false) {
-                            if ($user['pswd_new'] === $user['pswd_new_conf']) {
+            if(trim($user['login'])!=='')
+            {
+                if (filter_var($user['mail'], FILTER_VALIDATE_EMAIL))
+                {
+                    if ($this->UserBase->exists_login($user['login']) == false)
+                    {
+                        if ($this->UserBase->exists_mail($user['mail']) == false)
+                        {
+                            if ($user['pswd'] === $user['pswd_conf'])
+                            {
                                 $this->UserBase->create(array(
                                     "login" => $user['login'],
-                                    "mail" => $user['email'],
-                                    "pswd" => self::$cryptor->encrypt($user['pswd_new'])
+                                    "mail" => $user['mail'],
+                                    "pswd" => self::$cryptor->encrypt($user['pswd'])
                                 ));
 
                                 $_SESSION['inscription']['user_id'] = App::getInstance()->getDb()->lasInsertId();
 
+                                $this->PersonnageBase->create(array(
+                                    "user_id" => $_SESSION['inscription']['user_id'],
+                                ));
+
+                                $_SESSION['inscription']['perso_id'] = App::getInstance()->getDb()->lasInsertId();
+
+
                                 return true;
                             }
+                            else {
+                                FlashBuilder::create("err conf...","alert");
+                            }
+                        }
+                        else {
+                            FlashBuilder::create("already mail...","alert");
                         }
                     }
+                    else {
+                        FlashBuilder::create("already login...","alert");
+                    }
+                }
+                else {
+                    FlashBuilder::create("invalid mail...","alert");
                 }
             }
+            else {
+                FlashBuilder::create("empty login...","alert");
+            }
         }
-        else {
+        elseif(!is_null($id)){
 
-            if(!is_null($id)){
+            /**$test1 = ( isset($_SESSION['inscription']['user_id'])  && $id == $_SESSION['inscription']['user_id']) ;**/
+            $test2 = ( isset($_SESSION['inscription']['perso_id']) && $id == $_SESSION['inscription']['perso_id']) ;
 
-                $test1 = ( isset($_SESSION['inscription']['user_id'])  && $id == $_SESSION['inscription']['user_id']) ;
-                $test2 = ( isset($_SESSION['inscription']['perso_id']) && $id == $_SESSION['inscription']['perso_id']) ;
+            //var_dump($user);
 
-                    if($test1 && $step == "faction")
+                if($test2 && $step == "faction")
                 {
-
-                    $this->PersonnageBase->create(array(
+                    $this->PersonnageBase->update(  $id ,array(
                         "user_id" => $id,
-                        "faction_id" => $user['faction']
+                        "faction_id" => $user['faction'],
                     ));
 
-                    unset($_SESSION['inscription']['user_id']);
-                    $_SESSION['inscription']['perso_id'] = App::getInstance()->getDb()->lasInsertId();
-
                     return true;
                 }
-                elseif($test2 && $step == "classe")
+            elseif($test2 && $step == "classe")
                 {
                     $this->PersonnageBase->update(  $id , array(
-                        "classe_id" => $user['faction']
+                        "type" => $user['classe']
                     ));
                     return true;
                 }
-                elseif($test2 && $step == "race")
+            elseif($test2 && $step == "race")
                 {
                     $this->PersonnageBase->update(  $id , array(
-                        "race_id" => $user['faction']
+                        "race_id" => $user['race']
                     ));
                     return true;
                 }
-                elseif($test2 && $step == "sexe")
+            elseif($test2 && $step == "sexe")
                 {
                     $this->PersonnageBase->update(  $id , array(
-                        "sexe" => $user['faction']
+                        "sexe" => $user['sexe']
                     ));
                     return true;
                 }
-                elseif($test2 && $step == "personnage")
+            elseif($test2 && $step == "personnage")
                 {
                     $this->PersonnageBase->update(  $id , array(
-                        "name" => $user['faction']
+                        "name" => $user['nom'],
+                         "description" => $user['description']
                     ));
                     return true;
                 }
-
+            else
+            {
+                FlashBuilder::create("error step...","alert");
             }
 
         }
+        else FlashBuilder::create("error id...","alert");
+
+
         return false;
     }
 

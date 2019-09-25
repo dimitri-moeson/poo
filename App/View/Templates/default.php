@@ -9,7 +9,7 @@ $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
 $title = Header::getInstance()->getTitle();
 $auth = new DatabaseAuth(App::getInstance()->getDb());
-$slg = Get::getInstance()->val('slug');
+$slg = Request::getInstance()->getSlug(); // Get::getInstance()->val('slug');
 
 ?><!doctype html>
 <html lang="fr">
@@ -93,6 +93,8 @@ $slg = Get::getInstance()->val('slug');
 
                 <?php if($auth->logged()) {?>
                     <li <?php echo $ctl_ == "test" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("fiche","test") ?>">Fiche</a></li>
+                <?php } else { ?>
+                    <li <?php echo $ctl_ == "inscription" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("login","inscription") ?>">Inscription</a></li>
                 <?php } ?>
 
                 <!--li><a href="#contact">Contact</a></li>

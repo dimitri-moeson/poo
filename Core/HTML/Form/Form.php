@@ -106,6 +106,7 @@ class Form
         $value    = $options['value'] ?? $this->getValue($name);
         //$surround = $options['surround'] ?? 'p';
 
+        $options['name'] = $options['name'] ?? $name;
         $options['type'] = $options['type'] ?? "text";
         $this->inputs[$name] = new Input($name, $options);
         if( $this->inputs[$name] instanceof Input)
@@ -121,6 +122,7 @@ class Form
         //$surround = $options['surround'] ?? 'p';
 
         $options['type'] = $options['type'] ?? "password";
+        $options['name'] = $options['name'] ?? $name;
 
         $this->inputs[$name] = new Input($name, $options);
         if( $this->inputs[$name] instanceof Input)
@@ -131,6 +133,7 @@ class Form
         if($options['conf'])
         {
             $options['label'] = "Confirmer ".strtolower($options['label']);
+            $options['name'] = $options['name']."_conf" ?? $name."_conf";
 
             $this->inputs[$name."_conf"] = new Input($name."_conf", $options);
             if( $this->inputs[$name."_conf"] instanceof Input)

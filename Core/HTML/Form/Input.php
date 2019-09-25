@@ -18,6 +18,7 @@ class Input
     private $value;
     private $name;
     private $class;
+    private $i_name;
     /**
      * @var array
      */
@@ -32,6 +33,7 @@ class Input
     public function __construct($name, $options = [])
     {
         $this->name = $name;
+        $this->i_name = $options['name'] ?? $name;
         $this->type = $options['type'] ?? "text";
         $this->label = $options['label'] ?? $name;
         $this->value = $options["value"] ?? null;
@@ -80,7 +82,7 @@ class Input
         //return $this->label;
         $class_label = "";
         if ($this->type != "hidden" && $this->type != "submit") {
-            $html_label = "<label " . $class_label . " for='" . $this->name . "'>" . $this->label . "</label><br/>";
+            $html_label = "<label " . $class_label . " for='" . $this->i_name . "'>" . $this->label . "</label><br/>";
         } else {
             $html_label = "";
         }
@@ -120,15 +122,15 @@ class Input
         $html_option = ""; //$this->string_options();
         switch ($this->type) {
             case 'file':
-                $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='file' id='" . $this->type . "-" . $this->name . "' name='" . $this->name . "' value='" . $this->value . "' />";
+                $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='file' id='" . $this->type . "-" . $this->name . "' name='" . $this->i_name . "' value='" . $this->value . "' />";
 
                 break;
             case 'submit':
-                $html_input = "<button class='btn btn-info' ".$html_option." name='" . $this->name . "' id='button-" . $this->name . "' type='" . $this->type . "'>" .
+                $html_input = "<button value='" . $this->value . "' class='btn btn-info' ".$html_option." name='" . $this->i_name . "' id='button-" . $this->name . "' type='" . $this->type . "'>" .
                     ( $this->label ?? $this->value ) . "</button>";
                 break;
             case 'select':
-                $html_input = "<select class='form-control " . $this->class . "' ".$html_option."  id='select-" . $this->name . "' name='" . $this->name . "'><option disabled selected value>--Select--</option>" . "\n\r";
+                $html_input = "<select class='form-control " . $this->class . "' ".$html_option."  id='select-" . $this->name . "' name='" . $this->i_name . "'><option disabled selected value>--Select--</option>" . "\n\r";
                 $html_input .= $this->recurcive_option($this->choices,$this->value);
                 $html_input .= "</select>" ;
                 break;
@@ -137,20 +139,20 @@ class Input
                 $html_input = "";
                 foreach ($this->choices as $k => $v) {
                     $attr = ($k == $this->value ? "checked" : "");
-                    $html_input .= "<input class='form-check-input " . $this->class . "' ".$html_option." type='" . $this->type . "' " . $attr . " name='" . $this->name . "' value='" . $k . "' />&nbsp;" . $v."&nbsp;";
+                    $html_input .= "<input class='form-check-input " . $this->class . "' ".$html_option." type='" . $this->type . "' " . $attr . " name='" . $this->i_name . "' value='" . $k . "' />&nbsp;" . $v."&nbsp;";
                 }
                 break;
             case 'textarea':
-                $html_input = "<textarea class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' id='text-" . $this->name . "' name='" . $this->name . "'>" . $this->value . "</textarea>";
+                $html_input = "<textarea class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' id='text-" . $this->name . "' name='" . $this->i_name . "'>" . $this->value . "</textarea>";
                 break;
             case 'date':
             case 'datetime':
 
                 $date = DateTime::createFromFormat("Y-m-d",($this->value ?? date("Y-m-d")));
-                $html_input = "<input type='text' class='form-control " . $this->class . " datepicker' data-date-format='dd/mm/yyyy'  ".$html_option." placeholder='" . $this->label . "' id='date-" . $this->name . "' name='" . $this->name . "' value='".$date->format("Y-m-d")."' />";
+                $html_input = "<input type='text' class='form-control " . $this->class . " datepicker' data-date-format='dd/mm/yyyy'  ".$html_option." placeholder='" . $this->label . "' id='date-" . $this->name . "' name='" . $this->i_name . "' value='".$date->format("Y-m-d")."' />";
                 break;
             default:
-                $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='" . $this->type . "' id='" . $this->type . "-" . $this->name . "' name='" . $this->name . "' value='" . $this->value . "' />";
+                $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='" . $this->type . "' id='" . $this->type . "-" . $this->name . "' name='" . $this->i_name . "' value='" . $this->value . "' />";
                 break;
         }
         return ($html_label . "\n\r" . $html_input); // $this->surround

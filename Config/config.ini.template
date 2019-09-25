@@ -7,3 +7,8 @@ db_host = host
 
 # mysql , ...
 db_type = mysql
+
+#pswd crypt key
+crypt_key = pswd
+
+debug = true
