@@ -103,12 +103,15 @@ class Input
     private function string_options(){
 
         $r = "" ;
-
-        if(isset($this->options) &&!empty($this->options))
-            foreach ($this->options as $k => $v)
-                if(is_string($v))
-                    $r .= "$k='$v' " ;
-
+        $v_options = array("disabled","readonly");
+        if(isset($this->options) &&!empty($this->options)) {
+            foreach ($this->options as $k => $v) {
+                if (is_string($v)) {
+                    if(in_array($k,$v_options))
+                        $r .= "$k='$v' ";
+                }
+            }
+        }
         return $r ;
 
     }
@@ -119,7 +122,7 @@ class Input
     public function __toString()
     {
         $html_label = $this->getLabel();
-        $html_option = ""; //$this->string_options();
+        $html_option = $this->string_options();
         switch ($this->type) {
             case 'file':
                 $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='file' id='" . $this->type . "-" . $this->name . "' name='" . $this->i_name . "' value='" . $this->value . "' />";

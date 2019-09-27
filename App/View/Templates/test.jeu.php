@@ -4,7 +4,7 @@ use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Get;
 use Core\HTML\Header\Header;
 use Core\Render\Url;
-use Core\Request\Request;
+use Core\Request\Request;use Core\Session\FlashBuilder;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
@@ -126,8 +126,8 @@ $auth = new DatabaseAuth(App::getInstance()->getDb());
 
     <div class="container-fluid">
         <div class="row">
-
             <br/>
+            <?php echo FlashBuilder::create()->get() ?>
             <div class="row">
 
                 <ul class="nav nav-tabs">

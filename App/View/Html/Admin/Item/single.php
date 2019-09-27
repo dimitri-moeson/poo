@@ -2,6 +2,7 @@
 
 use Core\Render\Render;
 use Core\Render\Url;
+use Core\Session\FlashBuilder;
 
 ?>
 
@@ -16,6 +17,9 @@ use Core\Render\Url;
 
 <?php } ?>
 
+<?php echo FlashBuilder::create()->get() ?>
+
+
 <div class="col-sm-12">
 
     <div class="col-sm-7 pull-right">
@@ -28,7 +32,7 @@ use Core\Render\Url;
                     <th>Titre</th>
                     <th>Icone</th>
                     <th>
-                        <a href="<?php echo Url::generate("add","item","admin" ) ?>" class="btn btn-success">Add</a>
+                        <a href="<?php echo Url::generate("add","item","admin" , $type  ) ?>" class="btn btn-success">Add</a>
                     </th>
                 </tr>
 

@@ -17,6 +17,7 @@ use Core\HTML\Form\Form;
 use Core\HTML\Header\Header;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
+use Core\Request\Request;
 use Core\Session\FlashBuilder;
 
 class ItemController extends AppController
@@ -33,7 +34,7 @@ class ItemController extends AppController
         $form = new Form($post);
 
         $form->addInput("img", ItemForm::select_img(@$post->img) ) ;
-        $form->addInput("type", ItemForm::select_typ(@$post->type) ) ;
+        $form->addInput("type", ItemForm::select_typ(@$post->type ?? $post["type"]) ) ;
         $form->addInput("objet", ItemForm::select_obj(@$post->objet) ) ;
 
         $form->input("name", array('label' => "Nom"));
@@ -60,11 +61,13 @@ class ItemController extends AppController
 
     public function index($type = null )
     {
-        if(!is_null($type))
-            $this->posts = $this->Item->typeListing([ $type ]);
-        else
+        if(!is_null($type)) {
+            $this->posts = $this->Item->typeListing([$type]);
+            $this->type = $type;
+        }else {
             $this->posts = $this->Item->all();
-
+            $this->type = null ;
+        }
         Render::getInstance()->setView("Admin/Item/home"); // , compact('posts','categories'));
     }
     
@@ -76,17 +79,20 @@ class ItemController extends AppController
 
                 FlashBuilder::create("item ajouté","success");
 
-                Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
+                Redirect::getInstance()->setSlg(App::getInstance()->getDb()->lasInsertId() )
                     ->setDom("admin")->setAct("single")->setCtl("item")
                     ->send();
-
             }
         }
 
-        if(!is_null($type))
-            $this->posts = $this->Item->typeListing([ $type ]);
-        else
+        if(!is_null($type)) {
+            $this->posts = $this->Item->typeListing([$type]);
+            $this->type = $type;
+            Post::getInstance()->val('type',$type);
+        }else {
             $this->posts = $this->Item->all();
+            $this->type = null ;
+        }
 
         $this->form = $this->form_article(Post::getInstance()->content('post'));
 
@@ -124,10 +130,13 @@ class ItemController extends AppController
             }
         }
 
-        if(!is_null($type))
-            $this->posts = $this->Item->typeListing([ $type ]);
-        else
+        if(!is_null($type)) {
+            $this->posts = $this->Item->typeListing([$type]);
+            $this->type = $type;
+        }else {
             $this->posts = $this->Item->all();
+            $this->type = null ;
+        }
 
         Render::getInstance()->setView("Admin/Item/delete"); // , compact('posts','categories'));
     }
@@ -143,7 +152,7 @@ class ItemController extends AppController
             {
                 FlashBuilder::create("item modifié","success");
 
-                Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId() ))
+                Redirect::getInstance()->setSlg(App::getInstance()->getDb()->lasInsertId())
                     ->setDom("admin")->setAct("single")->setCtl("item")
                     ->send();
             }
@@ -159,10 +168,14 @@ class ItemController extends AppController
 
         Header::getInstance()->setTitle($this->post->titre);
 
-        if(!is_null($type))
-            $this->posts = $this->Item->typeListing([ $type ]);
-        else
+        if(!is_null($type)) {
+            $this->posts = $this->Item->typeListing([$type]);
+            $this->type = $type;
+            Request::getInstance()->setSlug($type);
+        }else {
             $this->posts = $this->Item->all();
+            $this->type = null ;
+        }
 
         $this->form = $this->form_article($this->post);
 

@@ -36,6 +36,8 @@ class AccountController extends AppController
             }
 
             $this->cryptor = CryptAuth::getInstance($this->auth->getEncryptionKey());
+            Render::getInstance()->setView("Account/show");
+
         }
     }
 
@@ -78,12 +80,14 @@ class AccountController extends AppController
 
             );
         }
+        $pswd =  isset($this->player) ? CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($this->player->pswd) : Post::getInstance()->val('pswd');
 
         $this->form = new Form($this->player);
 
         $this->form//->init()
             ->pswd("old_pswd",array("conf" => false ,"label" => "Ancien Mot de passe"))
-            ->pswd("new_pswd",array("conf" => true,"label" => "Nouveau Mot de passe"))
+            ->pswd("new_pswd",array("conf" => true,"label" => "Nouveau Mot de passe", "value" => $pswd))
+            ->submit("suivant")
         ;
 
         Render::getInstance()->setView("Account/form");
@@ -104,13 +108,15 @@ class AccountController extends AppController
 
             );
         }
+        $pswd =  isset($this->player) ? CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($this->player->pswd) : Post::getInstance()->val('pswd');
 
         $this->form = new Form($this->player);
 
         $this->form//->init()
-            ->input("new_mail",array("type" => "password","label" => "Nouveau Email"))
-            ->input("rep_mail",array("type" => "password","label" => "Confirmer Email "))
-            ->input("pswd",array("type" => "password","label" => "mot de passe"))
+            ->input("new_mail",array("type" => "email","label" => "Nouveau Email"))
+            ->input("rep_mail",array("type" => "email","label" => "Confirmer Email "))
+            ->input("pswd",array("type" => "password","label" => "mot de passe" , "value" => $pswd ))
+            ->submit("suivant")
         ;
 
         Render::getInstance()->setView("Account/form");

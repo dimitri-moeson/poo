@@ -45,24 +45,49 @@ class InscriptionController extends AppController
         $this->loadService("Personnage");
     }
 
+    private function sess_has($index){
+
+        if( isset($_SESSION['inscription'][$index])) {
+
+            $val = $_SESSION['inscription'][$index] ;
+
+            if(!is_null($val) && !empty($vall)){
+
+                return true ;
+            }
+        }
+    }
+
+    private function sess_val($index){
+
+        if( isset($_SESSION['inscription'][$index])) {
+
+            $val = $_SESSION['inscription'][$index] ;
+
+            if(!is_null($val) && !empty($vall)){
+
+                return $val ;
+            }
+        }
+    }
     /**
      * @param bool $redirect
      * @return bool
      */
     private function verif($redirect = true ){
 
-        if (!isset($_SESSION['inscription']['user_id']) && $redirect) {
+        if (!$this->sess_has('user_id') && $redirect) {
             FlashBuilder::create("creation du compte éronnée. Veuillez reprendre.","alert");
             Redirect::getInstance()->setAct("login")->send();
         }
 
-        if (isset($_SESSION['inscription']['user_id'])) {
+        if ($this->sess_has('user_id')) {
 
             $this->player = $this->User->find( $_SESSION['inscription']['user_id']  );
 
-            if (isset($_SESSION['inscription']['perso_id'])) {
+            if ($this->sess_has('perso_id')) {
                 if ($this->PersonnageService instanceof PersonnageService) {
-                    $this->legolas = $this->PersonnageService->recup($_SESSION['inscription']['perso_id']);
+                    $this->legolas = $this->PersonnageService->recup($this->sess_val('perso_id'));
                 }
             }
 
@@ -81,7 +106,7 @@ class InscriptionController extends AppController
         {
             if($this->UserService->save(Post::getInstance()->content(),"login"))
             {
-                if(isset($_SESSION['inscription']['user_id']))
+                if($this->sess_has('user_id'))
                 {
                     Redirect::getInstance()->setAct("faction")->send();
                 }
@@ -92,13 +117,15 @@ class InscriptionController extends AppController
 
         $this->form = new Form($this->player ?? $_POST);
 
+        $pswd =  isset($this->player) ? CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($this->player->pswd) : Post::getInstance()->val('pswd');
+
         $this->form
             ->input("login")
             ->input("mail",array("label" => "Email"))
             ->pswd("pswd", array(
                 "conf" => true,
                 "label" => "Mot de passe",
-                'value' => ( CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($this->player->pswd) ?? $_POST['pswd'] )
+                'value' => $pswd
             ))
             ->submit("suivant")
         ;
@@ -112,8 +139,8 @@ class InscriptionController extends AppController
     {
         if($this->verif()) {
             if (Post::getInstance()->submit()) {
-                if (isset($_SESSION['inscription']['perso_id'])) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "faction", $_SESSION['inscription']['perso_id'])) {
+                if ($this->sess_has('perso_id')) {
+                    if ($this->UserService->save(Post::getInstance()->content(), "faction", $this->sess_val('perso_id'))) {
                         Redirect::getInstance()->setAct("classe")->send();
                     }
                 }
@@ -142,8 +169,8 @@ class InscriptionController extends AppController
     {
         if($this->verif()) {
             if (Post::getInstance()->submit()) {
-                if (isset($_SESSION['inscription']['perso_id'])) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "classe", $_SESSION['inscription']['perso_id'])) {
+                if ($this->sess_has('perso_id')) {
+                    if ($this->UserService->save(Post::getInstance()->content(), "classe", $this->sess_val('perso_id'))) {
                         Redirect::getInstance()->setAct("race")->send();
                     }
                 }
@@ -172,8 +199,8 @@ class InscriptionController extends AppController
     {
         if($this->verif()) {
             if (Post::getInstance()->submit()) {
-                if (isset($_SESSION['inscription']['perso_id'])) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "race", $_SESSION['inscription']['perso_id'])) {
+                if ($this->sess_has('perso_id')) {
+                    if ($this->UserService->save(Post::getInstance()->content(), "race", $this->sess_val('perso_id'))) {
                         Redirect::getInstance()->setAct("sexe")->send();
                     }
                 }
@@ -202,8 +229,8 @@ class InscriptionController extends AppController
     {
         if($this->verif()) {
             if (Post::getInstance()->submit()) {
-                if (isset($_SESSION['inscription']['perso_id'])) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "sexe", $_SESSION['inscription']['perso_id'])) {
+                if ($this->sess_has('perso_id')) {
+                    if ($this->UserService->save(Post::getInstance()->content(), "sexe", $this->sess_val('perso_id'))) {
                         Redirect::getInstance()->setAct("personnage")->send();
                     }
                 }
@@ -223,14 +250,14 @@ class InscriptionController extends AppController
     {
         if($this->verif()) {
             if (Post::getInstance()->submit()) {
-                if (isset($_SESSION['inscription']['perso_id'])) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "personnage", $_SESSION['inscription']['perso_id'])) {
+                if ($this->sess_has('perso_id')) {
+                    if ($this->UserService->save(Post::getInstance()->content(), "personnage", $this->sess_val('perso_id'))) {
                         FlashBuilder::create("creation du compte terminée. Vou pouvez vous connecter.", "success");
                         Redirect::getInstance()->setAct("save")->send();
                     }
                 }
             }
-            if (isset($_SESSION['inscription']['user_id'])) {
+            if ($this->sess_has('user_id')) {
                 $this->form = new Form($this->legolas ?? $_POST);
                 $this->form
                     ->input("nom", array("name" => "nom", "type" => "text", "label" => "Nom du personnage"))

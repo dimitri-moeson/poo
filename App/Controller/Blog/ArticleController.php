@@ -125,7 +125,7 @@ class ArticleController extends AppController
                         FlashBuilder::create("commentaire ajouté", "success");
                     }
                 }
-                Redirect::getInstance()->setParams(array("slug" => $this->post->slug))
+                Redirect::getInstance()->setSlg($this->post->slug)
                     ->setAct("show")->setCtl("article")->setDom("blog")
                     ->send();
             }

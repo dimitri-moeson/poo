@@ -41,15 +41,18 @@ class UserController extends AppController
      * @param $post
      * @return Form
      */
-    private function form_article($post)
+    private function form_user($post)
     {
         $form = new Form($post);
 
-        $categories = array( "ressource","statistique");
+        $form->input("login")
+            ->input("mail")
 
-        $form->input("titre", array('label' => "titre article"))
-            ->select("categorie_id", array('options' => $categories, 'label' => "Categorie"),$categories)
-            ->input("contenu", array('type' => 'textarea', 'label' => "contenu"))
+            ->input("pswd", array(
+                'readonly' => 'readonly' ,
+                'disabled' => 'disabled',
+                'value' => CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($post->pswd)
+            ))
             ->submit("Enregistrer");
 
         return $form ;
@@ -80,7 +83,7 @@ class UserController extends AppController
             }
         }
 
-        $this->form = $this->form_article(Post::content('post'));
+        $this->form = $this->form_user(Post::content('post'));
 
         Render::getInstance()->setView("Admin/User/single");
     }
@@ -117,31 +120,31 @@ class UserController extends AppController
     }
 
     /**
-     *
+     * @param $id
      */
-    public function single(){
+    public function single($id){
 
         if(Post::getInstance()->submit()) {
 
-            if($this->User->update(Get::getInstance()->val('id'), Post::content("post")))
+            if($this->User->update($id, Post::getInstance()->content("post")))
             {
-                FlashBuilder::create("item ajouté","success");
+                FlashBuilder::create("user édité","success");
 
-                Redirect::getInstance()->setParams(array("id" => Get::getInstance()->val('id') ))
+                Redirect::getInstance()->setParams(array("id" => $id ))
                     ->setDom("admin")->setAct("single")->setCtl("user")
                     ->send();
             }
         }
 
-        if(Get::getInstance()->has('id')) {
+        if(!is_null($id)) {
 
-            $this->post = $this->User->find(Get::getInstance()->val('id'));
+            $this->post = $this->User->find($id);
             if (!$this->post) $this->notFound("single user");
         }
 
-        Header::getInstance()->setTitle($this->post->titre);
+        Header::getInstance()->setTitle($this->post->login);
 
-        $this->form = $this->form_article($this->post);
+        $this->form = $this->form_user($this->post);
 
         Render::getInstance()->setView("Admin/User/single");
     }

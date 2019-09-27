@@ -3,7 +3,7 @@
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Get;
 use Core\HTML\Header\Header;
-use Core\Render\Url;use Core\Request\Request;
+use Core\Render\Url;use Core\Request\Request;use Core\Session\FlashBuilder;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
@@ -93,6 +93,7 @@ $slg = Request::getInstance()->getSlug(); // Get::getInstance()->val('slug');
 
                 <?php if($auth->logged()) {?>
                     <li <?php echo $ctl_ == "test" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("fiche","test") ?>">Fiche</a></li>
+                    <li <?php echo $ctl_ == "account" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("show","account") ?>">Compte</a></li>
                 <?php } else { ?>
                     <li <?php echo $ctl_ == "inscription" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("login","inscription") ?>">Inscription</a></li>
                 <?php } ?>
@@ -139,8 +140,8 @@ $slg = Request::getInstance()->getSlug(); // Get::getInstance()->val('slug');
 <div class="container">
 
     <div class="container-fluid">
-
         <br/>
+        <?php echo FlashBuilder::create()->get() ?>
             <div class="row">
                 <?php echo $content ?>
             </div>

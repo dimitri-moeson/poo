@@ -3,12 +3,12 @@
 use App\Model\Entity\Game\Item\ItemEntity;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Header\Header;
-use Core\Render\Url;use Core\Request\Request;
+use Core\Render\Url;use Core\Request\Request;use Core\Session\FlashBuilder;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
 $title = Header::getInstance()->getTitle();
-
+$slg =  Request::getInstance()->getSlug();
 $auth = new DatabaseAuth(App::getInstance()->getDb());
 
 $blog_rub = $ctl_ === "article" || $ctl_ === "categorie";
@@ -108,6 +108,9 @@ $file_rub  = $ctl_ === "file";
     <div class="container-fluid">
         <h1><?php echo Header::getInstance()->getTitle() ?></h1>
         <div class="row">
+            <br/>
+
+            <?php echo FlashBuilder::create()->get() ?>
 
             <div class="col-sm-8">
                 <?php echo $content ?>
@@ -137,10 +140,9 @@ $file_rub  = $ctl_ === "file";
                             <li><a href="#itmSubmenu" data-toggle="collapse" aria-expanded="<?php echo $item_rub ? "true" : "false" ?>" class="dropdown-toggle">Item<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                                 <ul class="<?php echo $item_rub ? "in" : "collapse" ?>" id="itmSubmenu">
                                     <?php foreach (ItemEntity::type_arr as $cat => $items) { ?>
-
                                         <li>
                                             <a href="#<?php echo $cat ?>Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><?php echo $cat ?><i class="fa fa-fw fa-angle-down pull-right"></i></a>
-                                            <ul class="collapse" id="<?php echo $cat ?>Submenu">
+                                            <ul class="<?php echo in_array($slg ,$items) ? "in" : "collapse" ?>" id="<?php echo $cat ?>Submenu">
                                                 <?php foreach ($items as $k => $item) { ?>
                                                     <li>
                                                         <a class="" href="<?php echo Url::generate("index","item","admin" , $item ) ?>">

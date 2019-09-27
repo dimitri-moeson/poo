@@ -66,6 +66,12 @@ class UserService extends Service
         }
     }
 
+    /**
+     * @param $user
+     * @param string $step
+     * @param null $id
+     * @return bool
+     */
     public function save($user,$step = "login" , $id = null ){
 
         if($step == "login") {

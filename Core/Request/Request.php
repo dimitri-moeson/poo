@@ -158,59 +158,50 @@ class Request
 
             if( isset($ctr_path_a) && class_exists($ctr_path_a))
             {
-                //echo "a dispatch<br/>";
                 $this->ctrl_name = $ctr_path_a ;
                 $this->dom = $page[0] ?? null;
                 $this->ctrl = $page[1] ?? "default";
 
                 if( isset($page[3]) && method_exists($ctr_path_a, $page[3]))
                 {
-                    //echo "call3<br/>";
                     $this->slug = $page[2] ?? null;
                     $this->action = $page[3] ?? "index";
                 }
                 elseif( isset($page[2]) && method_exists($ctr_path_a, $page[2]))
                 {
-                    //echo "call2<br/>";
                     $this->slug = null;
                     $this->action = $page[2] ?? "index";
                 }
                 else
                 {
-                    //echo "call1<br/>";
                     $this->slug =  $page[2] ?? null;
                     $this->action = "index";
                 }
             }
         elseif( isset($ctr_path_b) && class_exists($ctr_path_b))
             {
-                ///echo "b dispatch : ".print_r($page,1)."<br/>";
                 $this->ctrl_name = $ctr_path_b ;
                 $this->dom = null ;
                 $this->ctrl = $page[0] ?? "default";
 
                 if( isset($page[2]) && method_exists($ctr_path_b, $page[2]))
                 {
-                    //echo "call2<br/>";
                     $this->slug = $page[1] ?? null;
                     $this->action = $page[2] ?? "index";
                 }
                 elseif(  isset($page[1]) && method_exists($ctr_path_b, $page[1]))
                 {
-                    //echo "call1<br/>";
                     $this->slug = null;
                     $this->action = $page[1] ?? "index";
                 }
                 else
                 {
-                   // echo "call0<br/>";
                     $this->slug =  $page[1] ?? null;
                     $this->action = "index";
                 }
             }
         elseif( isset($ctr_path_c) && class_exists($ctr_path_c))
             {
-                //echo "c dispatch<br/>";
                 $this->ctrl_name = $ctr_path_c;
                 $this->dom = $page[0] ?? null;
                 $this->ctrl = "default";
@@ -219,7 +210,6 @@ class Request
             }
         elseif( isset($ctr_path_d) && class_exists($ctr_path_d))
             {
-                //echo "d dispatch<br/>";
                 $this->ctrl_name = $ctr_path_d;
                 $this->dom = null;
                 $this->ctrl = "default";
@@ -228,13 +218,22 @@ class Request
             }
         else
             {
-                //echo "default dispatch<br/>";
                 $this->ctrl_name = '\App\Controller\DefaultController';
                 $this->dom = null ;
                 $this->ctrl = "default";
                 $this->slug = $page[0] ?? null;
                 $this->action = "index";
             }
+    }
+
+    /**
+     * @param string $slug
+     * @return Request
+     */
+    public function setSlug(string $slug): Request
+    {
+        $this->slug = $slug;
+        return $this;
     }
 
     private function verif_request($path,$page){

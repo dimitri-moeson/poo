@@ -2,6 +2,7 @@
 namespace Core\Redirect;
 
 use Core\HTML\Env\Get;
+use Core\Path\Path;
 use Core\Render\Url;
 use Core\Request\Request;
 
@@ -47,7 +48,7 @@ class Redirect extends Url
      */
     function redirect($_act = null ,$_ctl = null ,$dom = null )
     {
-        if($this->verif($_act, $_ctl ,$dom ))
+        if(Path::getInstance()->testActionPath($_act, $_ctl ,$dom))
         {
             self::location("".$this->getPath($_act, $_ctl ,$dom));
         }
@@ -87,7 +88,7 @@ class Redirect extends Url
         $_act = $this->getAct();
         //$params = $this->getParams();
 
-        if($this->verif($_act, $_ctrl ))
+        if( Path::getInstance()->testActionPath($this->getAct(), $this->getCtl(), $this->getDom()))
         {
             self::location($this->getPath());
         }

@@ -1,12 +1,14 @@
 <?php
 namespace Core\Render;
 
+use Core\Path\Path;
 use Core\Redirect\Redirect;
 use Core\Request\Request;
 use Core\Rewrite\Rewrite;
 
 class Url
 {
+    public $slg ;
     public $act ;
     public $ctl ;
     public $dom = null  ;
@@ -31,7 +33,8 @@ class Url
         {
             if(!is_null($slug))
             {
-                $obj->setParams(array($slug));
+                //$obj->setParams(array($slug));
+                $obj->slg = $slug ;
             }
         }
         return $obj ;
@@ -43,14 +46,16 @@ class Url
      * @param null $_ctl
      * @param null $dom
      */
-    protected function __construct($_act = null , $_ctl = null , $dom = null )
+    protected function __construct($_act = null , $_ctl = null , $dom = null , $slug = null  )
     {
         $this->act = $_act ?? Request::getInstance()->getAction();
         $this->ctl = $_ctl ?? Request::getInstance()->getCtrl();
         $this->dom = $dom ?? null ;
+        $this->slg = $slug ?? null ;
     }
 
     /**
+     * @deprecated
      * @param null $_act
      * @param null $_ctl
      * @param null $dom
@@ -60,9 +65,9 @@ class Url
     {
         $act = $_act ?? $this->getAct();
 
-        $ctrl = $this->ctrl_Construct($_ctl ,$dom);
+        $ctrl = Path::getInstance()->testControlPath($_ctl,$dom);
 
-        if( Request::getInstance()->is_callable($ctrl,$act) )
+        if( Path::getInstance()->testActionPath($_act,$_ctl,$dom))
         {
             return true;
         }
@@ -76,49 +81,23 @@ class Url
      * @param null $dom
      * @return bool|string
      */
-    public function getPath($_act = null ,$_ctl = null ,$dom = null )
+    public function getPath($_act = null ,$_ctl = null ,$_dom = null )
     {
         $act = $_act ?? $this->getAct();
-        $ctrl = $this->ctrl_Construct($_ctl ,$dom);
+        $ctl = $_ctl ?? $this->getCtl();
+        $dom = $_dom ?? $this->getDom();
 
-        if( Request::getInstance()->is_callable($ctrl,$act) )
+        if( Path::getInstance()->testActionPath($act,$ctl,$dom))
         {
-            $slug = array_shift( $this->params);
+            $slug = $this->getSlg() ;
 
             $params = $this->getParams();
             $_parameters = (isset($params) && !empty($params) ?  DIRECTORY_SEPARATOR."?".self::buildQuery($params) : '');
 
             return $this->dom_Construct($dom).
-                $this->ctl_Construct($_ctl) .
+                $this->ctl_Construct($ctl) .
                 $this->slug_Construct($slug) .
                 $this->act_Construct($act) . $_parameters ;
-
-
-            /*if(REWRITE)
-            {*/
-                if(!is_null($slug))
-                {
-                    // -- $test = implode(DIRECTORY_SEPARATOR, $params);
-
-                    return $this->dom_Construct($dom).$this->ctl_Construct($_ctl) . DIRECTORY_SEPARATOR . $slug . $this->act_Construct($act) . $_parameters ;
-                }
-                else
-                {
-                    return $this->dom_Construct($dom).$this->ctl_Construct($_ctl) . $this->act_Construct($act) . $_parameters ;
-                }
-           /* }
-            else
-            {
-                return "/?p=" . $this->ctl_Construct($_ctl, $dom) . $this->act_Construct($act) . $_parameters ;
-            }*/
-/**
-
-                $r = Rewrite::generate($act, $this->getCtl() , ($this->getDom() ?? "default") );
-                $r->setParams($params);
-
-                return $r->getRewrite() ;
-
- **/
         }
 
         return "error...";
@@ -126,6 +105,7 @@ class Url
     }
 
     /**
+     * @deprecated
      * @param null $_ctl
      * @param null $dom
      * @return string
@@ -165,14 +145,14 @@ class Url
 
     public function dom_Construct($dom= null){
 
-        if($dom)
-        {
-            $ctl = DIRECTORY_SEPARATOR .strtolower("".$dom."");
+        if(is_null($dom) ){
+
+            return "";
         }
-        elseif($this->getDom() != null )
-        {
-            $ctl = DIRECTORY_SEPARATOR .strtolower($this->getDom());
-        }
+
+        //$_ctrl =  $dom ?? $this->getDom();
+
+        $ctl = DIRECTORY_SEPARATOR .strtolower($dom);
 
         return $ctl ;
 
@@ -190,9 +170,7 @@ class Url
             return "";
         }
 
-        $_ctrl =  $_ctl ?? $this->getCtl();
-
-        $ctl = DIRECTORY_SEPARATOR .strtolower($_ctrl);
+        $ctl = DIRECTORY_SEPARATOR .strtolower($_ctl);
 
         return $ctl ;
     }
@@ -226,7 +204,7 @@ class Url
      */
     public function setCtl($ctl = null ): Url
     {
-        $this->ctl = $ctl ?? $this->getCtl();
+        $this->ctl = $ctl;
         return $this;
     }
 
@@ -236,7 +214,7 @@ class Url
      */
     public function setAct($act = null ): Url
     {
-        $this->act = $act ?? $this->getAct();
+        $this->act = $act ;
         return $this;
     }
 
@@ -300,5 +278,23 @@ class Url
     public function __toString()
     {
         return $this->getPath();
+    }
+
+    /**
+     * @param mixed $slg
+     * @return Url
+     */
+    public function setSlg($slg)
+    {
+        $this->slg = $slg;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlg()
+    {
+        return $this->slg;
     }
 }

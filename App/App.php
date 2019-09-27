@@ -73,9 +73,9 @@ class App
     {
         $request = Request::getInstance();
 
-        if ($request->is_callable()) {
+        // --- \Path\Path::getInstance()->testActionPath()...
 
-            echo "callable" ;
+        if ($request->is_callable()) {
 
             $ctrl_name = $request->getCtrlName();
             $action = $request->getAction();
@@ -89,7 +89,6 @@ class App
 
             if ($ctrl instanceof AppController) {
 
-                echo "instanceof AppController";
                 call_user_func_array(array($ctrl, $action),array($slug));
 
                 Render::getInstance($request->getPage())->exec($ctrl);

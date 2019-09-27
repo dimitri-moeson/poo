@@ -154,7 +154,14 @@ class Table
 
         $statement = Query::insert($this->getTable())->set($sql_parts);
 
-        return $this->request($statement, $attrs, true );
+        try{
+            $this->request($statement, $attrs, true );
+
+            return true ;
+        }
+        catch (\Exception $e){
+            die($e->getMessage());
+        }
 
     }
 
@@ -166,7 +173,15 @@ class Table
     public function delete($id )
     {
         $statement = Query::delete($this->getTable())->where("id = :id");
-        return $this->request($statement, array( 'id' => $id) , true );
+
+        try{
+            $this->request($statement, array( 'id' => $id) , true );
+
+            return true ;
+        }
+        catch (\Exception $e){
+            die($e->getMessage());
+        }
     }
 
     /**
@@ -181,8 +196,14 @@ class Table
 
         $statement = QueryBuilder::init()->update($this->getTable())->where("id = :id")->set($sql_parts);
 
-        return $this->request($statement, $attrs, true );
+        try{
+            $this->request($statement, $attrs, true );
 
+            return true ;
+        }
+        catch (\Exception $e){
+            die($e->getMessage());
+        }
     }
 
     /**
@@ -199,6 +220,13 @@ class Table
             ->set($sql_parts)
             ->where("id = :id");
 
-        return $this->request($statement, $attrs, true );
+        try{
+            $this->request($statement, $attrs, true );
+            //echo "edition table class";
+            return true ;
+        }
+        catch (\Exception $e){
+            die($e->getMessage());
+        }
     }
 }

@@ -7,7 +7,7 @@ use Core\Render\Url;
 <div class="row">
 
     <div class="col-sm-8">
-        <?php echo $form ?>
+        <?php echo $form ?? "bienvenue" ?>
     </div>
 
     <div class="col-sm-4 sidebar">

@@ -1,8 +1,10 @@
 <?php
 use Core\Render\Render;
 use Core\Render\Url;
+use Core\Session\FlashBuilder;
 
 ?>
+<?php echo FlashBuilder::create()->get() ?>
 
         <table id="item-table" class="table">
 
@@ -15,7 +17,7 @@ use Core\Render\Url;
                     <th>Type</th>
                     <th>Objet</th>
                     <th>
-                        <a href="<?php echo Url::generate("add","item","admin") ?>" class="btn btn-success">Add</a>
+                        <a href="<?php echo Url::generate("add","item","admin", $type ) ?>" class="btn btn-success">Add</a>
                     </th>
                 </tr>
 
