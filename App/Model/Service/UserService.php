@@ -72,7 +72,7 @@ class UserService extends Service
      * @param null $id
      * @return bool
      */
-    public function save($user,$step = "login" , $id = null ){
+    public function save($user, $step = "login" , $id = null ){
 
         if($step == "login") {
 
@@ -218,9 +218,18 @@ class UserService extends Service
                         "mail" => $new_mail
 
                     ) );
+
+                }else {
+                    FlashBuilder::create("err pswd...","alert");
                 }
 
             }
+            else {
+                FlashBuilder::create("invalid mail...","alert");
+            }
+
+        }else {
+            FlashBuilder::create("err confitm...","alert");
         }
     }
 

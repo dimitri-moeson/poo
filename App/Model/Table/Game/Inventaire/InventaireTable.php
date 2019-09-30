@@ -15,6 +15,14 @@ use Core\Debugger\Debugger;
 
 class InventaireTable extends GameTable
 {
+    /**
+     * @param null $parent_id
+     * @param null $i_rubrique
+     * @param null $i_type
+     * @param array $e_types
+     * @param null $model
+     * @return array|mixed
+     */
     public function itemListing($parent_id = null , $i_rubrique = null , $i_type = null , $e_types = array() , $model = null ){
 
         $statement = QueryBuilder::init()
@@ -57,6 +65,11 @@ class InventaireTable extends GameTable
         return $this->db->prepare($statement , $attrib, $model, false) ;
     }
 
+    /**
+     * @param $id
+     * @param $rubrique
+     * @return array
+     */
     public function rubriqueListing($id,$rubrique ){
 
         $statement = QueryBuilder::init()
@@ -85,6 +98,12 @@ class InventaireTable extends GameTable
 
     }
 
+    /**
+     * @param $id
+     * @param $rubrique
+     * @param $type
+     * @return array
+     */
     public function listing($id,$rubrique, $type ){
 
         $statement = QueryBuilder::init()

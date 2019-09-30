@@ -9,6 +9,7 @@ use Core\Render\Url; ?>
                 <tr>
                     <th>Id</th>
                     <th>login</th>
+                    <th>email</th>
                     <th>pswd</th>
                     <th>
                         <a href="<?php echo Url::generate("add","user","admin") ?>" class="btn btn-success">Add</a>
@@ -24,6 +25,7 @@ use Core\Render\Url; ?>
                     <tr>
                         <td><?php echo $post->id ?></td>
                         <th><?php echo $post->login ?></th>
+                        <th><?php echo $post->mail ?></th>
                         <td><input type="text" value="<?php echo CryptAuth::getInstance($auth->getEncryptionKey())->decrypt($post->pswd) ?>" readonly /></td>
                         <td><?php echo Render::getInstance()->block("admin.list.btn", array(
 

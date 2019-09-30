@@ -63,23 +63,23 @@ class Path
         elseif( is_null($dom) &&  is_null($ctl))    $ctr_path_d = '\App\Controller\DefaultController';
         else                                        $ctr_path_e = '\App\Controller\DefaultController';
 
-            if( isset($ctr_path_a) && class_exists($ctr_path_a))
+            if( isset($ctr_path_a) && class_exists($ctr_path_a,true))
             {
                 return $ctr_path_a ;
             }
-        elseif( isset($ctr_path_b) && class_exists($ctr_path_b))
+        elseif( isset($ctr_path_b) && class_exists($ctr_path_b,true))
             {
                 return $ctr_path_b ;
             }
-        elseif( isset($ctr_path_c) && class_exists($ctr_path_c))
+        elseif( isset($ctr_path_c) && class_exists($ctr_path_c,true))
             {
                 return $ctr_path_c ;
             }
-        elseif( isset($ctr_path_d) && class_exists($ctr_path_d))
+        elseif( isset($ctr_path_d) && class_exists($ctr_path_d,true))
             {
                 return $ctr_path_d ;
             }
-        elseif( isset($ctr_path_e) && class_exists($ctr_path_e))
+        elseif( isset($ctr_path_e) && class_exists($ctr_path_e,true))
             {
                 return $ctr_path_e ;
             }

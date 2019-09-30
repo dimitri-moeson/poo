@@ -8,14 +8,22 @@ use Core\Model\Table\Table;
 
 class UserTable extends Table
 {
-    function exists_login($login){
+    function exists_login($login, UserEntity $user = null ){
 
         $statement = QueryBuilder::init()->select('*')
             ->from('user')
-            ->where('login = :id')
+            ->where('login = :login')
         ;
 
-        $mot = $this->request( $statement , array("id" => $login), false , UserEntity::class);
+        $attr = array("login" => $login);
+
+        if(!is_null($user)){
+
+            $statement->where(' id != :id ');
+            $attr["id"] = $user->id;
+        }
+
+        $mot = $this->request( $statement ,$attr , false , UserEntity::class);
 
         if($mot) return true ;
 
@@ -23,14 +31,22 @@ class UserTable extends Table
 
     }
 
-    function exists_mail($login){
+    function exists_mail($mail, UserEntity $user = null){
 
         $statement = QueryBuilder::init()->select('*')
             ->from('user')
-            ->where('mail = :id')
+            ->where('mail = :mail')
         ;
 
-        $mot = $this->request( $statement , array("id" => $login), false , UserEntity::class);
+        $attr = array("mail" => $mail);
+
+        if(!is_null($user)){
+
+            $statement->where(' id != :id ');
+            $attr["id"] = $user->id;
+        }
+
+        $mot = $this->request( $statement ,$attr , false , UserEntity::class);
 
         if($mot) return true ;
 

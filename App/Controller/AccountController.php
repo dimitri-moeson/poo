@@ -8,6 +8,7 @@ use Core\Auth\CryptAuth;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Render\Render;
+use Core\Session\FlashBuilder;
 use Exception;
 
 /**
@@ -57,12 +58,21 @@ class AccountController extends AppController
         {
             if($this->User instanceof UserTable)
             {
-                $this->User->update( $this->auth->getUser('id'), Post::getInstance()->content() );
+                if ($this->User->exists_login(Post::getInstance()->val("login"),$this->player) == false)
+                {
+                    $this->User->update( $this->auth->getUser('id'), Post::getInstance()->content() );
+                }
+                else {
+                    FlashBuilder::create("already login...","alert");
+                }
             }
 
         }
         $this->form = new Form($this->player);
 
+        $this->form//->init()
+            ->input("login", array("type" => "text","label" => "login"))
+            ->submit("suivant");
     }
 
     /**
@@ -85,8 +95,8 @@ class AccountController extends AppController
         $this->form = new Form($this->player);
 
         $this->form//->init()
-            ->pswd("old_pswd",array("conf" => false ,"label" => "Ancien Mot de passe"))
-            ->pswd("new_pswd",array("conf" => true,"label" => "Nouveau Mot de passe", "value" => $pswd))
+            ->pswd("old_pswd",array("conf" => false ,"label" => "Ancien Mot de passe", "value" => $pswd))
+            ->pswd("new_pswd",array("conf" => true,"label" => "Nouveau Mot de passe"))
             ->submit("suivant")
         ;
 
@@ -100,13 +110,17 @@ class AccountController extends AppController
     {
         if(Post::getInstance()->submit())
         {
-            $this->UserService->email(
+            if ($this->User->exists_mail(Post::getInstance()->val("new_mail"),$this->player) == false) {
+                $this->UserService->email(
 
-                Post::getInstance()->val("pswd") ,
-                Post::getInstance()->val("new_mail") ,
-                Post::getInstance()->val("rep_mail")
+                    Post::getInstance()->val("pswd"),
+                    Post::getInstance()->val("new_mail"),
+                    Post::getInstance()->val("rep_mail")
 
-            );
+                );
+            }else {
+                FlashBuilder::create("already mail...","alert");
+            }
         }
         $pswd =  isset($this->player) ? CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($this->player->pswd) : Post::getInstance()->val('pswd');
 
