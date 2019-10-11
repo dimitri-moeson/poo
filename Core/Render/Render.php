@@ -127,7 +127,7 @@ class Render
             }
             else{
 
-                $controller->notFound("view => ".$this->view);
+                $controller->notFound("- view => ".$this->view." : ".$view_filename);
             }
         }
         catch (Exception $e)

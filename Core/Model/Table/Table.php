@@ -104,11 +104,81 @@ class Table
 
         $statement = Query::from($this->getTable())
             ->select('*')
-            ->where(" id = :id")
+            ->where(" id = :id")->limit(1)
         ;
 
         return $this->request($statement, array( 'id' => $id), true );
 
+    }
+
+    public function exists($id) {
+
+        $statement = Query::from($this->getTable())
+            ->select('count(*) as existence')
+            ->where(" id = :id")->limit(1)
+        ;
+
+        $mot = $this->request($statement, array( 'id' => $id), true );
+
+        return $mot->existence > 0;
+    }
+
+    /**
+     * @param array $attr
+     * @param array $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array|mixed
+     */
+    public function findBy(Array $attr = array(),Array $orderBy = array(), $limit = null, $offset = null)
+    {
+        $statement = Query::from($this->getTable())
+            ->select('*');
+
+        if($statement instanceof QueryBuilder) {
+
+            foreach ($attr as $key => $val )
+                $statement->where(" `".$this->getTable()."`.`$key` = :$key ");
+
+            $statement->orders($orderBy);
+
+            $statement
+                ->limit($limit)
+                ->offset($offset);
+        }
+
+        return $this->request($statement, $attr, false  );
+    }
+
+    public function existsBy(Array $attr = array())
+    {
+        $statement = Query::from($this->getTable())
+            ->select('count(*) as existence')
+        ;
+        if($statement instanceof QueryBuilder) {
+
+            foreach ($attr as $key => $val )
+                $statement->where(" `".$this->getTable()."`.`$key` = :$key ");
+        }
+
+        $mot = $this->request($statement, $attr, true  );
+
+        return $mot->existence > 0 ;
+    }
+
+    /**
+     * @param array $attr
+     * @return array|mixed
+     */
+    public function findOneBy(Array $attr = array()){
+
+        $statement = Query::from($this->getTable())
+            ->select('*')->limit(1);
+
+        foreach ($attr as $key => $val )
+            $statement->where(" `".$this->getTable()."`.`$key` = :$key ");
+
+        return $this->request($statement, $attr, true  );
     }
 
     /**
@@ -125,7 +195,7 @@ class Table
 
             if($k != "submit"){
                 $sql_parts[$k] = " `$k` = :$k ";
-                $attrs[$k] = $v;
+                    $attrs[$k] = $v;
             }
 
         }
@@ -133,12 +203,12 @@ class Table
         if(is_null($id)){
 
             $sql_parts['createAt'] = " createAt = :createAt ";
-            $attrs['createAt'] = date("Y-m-d H:i:s");
+                $attrs['createAt'] = date("Y-m-d H:i:s");
 
         }
 
         $sql_parts['updateAt'] = " updateAt = :updateAt ";
-        $attrs['updateAt'] = date("Y-m-d H:i:s");
+            $attrs['updateAt'] = date("Y-m-d H:i:s");
 
         return array ( $sql_parts , $attrs );
     }

@@ -88,6 +88,6 @@ class PersonnageController extends AppController
 
         Header::getInstance()->setTitle($this->post->titre);
 
-        $this->form = $this->form_categorie($this->post);
+        $this->form = $this->form_perso($this->post);
     }
 }

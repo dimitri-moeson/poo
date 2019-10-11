@@ -5,7 +5,6 @@ namespace App\Controller;
 
 
 use App;
-use App\Controller\AppController;
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Service\PersonnageService;
 use Core\Auth\CryptAuth;
@@ -15,7 +14,6 @@ use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
 use Core\Session\FlashBuilder;
-use Core\Session\Session;
 use Exception;
 
 /**
@@ -45,27 +43,41 @@ class InscriptionController extends AppController
         $this->loadService("Personnage");
     }
 
+    /**
+     * @param $index
+     * @return bool
+     */
     private function sess_has($index){
 
-        if( isset($_SESSION['inscription'][$index])) {
-
+        if( isset($_SESSION['inscription'][$index]))
+        {
             $val = $_SESSION['inscription'][$index] ;
 
-            if(!is_null($val) && !empty($vall)){
+            $null  = is_null($val) ? 1 : 0 ;
+            $empty =   empty($val) ? 1 : 0 ;
 
+            if($null == 0 && $empty == 0 )
+            {
                 return true ;
             }
         }
     }
 
-    private function sess_val($index){
-
-        if( isset($_SESSION['inscription'][$index])) {
-
+    /**
+     * @param $index
+     * @return mixed
+     */
+    private function sess_val($index)
+    {
+        if( isset($_SESSION['inscription'][$index]))
+        {
             $val = $_SESSION['inscription'][$index] ;
 
-            if(!is_null($val) && !empty($vall)){
+            $null  =   is_null($val) ? 1 : 0 ;
+            $empty =     empty($val) ? 1 : 0 ;
 
+            if($null == 0 && $empty == 0 )
+            {
                 return $val ;
             }
         }
@@ -76,25 +88,30 @@ class InscriptionController extends AppController
      */
     private function verif($redirect = true ){
 
-        if (!$this->sess_has('user_id') && $redirect) {
-            FlashBuilder::create("creation du compte éronnée. Veuillez reprendre.","alert");
-            Redirect::getInstance()->setAct("login")->send();
-        }
-
-        if ($this->sess_has('user_id')) {
-
-            $this->player = $this->User->find( $_SESSION['inscription']['user_id']  );
-
-            if ($this->sess_has('perso_id')) {
-                if ($this->PersonnageService instanceof PersonnageService) {
-                    $this->legolas = $this->PersonnageService->recup($this->sess_val('perso_id'));
-                }
+        try {
+            if (!$this->sess_has('user_id') && $redirect) {
+                FlashBuilder::create("creation du compte éronnée. Veuillez reprendre.", "alert");
+                Redirect::getInstance()->setAct("login")->send();
             }
 
-            if (!$this->legolas) $this->notFound("personnage");
-        }
+            if ($this->sess_has('user_id')) {
 
-        return true ;
+                $this->player = $this->User->find($this->sess_val('user_id'));
+
+                if ($this->sess_has('perso_id')) {
+                    if ($this->PersonnageService instanceof PersonnageService) {
+                        $this->legolas = $this->PersonnageService->recup($this->sess_val('perso_id'));
+                    }
+                }
+
+                if (!$this->legolas) $this->notFound("personnage");
+            }
+
+            return true;
+        }
+        catch (Exception $e){
+            var_dump($e);
+        }
     }
 
     /**

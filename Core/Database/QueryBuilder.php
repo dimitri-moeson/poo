@@ -27,6 +27,8 @@ class QueryBuilder
     private $insert = false;
     private $update = false;
     private $delete = false;
+    private $limit ;
+    private $offset ;
 
 
     /**
@@ -109,6 +111,18 @@ class QueryBuilder
             $this->conditions[] = "$alias.`deleteAt` IS NULL";
         }
         return $this;
+    }
+
+    public function limit($limit){
+
+        $this->limit = $limit ;
+        return $this ;
+    }
+
+    public function offset($offset){
+
+        $this->offset = $offset ;
+        return $this ;
     }
 
     /**
@@ -209,6 +223,8 @@ class QueryBuilder
         $set = null;
         $order = null;
         $group = null;
+        $limit = null ;
+        $offset = null ;
 
         if ($this->describe) {
             $init = "DESCRIBE " . $this->from[0];
@@ -233,9 +249,11 @@ class QueryBuilder
             if (!empty($this->conditions)) $where = ' WHERE ' . implode(' AND ', $this->conditions);
             if (!empty($this->groups)) $group = ' GROUP BY ' . implode(', ', $this->groups);
             if (!empty($this->orders)) $order = ' ORDER BY ' . implode(', ', $this->orders);
+            if (!empty($this->limit)) $limit = ' LIMIT ' . $this->limit ;
+            if (!empty($this->offset)) $offset = ' OFFSET ' .$this->offset  ;
         }
 
-        $sql = $init . $set . $join . $where . $group . $order;
+        $sql = $init . $set . $join . $where . $group . $order . $limit . $offset ;
 
         return $sql;
     }

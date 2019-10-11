@@ -1,6 +1,7 @@
 <table id="item-table" class="table">
 
-    <?php use App\Model\Entity\Game\Personnage\PersonnageEntity; ?>
+    <?php use App\Model\Entity\Game\Personnage\PersonnageEntity;
+    use Core\Render\Render; ?>
             <thead>
 
                 <tr>
@@ -27,8 +28,15 @@
                 <td><?php echo $personnage->getVie() ?></td>
                 <td><?php echo $personnage->getSexe() == 2 ? "Femme" : "Homme" ?></td>
 
-                <td><?php foreach($personnage->getStats()->getContainer() as $stats){ ?> <?php echo $stats->getName();} ?></td>
+                <td><?php foreach($personnage->getStats()->getContainer() as $stats){ ?>
+                        <?php echo $stats->getName(); ?>
+                    <?php } ?></td>
+                <td><?php echo Render::getInstance()->block("admin.list.btn", array(
 
+                        "p" => "personnage",
+                        "id" => $personnage->id
+
+                    )); ?></td>
             <?php } ?>
         </tr>
 

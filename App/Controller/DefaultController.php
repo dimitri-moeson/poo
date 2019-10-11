@@ -45,11 +45,12 @@ class DefaultController extends AppController
         {
             if(!is_null($slug) && $slug != "index")
             {
-                $this->page = $this->Article->recup($slug);
+                $this->page = $this->Article->findOneBy(['slug' => $slug ]);
             }
             else
             {
                 $this->page = $this->Article->default();
+                //->findOneBy(['type' => "page" , 'default' => 1 ]); //
             }
         }
 

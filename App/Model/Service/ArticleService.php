@@ -46,7 +46,7 @@ class ArticleService extends Service
 
             $key = strtolower(trim($keyword));
 
-            if($this->KeywordBase->exists($key)){
+            if($this->KeywordBase->existsBy( array("mot" => $key ))){
 
                 $word = $this->KeywordBase->get(  $key );
                 $k_id = $word->id ;
@@ -57,7 +57,7 @@ class ArticleService extends Service
                 $k_id = App::getInstance()->getDb()->lasInsertId();
             }
 
-            if(!$this->IndexionBase->exists($k_id,$id)){
+            if(!$this->IndexionBase->existsBy(array("article_id" => $id , "keyword_id" => $k_id) )){
                 $this->IndexionBase->create( array("article_id" => $id , "keyword_id" => $k_id) );
             }
         }

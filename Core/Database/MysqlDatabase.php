@@ -8,6 +8,7 @@
 
 namespace Core\Database;
 
+use Core\Config;
 use Core\Debugger\Debugger;
 use \PDO;
 use PDOException;
@@ -81,8 +82,23 @@ class MysqlDatabase extends Database
 
                 return [$res];
             } else {
+
                 $req = $this->getPDO()->prepare($statement);
-                $res = $req->execute($attrs);
+
+                foreach ($attrs as $field => $value ){
+
+                    if(is_numeric($value))
+                    {
+                        $req->bindValue(":" . $field, $value, PDO::PARAM_INT);
+                    }
+                elseif(is_string($value))
+                    {
+                        $req->bindValue(":" . $field, $value, PDO::PARAM_STR);
+                    }
+
+                }
+
+                $res = $req->execute(); // $attrs
 
                 return [$req, $res];
             }
@@ -90,7 +106,8 @@ class MysqlDatabase extends Database
         catch (PDOException $e) {
 
                 echo $statement."<br/>";
-                if(!is_null($attrs)){
+                if(!is_null($attrs))
+                {
                     echo print_r($attrs,1)."<br/>";
                 }
 
@@ -208,6 +225,69 @@ class MysqlDatabase extends Database
         return $this->getPDO()->lastInsertId();
     }
 
+    function describe($table){
+
+        $tb = $this->query('DESCRIBE ' . $table) ; // Query::describe($name);
+
+        $ct = array();
+
+        foreach ($tb as $x => $column) {
+
+            $ct[$column->Field]  = [
+                "type"      =>  $column->Type ,
+                "nullable"  => ($column->Null == 'No' ? false : ($column->Null == 'Yes' ? true : false)) ,
+                "primary"   => ($column->Key == 'PRI' ? true : false) ,
+                "extra"     =>  $column->Extra ,
+                "default"   =>  $column->Default
+            ];
+        }
+
+        return $ct ;
+
+    }
+
+    function generate(){
+
+        $tables = $this->query("SHOW TABLES");
+        foreach($tables as $table) {
+            $name = $table->{'Tables_in_' . $this->db_name};
+
+            $tb = $this->describe($name);
+
+            $setter = $getter = $variables = "" ;
+
+            foreach ($tb as $col => $format){
+
+                $variables .= " \t\tprivate $".$col." ; \n";
+
+                $getter .=  "  \t\tpublic function get".ucfirst($col)."()
+        {
+            return $"."this->".$col." ;
+        } \n\n";
+
+                $setter .=  "  \t\tpublic function set".ucfirst($col)."($".$col.")
+        {
+            $"."this->".$col." = $".$col.";
+            return $"."this ;
+        } \n\n";
+            }
+
+            $content = "<?php 
+            
+    class ".ucfirst($name)."Entity extends Entity
+    {
+        $variables
+        
+        $getter
+       
+        $setter
+    }
+?>";
+            file_put_contents( Config::MODEL_DIR."/Entity/".ucfirst($name)."Entity.php",$content);
+        }
+
+    }
+
     /**
      * @return string
      */
@@ -222,6 +302,26 @@ class MysqlDatabase extends Database
         foreach($tables as $table) {
             $name = $table->{'Tables_in_' . $this->db_name};
 
+            $tb = $this->describe($name);
+
+            $content = array();
+            foreach ($tb as $col => $format){
+
+                                       $content[$col] = "`" . $col . "` " . $format["type"];
+                if($format["primary"]) $content[$col] .= ' PRIMARY KEY ';
+                                       $content[$col] .= $format["nullable"] ? " NULL " : " NOT NULL ";
+
+                if (trim($format["default"]) != '') {
+                    if ($format["default"] != 'current_timestamp()') {
+                        $content[$col] .= " DEFAULT '" . $format["default"] . "'";
+                    } else {
+                        $content[$col] .= " DEFAULT " . $format["default"] ;
+                    }
+                }
+
+                $content[$col] .= $format["extra"] ;
+            }
+/**
             $tb = $this->query('DESCRIBE ' . $name) ; // Query::describe($name);
 
             $content = array();
@@ -240,7 +340,7 @@ class MysqlDatabase extends Database
                 }
                 if (trim($column->Extra) != '') $content[$x] .= " " . $column->Extra;
             }
-
+**/
             $return .= "\r" . "-- table " . strtoupper($name) . " -- \r";
             $return .= "\r" . " DROP Table IF EXISTS `" . $name . "` ; " . "\r";
             $return .= "\r" . " create table `" . $name . "` ( ";

@@ -71,7 +71,6 @@ class KeywordTable extends Table
     /**
      * @param $key
      * @return bool
-     */
     public function exists($key){
 
         $mot =  $this->get($key);
@@ -80,6 +79,7 @@ class KeywordTable extends Table
 
         return false ;
     }
+*/
 
     /**
      * @param $key

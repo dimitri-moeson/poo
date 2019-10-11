@@ -95,8 +95,8 @@ class AccountController extends AppController
         $this->form = new Form($this->player);
 
         $this->form//->init()
-            ->pswd("old_pswd",array("conf" => false ,"label" => "Ancien Mot de passe", "value" => $pswd))
             ->pswd("new_pswd",array("conf" => true,"label" => "Nouveau Mot de passe"))
+            ->pswd("old_pswd",array("conf" => false ,"label" => "Ancien Mot de passe", "value" => $pswd))
             ->submit("suivant")
         ;
 
@@ -115,7 +115,7 @@ class AccountController extends AppController
 
                     Post::getInstance()->val("pswd"),
                     Post::getInstance()->val("new_mail"),
-                    Post::getInstance()->val("rep_mail")
+                    Post::getInstance()->val("new_mail_conf")
 
                 );
             }else {
@@ -127,9 +127,8 @@ class AccountController extends AppController
         $this->form = new Form($this->player);
 
         $this->form//->init()
-            ->input("new_mail",array("type" => "email","label" => "Nouveau Email"))
-            ->input("rep_mail",array("type" => "email","label" => "Confirmer Email "))
-            ->input("pswd",array("type" => "password","label" => "mot de passe" , "value" => $pswd ))
+            ->input("new_mail",array("conf" => true ,"type" => "email","label" => "Nouvel Email"))
+            ->input("pswd",array("conf" => false ,"type" => "password","label" => "mot de passe" , "value" => $pswd ))
             ->submit("suivant")
         ;
 

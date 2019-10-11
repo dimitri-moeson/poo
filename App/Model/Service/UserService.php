@@ -74,108 +74,101 @@ class UserService extends Service
      */
     public function save($user, $step = "login" , $id = null ){
 
-        if($step == "login") {
+        if($this->UserBase instanceof App\Model\Table\UserTable )
+        {
 
-            if(trim($user['login'])!=='')
-            {
-                if (filter_var($user['mail'], FILTER_VALIDATE_EMAIL))
-                {
-                    if ($this->UserBase->exists_login($user['login']) == false)
-                    {
-                        if ($this->UserBase->exists_mail($user['mail']) == false)
-                        {
-                            if ($user['pswd'] === $user['pswd_conf'])
-                            {
-                                $this->UserBase->create(array(
-                                    "login" => $user['login'],
-                                    "mail" => $user['mail'],
-                                    "pswd" => self::$cryptor->encrypt($user['pswd'])
-                                ));
+            if ($step == "login") {
 
-                                $_SESSION['inscription']['user_id'] = App::getInstance()->getDb()->lasInsertId();
+                if (trim($user['login']) !== '') {
+                    if (filter_var($user['mail'], FILTER_VALIDATE_EMAIL)) {
 
-                                $this->PersonnageBase->create(array(
-                                    "user_id" => $_SESSION['inscription']['user_id'],
-                                ));
+                        $exists = $this->UserBase->existsBy(array(
+                            "login" => $user['login'],
+                            "email" => $user["mail"]
+                        ));
 
-                                $_SESSION['inscription']['perso_id'] = App::getInstance()->getDb()->lasInsertId();
+                        if ( $exists == false) {
 
+                                if ($user['pswd'] === $user['pswd_conf']) {
+                                    $this->UserBase->create(array(
+                                        "login" => $user['login'],
+                                        "mail" => $user['mail'],
+                                        "pswd" => self::$cryptor->encrypt($user['pswd'])
+                                    ));
 
-                                return true;
-                            }
-                            else {
-                                FlashBuilder::create("err conf...","alert");
-                            }
+                                    $_SESSION['inscription']['user_id'] = App::getInstance()->getDb()->lasInsertId();
+
+                                    $this->PersonnageBase->create(array(
+                                        "user_id" => $_SESSION['inscription']['user_id'],
+                                    ));
+
+                                    $_SESSION['inscription']['perso_id'] = App::getInstance()->getDb()->lasInsertId();
+                                    $_SESSION['inscription']['step'] = 2;
+
+                                    return true;
+                                }
+                                else
+                                {
+                                    FlashBuilder::create("err conf...", "alert");
+                                }
+
+                        } else {
+                            FlashBuilder::create("already login...", "alert");
                         }
-                        else {
-                            FlashBuilder::create("already mail...","alert");
-                        }
+                    } else {
+                        FlashBuilder::create("invalid mail...", "alert");
                     }
-                    else {
-                        FlashBuilder::create("already login...","alert");
-                    }
-                }
-                else {
-                    FlashBuilder::create("invalid mail...","alert");
+                } else {
+                    FlashBuilder::create("empty login...", "alert");
                 }
             }
-            else {
-                FlashBuilder::create("empty login...","alert");
-            }
-        }
-        elseif(!is_null($id)){
+            elseif (!is_null($id)) {
 
-            /**$test1 = ( isset($_SESSION['inscription']['user_id'])  && $id == $_SESSION['inscription']['user_id']) ;**/
-            $test2 = ( isset($_SESSION['inscription']['perso_id']) && $id == $_SESSION['inscription']['perso_id']) ;
+                /**$test1 = ( isset($_SESSION['inscription']['user_id'])  && $id == $_SESSION['inscription']['user_id']) ;**/
+                $test2 = (isset($_SESSION['inscription']['perso_id']) && $id == $_SESSION['inscription']['perso_id']);
 
-            //var_dump($user);
+                //var_dump($user);
 
-                if($test2 && $step == "faction")
-                {
-                    $this->PersonnageBase->update(  $id ,array(
+                if ($test2 && $step == "faction") {
+                    $this->PersonnageBase->update($id, array(
                         "user_id" => $id,
                         "faction_id" => $user['faction'],
                     ));
+                    $_SESSION['inscription']['step'] = 3;
 
                     return true;
-                }
-            elseif($test2 && $step == "classe")
-                {
-                    $this->PersonnageBase->update(  $id , array(
+                } elseif ($test2 && $step == "classe") {
+                    $this->PersonnageBase->update($id, array(
                         "type" => $user['classe']
                     ));
+                    $_SESSION['inscription']['step'] = 4;
                     return true;
-                }
-            elseif($test2 && $step == "race")
-                {
-                    $this->PersonnageBase->update(  $id , array(
+                } elseif ($test2 && $step == "race") {
+                    $this->PersonnageBase->update($id, array(
                         "race_id" => $user['race']
                     ));
+                    $_SESSION['inscription']['step'] = 5;
                     return true;
-                }
-            elseif($test2 && $step == "sexe")
-                {
-                    $this->PersonnageBase->update(  $id , array(
+                } elseif ($test2 && $step == "sexe") {
+                    $this->PersonnageBase->update($id, array(
                         "sexe" => $user['sexe']
                     ));
+                    $_SESSION['inscription']['step'] = 6;
                     return true;
-                }
-            elseif($test2 && $step == "personnage")
-                {
-                    $this->PersonnageBase->update(  $id , array(
+                } elseif ($test2 && $step == "personnage") {
+                    $this->PersonnageBase->update($id, array(
                         "name" => $user['nom'],
-                         "description" => $user['description']
+                        "description" => $user['description']
                     ));
+                    $_SESSION['inscription']['step'] = 7;
                     return true;
+                } else {
+                    FlashBuilder::create("error step...", "alert");
                 }
-            else
-            {
-                FlashBuilder::create("error step...","alert");
+
             }
-
+            else FlashBuilder::create("error id...", "alert");
         }
-        else FlashBuilder::create("error id...","alert");
-
 
         return false;
     }
@@ -190,7 +183,7 @@ class UserService extends Service
     {
         if($new === $rep)
         {
-            if (self::$cryptor->decrypt($this->player->pswd) === $old ) {
+            if (self::$cryptor->decrypt($this->user->pswd) === $old ) {
 
                 $this->UserBase->update( $this->user->id , array(
 

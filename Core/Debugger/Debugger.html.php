@@ -11,7 +11,7 @@ use Core\HTML\Env\Post;
 <script src="/debug/js"></script>
 <link rel="stylesheet" href="/debug/css" crossorigin="anonymous">
 
-<div id="sql-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div id="sql-debug" class="debug">
     <div class="table-responsive">
 
         <table class="table table-striped table-bordered table-hover table-condensed">
@@ -54,7 +54,7 @@ use Core\HTML\Env\Post;
     </div>
 </div>
 
-<div id="log-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div id="log-debug" class="debug">
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-condensed">
 
@@ -98,7 +98,7 @@ use Core\HTML\Env\Post;
     </div>
 </div>
 
-<div id="post-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div id="post-debug" class="debug">
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-condensed">
 
@@ -128,7 +128,7 @@ use Core\HTML\Env\Post;
     </div>
 </div>
 
-<div id="session-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div id="session-debug" class="debug">
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover table-condensed">
 
@@ -158,7 +158,7 @@ use Core\HTML\Env\Post;
 </div>
 </div>
 
-<div id="get-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div id="get-debug" class="debug">
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-condensed">
 
@@ -188,7 +188,7 @@ use Core\HTML\Env\Post;
     </div>
 </div>
 
-<div id="server-debug" class="debug"><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div id="server-debug" class="debug">
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-condensed">
 
@@ -218,7 +218,7 @@ use Core\HTML\Env\Post;
     </div>
 </div>
 
-<div id="app-debug" class="debug" ><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div id="app-debug" class="debug" >
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-condensed">
 
@@ -248,7 +248,7 @@ use Core\HTML\Env\Post;
     </div>
 </div>
 
-<div id="request-debug" class="debug" ><!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+<div id="request-debug" class="debug" >
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover table-condensed">
 
@@ -284,7 +284,7 @@ use Core\HTML\Env\Post;
 
         if ($perso instanceof PersonnageEntity) { ?>
             <div id="perso-debug" class="debug well">
-                <!-- style="height: 500px; overflow: auto;position: absolute;bottom:30px;display:none"-->
+
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover table-condensed">
 
@@ -383,16 +383,19 @@ use Core\HTML\Env\Post;
     }
 ?>
 
-<div id="debug-bar"><!-- style="position: absolute;bottom:0;"-->
+<div id="debug-bar">
     <a onclick="showDebug('app');" class="btn btn-info ">App</a>
     <a onclick="showDebug('log');" class="btn btn-info ">Logs</a>
     <a onclick="showDebug('get');" class="btn btn-info">get</a>
-    <a onclick="showDebug('session');" class="btn btn-info">session</a>
-    <a onclick="showDebug('post');" class="btn btn-info">post</a>
-    <a onclick="showDebug('server');" class="btn btn-info">server</a>
     <a onclick="showDebug('sql');" class="btn btn-info">sql</a>
+    <a onclick="showDebug('post');" class="btn btn-info">post</a>
+<?php if(isset($perso)){ ?>
+    <a onclick="showDebug('perso');" class="btn btn-info">perso</a>
+<?php } ?>
+    <a onclick="showDebug('server');" class="btn btn-info">server</a>
+    <a onclick="showDebug('session');" class="btn btn-info">session</a>
     <a onclick="showDebug('request');" class="btn btn-info">request</a>
-<?php if(isset($perso)){ ?><a onclick="showDebug('perso');" class="btn btn-info">perso</a><?php } ?>
+
 </div>
 
 <!-- end debug -->

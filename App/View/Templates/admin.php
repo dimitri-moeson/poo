@@ -3,7 +3,9 @@
 use App\Model\Entity\Game\Item\ItemEntity;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Header\Header;
-use Core\Render\Url;use Core\Request\Request;use Core\Session\FlashBuilder;
+use Core\Render\Url;
+use Core\Request\Request;
+use Core\Session\FlashBuilder;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
@@ -163,17 +165,18 @@ $file_rub  = $ctl_ === "file";
                     <li>
                         <a href="#fileSubmenu" data-toggle="collapse" aria-expanded="<?php echo $file_rub ? "true" : "false" ?>" class="dropdown-toggle">Fichier<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul class="<?php echo $file_rub ? "in" : "collapse" ?>" id="fileSubmenu">
-                            <li><a href="<?php echo Url::generate("picture","file","admin") ?>">Image</a></li>
-                            <li><a href="<?php echo Url::generate("style","file","admin") ?>">Css</a></li>
-                            <li><a href="<?php echo Url::generate("script","file","admin") ?>">Js</a></li>
+                            <li><a href="<?php echo Url::generate("index" ,"file","admin","picture") ?>">Image</a></li>
+                            <li><a href="<?php echo Url::generate("index" ,"file","admin","style") ?>">Css</a></li>
+                            <li><a href="<?php echo Url::generate("index" ,"file","admin","script") ?>">Js</a></li>
                         </ul>
                     </li>
 
                     <li>
                         <a href="#otherSubmenu" data-toggle="collapse" aria-expanded="<?php echo $sql_rub ? "true" : "false" ?>" class="dropdown-toggle">Base de données<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul class="<?php echo $sql_rub ? "in" : "collapse" ?>" id="otherSubmenu">
-                            <li><a href="<?php echo Url::generate("index","sql","admin") ?>">Requête</a></li>
+                            <li><a href="<?php echo Url::generate("index","sql","admin") ?>">Requ&ecirc;te</a></li>
                             <li><a href="<?php echo Url::generate("save","sql","admin") ?>">Export</a></li>
+                            <!--li><a href="<?php // echo Url::generate("generate","sql","admin") ?>">Generate</a></li-->
                         </ul>
                     </li>
 

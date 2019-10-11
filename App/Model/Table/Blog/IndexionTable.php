@@ -14,7 +14,6 @@ class IndexionTable extends Table
      * @param $k_id
      * @param $a_id
      * @return bool
-     */
     public function exists($k_id,$a_id){
 
         $statement = QueryBuilder::init()->select('i.*')
@@ -27,6 +26,7 @@ class IndexionTable extends Table
 
         return false ;
     }
+*/
 
     /**
      * @param $key

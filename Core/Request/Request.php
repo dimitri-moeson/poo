@@ -76,26 +76,8 @@ class Request
 
         Debugger::getInstance()->app("page",$page);
 
-        /**
-         * module debug
-         */
-        if(DEBUG && $page[0]=="debug")
-        {
-
-            if($page[1]==="css") {
-
-                Debugger::getInstance()->stylesheet();
-                die;
-            }
-            elseif($page[1]==="js") {
-
-                Debugger::getInstance()->javascript();
-                die;
-            }
-            else {
-
-                die("no recognized debug file ".$page[1]."...");
-            }
+        if(DEBUG && $page[0]=="debug") {
+            $this->debugger($page);
         }
         /**
          * module habillage
@@ -123,12 +105,30 @@ class Request
          */
         else
         {
-            $this->dispatch($page);
+            $this->page =$this->dispatch($page);
         }
+    }
 
-        $this->page = $page ;
+    /**
+     * module debug
+     * @param array $page
+     */
+    private function debugger( $page = array())
+    {
+        if($page[1]==="css") {
 
-        //var_dump($this);
+            Debugger::getInstance()->stylesheet();
+            die;
+        }
+        elseif($page[1]==="js") {
+
+            Debugger::getInstance()->javascript();
+            die;
+        }
+        else {
+
+            die("no recognized debug file ".$page[1]."...");
+        }
     }
 
     /**
@@ -174,8 +174,8 @@ class Request
                 }
                 else
                 {
-                    $this->slug =  $page[2] ?? null;
-                    $this->action = "index";
+                                $this->slug =  $page[2] ?? null;
+                    $page[3] =  $this->action = "index";
                 }
             }
         elseif( isset($ctr_path_b) && class_exists($ctr_path_b))
@@ -196,8 +196,8 @@ class Request
                 }
                 else
                 {
-                    $this->slug =  $page[1] ?? null;
-                    $this->action = "index";
+                    $this->slug = $page[1] ?? null;
+                    $this->action = $page[2] = "index";
                 }
             }
         elseif( isset($ctr_path_c) && class_exists($ctr_path_c))
@@ -206,7 +206,7 @@ class Request
                 $this->dom = $page[0] ?? null;
                 $this->ctrl = "default";
                 $this->slug = null;
-                $this->action = "index";
+                $this->action = $page[1] = "index";
             }
         elseif( isset($ctr_path_d) && class_exists($ctr_path_d))
             {
@@ -214,7 +214,7 @@ class Request
                 $this->dom = null;
                 $this->ctrl = "default";
                 $this->slug = $page[0] ?? null;
-                $this->action = "index";
+                $this->action = $page[1] = "index";
             }
         else
             {
@@ -222,8 +222,10 @@ class Request
                 $this->dom = null ;
                 $this->ctrl = "default";
                 $this->slug = $page[0] ?? null;
-                $this->action = "index";
+               $this->action =  $page[1] = "index";
             }
+
+        return $page ;
     }
 
     /**

@@ -14,7 +14,7 @@ use Core\Session\FlashBuilder;
 class FileController extends AppController
 {
     /**
-     * CategorieController constructor.
+     * FileController constructor.
      */
     public function __construct()
     {
@@ -26,10 +26,23 @@ class FileController extends AppController
     }
 
     /**
+     * @param string $type
+     */
+    public function index($type = "picture"){
+
+        File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/".ucfirst($type)."s");
+
+        $this->form = $this->generate(''.$type ); //form_file("picture");
+
+        Render::getInstance()->setView("Admin/File");
+
+    }
+
+    /**
      * @param $post
      * @return Form
      */
-    private function form_file($type)
+    private function form_file($type = "picture")
     {
         $form = new Form(array( 'type' => $type ));
 
@@ -82,113 +95,36 @@ class FileController extends AppController
     }
 
     /**
-     *
+     * @deprecated
      */
-    function picture(){
+    function _picture(){
 
         File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Pictures");
-/**
-        if(Post::getInstance()->submit()) {
 
-            if(File::getInstance()->save()) {
-
-                $exists = $this->File->sourced(File::getInstance()->getName());
-
-                if(!$exists) {
-
-                    $rec = array(
-
-                        'nom' => Post::getInstance()->val('nom'),
-                        'src' => File::getInstance()->getName(),
-                        'type' => 'picture',
-
-                    );
-
-                    if ($this->File->create($rec)) {
-
-                        FlashBuilder::create("fichier ajouté","success");
-
-                        Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
-                            ->setDom('admin')->setAct('picture')->setCtl('file')
-                            ->send();
-                    }
-                }
-            }
-
-        }
-**
-        $this->files = $this->File->allOf("picture");
-**/
         $this->form = $this->generate("picture" ); //form_file("picture");
 
         Render::getInstance()->setView("Admin/File");
     }
 
     /**
-     *
+     * @deprecated
      */
-    function style(){
+    function _style(){
 
         File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Styles");
-/**
-        if(Post::getInstance()->submit()) {
 
-            if($this->File->create( Post::getInstance()->content())){
-
-                if(File::getInstance()->save()) {
-
-                    $this->File->update(App::getInstance()->getDb()->lasInsertId(),array(
-
-                        'name' => File::getInstance()->getName()
-                    ));
-
-                    FlashBuilder::create("fichier ajouté","success");
-
-                    Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
-                        ->setDom('admin')->setAct('style')->setCtl('file')
-                        ->send();
-                }
-            }
-
-        }
-**
-        $this->files = $this->File->allOf("style");
-**/
         $this->form = $this->generate("style" ); //form_file("style");
 
         Render::getInstance()->setView("Admin/File");
     }
 
     /**
-     *
+     * @deprecated
      */
-    function script(){
+    function _script(){
 
         File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Scripts");
-/**
-        if(Post::getInstance()->submit()) {
 
-            if($this->File->create( Post::getInstance()->content())){
-
-                if(File::getInstance()->save()) {
-
-                    $this->File->update(App::getInstance()->getDb()->lasInsertId(),array(
-
-                        'name' => File::getInstance()->getName()
-                    ));
-
-                    FlashBuilder::create("fichier ajouté","success");
-
-                    Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
-                        ->setDom('admin')->setAct('script')->setCtl('file')
-                        ->send();
-                }
-            }
-
-        }
-**
-        $this->files = $this->File->allOf("script");
-**/
         $this->form = $this->generate("script" ); //form_file("script");
 
         Render::getInstance()->setView("Admin/File");

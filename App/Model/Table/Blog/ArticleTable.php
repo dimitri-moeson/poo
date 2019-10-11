@@ -57,6 +57,8 @@ class ArticleTable extends Table
             ->where('a.default = 1 ')
             ->orders("a.id DESC");
 
+        //echo $statement ;
+
         return $this->request( $statement, null ,true,ArticleEntity::class );
     }
 

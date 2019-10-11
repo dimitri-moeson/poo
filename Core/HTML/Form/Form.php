@@ -62,6 +62,7 @@ class Form
      * @var array
      */
     private $inputs = [];
+
     /**
      * @param $name
      *
@@ -72,13 +73,18 @@ class Form
         return $this->inputs[$name] ?? null;
     }
 
-
+    /**
+     * @param $name
+     * @param $input
+     * @return $this
+     */
     public function addInput($name,$input){
 
         $this->inputs[$name] = $input ;
 
         return $this ;
     }
+
     /**
      * @param $index
      *
@@ -95,6 +101,7 @@ class Form
         else
             return $this->data[$index] ?? null;
     }
+
     /**
      * @param       $name
      * @param array $options
@@ -113,9 +120,17 @@ class Form
         {
             $this->inputs[$name]->setValue($value);//->surround($surround);
         }
+
+        if(isset($options['conf'])) $this->confirm_input($name,$options);
+
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @param array $options
+     * @return Form|null
+     */
     public function pswd(string $name, array $options = []):?self
     {
         $value    = $options['value'] ?? $this->getValue($name);
@@ -130,8 +145,21 @@ class Form
             $this->inputs[$name]->setValue($value);//->surround($surround);
         }
 
+        if(isset($options['conf'])) $this->confirm_input($name,$options);
+
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param array $options
+     */
+    public function confirm_input(string $name, array $options = []){
+
         if($options['conf'])
         {
+            $value    = $options['value'] ?? $this->getValue($name);
+
             $options['label'] = "Confirmer ".strtolower($options['label']);
             $options['name'] = $options['name']."_conf" ?? $name."_conf";
 
@@ -142,8 +170,6 @@ class Form
             }
             $options['conf'] = false ;
         }
-
-        return $this;
     }
 
     /**
@@ -158,6 +184,7 @@ class Form
         $this->inputs[$name]->setType("textarea");
         return $this;
     }
+
     /**
      * @param       $name
      * @param array $options
@@ -177,6 +204,7 @@ class Form
 
         return $this;
     }
+
     /**
      * @param       $name
      * @param array $options
@@ -190,6 +218,7 @@ class Form
         $this->inputs[$name]->setChoices($choices)->setType("select");
         return $this;
     }
+
     /**
      * @param $send
      *

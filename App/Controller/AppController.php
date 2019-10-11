@@ -65,6 +65,9 @@ class AppController extends Controller
         }
     }
 
+    /**
+     * @return bool
+     */
     protected function ctrLog(){
 
         if(!$this->auth->logged()){

@@ -54,7 +54,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <h1>Page non trouvée</h1>
+            <h1>Page <?php echo $ref ?> non trouvée</h1>
 
             <p>Cette page n'existe pas...</p>
 

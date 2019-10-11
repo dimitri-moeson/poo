@@ -54,7 +54,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <h1>Page interdite</h1>
+            <h1>Page <?php echo $ref ?> interdite</h1>
 
             <p>vous n'avez pas le droit d'acceder à cette page.</p>
 

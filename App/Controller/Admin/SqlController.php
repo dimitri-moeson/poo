@@ -62,6 +62,11 @@ class SqlController extends AppController
 
     }
 
+    public function generate() {
+
+        App::getInstance()->getDb()->generate();
+    }
+
     /**
      *
      */

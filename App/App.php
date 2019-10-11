@@ -99,7 +99,7 @@ class App
             }
         } else {
             $ctrl = new Controller();
-            $ctrl->notFound("call:" . $request->getCtrlName() . "(".$request->getCtrl().")->" . $request->getAction());
+            $ctrl->notFound("- call:" . $request->getCtrlName() . "(".$request->getCtrl().")->" . $request->getAction());
         }
 
         return $this;
