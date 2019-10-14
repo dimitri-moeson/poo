@@ -144,7 +144,15 @@ class QueryBuilder
     public function orders(): self
     {
         foreach (func_get_args() as $arg) {
-            $this->orders[] = $arg;
+            if(is_array($arg)) {
+
+                foreach ($arg as $field => $sens) {
+                    $this->order($field,$sens);
+                }
+
+            } else {
+                $this->orders[] = $arg;
+            }
         }
         return $this;
     }

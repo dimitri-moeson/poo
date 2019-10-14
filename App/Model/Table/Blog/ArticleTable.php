@@ -37,20 +37,23 @@ class ArticleTable extends Table
      * @return array|mixed
      */
     public function recup($slug){
-
+/**
         $statement = QueryBuilder::init()->select('a.*')
             ->from('article','a')
             ->where('a.slug = :slug ')
             ->orders("date DESC");
 
-        return $this->request( $statement, array('slug' => $slug),true,ArticleEntity::class );
+        //return $this->request( $statement, array('slug' => $slug),true,ArticleEntity::class );
+*/
+        return $this->findOneBy(array("slug"=> $slug));
+
     }
 
     /**
      * @return array|mixed
      */
     public function default(){
-
+/**
         $statement = QueryBuilder::init()->select('a.*')
             ->from('article','a')
             ->where('a.type = "page" ')
@@ -59,7 +62,9 @@ class ArticleTable extends Table
 
         //echo $statement ;
 
-        return $this->request( $statement, null ,true,ArticleEntity::class );
+        //return $this->request( $statement, null ,true,ArticleEntity::class );
+**/
+        return $this->findOneBy(array("type" => "page", "default"=> 1));
     }
 
     /**

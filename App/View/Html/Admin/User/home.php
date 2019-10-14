@@ -8,9 +8,9 @@ use Core\Render\Url; ?>
 
                 <tr>
                     <th>Id</th>
-                    <th>login</th>
-                    <th>email</th>
-                    <th>pswd</th>
+                    <th>Login</th>
+                    <th>Email</th>
+                    <th>Pswd</th>
                     <th>
                         <a href="<?php echo Url::generate("add","user","admin") ?>" class="btn btn-success">Add</a>
                     </th>

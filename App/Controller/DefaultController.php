@@ -49,8 +49,7 @@ class DefaultController extends AppController
             }
             else
             {
-                $this->page = $this->Article->default();
-                //->findOneBy(['type' => "page" , 'default' => 1 ]); //
+                $this->page = $this->Article->findOneBy(array("type" => "page", "default"=> 1)); // default();
             }
         }
 

@@ -349,7 +349,8 @@ class MysqlDatabase extends Database
 
             $statement = Query::from($name)->select('*');
 
-            $recs = $this->query($statement); // 'select * from ' . $name);
+            //$recs = $this->query($statement); // 'select * from ' . $name);
+            $recs = $this->query('select * from ' . $name);
 
             $chaines = array();
 
@@ -357,9 +358,14 @@ class MysqlDatabase extends Database
                 $set = $into = $values = array();
 
                 foreach ($rec as $col => $val) {
-                    $set[] = " `$col` = '" . addslashes($val) . "' ";
                     $into[] = " `$col` ";
-                    $values[] = "'" . addslashes($val) . "'";
+                    if(is_numeric($val)) {
+                        $values[] = $val;
+                        $set[] = " `$col` = " . addslashes($val) . " ";
+                    }else {
+                        $values[] = "'" . addslashes($val) . "'";
+                        $set[] = " `$col` = '" . addslashes($val) . "' ";
+                    }
                 }
 
                 if ($r === 0) {

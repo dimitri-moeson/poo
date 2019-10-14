@@ -89,32 +89,30 @@ class UserController extends AppController
     }
 
     /**
-     *
+     * fonction archivage/suppression
      */
     public function delete(){
 
-        if(Post::submitted()) {
+        if(Post::getInstance()->submit()) {
 
-            if(Post::has('id')) {
+            if(Post::getInstance()->has('id')) {
 
-                $post = $this->User->find(Post::get('id'));
-                if (!$post) $this->notFound("del user");
+                $this->post = $this->User->find(Post::getInstance()->val('id'));
+                if (!$this->post) $this->notFound("del user");
             }
 
-            if(Post::has('conf')) {
+            if(Post::getInstance()->has('conf')) {
 
-                if ($this->User->archive(Post::get('id'))) {
+                if ($this->User->archive(Post::getInstance()->val('id'))) {
 
                     Redirect::getInstance()
                         ->setDom("admin")->setAct("index")->setCtl("user")
                         ->send();
-
-
                 }
             }
         }
 
-        $this->categories = $this->Categorie->list('id','nom');
+        $this->posts = $this->User->all();
 
         Render::getInstance()->setView("Admin/User/delete");
     }

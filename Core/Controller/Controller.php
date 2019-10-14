@@ -25,6 +25,8 @@ class Controller
     {
         header('HTTP/1.0 404 Not Found');
 
+        echo Config::VIEW_DIR.'/Html/Error/404.notFound.php';
+
         if(file_exists(Config::VIEW_DIR.'/Html/Error/404.notFound.php')) {
             require_once Config::VIEW_DIR . '/Html/Error/404.notFound.php';
         }
@@ -45,6 +47,8 @@ class Controller
     public function forbidden(?string $ref = "content"){
 
         header('HTTP/1.0 403 Forbidden' );
+
+        echo Config::VIEW_DIR.'/Html/Error/403.forbidden.php';
 
         if(file_exists(Config::VIEW_DIR.'/Html/Error/403.forbidden.php')) {
             require_once Config::VIEW_DIR . '/Html/Error/403.forbidden.php';

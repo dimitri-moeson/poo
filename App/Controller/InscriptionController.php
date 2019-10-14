@@ -7,6 +7,7 @@ namespace App\Controller;
 use App;
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Service\PersonnageService;
+use App\Model\Service\UserService;
 use Core\Auth\CryptAuth;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Post;
@@ -121,11 +122,14 @@ class InscriptionController extends AppController
     {
         if(Post::getInstance()->submit())
         {
-            if($this->UserService->save(Post::getInstance()->content(),"login"))
+            if($this->UserService instanceof UserService)
             {
-                if($this->sess_has('user_id'))
+                if ($this->UserService->save(Post::getInstance()->content(), "login"))
                 {
-                    Redirect::getInstance()->setAct("faction")->send();
+                    if ($this->sess_has('user_id'))
+                    {
+                        Redirect::getInstance()->setAct("faction")->send();
+                    }
                 }
             }
         }
@@ -138,7 +142,7 @@ class InscriptionController extends AppController
 
         $this->form
             ->input("login")
-            ->input("mail",array("label" => "Email"))
+            ->input("mail",array("label" => "Email","name"=>"mail"))
             ->pswd("pswd", array(
                 "conf" => true,
                 "label" => "Mot de passe",

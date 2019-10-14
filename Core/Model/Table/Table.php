@@ -111,6 +111,10 @@ class Table
 
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function exists($id) {
 
         $statement = Query::from($this->getTable())
@@ -130,7 +134,7 @@ class Table
      * @param null $offset
      * @return array|mixed
      */
-    public function findBy(Array $attr = array(),Array $orderBy = array(), $limit = null, $offset = null)
+    public function findBy(Array $attr = array(),Array $orderBy = null, $limit = null, $offset = null)
     {
         $statement = Query::from($this->getTable())
             ->select('*');
@@ -140,8 +144,17 @@ class Table
             foreach ($attr as $key => $val )
                 $statement->where(" `".$this->getTable()."`.`$key` = :$key ");
 
-            $statement->orders($orderBy);
+            if(is_array($orderBy)) {
+                foreach ($orderBy as $ord => $sens) {
 
+                    if(is_numeric($sens))
+                        $statement->order($ord);
+                    else
+                        $statement->order($ord, $sens);
+                }
+            }else{
+                $statement->orders($orderBy);
+            }
             $statement
                 ->limit($limit)
                 ->offset($offset);
@@ -150,6 +163,10 @@ class Table
         return $this->request($statement, $attr, false  );
     }
 
+    /**
+     * @param array $attr
+     * @return bool
+     */
     public function existsBy(Array $attr = array())
     {
         $statement = Query::from($this->getTable())

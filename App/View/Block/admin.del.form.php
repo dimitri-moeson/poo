@@ -15,6 +15,7 @@ $urlAbo = Url::generate("index",$p,"admin");
     <div class="panel-body">
 
         <p><?php echo $p ?> - <?php echo $id ?></p>
+
         <form method="post" action="<?php echo $urldel ?>">
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="conf" value="1"/>

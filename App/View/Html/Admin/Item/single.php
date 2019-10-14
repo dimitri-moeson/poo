@@ -8,19 +8,17 @@ use Core\Session\FlashBuilder;
 
 <h1><?php echo isset($post) ? $post->titre : "Nouvel item" ?></h1>
 
-<?php if ($success) { ?>
-
-    <div class="alert alert-success">
-        enregistrement.
-    </div>
-
-
-<?php } ?>
-
 <?php echo FlashBuilder::create()->get() ?>
 
+<?php if(isset($post)){ ?>
+    <ul class='nav nav-tabs nav-justified'>
+        <li class='active'><a href='<?php echo Url::generate("single","Item","admin",$post->id);?>' >Params</a></li>
+             <li class=''><a href='<?php echo Url::generate("descript","Item","admin",$post->id);?>' >Descript</a></li>
+    </ul>
+<?php } ?>
 
-<div class="col-sm-12">
+<div class="tab-content col-sm-12">
+
 
     <div class="col-sm-7 pull-right">
 

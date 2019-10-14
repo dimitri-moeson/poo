@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App;
+use App\Model\Table\Game\Item\ItemTable;
 use Core\HTML\Env\Post;
 use Core\HTML\Header\Header;
 use Core\Redirect\Redirect;
@@ -22,6 +23,9 @@ class WikiController extends AppController
         parent::__construct();
 
         $this->loadModel("Game\Item\Item");
+
+
+            echo "" ;
     }
 
     /**
@@ -29,11 +33,15 @@ class WikiController extends AppController
      */
     public function index($type = null )
     {
-        if(!is_null($type)) {
+        if(!is_null($type))
+        {
             $this->posts = $this->Item->typeListing([$type]);
             $this->type = $type;
-        }else {
-            $this->posts = $this->Item->all();
+        }
+        else
+        {
+            if($this->Item instanceof ItemTable )
+                $this->posts = $this->Item->all();// findBy([],array("type" => "asc"));
             $this->type = null ;
         }
         Render::getInstance()->setView("Wiki/Home"); // , compact('posts','categories'));
@@ -44,8 +52,8 @@ class WikiController extends AppController
      */
     public function single($id){
 
-        if(!is_null($id)) {
-
+        if(!is_null($id))
+        {
             $this->post = $this->Item->find($id);
             if (!$this->post) $this->notFound("single item");
 
@@ -54,10 +62,13 @@ class WikiController extends AppController
 
         Header::getInstance()->setTitle($this->post->titre);
 
-        if(!is_null($type)) {
+        if(!is_null($type))
+        {
             $this->posts = $this->Item->typeListing([$type]);
             $this->type = $type;
-        }else {
+        }
+        else
+        {
             $this->posts = $this->Item->all();
             $this->type = null ;
         }

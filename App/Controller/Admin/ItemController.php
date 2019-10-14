@@ -22,6 +22,9 @@ use Core\Session\FlashBuilder;
 
 class ItemController extends AppController
 {
+    /**
+     * ItemController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -29,6 +32,10 @@ class ItemController extends AppController
         $this->loadModel("Game\Item\Item");
     }
 
+    /**
+     * @param $post
+     * @return Form
+     */
     private function form_article($post)
     {
         $form = new Form($post);
@@ -46,8 +53,6 @@ class ItemController extends AppController
         if(is_array($post) || !isset($post->id))
         {}
 
-        $form->input("description", array('type' => 'textarea', 'label' => "Descriptif", "class" => "editor"));
-
 
         /** if(is_object($post) && isset($post->id)){
 
@@ -59,6 +64,19 @@ class ItemController extends AppController
         return $form ;
     }
 
+    private function form_descript($post)
+    {
+        $form = new Form($post);
+        $form->input("description", array('type' => 'textarea', 'label' => "Descriptif", "class" => "editor"));
+
+        $form->submit("Enregistrer");
+
+
+        return $form ;
+    }
+    /**
+     * @param null $type
+     */
     public function index($type = null )
     {
         if(!is_null($type)) {
@@ -70,7 +88,10 @@ class ItemController extends AppController
         }
         Render::getInstance()->setView("Admin/Item/home"); // , compact('posts','categories'));
     }
-    
+
+    /**
+     * @param null $type
+     */
     public function add($type = null ){
 
         if(Post::getInstance()->submit()) {
@@ -152,7 +173,7 @@ class ItemController extends AppController
             {
                 FlashBuilder::create("item modifié","success");
 
-                Redirect::getInstance()->setSlg(App::getInstance()->getDb()->lasInsertId())
+                Redirect::getInstance()->setSlg($id)
                     ->setDom("admin")->setAct("single")->setCtl("item")
                     ->send();
             }
@@ -180,5 +201,44 @@ class ItemController extends AppController
         $this->form = $this->form_article($this->post);
 
         Render::getInstance()->setView("Admin/Item/single"); // , compact('post','categories','success','form'));
+    }
+
+    public function descript($id){
+
+        if(Post::getInstance()->submit()) {
+
+            if($this->Item->update( $id, Post::getInstance()->content("post")))
+            {
+                FlashBuilder::create("item modifié","success");
+
+                Redirect::getInstance()->setSlg($id)
+                    ->setDom("admin")->setAct("descript")->setCtl("item")
+                    ->send();
+            }
+        }
+
+        if(!is_null($id)) {
+
+            $this->post = $this->Item->find($id);
+            if (!$this->post) $this->notFound("single item");
+
+            $type = $this->post->type;
+        }
+
+        Header::getInstance()->setTitle($this->post->titre);
+
+        if(!is_null($type)) {
+            $this->posts = $this->Item->typeListing([$type]);
+            $this->type = $type;
+            Request::getInstance()->setSlug($type);
+        }else {
+            $this->posts = $this->Item->all();
+            $this->type = null ;
+        }
+
+        $this->form = $this->form_descript($this->post);
+
+        Render::getInstance()->setView("Admin/Item/descript"); // , compact('post','categories','success','form'));
+
     }
 }

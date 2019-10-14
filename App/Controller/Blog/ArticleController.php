@@ -61,19 +61,21 @@ class ArticleController extends AppController
      */
     public function categorie($_id){
 
-        //$_id = Get::getInstance()->val('slug');
+        if($this->Article instanceof ArticleTable) {
 
-        $this->categorie =  $this->Article->recup($_id);
-        if(!$this->categorie) $this->notFound("categorie");
+            $this->categorie = $this->Article->recup($_id);
 
-        $this->posts = $this->Article->getListByCategorie($_id);
+            if (!$this->categorie) $this->notFound("categorie");
 
-        $keywords = $this->Keyword->index(Get::getInstance()->val('id'));
+            $this->posts = $this->Article->getListByCategorie($_id);
 
-        Render::getInstance()->setView("Blog/Index");
-        Header::getInstance()->setTitle($this->categorie->titre);
-        Header::getInstance()->setKeywords(implode(",",$keywords ));
-        Header::getInstance()->setDescription($this->categorie->description);
+            $keywords = $this->Keyword->index($this->categorie->id);
+
+            Render::getInstance()->setView("Blog/Index");
+            Header::getInstance()->setTitle($this->categorie->titre);
+            Header::getInstance()->setKeywords(implode(",", $keywords));
+            Header::getInstance()->setDescription($this->categorie->description);
+        }
     }
 
     /**
@@ -87,13 +89,6 @@ class ArticleController extends AppController
 
             $form
                 ->input("contenu", array('type' => 'textarea', 'label' => "Commentaire", "class" => "editor"))
-        /**
-                //->input("titre", array("type" => "hidden", "value" => "commentaire-$parent_id"))
-                //->input("type", array("type" => "hidden", "value" => "commentaire"))
-                //->input("parent_id", array("type" => "hidden", "value" => $parent_id))
-                //->input("author_id", array("type" => "hidden", "value" => $this->auth->getUser('id')))
-                //->input("date", array("type" => "hidden", "value" => date("Y-m-d H:i:s")))
-        **/
                 ->submit("Enregistrer");
 
             return $form;

@@ -7,6 +7,7 @@ namespace App\Model\Service;
 use App;
 use App\Model\Entity\UserEntity;
 use App\Model\Service;
+use App\Model\Table\UserTable;
 use Core\Auth\CryptAuth;
 use Core\Auth\DatabaseAuth;
 use Core\Auth\UserAuth;
@@ -66,6 +67,20 @@ class UserService extends Service
         }
     }
 
+    public function initPerso($user_id){
+
+        $_SESSION['inscription']['user_id'] = $user_id;
+
+        $this->PersonnageBase->create(array(
+            "user_id" => $_SESSION['inscription']['user_id'],
+        ));
+
+        $_SESSION['inscription']['perso_id'] = App::getInstance()->getDb()->lasInsertId();
+        $_SESSION['inscription']['step'] = 2;
+
+        return true ;
+    }
+
     /**
      * @param $user
      * @param string $step
@@ -74,9 +89,8 @@ class UserService extends Service
      */
     public function save($user, $step = "login" , $id = null ){
 
-        if($this->UserBase instanceof App\Model\Table\UserTable )
+        if($this->UserBase instanceof UserTable )
         {
-
             if ($step == "login") {
 
                 if (trim($user['login']) !== '') {
@@ -84,7 +98,7 @@ class UserService extends Service
 
                         $exists = $this->UserBase->existsBy(array(
                             "login" => $user['login'],
-                            "email" => $user["mail"]
+                            "mail" => $user["mail"]
                         ));
 
                         if ( $exists == false) {
@@ -96,16 +110,8 @@ class UserService extends Service
                                         "pswd" => self::$cryptor->encrypt($user['pswd'])
                                     ));
 
-                                    $_SESSION['inscription']['user_id'] = App::getInstance()->getDb()->lasInsertId();
-
-                                    $this->PersonnageBase->create(array(
-                                        "user_id" => $_SESSION['inscription']['user_id'],
-                                    ));
-
-                                    $_SESSION['inscription']['perso_id'] = App::getInstance()->getDb()->lasInsertId();
-                                    $_SESSION['inscription']['step'] = 2;
-
-                                    return true;
+                                    if($this->initPerso(App::getInstance()->getDb()->lasInsertId()))
+                                        return true;
                                 }
                                 else
                                 {

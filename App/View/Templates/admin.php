@@ -18,6 +18,7 @@ $game_rub = $ctl_ === "personnage" || $ctl_ === "map"  || $ctl_ === "item";
 $item_rub = $ctl_ === "item";
 $sql_rub  = $ctl_ === "sql";
 $file_rub  = $ctl_ === "file";
+$commu_rub  = $ctl_ === "user" || $ctl_ === "guild" ;
 
 ?><!doctype html>
 <html lang="fr">
@@ -132,7 +133,10 @@ $file_rub  = $ctl_ === "file";
                         </ul>
                     </li>
 
+
+
                     <li><a href="<?php echo Url::generate("index","page","admin") ?>">Page</a></li>
+
 
                     <li>
                         <a href="#gameSubmenu" data-toggle="collapse" aria-expanded="<?php echo $game_rub ? "true" : "false" ?>" class=" active dropdown-toggle">Game<i class="fa fa-fw fa-angle-down pull-right"></i></a>
@@ -160,7 +164,13 @@ $file_rub  = $ctl_ === "file";
                         </ul>
                     </li>
 
-                    <li><a href="<?php echo Url::generate("index","user","admin") ?>">User</a></li>
+                    <li>
+                        <a href="#commuSubmenu" data-toggle="collapse" aria-expanded="<?php echo $commu_rub ? "true" : "false" ?>" class="dropdown-toggle">Commu<i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                        <ul class="<?php echo $commu_rub ? "in" : "collapse" ?>" id="commuSubmenu">
+                            <li><a href="<?php echo Url::generate("index","user","admin") ?>">User</a></li>
+                            <li><a href="<?php echo Url::generate("index","guild","admin") ?>">guild</a></li>
+                        </ul>
+                    </li>
 
                     <li>
                         <a href="#fileSubmenu" data-toggle="collapse" aria-expanded="<?php echo $file_rub ? "true" : "false" ?>" class="dropdown-toggle">Fichier<i class="fa fa-fw fa-angle-down pull-right"></i></a>

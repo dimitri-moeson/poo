@@ -92,7 +92,7 @@ class Url
             $slug = $this->getSlg() ;
 
             $params = $this->getParams();
-            $_parameters = (isset($params) && !empty($params) ?  DIRECTORY_SEPARATOR."?".self::buildQuery($params) : '');
+            $_parameters = (isset($params) && !empty($params) ?  "?".self::buildQuery($params) : '');
 
             return $this->dom_Construct($dom).
                 $this->ctl_Construct($ctl) .

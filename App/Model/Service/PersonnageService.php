@@ -82,17 +82,17 @@ class PersonnageService extends Service
      *
      * @return mixed
      */
-    public function recup($id) : ?PersonnageEntity
+    public function recup($user_id) : ?PersonnageEntity
     {
         try {
 
             /** @var PersonnageEntity $personnage */
-            $personnage = $this->PersonnageBase->find($id);
+            $personnage = $this->PersonnageBase->findOneBy(array("user_id" => $user_id));
 
             if ($personnage instanceof PersonnageEntity) {
 
                 if( $this->InventaireBase instanceof InventaireTable ) {
-                    $sac = $this->InventaireBase->itemListing($id, self::RUB_PERSO, null , array(), ItemEntity::class );
+                    $sac = $this->InventaireBase->itemListing($personnage->id, self::RUB_PERSO, null , array(), ItemEntity::class );
 
                     foreach ($sac as $composant) {
 
@@ -124,7 +124,7 @@ class PersonnageService extends Service
 
                 return $personnage;
             }
-
+            return null ;
         }
         catch (Exception $e){
             var_dump($e);

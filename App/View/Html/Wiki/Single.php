@@ -13,7 +13,7 @@ use Core\Session\FlashBuilder;
 
         <h1><?php echo $post->name ?></h1>
 
-        <?php var_dump($post) ?>
+        <p><?php echo $post->description ?></p>
 
         <hr/>
 

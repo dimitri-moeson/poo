@@ -22,6 +22,7 @@ use App\Model\Service\MovementService;
 use App\Model\Service\PersonnageService;
 
 use App\Model\Service\QuestService;
+use App\Model\Service\UserService;
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
 
@@ -51,6 +52,10 @@ class TestController extends AppController
     {
         parent::__construct();
 
+        $this->auth = new DatabaseAuth(App::getInstance()->getDb());
+
+        $this->loadService("User");
+
         if($this->ctrLog()) {
 
             Render::getInstance()->setTemplate('default');
@@ -71,10 +76,18 @@ class TestController extends AppController
 
 
             if ($this->PersonnageService instanceof PersonnageService) {
-                $this->legolas = $this->PersonnageService->recup(1);
+                $this->legolas = $this->PersonnageService->recup($this->auth->getUser('id'));
             }
 
-            if (!$this->legolas) $this->notFound("personnage");
+            if (!$this->legolas){
+
+                if ($this->UserService instanceof UserService) {
+                    $this->UserService->initPerso($this->auth->getUser('id'));
+                    Redirect::getInstance()->setCtl("inscription")->setAct("faction")->send();
+                }
+
+                //$this->notFound("personnage");
+            }
 
             if ($this->Inventaire instanceof InventaireTable)
                 $this->sacoche = $this->Inventaire->itemListing($this->legolas->id, "personnage", "sac", null, ItemEntity::class);

@@ -27,6 +27,7 @@ class GuildController extends AppController
         $this->has = $this->Member->existsBy(array("member_id" => $this->auth->getUser('id')));
 
         if($this->has) {
+
             $this->appart = $this->Member->findOneBy(array("member_id" => $this->auth->getUser('id')));
 
             $this->guild_center = $this->Guild->find($this->appart->guild_id);
@@ -78,15 +79,18 @@ class GuildController extends AppController
      */
     public function creer()
     {
-        if(!$this->has) {
-            if (Post::getInstance()->submit()) {
+        if(!$this->has)
+        {
+            if (Post::getInstance()->submit())
+            {
                 $this->GuildService->creer(Post::getInstance()->val("name"), $this->auth->getUser('id'));
             }
             $this->form = new Form();
 
             $this->form->input("name")->submit("envoie");
         }
-        else {
+        else
+        {
             $this->forbidden("already have guild");
         }
     }
@@ -124,6 +128,7 @@ class GuildController extends AppController
     /**
      * le membre saisi le login dans la barre de recheche, si 1 ou plusieurs login corresponde
      * la guilde envoie une invitation
+     * @param null $recrue
      */
     public function recruter($recrue = null )
     {
@@ -153,6 +158,8 @@ class GuildController extends AppController
 
     /**
      * le joueur accepte l'invitation et rejoind la guilde
+     *
+     * @param $recrus
      */
     public function rejoindre($recrus)
     {
