@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Game ;
 
 use App;
 use App\Model\Entity\Game\Item\ItemConsommableEntity;
@@ -244,8 +244,10 @@ class TestController extends AppController
      */
     public function apprentissage()
     {
-        if (Post::getInstance()->has('enseignement')) {
-            if ($this->legolas instanceof PersonnageEntity) {
+        if (Post::getInstance()->has('enseignement'))
+        {
+            if ($this->legolas instanceof PersonnageEntity)
+            {
                 $repo = Post::getInstance()->val('repo') ?? null;
 
                 if($this->ItemService instanceof ItemService)
@@ -253,10 +255,11 @@ class TestController extends AppController
 
                 $this->PersonnageService->apprendre($this->legolas, $potion);
 
-                if ($this->QuestService instanceof QuestService) {
+                if ($this->QuestService instanceof QuestService)
+                {
                     $this->QuestService->verifProgress($this->legolas, $potion);
                 }
-                //$this->viewText = $this->legolas->getName() . " apprend la recette " . $potion->getName() . "<br/>";
+
                 FlashBuilder::create( $this->legolas->getName() . " apprend la recette " . $potion->getName(),"success");
 
                 Redirect::getInstance()->setAct("fiche")->send();

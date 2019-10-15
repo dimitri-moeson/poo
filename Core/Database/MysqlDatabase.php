@@ -28,6 +28,7 @@ class MysqlDatabase extends Database
     private $db_host ;
 
     private $pdo ;
+
     /**
      * MysqlDatabase constructor.
      * @param $db_name
@@ -225,6 +226,10 @@ class MysqlDatabase extends Database
         return $this->getPDO()->lastInsertId();
     }
 
+    /**
+     * @param $table
+     * @return array
+     */
     function describe($table){
 
         $tb = $this->query('DESCRIBE ' . $table) ; // Query::describe($name);
@@ -246,6 +251,9 @@ class MysqlDatabase extends Database
 
     }
 
+    /**
+     *
+     */
     function generate(){
 
         $tables = $this->query("SHOW TABLES");
@@ -295,6 +303,10 @@ class MysqlDatabase extends Database
     {
         $tables = $this->query("SHOW TABLES");
 
+        $creat_part = "";
+        $alter_part = "";
+        $inser_part = "";
+
         $return = "\r"."CREATE DATABASE ".$this->db_name.";"."\r";
 
         $return .= "\r"."USE ".$this->db_name.";"."\r";
@@ -302,9 +314,12 @@ class MysqlDatabase extends Database
         foreach($tables as $table) {
             $name = $table->{'Tables_in_' . $this->db_name};
 
+            /// ------------------------- création table
+
             $tb = $this->describe($name);
 
             $content = array();
+
             foreach ($tb as $col => $format){
 
                                        $content[$col] = "`" . $col . "` " . $format["type"];
@@ -321,35 +336,43 @@ class MysqlDatabase extends Database
 
                 $content[$col] .= $format["extra"] ;
             }
-/**
-            $tb = $this->query('DESCRIBE ' . $name) ; // Query::describe($name);
 
-            $content = array();
+            $creat_part .= "\r" . "-- table " . strtoupper($name) . " -- \r";
+            $creat_part .= "\r" . " DROP Table IF EXISTS `" . $name . "` ; " . "\r";
+            $creat_part .= "\r" . " create table `" . $name . "` ( ";
+            $creat_part .= "\r" . implode(",\r", $content);
+            $creat_part .= "\r" . " ) ;" . "\r";
 
-            foreach ($tb as $x => $column) {
-                $content[$x] = "`" . $column->Field . "` " . $column->Type;
-                if ($column->Key == 'PRI') $content[$x] .= ' PRIMARY KEY ';
-                if ($column->Null == 'No') $content[$x] .= " NOT NULL ";
-                if ($column->Null == 'Yes') $content[$x] .= " NULL ";
-                if (trim($column->Default) != '') {
-                    if ($column->Default != 'current_timestamp()') {
-                        $content[$x] .= " DEFAULT '" . $column->Default . "'";
-                    } else {
-                        $content[$x] .= " DEFAULT " . $column->Default;
-                    }
+            /// ------------------------- clés étrangeres
+
+            $recs = $this->query( "SELECT
+                TABLE_NAME,
+                COLUMN_NAME,
+                CONSTRAINT_NAME,
+                REFERENCED_TABLE_NAME,
+                REFERENCED_COLUMN_NAME
+            FROM
+                INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+            WHERE
+                REFERENCED_TABLE_SCHEMA = '".$this->db_name."'
+                AND REFERENCED_TABLE_NAME = '" . $name . "';");
+
+            if(!empty($recs)) {
+                $alter_sql = "--- " . $name . "";
+
+                foreach ($recs as $x =>  $rec) {
+                    $alter_sql = "alter table `" . $rec->TABLE_NAME . "`";
+                    $alter_sql .= " add constraint `" . $rec->CONSTRAINT_NAME . "`";
+                    $alter_sql .= " foreign key(`" . $rec->COLUMN_NAME . "`)";
+                    $alter_sql .= " references `" . $rec->REFERENCED_TABLE_NAME . "`(`" . $rec->REFERENCED_COLUMN_NAME . "`)";
                 }
-                if (trim($column->Extra) != '') $content[$x] .= " " . $column->Extra;
+
+                $alter_part .= "\r" . $alter_sql.";" ;
+
             }
-**/
-            $return .= "\r" . "-- table " . strtoupper($name) . " -- \r";
-            $return .= "\r" . " DROP Table IF EXISTS `" . $name . "` ; " . "\r";
-            $return .= "\r" . " create table `" . $name . "` ( ";
-            $return .= "\r" . implode(",\r", $content);
-            $return .= "\r" . " ) ;" . "\r";
 
-            $statement = Query::from($name)->select('*');
+            /// ------------------------- enregistrement
 
-            //$recs = $this->query($statement); // 'select * from ' . $name);
             $recs = $this->query('select * from ' . $name);
 
             $chaines = array();
@@ -369,31 +392,19 @@ class MysqlDatabase extends Database
                 }
 
                 if ($r === 0) {
-                    $return .= "\r" . "insert ignore into `$name`(" . implode(", ", $into) . ") values ";
+                    $inser_part .= "\r" . "insert ignore into `$name`(" . implode(", ", $into) . ") values ";
                 }
                 $chaines[] = "(" . implode(",", $values) . ")";
             }
 
-            $return .= "\r" . implode(",\r", $chaines) . ";" . "\r";
-        }
-        foreach($tables as $table)
-        {
-            $name = $table->{'Tables_in_'.$this->db_name};
-
-            $sql_foreign = "SELECT
-                TABLE_NAME,
-                COLUMN_NAME,
-                CONSTRAINT_NAME,
-                REFERENCED_TABLE_NAME,
-                REFERENCED_COLUMN_NAME
-            FROM
-                INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-            WHERE
-                REFERENCED_TABLE_SCHEMA = '".$this->db_name."'
-                AND REFERENCED_TABLE_NAME = '" . $name . "';";
+            $inser_part .= "\r" . implode(",\r", $chaines) . ";" . "\r";
 
         }
 
-        return $return ;
+        $return .= $creat_part ;
+        $return .= $alter_part ;
+        $return .= $inser_part ;
+
+         return $return ;
     }
 }

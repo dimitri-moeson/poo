@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Community;
 
 
 use App;
@@ -32,7 +32,7 @@ class InscriptionController extends AppController
         parent::__construct();
 
         //Render::getInstance()->setTemplate('default');
-        Render::getInstance()->setView("Inscription/default");
+        Render::getInstance()->setView("Community/Inscription/default");
 
         $this->auth = new DatabaseAuth(App::getInstance()->getDb());
 

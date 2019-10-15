@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Game;
 
 use App;
 use Core\Auth\DatabaseAuth;
@@ -24,11 +24,11 @@ class GuildController extends AppController
         $this->loadModel("Game\Guild\Invitation");
 
         $this->auth = new DatabaseAuth(App::getInstance()->getDb());
-        $this->has = $this->Member->existsBy(array("member_id" => $this->auth->getUser('id')));
+        $this->has = $this->Member->existsBy(array("user_id" => $this->auth->getUser('id')));
 
         if($this->has) {
 
-            $this->appart = $this->Member->findOneBy(array("member_id" => $this->auth->getUser('id')));
+            $this->appart = $this->Member->findOneBy(array("user_id" => $this->auth->getUser('id')));
 
             $this->guild_center = $this->Guild->find($this->appart->guild_id);
 
@@ -45,14 +45,14 @@ class GuildController extends AppController
     {
         if($this->has)
         {
-            Render::getInstance()->setView("Guild/Visit");
+            Render::getInstance()->setView("Game/Guild/Visit");
         }
 
         else
         {
             $this->guild_list = $this->Guild->All();
 
-            Render::getInstance()->setView("Guild/Welcome");
+            Render::getInstance()->setView("Game/Guild/Welcome");
         }
 
     }
@@ -66,7 +66,7 @@ class GuildController extends AppController
         {
             $this->guild_center = $this->Guild->find($guilde_id);
 
-            Render::getInstance()->setView("Guild/Visit");
+            Render::getInstance()->setView("Game/Guild/Visit");
 
         }
 
@@ -114,7 +114,7 @@ class GuildController extends AppController
                     ->textarea("presente",array('type' => 'textarea', 'label' => "Presentation", "class" => "editor"))
                     ->submit("envoie");
 
-                Render::getInstance()->setView("Guild/Creer");
+                Render::getInstance()->setView("Game/Guild/Creer");
 
             } else {
                 $this->forbidden("not manager");
@@ -139,7 +139,7 @@ class GuildController extends AppController
                 if(!is_null($recrue)){
 
                     $recrus = $this->User->find($recrue);
-                    $guild = $this->Member->findOneBy(array("member_id" => $this->auth->getUser('id')));
+                    $guild = $this->Member->findOneBy(array("user_id" => $this->auth->getUser('id')));
 
                     $this->GuildService->inviter($guild->id,$recrus->id);
 

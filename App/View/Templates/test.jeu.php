@@ -132,7 +132,7 @@ $auth = new DatabaseAuth(App::getInstance()->getDb());
 
                 <ul class="nav nav-tabs">
                     <li role="presentation" <?php echo $act_ == "fiche" ? 'class="active"' : '' ?> >
-                        <a href="<?php echo Url::generate("fiche","test") ?>"><i class="ra ra-aura"></i>&nbsp;Fiche</a>
+                        <a href="<?php echo Url::generate("index","default","game") ?>"><i class="ra ra-aura"></i>&nbsp;Fiche</a>
                     </li>
                     <li role="presentation" <?php echo $act_ == "deplacer" ? 'class="active"' : '' ?> >
                         <a href="<?php echo Url::generate("deplacer","test") ?>"><i class="ra ra-compass"></i>&nbsp;Deplacer</a>

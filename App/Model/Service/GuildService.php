@@ -70,7 +70,7 @@ class GuildService extends Service
         if($this->MemberBase instanceof MemberTable) {
             $this->MemberBase->create(array(
                 "guild_id" => $guild_id,
-                "member_id" => $user_id,
+                "user_id" => $user_id,
                 "is_manager" => $manager
             ));
         }
@@ -84,7 +84,7 @@ class GuildService extends Service
 
         $appart = $this->MemberBase->findOneBy(array(
 
-            "member_id" => self::$auth->getUser('id'),
+            "user_id" => self::$auth->getUser('id'),
             "guild_id" => $guild_id,
 
         ));

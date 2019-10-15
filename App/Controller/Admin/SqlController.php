@@ -42,7 +42,7 @@ class SqlController extends AppController
 
     public function dump(){
 
-        echo nl2br(App::getInstance()->getDb()->dump());
+        echo "<pre>".App::getInstance()->getDb()->dump()."</pre>";
 
         die();
 

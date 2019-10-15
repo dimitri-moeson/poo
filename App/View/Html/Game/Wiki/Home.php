@@ -20,7 +20,7 @@ use Core\Session\FlashBuilder;
            data-toggle="tooltip"
            data-html="true"
            title="<?php echo $post->name ?><br/><?php echo $post->type ?>"
-           href="<?php echo Url::generate("single","wiki", null, $post->id ) ?>">
+           href="<?php echo Url::generate("single","wiki", "game", $post->id ) ?>">
             <i class="<?php echo $post->img ?>"></i>
         </a>
 
@@ -36,7 +36,7 @@ use Core\Session\FlashBuilder;
             <ul class="<?php echo in_array($type ,$items) ? "in" : "collapse" ?>" id="<?php echo $cat ?>Submenu">
                 <?php foreach ($items as $k => $item) { ?>
                     <li>
-                        <a class="" href="<?php echo Url::generate("index","wiki",null , $item ) ?>">
+                        <a class="" href="<?php echo Url::generate("index","wiki","game" , $item ) ?>">
                             <?php echo ucfirst($item) ?></a>
                     </li>
                 <?php } ?>

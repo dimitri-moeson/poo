@@ -20,13 +20,13 @@ use Core\Render\Render;
 use Core\Session\FlashBuilder;
 
 /**
- * Class UserController
+ * Class PlayerController
  * @package App\Controller\Admin
  */
-class UserController extends AppController
+class PlayerController extends AppController
 {
     /**
-     * UserController constructor.
+     * PlayerController constructor.
      */
     public function __construct()
     {
@@ -65,7 +65,7 @@ class UserController extends AppController
     {
         $this->posts = $this->User->all();
 
-        Render::getInstance()->setView("Admin/User/home");
+        Render::getInstance()->setView("Admin/Player/home");
     }
 
     /**
@@ -85,7 +85,7 @@ class UserController extends AppController
 
         $this->form = $this->form_user(Post::content('post'));
 
-        Render::getInstance()->setView("Admin/User/single");
+        Render::getInstance()->setView("Admin/Player/single");
     }
 
     /**
@@ -114,7 +114,7 @@ class UserController extends AppController
 
         $this->posts = $this->User->all();
 
-        Render::getInstance()->setView("Admin/User/delete");
+        Render::getInstance()->setView("Admin/Player/delete");
     }
 
     /**
@@ -144,6 +144,6 @@ class UserController extends AppController
 
         $this->form = $this->form_user($this->post);
 
-        Render::getInstance()->setView("Admin/User/single");
+        Render::getInstance()->setView("Admin/Player/single");
     }
 }

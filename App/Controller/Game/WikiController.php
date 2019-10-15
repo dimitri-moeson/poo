@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Game;
 
 
 use App;
@@ -23,9 +23,6 @@ class WikiController extends AppController
         parent::__construct();
 
         $this->loadModel("Game\Item\Item");
-
-
-            echo "" ;
     }
 
     /**
@@ -44,7 +41,7 @@ class WikiController extends AppController
                 $this->posts = $this->Item->all();// findBy([],array("type" => "asc"));
             $this->type = null ;
         }
-        Render::getInstance()->setView("Wiki/Home"); // , compact('posts','categories'));
+        Render::getInstance()->setView("Game/Wiki/Home"); // , compact('posts','categories'));
     }
 
     /**
@@ -73,6 +70,6 @@ class WikiController extends AppController
             $this->type = null ;
         }
 
-        Render::getInstance()->setView("Wiki/Single"); // , compact('post','categories','success','form'));
+        Render::getInstance()->setView("Game/Wiki/Single"); // , compact('post','categories','success','form'));
     }
 }

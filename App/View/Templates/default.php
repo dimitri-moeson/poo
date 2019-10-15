@@ -104,26 +104,26 @@ $slg = Request::getInstance()->getSlug(); // Get::getInstance()->val('slug');
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Jeu <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li <?php echo $ctl_ == "test" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("fiche","test") ?>">Fiche</a></li>
-                            <li <?php echo $ctl_ == "guild" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("index","guild") ?>">Guilde</a></li>
-                            <li <?php echo $ctl_ == "wiki" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("index","wiki") ?>">encyclopedie</a></li>
+                            <li <?php echo $ctl_ == "default" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("index","default","game") ?>">Personnage</a></li>
+                            <li <?php echo $ctl_ == "guild" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("index","guild","game") ?>">Guilde</a></li>
+                            <li <?php echo $ctl_ == "wiki" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("index","wiki","game") ?>">encyclopedie</a></li>
                         </ul>
                     </li>
 
-                    <li <?php echo $ctl_ == "account" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("show","account") ?>">Compte</a></li>
+                    <li <?php echo $ctl_ == "account" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("show","account","community") ?>">Compte</a></li>
                 <?php } else { ?>
-                    <li <?php echo $ctl_ == "inscription" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("login","inscription") ?>">Inscription</a></li>
+                    <li <?php echo $ctl_ == "inscription" ? 'class="active"' : '' ?> ><a href="<?php echo Url::generate("login","inscription","community") ?>">Inscription</a></li>
                 <?php } ?>
             </ul>
 
             <?php if($auth->logged()) {?>
-                <form method="post" action="<?php echo Url::generate("logout","user") ?>" class="navbar-form navbar-right">
+                <form method="post" action="<?php echo Url::generate("logout","user","community") ?>" class="navbar-form navbar-right">
                     <a href="<?php echo Url::generate("index","default","admin") ?>" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
                     <button type="submit" name="logout" value="logout" class="btn btn-success"><span class="glyphicon glyphicon-off"></span>Sign out</button>
                 </form>
 
             <?php } else { ?>
-                <form method="post" action="<?php echo Url::generate("login","user") ?>" class="navbar-form navbar-right">
+                <form method="post" action="<?php echo Url::generate("login","user","community") ?>" class="navbar-form navbar-right">
                     <div class="form-group">
                         <input type="text" placeholder="login" name="login" class="form-control">
                     </div>

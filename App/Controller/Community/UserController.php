@@ -6,7 +6,7 @@
  * Time: 10:58
  */
 
-namespace App\Controller;
+namespace App\Controller\Community;
 
 use App;
 use App\Model\Service\UserService;
@@ -16,18 +16,17 @@ use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
 
 /**
- * Class UserController
+ * Class PlayerController
  * @package App\Controller
  */
 class UserController extends AppController
 {
     /**
-     * UserController constructor.
+     * PlayerController constructor.
      */
     public function __construct()
     {
         $this->auth = new DatabaseAuth(App::getInstance()->getDb());
-
         $this->loadService("User");
     }
 
@@ -80,7 +79,7 @@ class UserController extends AppController
 
         $this->form = new Form(Post::getInstance()->content());
 
-        $this->categories = App::getInstance()->getTable("Blog\Categorie")->all();
+        //$this->categories = App::getInstance()->getTable("Blog\Categorie")->all();
     }
 
 }

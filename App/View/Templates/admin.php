@@ -167,7 +167,7 @@ $commu_rub  = $ctl_ === "user" || $ctl_ === "guild" ;
                     <li>
                         <a href="#commuSubmenu" data-toggle="collapse" aria-expanded="<?php echo $commu_rub ? "true" : "false" ?>" class="dropdown-toggle">Commu<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul class="<?php echo $commu_rub ? "in" : "collapse" ?>" id="commuSubmenu">
-                            <li><a href="<?php echo Url::generate("index","user","admin") ?>">User</a></li>
+                            <li><a href="<?php echo Url::generate("index","player","admin") ?>">User</a></li>
                             <li><a href="<?php echo Url::generate("index","guild","admin") ?>">guild</a></li>
                         </ul>
                     </li>

@@ -5,7 +5,8 @@
 
 -- table ACCES --
 
- DROP Table IF EXISTS `acces` ;
+ DROP Table
+     IF EXISTS `acces` ;
 
  create table `acces` (
 `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
@@ -20,7 +21,8 @@
 
 -- table ARTICLE --
 
- DROP Table IF EXISTS `article` ;
+ DROP Table
+     IF EXISTS `article` ;
 
  create table `article` (
 `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
@@ -42,7 +44,8 @@
 
 -- table CATEGORIE --
 
- DROP Table IF EXISTS `categorie` ;
+ DROP Table
+     IF EXISTS `categorie` ;
 
  create table `categorie` (
 `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
@@ -54,7 +57,8 @@
 
 -- table FILE --
 
- DROP Table IF EXISTS `file` ;
+ DROP Table
+     IF EXISTS `file` ;
 
  create table `file` (
 `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
@@ -68,35 +72,37 @@
 
 -- table GUILD --
 
- DROP Table IF EXISTS `guild` ;
+ DROP Table
+     IF EXISTS `guild` ;
 
  create table `guild` (
-`id` int(11) PRIMARY KEY  NOT NULL auto_increment,
-`name` varchar(255) NOT NULL ,
-`createur_id` char(36) NOT NULL ,
-`presente` text NOT NULL ,
-`createAt` datetime NOT NULL  DEFAULT current_timestamp(),
-`updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
-`deleteAt` datetime NOT NULL
+  `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL ,
+  `createur_id` char(36) NOT NULL ,
+  `presente` text NOT NULL ,
+  `createAt` datetime NOT NULL  DEFAULT current_timestamp(),
+  `updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
+  `deleteAt` datetime NOT NULL
  ) ;
-
 
 -- table INDEXION --
 
- DROP Table IF EXISTS `indexion` ;
+ DROP Table
+     IF EXISTS `indexion` ;
 
  create table `indexion` (
-`id` int(11) PRIMARY KEY  NOT NULL auto_increment,
-`article_id` int(11) NOT NULL ,
-`keyword_id` int(11) NOT NULL ,
-`createAt` datetime NOT NULL ,
-`updateAt` datetime NOT NULL  DEFAULT '0000-00-00 00:00:00'on update current_timestamp(),
-`deleteAt` datetime NOT NULL
+ `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
+ `article_id` int(11) NOT NULL ,
+ `keyword_id` int(11) NOT NULL ,
+ `createAt` datetime NOT NULL ,
+ `updateAt` datetime NOT NULL  DEFAULT '0000-00-00 00:00:00'on update current_timestamp(),
+ `deleteAt` datetime NOT NULL
  ) ;
 
 -- table INVENTAIRE --
 
- DROP Table IF EXISTS `inventaire` ;
+ DROP Table
+     IF EXISTS `inventaire` ;
 
  create table `inventaire` (
   `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
@@ -113,66 +119,71 @@
 
 -- table ITEM --
 
- DROP Table IF EXISTS `item` ;
+ DROP Table
+     IF EXISTS `item` ;
 
- create table `item` (
-`id` int(11) PRIMARY KEY  NOT NULL auto_increment,
-`name` varchar(255) NOT NULL ,
-`description` text NOT NULL ,
-`vie` int(11) NOT NULL ,
-`type` varchar(255) NOT NULL ,
-`objet` varchar(255) NOT NULL ,
-`img` varchar(255) NOT NULL ,
-`createAt` datetime NOT NULL  DEFAULT current_timestamp(),
-`updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
-`deleteAt` datetime NOT NULL
+create table `item` (
+  `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL ,
+  `description` text NOT NULL ,
+  `vie` int(11) NOT NULL ,
+  `type` varchar(255) NOT NULL ,
+  `objet` varchar(255) NOT NULL ,
+  `img` varchar(255) NOT NULL ,
+  `createAt` datetime NOT NULL  DEFAULT current_timestamp(),
+  `updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
+  `deleteAt` datetime NOT NULL
  ) ;
 
 -- table KEYWORD --
 
- DROP Table IF EXISTS `keyword` ;
+ DROP Table
+     IF EXISTS `keyword` ;
 
- create table `keyword` (
-`id` int(11) PRIMARY KEY  NOT NULL auto_increment,
-`mot` varchar(255) NOT NULL ,
-`createAt` datetime NOT NULL  DEFAULT current_timestamp(),
-`updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
-`deleteAt` datetime NOT NULL
+create table `keyword` (
+  `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
+  `mot` varchar(255) NOT NULL ,
+  `createAt` datetime NOT NULL  DEFAULT current_timestamp(),
+  `updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
+  `deleteAt` datetime NOT NULL
  ) ;
 
 -- table MAP --
 
- DROP Table IF EXISTS `map` ;
+ DROP Table
+     IF EXISTS `map` ;
 
  create table `map` (
-`id` int(11) PRIMARY KEY  NOT NULL auto_increment,
-`x` int(11) NOT NULL ,
-`y` int(11) NOT NULL ,
-`terrain_id` int(11) NOT NULL ,
-`createAt` datetime NOT NULL  DEFAULT current_timestamp(),
-`updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
-`deleteAt` datetime NOT NULL
+   `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
+   `x` int(11) NOT NULL ,
+   `y` int(11) NOT NULL ,
+   `terrain_id` int(11) NOT NULL ,
+   `createAt` datetime NOT NULL  DEFAULT current_timestamp(),
+   `updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
+   `deleteAt` datetime NOT NULL
  ) ;
 
 -- table MEMBER --
 
- DROP Table IF EXISTS `member` ;
+ DROP Table
+     IF EXISTS `member` ;
 
  create table `member` (
-`id` int(11) PRIMARY KEY  NOT NULL auto_increment,
-`guild_id` int(11) NOT NULL ,
-`member_id` int(11) NOT NULL ,
-`is_manager` tinyint(1) NOT NULL  DEFAULT '0',
-`createAt` datetime NOT NULL  DEFAULT current_timestamp(),
-`updateAt` datetime NOT NULL  DEFAULT current_timestamp(),
-`deleteAt` datetime NOT NULL
+    `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
+    `guild_id` int(11) NOT NULL ,
+    `user_id` int(11) NOT NULL ,
+    `is_manager` tinyint(1) NOT NULL  DEFAULT '0',
+    `createAt` datetime NOT NULL  DEFAULT current_timestamp(),
+    `updateAt` datetime NOT NULL  DEFAULT current_timestamp(),
+    `deleteAt` datetime NOT NULL
  ) ;
 
 -- table PERSONNAGE --
 
- DROP Table IF EXISTS `personnage` ;
+ DROP Table
+     IF EXISTS `personnage` ;
 
- create table `personnage` (
+create table `personnage` (
   `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
   `name` varchar(255) NOT NULL ,
   `sexe` int(11) NOT NULL  DEFAULT '1',
@@ -192,10 +203,10 @@
 
 -- table USER --
 
- DROP Table
+DROP Table
      IF EXISTS `user` ;
 
- create table `user` (
+create table `user` (
    `id` int(11) PRIMARY KEY  NOT NULL auto_increment,
    `login` varchar(255) NOT NULL ,
    `mail` varchar(255) NOT NULL ,
@@ -203,7 +214,7 @@
    `createAt` datetime NOT NULL  DEFAULT current_timestamp(),
    `updateAt` datetime NOT NULL  DEFAULT current_timestamp()on update current_timestamp(),
    `deleteAt` datetime NOT NULL
- ) ;
+) ;
 
 -- foreign keys & unicité
 
@@ -214,7 +225,7 @@ ALTER TABLE `personnage`
  ADD CONSTRAINT `FK_PersonnageFaction` FOREIGN KEY (`faction_id`) REFERENCES `item`(`id`) ON DELETE SET NULL ON UPDATE CASCADE ;
 
 ALTER TABLE `member`
- ADD CONSTRAINT `FK_MemberUser` FOREIGN KEY (`member_id`) REFERENCES `personnage`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+ ADD CONSTRAINT `FK_MemberUser` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,
  ADD CONSTRAINT `FK_MemberGuild` FOREIGN KEY (`guild_id`) REFERENCES `guild`(`id`) ON DELETE SET NULL ON UPDATE CASCADE ,
  ADD CONSTRAINT `UC_Member` UNIQUE (`guild_id`,`member_id`);
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Community;
 
 use App\Model\Table\UserTable;
 use Core\Auth\CryptAuth;
@@ -37,7 +37,7 @@ class AccountController extends AppController
             }
 
             $this->cryptor = CryptAuth::getInstance($this->auth->getEncryptionKey());
-            Render::getInstance()->setView("Account/show");
+            Render::getInstance()->setView("Community/Account/show");
 
         }
     }
@@ -100,7 +100,7 @@ class AccountController extends AppController
             ->submit("suivant")
         ;
 
-        Render::getInstance()->setView("Account/form");
+        Render::getInstance()->setView("Community/Account/form");
     }
 
     /**
@@ -132,7 +132,7 @@ class AccountController extends AppController
             ->submit("suivant")
         ;
 
-        Render::getInstance()->setView("Account/form");
+        Render::getInstance()->setView("Community/Account/form");
 
     }
 }
