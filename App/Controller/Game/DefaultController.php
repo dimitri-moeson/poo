@@ -29,51 +29,20 @@ class DefaultController extends AppController
     {
         parent::__construct();
 
-        $this->auth = new DatabaseAuth(App::getInstance()->getDb());
-
-        $this->loadService("User");
-
         if($this->ctrLog()) {
 
             Render::getInstance()->setTemplate('default');
 
-            $this->loadModel("Game\Personnage\Personnage");
-            $this->loadModel("Game\Item\Item");
-            $this->loadModel("Game\Inventaire\Inventaire");
-
             $this->loadService("Item");
-            $this->loadService("Combat");
             $this->loadService("Map");
-            $this->loadService("Personnage");
-            $this->loadService("Equipement");
-            $this->loadService("Inventaire");
             $this->loadService("Movement");
-            $this->loadService("Monstre");
             $this->loadService("Quest");
 
-
-            if ($this->PersonnageService instanceof PersonnageService) {
-                $this->legolas = $this->PersonnageService->recup($this->auth->getUser('id'));
-            }
-
-            if (!$this->legolas){
-
-                if ($this->UserService instanceof UserService) {
-                    $this->UserService->initPerso($this->auth->getUser('id'));
-                    Redirect::getInstance()->setCtl("inscription")->setAct("faction")->send();
-                }
-
-                //$this->notFound("personnage");
-            }
-
-            if ($this->Inventaire instanceof InventaireTable)
-                $this->sacoche = $this->Inventaire->itemListing($this->legolas->id, "personnage", "sac", null, ItemEntity::class);
         }
     }
 
     private function equipement()
     {
-
         if($this->EquipementService instanceof EquipementService)
         {
             $this->EquipementService->setPersonnage($this->legolas);

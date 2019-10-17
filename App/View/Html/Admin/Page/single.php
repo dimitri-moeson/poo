@@ -6,16 +6,12 @@ use Core\Session\FlashBuilder;
 
 <h1><?php  echo isset($post) ? $post->titre : "blog - Ajout" ?></h1>
 
-<?php if ($success) { ?>
-
-    <div class="alert alert-success">
-        enregistrement.
-    </div>
-
-
-<?php } ?>
-
 <?php echo FlashBuilder::create()->get() ?>
+<ul class='nav nav-tabs nav-justified'>
+    <li class='active'><a href='<?php echo Url::generate("single","page","admin",$post->id);?>' >Params</a></li>
+    <li class=''><a href='<?php echo Url::generate("content","page","admin",$post->id);?>' >Content</a></li>
+</ul>
+<div class="tab-content col-sm-12">
 
 <div class="col-sm-7">
 
@@ -54,7 +50,9 @@ use Core\Session\FlashBuilder;
                     )); ?></td>
             </tr>
 
-        <?php } // endforeach ?>
+        <?php } // endforeach... ?>
         </tbody>
     </table>
+</div>
+
 </div>

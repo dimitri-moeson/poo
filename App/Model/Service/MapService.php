@@ -164,7 +164,7 @@ class MapService extends Service
             if (isset($place->name))
             {
                 return "<a title='" . $place->type . "/" . $place->structure . "/" . $place->name . "' href='".$link."'>" .
-                    "<i class='" . $place->img . "'></i>" .
+                    "<i class='" . $place->img . "'>o</i>" .
                     "</a>";
             }
             else {

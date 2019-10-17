@@ -6,6 +6,7 @@ namespace App\Model\Service;
 
 use App;
 use App\Model\Service;
+use Core\Auth\DatabaseAuth;
 use Core\Database\QueryBuilder;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
@@ -22,6 +23,8 @@ class ArticleService extends Service
         $this->loadModel("Blog\Article");
         $this->loadModel("Blog\Keyword");
         $this->loadModel("Blog\Indexion");
+
+        $this->auth = new DatabaseAuth(App::getInstance()->getDb());
     }
 
     /**
@@ -66,25 +69,49 @@ class ArticleService extends Service
     /**
      * @param null $id
      */
+    public function updateContent($id= null)
+    {
+
+        if (!is_null($id)) {
+            $curr = $this->ArticleBase->find($id);
+
+            $arr = array(
+
+                "contenu"       => Post::getInstance()->val("contenu") ?? $curr->contenu ,
+
+            );
+
+            $this->ArticleBase->update($id, $arr);
+        }
+
+    }
+
+    /**
+     * @param null $id
+     */
     public function record($id= null){
 
-        $last = $this->ArticleBase->lastPosition(Post::getInstance()->val("type"));
+        if(!is_null($id))$curr = $this->ArticleBase->find($id);
+
+         $last = $this->ArticleBase->lastPosition( Post::getInstance()->val("type"));
         $count = $this->ArticleBase->countPosition(Post::getInstance()->val("type"));
 
         $max = $count->counted > $last->lasted ? $count->counted : $last->lasted ;
 
+        $date = Post::getInstance()->has("date") ? \DateTime::createFromFormat("d/m/Y",Post::getInstance()->val("date"))->format("Y-m-d" ): date("Y-m-d");
+
         $arr = array(
 
             "titre"         =>  Post::getInstance()->val("titre"),
-            "parent_id"     => (Post::getInstance()->val("parent_id") ?? null ),
-            "author_id"     => (Post::getInstance()->val("author_id") ?? null ),
-            "date"          => (Post::getInstance()->val("date") ?? date("Y-m-d")),
+            "parent_id"     => (Post::getInstance()->val("parent_id") ?? 0 ),
+            "author_id"     => (Post::getInstance()->val("author_id") ?? $this->auth->getUser('id') ),
             "contenu"       => (Post::getInstance()->val("contenu") ?? "null" ) ,
             "type"          =>  Post::getInstance()->val("type"),
             "description"   =>  Post::getInstance()->val("description"),
             "default"       => (Post::getInstance()->val("default") ?? 0 ),
             "menu"          =>  Post::getInstance()->val("menu"),
-            "position"      => ($max+1),
+            "position"      => $curr->position ?? ($max+1),
+            "date"          => $date ,
 
         );
 
@@ -93,32 +120,39 @@ class ArticleService extends Service
             $this->ArticleBase->create( $arr );
 
             $id = App::getInstance()->getDb()->lasInsertId();
+
+            $this->ArticleBase->update( $id , array(
+
+                "slug" => $this->slugify($id."-".Post::getInstance()->val("titre"))
+
+            ) );
         }
         else
         {
             $this->ArticleBase->update( $id , $arr );
         }
 
-        $this->ArticleBase->update( $id , array(
 
-            "slug" => $this->slugify($id."-".Post::getInstance()->val("titre"))
-
-        ) );
 
        $this->key_record($id);
 
         return true ;
     }
 
-    public function setPosition($id,$sens = "+"){
+    /**
+     * @param $id
+     * @param string $sens
+     * @param null $type
+     */
+    public function setPosition($id,$sens = "+", $type=null ){
 
         $art =  $this->ArticleBase->find( $id );
 
         $pos = $art->position;
-        $typ = $art->type ;
+        $typ = $art->type ?? $type ;
 
-        $last = $this->ArticleBase->lastPosition(Post::getInstance()->val("type"));
-        $count = $this->ArticleBase->countPosition(Post::getInstance()->val("type"));
+        $last = $this->ArticleBase->lastPosition( $typ ??  Post::getInstance()->val("type"));
+        $count = $this->ArticleBase->countPosition($typ ?? Post::getInstance()->val("type"));
 
         $max = $count->counted > $last->lasted ? $count->counted : $last->lasted ;
 

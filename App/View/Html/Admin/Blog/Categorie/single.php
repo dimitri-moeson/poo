@@ -4,19 +4,13 @@
     use App\Model\Entity\Blog\CategorieEntity;
     use Core\Render\Render;
     use Core\Render\Url;
+use Core\Session\FlashBuilder;
 
 ?>
 
-<h1><?php echo $post->nom ?></h1>
+<h1><?php echo isset($post) ? $post->nom : "Nouvelle Categorie" ?></h1>
 
-<?php if ($success) { ?>
-
-    <div class="alert alert-success">
-        enregistrement.
-    </div>
-
-
-<?php } ?>
+<?php echo FlashBuilder::create()->get() ?>
 
 <div class="col-sm-7">
 

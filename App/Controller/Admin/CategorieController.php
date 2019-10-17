@@ -37,7 +37,7 @@ class CategorieController extends AppController
      * @param $post
      * @return Form
      */
-    private function form_categorie($post,$keywords)
+    private function form_categorie($post,$keywords = array())
     {
         $form = new Form($post);
 

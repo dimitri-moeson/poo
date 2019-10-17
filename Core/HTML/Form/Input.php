@@ -152,7 +152,7 @@ class Input
             case 'datetime':
 
                 $date = DateTime::createFromFormat("Y-m-d",($this->value ?? date("Y-m-d")));
-                $html_input = "<input type='text' class='form-control " . $this->class . " datepicker' data-date-format='dd/mm/yyyy'  ".$html_option." placeholder='" . $this->label . "' id='date-" . $this->name . "' name='" . $this->i_name . "' value='".$date->format("Y-m-d")."' />";
+                $html_input = "<input type='text' class='form-control " . $this->class . " datepicker' data-date-format='dd/mm/yyyy'  ".$html_option." placeholder='" . $this->label . "' id='date-" . $this->name . "' name='" . $this->i_name . "' value='".$date->format("d/m/Y")."' />";
                 break;
             default:
                 $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='" . $this->type . "' id='" . $this->type . "-" . $this->name . "' name='" . $this->i_name . "' value='" . $this->value . "' />";

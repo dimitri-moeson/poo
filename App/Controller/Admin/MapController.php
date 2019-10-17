@@ -69,8 +69,10 @@ class MapController extends AppController
      */
     public function edit(){
 
-        $x = Get::getInstance()->val('x');
-        $y = Get::getInstance()->val('y');
+        $x = Get::getInstance()->val('x') ?? 0;
+        $y = Get::getInstance()->val('y') ?? 0;
+
+        echo " $x - $y <br/> ";
 
         if ($this->MapService instanceof MapService) {
             $this->alentours = $this->MapService->arround($x,$y, 4);

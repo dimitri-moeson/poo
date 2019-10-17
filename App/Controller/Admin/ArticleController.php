@@ -9,6 +9,7 @@
 namespace App\Controller\Admin;
 
 use App;
+use App\Model\Service\ArticleService;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
@@ -17,6 +18,10 @@ use Core\Redirect\Redirect;
 use Core\Render\Render;
 use Core\Session\FlashBuilder;
 
+/**
+ * Class ArticleController
+ * @package App\Controller\Admin
+ */
 class ArticleController extends AppController
 {
     /**
@@ -52,31 +57,52 @@ class ArticleController extends AppController
             ->input("description", array('type' => 'textarea', 'label' => "Description/Extrait" ))
             ->select("parent_id", array('options' => $categories, 'label' => "Categorie"),$categories)
             ->input("date", array('type' => 'date', 'label' => "ajouté"))
-            ->input("contenu", array('type' => 'textarea', 'label' => "contenu", "class" => "editor"))
-            //->input("type",array("type"=>"hidden", "value"=>"article"))
+            ->input("type",array("type"=>"hidden", "value"=>"article"))
             ->submit("Enregistrer");
 
         return $form ;
     }
 
+    /**
+     * @param $post
+     * @return Form
+     */
+    private function form_content($post)
+    {
+        $form = new Form($post);
+
+        $form
+            ->input("contenu", array('type' => 'textarea', 'label' => "contenu", "class" => "editor"))
+            ->submit("Enregistrer");
+
+        return $form ;
+    }
+
+    /**
+     *
+     */
     public function index()
     {
         Render::getInstance()->setView("Admin/Blog/home"); // , compact('posts','categories'));
     }
-    
+
+    /**
+     *
+     */
     public function add(){
 
         if(Post::getInstance()->submit()) {
 
             Post::getInstance()->val("type","article");
+            if($this->ArticleService instanceof ArticleService) {
+                if ($this->ArticleService->record()) {
 
-            if($this->ArticleService->record()){
+                    FlashBuilder::create("article créé", "success");
 
-                FlashBuilder::create("article créé","success");
-
-                Redirect::getInstance()->setParams(array("id" =>App::getInstance()->getDb()->lasInsertId() ))
-                    ->setAct("edit")->setCtl("article")->setDom("admin")
-                    ->send();
+                    Redirect::getInstance()->setParams(array("id" => App::getInstance()->getDb()->lasInsertId()))
+                        ->setAct("edit")->setCtl("article")->setDom("admin")
+                        ->send();
+                }
             }
         }
 
@@ -84,7 +110,10 @@ class ArticleController extends AppController
 
         Render::getInstance()->setView("Admin/Blog/single"); // , compact('form','categories'));
     }
-    
+
+    /**
+     *
+     */
     public function delete(){
 
         if(Post::getInstance()->submit()) {
@@ -110,20 +139,24 @@ class ArticleController extends AppController
 
         Render::getInstance()->setView("Admin/Blog/delete"); // , compact('posts','categories'));
     }
-    
+
+    /**
+     * @param $id
+     */
     public function single($id){
 
         if(Post::getInstance()->submit()) {
 
             Post::getInstance()->val("type","article");
 
-            if($this->ArticleService->record($id))
-            {
-                FlashBuilder::create("article modifié","success");
+            if($this->ArticleService instanceof ArticleService) {
+                if ($this->ArticleService->record($id)) {
+                    FlashBuilder::create("article modifié", "success");
+                }
+                Redirect::getInstance()->setParams(array("id" => $id))
+                    ->setAct("edit")->setCtl("article")->setDom("admin")
+                    ->send();
             }
-            Redirect::getInstance()->setParams(array("id" => $id ))
-                ->setAct("edit")->setCtl("article")->setDom("admin")
-                ->send();
         }
 
         if(!is_null($id)){
@@ -140,5 +173,38 @@ class ArticleController extends AppController
 
 
         Render::getInstance()->setView("Admin/Blog/single"); // , compact('post','categories','success','form'));
+    }
+
+    /**
+     * @param $id
+     */
+    public function content($id){
+
+        if(Post::getInstance()->submit()) {
+
+            Post::getInstance()->val("type","article");
+
+            if($this->ArticleService instanceof ArticleService) {
+                if ($this->ArticleService->updateContent($id)) {
+                    FlashBuilder::create("article modifié", "success");
+                }
+                Redirect::getInstance()->setParams(array("id" => $id))
+                    ->setAct("edit")->setCtl("article")->setDom("admin")
+                    ->send();
+            }
+        }
+
+        if(!is_null($id)){
+
+            $this->post = $this->Article->find($id);
+            if (!$this->post) $this->notFound("single post");
+
+            Header::getInstance()->setTitle($this->post->titre);
+
+            $this->form = $this->form_content($this->post);
+        }
+
+
+        Render::getInstance()->setView("Admin/Blog/content"); // , compact('post','categories','success','form'));
     }
 }

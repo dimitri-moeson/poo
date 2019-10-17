@@ -13,12 +13,12 @@ $title = Header::getInstance()->getTitle();
 $slg =  Request::getInstance()->getSlug();
 $auth = new DatabaseAuth(App::getInstance()->getDb());
 
+$commu_rub = $ctl_ === "user" || $ctl_ === "guild" ;
 $blog_rub = $ctl_ === "article" || $ctl_ === "categorie";
 $game_rub = $ctl_ === "personnage" || $ctl_ === "map"  || $ctl_ === "item";
 $item_rub = $ctl_ === "item";
-$sql_rub  = $ctl_ === "sql";
-$file_rub  = $ctl_ === "file";
-$commu_rub  = $ctl_ === "user" || $ctl_ === "guild" ;
+$file_rub = $ctl_ === "file";
+$sql_rub = $ctl_ === "sql";
 
 ?><!doctype html>
 <html lang="fr">
@@ -133,10 +133,7 @@ $commu_rub  = $ctl_ === "user" || $ctl_ === "guild" ;
                         </ul>
                     </li>
 
-
-
                     <li><a href="<?php echo Url::generate("index","page","admin") ?>">Page</a></li>
-
 
                     <li>
                         <a href="#gameSubmenu" data-toggle="collapse" aria-expanded="<?php echo $game_rub ? "true" : "false" ?>" class=" active dropdown-toggle">Game<i class="fa fa-fw fa-angle-down pull-right"></i></a>

@@ -18,6 +18,11 @@ use Exception;
 class AppController extends Controller
 {
     /**
+     * @var DatabaseAuth
+     */
+    protected $auth;
+
+    /**
      * AppController constructor.
      */
     public function __construct()
