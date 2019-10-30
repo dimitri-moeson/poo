@@ -41,6 +41,7 @@ use Core\Session\FlashBuilder;
 
 /**
  * Class TestController
+ * @deprecated
  * @package App\Controller
  */
 class TestController extends AppController

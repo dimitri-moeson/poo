@@ -66,12 +66,8 @@ class ItemService extends Service
      */
     public function getCraftable($id,$repo = null){
 
-        //echo "id :$id<br/>";
-
         if($this->ItemBase instanceof ItemTable)
             $potion = $this->ItemBase->find($id); // $repo
-
-        //var_dump($potion);
 
         if($potion instanceof ItemEntity)
             $potion = $this->getRecette($potion);
@@ -87,26 +83,25 @@ class ItemService extends Service
      */
     public function listCraftable( Int $personnage_id = null, Int $batiment_id = null ){
 
+
         if(!is_null($personnage_id)){
 
             if($this->InventaireBase instanceof InventaireTable )
                 return $this->InventaireBase->itemListing($personnage_id , "personnage" , "recette", null, ItemEntity::class );
         }
 
-        $craftable_types = array("consommable","casque"  ,
-            "epaule"  ,
-            "amulette" ,
-            "brassard"  ,
-            "botte",
-            "torse" ,
-            "bague" ,
-            "ceinture" ,
-            "arme"  ,
-            "bouclier" ,
-            "jambe" ,
-            "gant");
 
-        return $this->ItemBase->typeListing($craftable_types);
+        $craftable_types = ItemEntity::getCraftableTypeArray(); /**array_merge(
+
+            ItemEntity::type_arr['equipement'] ,
+            ItemEntity::type_arr['arme_1_main'] ,
+            ItemEntity::type_arr['arme_2_main'] ,
+            array('consommable')
+
+        );**/
+
+        if($this->ItemBase instanceof ItemTable )
+            return $this->ItemBase->typeListing($craftable_types);
     }
 
     /**

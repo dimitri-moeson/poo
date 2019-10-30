@@ -42,7 +42,7 @@ class MapController extends AppController
         {
             $terrains = $this->Item->itemListing(array('terrain')) ; //request($statementT);
 
-            $install_arr = array_merge(ItemEntity::type_arr['batiment'] , array('quest') );
+            $install_arr = ItemEntity::getPlaceTypeArray(); /*array_merge(ItemEntity::type_arr['batiment'] , array('quest') );*/
 
             //print_r($install_arr);
 

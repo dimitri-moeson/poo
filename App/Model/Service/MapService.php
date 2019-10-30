@@ -193,7 +193,7 @@ class MapService extends Service
             {
                 if ($place->structure == 'mairie'){
 
-                    $link = Url::generate("quest", "test", null , $place->id );// "?p=test.quest&id=".$place->i_id;
+                    $link = Url::generate("quest", "place", "game" , $place->id );// "?p=test.quest&id=".$place->i_id;
 
                 }
                 elseif ($place->structure == 'ecole'){
@@ -208,13 +208,13 @@ class MapService extends Service
                 }
                 elseif ($place->structure == 'arene'){
 
-                    $link = Url::generate("roaster", "arena", "game" , $place->id );//"?p=test.arene&id=".$place->i_id;
+                    $link = Url::generate("arenan", "place", "game" , $place->id );//"?p=test.arene&id=".$place->i_id;
 
                 }
                 elseif ($place->structure == 'quest'){
 
                     /** @var possibilité d'avoir plusieurs quetes au meme emplacement */
-                    $link = Url::generate("quest", "test", null , $place->id );//"?p=test.quest&id=".$place->i_id;
+                    $link = Url::generate("quest", "place", "game" , $place->id );//"?p=test.quest&id=".$place->i_id;
 
                 }
                 else {

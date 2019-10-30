@@ -45,6 +45,7 @@ class ItemEntity extends Entity
             "bouclier",
             "pistolet",
         ),
+
         "arme_2_main" => array(
             "fusil",
             "arc",
@@ -52,10 +53,12 @@ class ItemEntity extends Entity
             "hallebarde",
             "espadon",
         ),
+
         "aventure" => array(
 
             "quest"
         ),
+
         "batiment" => array(
 
             "forge",
@@ -66,6 +69,7 @@ class ItemEntity extends Entity
             "arene",
 
         ),
+
         "equipement" => array (
 
             "casque",
@@ -79,21 +83,25 @@ class ItemEntity extends Entity
             "jambe"
 
         ),
+
         "faune" => array(
 
             "strum",
             "pnj"
         ),
+
         "geographie" => array(
 
             "terrain",
         ),
+
         "item" => array(
 
             "consommable" ,
             "composant" ,
 
         ),
+
         "personnage" => array(
 
             "ressource",
@@ -110,6 +118,7 @@ class ItemEntity extends Entity
             "doppant"
 
         ),
+
         "ennemis" => array(
 
             "normal",
@@ -118,6 +127,7 @@ class ItemEntity extends Entity
             "champion",
             "boss"
         ),
+
         "equipement" => array(
 
             "normal",
@@ -125,6 +135,7 @@ class ItemEntity extends Entity
             "primordial",
             "légendaire"
         ),
+
         "statistique" => array(
 
             "offensif" ,
@@ -133,7 +144,7 @@ class ItemEntity extends Entity
         ),
 
     );
-
+/**
     const craftable_types = array(
 
         "consommable",
@@ -160,7 +171,7 @@ class ItemEntity extends Entity
         "hallebarde",
         "espadon",
     );
-
+**/
     /**
      * ItemEntity constructor.
      * @param $nom
@@ -221,6 +232,9 @@ class ItemEntity extends Entity
         return false ;
     }
 
+    /**
+     * @return bool
+     */
     public function isFightable(){
 
         if($this->getType()==="strum")
@@ -231,10 +245,64 @@ class ItemEntity extends Entity
         return false ;
     }
 
+    /**
+     * @return array
+     */
+    public static function getEquipableTypeArray()
+    {
+        return array_merge(
+
+            self::type_arr['equipement'] ,
+            self::type_arr['arme_1_main'] ,
+            self::type_arr['arme_2_main']
+
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public static function getCraftableTypeArray()
+    {
+        return array_merge(
+
+            self::type_arr['equipement'] ,
+            self::type_arr['arme_1_main'] ,
+            self::type_arr['arme_2_main'] ,
+            array('consommable')
+
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public static function getPlaceTypeArray(){
+
+       return array_merge(
+
+           ItemEntity::type_arr['batiment'] ,
+           array('quest')
+       );
+    }
+
+    /**
+     * @return bool
+     */
     public function isCraftable(){
 
+        $craftable_types = self::getCraftableTypeArray();
 
-        if(in_array($this->getType(),self::craftable_types)){
+        /**array_merge(
+
+            self::type_arr['equipement'] ,
+            self::type_arr['arme_1_main'] ,
+            self::type_arr['arme_2_main'] ,
+            array('consommable')
+
+        );**/
+
+        if(in_array($this->getType(),$craftable_types)){
 
             return true ;
         }
@@ -242,13 +310,13 @@ class ItemEntity extends Entity
         return false ;
     }
 
+    /**
+     * @return InventaireRecetteEntity
+     */
     public function getRecette(){
-
-        //print_r($this->recette);
 
         if($this->isCraftable())
             return $this->recette ;
-
     }
 
     /**

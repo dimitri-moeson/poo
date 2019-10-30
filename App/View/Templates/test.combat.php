@@ -3,7 +3,9 @@
 
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Header\Header;
-use Core\Render\Url;use Core\Request\Request ;use Core\Session\FlashBuilder;
+use Core\Render\Url;
+use Core\Request\Request ;
+use Core\Session\FlashBuilder;
 
 $ctl_ = Request::getInstance()->getCtrl();
 $act_ = Request::getInstance()->getAction();
