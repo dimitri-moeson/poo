@@ -3,6 +3,8 @@
 
 namespace Core\Path;
 
+use Core\Config;
+
 class Path
 {
     /**
@@ -46,6 +48,30 @@ class Path
         {
             return true;
         }
+        //echo "testControlPath not true....";
+        return false ;
+    }
+
+    /**
+     * @param null $dom
+     * @return bool
+     */
+    public function testDomPath($dom=null){
+
+        if(!is_null($dom)) {
+            $dom_path = ROOT . DIRECTORY_SEPARATOR
+                . 'App' . DIRECTORY_SEPARATOR
+                . 'Controller' . DIRECTORY_SEPARATOR
+                . ucfirst(strtolower($dom)) . DIRECTORY_SEPARATOR;
+
+            //echo $dom_path ;
+
+            if (isset($dom_path) && file_exists($dom_path) && is_dir($dom_path)) {
+                //echo "testDomPath true....";
+                return true;
+            }
+        }
+        //echo "testDomPath not true....";
 
         return false ;
     }
@@ -57,32 +83,59 @@ class Path
      */
     public function testControlPath($ctl = "default",$dom = null){
 
-            if(!is_null($dom) && !is_null($ctl))    $ctr_path_a = '\App\Controller\\' . ucfirst(strtolower($dom)) . '\\' . ucfirst(strtolower($ctl)) . 'Controller';
-        elseif( is_null($dom) && !is_null($ctl))    $ctr_path_b = '\App\Controller\\' . ucfirst(strtolower($ctl)). 'Controller';
-        elseif(!is_null($dom) &&  is_null($ctl))    $ctr_path_c = '\App\Controller\\' .  ucfirst(strtolower($dom)) . '\DefaultController';
-        elseif( is_null($dom) &&  is_null($ctl))    $ctr_path_d = '\App\Controller\DefaultController';
-        else                                        $ctr_path_e = '\App\Controller\DefaultController';
+        if($this->testDomPath($dom))
+        {
+                if(!is_null($dom) && !is_null($ctl))        $ctr_path['a'] = '\App\Controller\\' . ucfirst(strtolower($dom)) . '\\' . ucfirst(strtolower($ctl)) . 'Controller';
+                elseif(!is_null($dom) &&  is_null($ctl))    $ctr_path['c'] = '\App\Controller\\' .  ucfirst(strtolower($dom)) . '\DefaultController';
+        }
+        else
+        {
+                if( is_null($dom) && !is_null($ctl))    $ctr_path['b'] = '\App\Controller\\' . ucfirst(strtolower($ctl)). 'Controller';
+            elseif( is_null($dom) &&  is_null($ctl))    $ctr_path['d'] = '\App\Controller\DefaultController';
+            //else                                        $ctr_path['e'] = '\App\Controller\DefaultController';
 
-            if( isset($ctr_path_a) && class_exists($ctr_path_a,true))
+        }
+
+        foreach ($ctr_path as $l => $path)
+        {
+            if( isset($path) && class_exists($path,true))
             {
-                return $ctr_path_a ;
+                //echo "[[$l]]";
+                return $path ;
             }
-        elseif( isset($ctr_path_b) && class_exists($ctr_path_b,true))
+        }
+        return false ;
+    }
+
+    /**
+     * @param string $ctl
+     * @param null $dom
+     * @return bool|int|string
+     */
+    public function indexControlPath($ctl = "default",$dom = null){
+
+        if($this->testDomPath($dom))
+        {
+                if(!is_null($dom) && !is_null($ctl))    $ctr_path['a'] = '\App\Controller\\' . ucfirst(strtolower($dom)) . '\\' . ucfirst(strtolower($ctl)) . 'Controller';
+            elseif(!is_null($dom) &&  is_null($ctl))    $ctr_path['c'] = '\App\Controller\\' .  ucfirst(strtolower($dom)) . '\DefaultController';
+        }
+        else
+        {
+                if( is_null($dom) && !is_null($ctl))    $ctr_path['b'] = '\App\Controller\\' . ucfirst(strtolower($ctl)). 'Controller';
+            elseif( is_null($dom) &&  is_null($ctl))    $ctr_path['d'] = '\App\Controller\DefaultController';
+            //else                                        $ctr_path['e'] = '\App\Controller\DefaultController';
+
+        }
+
+        foreach ($ctr_path as $l => $path)
+        {
+            if( isset($path) && class_exists($path,true))
             {
-                return $ctr_path_b ;
+                return $l ;
             }
-        elseif( isset($ctr_path_c) && class_exists($ctr_path_c,true))
-            {
-                return $ctr_path_c ;
-            }
-        elseif( isset($ctr_path_d) && class_exists($ctr_path_d,true))
-            {
-                return $ctr_path_d ;
-            }
-        elseif( isset($ctr_path_e) && class_exists($ctr_path_e,true))
-            {
-                return $ctr_path_e ;
-            }
+        }
+
+        return false ;
     }
 
     /**

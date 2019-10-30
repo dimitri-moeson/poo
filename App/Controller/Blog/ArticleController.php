@@ -140,6 +140,9 @@ class ArticleController extends AppController
         }
     }
 
+    /**
+     * @param $word
+     */
     public function keywords($word){
 
         if($this->Article instanceof ArticleTable) {

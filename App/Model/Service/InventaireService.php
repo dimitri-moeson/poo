@@ -75,7 +75,7 @@ class InventaireService extends Service
                 "type" => $item->inventaire_type,
                 "rubrique" => $item->inventaire_rubrique,
                 "val" => $item->val,
-                "caract" => $item->caract
+                "caract" => $item->caract ?? "none"
             );
 
             //Debugger::getInstance()->add($datas);

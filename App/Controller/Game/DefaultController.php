@@ -20,6 +20,15 @@ use Core\Redirect\Redirect;
 use Core\Render\Render;
 use Core\Session\FlashBuilder;
 
+/**
+ * Class DefaultController
+ * @package App\Controller\Game
+ *
+ * /game/
+ * /game/movement
+ * /game/equipement/retire
+ * /game/equipement/ajoute
+ */
 class DefaultController extends AppController
 {
     /**
@@ -29,7 +38,7 @@ class DefaultController extends AppController
     {
         parent::__construct();
 
-        if($this->ctrLog()) {
+        if ($this->ctrLog()) {
 
             Render::getInstance()->setTemplate('default');
 
@@ -41,39 +50,13 @@ class DefaultController extends AppController
         }
     }
 
+    /**
+     *
+     */
     private function equipement()
     {
-        if($this->EquipementService instanceof EquipementService)
-        {
+        if ($this->EquipementService instanceof EquipementService) {
             $this->EquipementService->setPersonnage($this->legolas);
-
-            if (Post::getInstance()->has('change', 'post')) {
-
-                $type = Post::getInstance()->val('change');
-
-                if (Post::getInstance()->has('retire')) {
-                    $equip = $this->EquipementService->getRangeable(Post::getInstance()->val('place'));
-                    $this->EquipementService->retire($equip);
-                }
-
-                if (Post::getInstance()->has('equip')) {
-                    $equip = $this->EquipementService->getEquipable(Post::getInstance()->val('place'));
-                    $this->EquipementService->equip($equip);
-                }
-
-                if (Post::getInstance()->has('arme')) {
-                    $equip = $this->EquipementService->getArmable(Post::getInstance()->val('arme'));
-                    $this->EquipementService->arme($equip);
-                }
-
-                //$this->viewText = $this->legolas->getName() . " change d'equipement " . $equip->getName() . "<br/>";
-                //Redirect::reload();
-
-                FlashBuilder::create( $this->legolas->getName() . " change d'equipement " . $equip->getName(),"success");
-
-                Redirect::getInstance()->setAct("fiche")->send();
-
-            }
 
             $this->equipables = $this->EquipementService->listEquipable(Get::getInstance()->val('place'));
         }
@@ -81,46 +64,29 @@ class DefaultController extends AppController
 
     }
 
+    /**
+     *
+     */
     private function inventaire()
     {
-        if($this->Inventaire instanceof InventaireTable ) {
+        if ($this->Inventaire instanceof InventaireTable) {
 
-            $e_types = Get::getInstance()->has('place')  ? array(Get::getInstance()->val('place')) : null ;
-            $this->sacoche = $this->Inventaire->itemListing($this->legolas->id, "personnage", "sac", $e_types , ItemEntity::class);
+            $e_types = Get::getInstance()->has('place') ? array(Get::getInstance()->val('place')) : null;
+            $this->sacoche = $this->Inventaire->itemListing($this->legolas->id, "personnage", "sac", $e_types, ItemEntity::class);
         }
     }
 
+    /**
+     *
+     */
     private function map()
     {
-        if($this->MapService instanceof MapService) {
+        if ($this->MapService instanceof MapService) {
 
             $this->MapService->setPersonnage($this->legolas);
 
-            if( $this->MovementService instanceof MovementService)
+            if ($this->MovementService instanceof MovementService)
                 $this->MovementService->setPersonnage($this->legolas);
-
-            if (Post::getInstance()->has('move')) {
-                if ($this->legolas instanceof PersonnageEntity) {
-                    $select = explode("|", Post::getInstance()->val("coordonnees"));
-
-                    $coord = array(
-
-                        'x' => $this->legolas->getPosition()->x + ($select[1] == "e" ? 1 : ($select[1] == "w" ? -1 : 0)),
-                        'y' => $this->legolas->getPosition()->y + ($select[0] == "s" ? 1 : ($select[0] == "n" ? -1 : 0)),
-
-                    );
-
-                    $pos = $this->MapService->search($coord);
-
-                    if( $this->MovementService instanceof MovementService)
-                        $this->MovementService->move( $pos);
-
-                    //$this->viewText = $this->legolas->getName() . " se deplace " . print_r($coord, 1) . "<br/>";
-                    FlashBuilder::create( $this->legolas->getName() . " se deplace " . print_r($coord, 1) ,"success");
-
-                    Redirect::getInstance()->setAct("fiche")->send();
-                }
-            }
 
             $this->alentours = $this->MapService->arround();
 
@@ -140,6 +106,7 @@ class DefaultController extends AppController
         $this->inventaire();
 
         $this->map();
-    }
 
+        Render::getInstance()->setView("Game/Index");
+    }
 }

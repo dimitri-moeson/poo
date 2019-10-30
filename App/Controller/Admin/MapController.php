@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 
 use App\Model\Entity\Game\Item\ItemEntity;
+use App\Model\Entity\Game\Map\MapEntity;
 use App\Model\Service\MapService;
 use App\Model\Table\Game\Item\ItemTable;
 use App\View\Form\MapForm;
@@ -40,7 +41,12 @@ class MapController extends AppController
         if($this->Item instanceof ItemTable)
         {
             $terrains = $this->Item->itemListing(array('terrain')) ; //request($statementT);
-            $items = $this->Item->itemListing(array_merge(ItemEntity::type_arr['batiment'] , array('quest') )); //request($statementE);
+
+            $install_arr = array_merge(ItemEntity::type_arr['batiment'] , array('quest') );
+
+            //print_r($install_arr);
+
+            $items = $this->Item->typeListing($install_arr); //request($statementE);
 
             $form->input("id",array("type" => "number","readonly"=>"true"))
                 ->input("x",array("type" => "number"))
@@ -72,8 +78,6 @@ class MapController extends AppController
         $x = Get::getInstance()->val('x') ?? 0;
         $y = Get::getInstance()->val('y') ?? 0;
 
-        echo " $x - $y <br/> ";
-
         if ($this->MapService instanceof MapService) {
             $this->alentours = $this->MapService->arround($x,$y, 4);
         }
@@ -82,15 +86,19 @@ class MapController extends AppController
         {
             $ter = $this->Item->find(Post::getInstance()->val('terrain'));
             $itm = $this->Item->find(Post::getInstance()->val('install'));
-            $map = $this->Map->find(Post::getInstance()->val('id'));
 
+            if(Post::getInstance()->has('id')) {
+                $map = $this->Map->find(Post::getInstance()->val('id'));
+            }else {
+                $map = MapEntity::init($x, $y, $ter);
+            }
             $map = $this->MapService->amorce($map,$ter);
             $itm->record = true ;
 
             $this->MapService->install($map,$itm);
 
             FlashBuilder::create("map edité","success");
-            Redirect::reload();
+            Redirect::getInstance()->reload();
         }
 
         $this->form = $this->formMap( $this->alentours[$x][$y] ?? GlobalRequest::getInstance()->content() );

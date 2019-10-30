@@ -40,6 +40,9 @@ class SqlController extends AppController
         return $form ;
     }
 
+    /**
+     *
+     */
     public function dump(){
 
         echo "<pre>".App::getInstance()->getDb()->dump()."</pre>";

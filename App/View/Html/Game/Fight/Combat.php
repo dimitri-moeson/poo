@@ -49,7 +49,6 @@ if ($defi instanceof Defi) {
                     </div>
                 </div>
 
-
                 <div class="col-md-7">
                     <div class="panel panel-info">
                         <div class="panel-heading">

@@ -92,7 +92,7 @@ class InscriptionController extends AppController
         try {
             if (!$this->sess_has('user_id') && $redirect) {
                 FlashBuilder::create("creation du compte éronnée. Veuillez reprendre.", "alert");
-                Redirect::getInstance()->setAct("login")->send();
+                Redirect::getInstance()->setAct("login")->setCtl("inscription")->setDom("community")->send();
             }
 
             if ($this->sess_has('user_id')) {
@@ -128,7 +128,7 @@ class InscriptionController extends AppController
                 {
                     if ($this->sess_has('user_id'))
                     {
-                        Redirect::getInstance()->setAct("faction")->send();
+                        Redirect::getInstance()->setAct("faction")->setCtl("inscription")->setDom("community")->send();
                     }
                 }
             }
@@ -162,7 +162,7 @@ class InscriptionController extends AppController
             if (Post::getInstance()->submit()) {
                 if ($this->sess_has('perso_id')) {
                     if ($this->UserService->save(Post::getInstance()->content(), "faction", $this->sess_val('perso_id'))) {
-                        Redirect::getInstance()->setAct("classe")->send();
+                        Redirect::getInstance()->setAct("classe")->setCtl("inscription")->setDom("community")->send();
                     }
                 }
             }
@@ -192,7 +192,7 @@ class InscriptionController extends AppController
             if (Post::getInstance()->submit()) {
                 if ($this->sess_has('perso_id')) {
                     if ($this->UserService->save(Post::getInstance()->content(), "classe", $this->sess_val('perso_id'))) {
-                        Redirect::getInstance()->setAct("race")->send();
+                        Redirect::getInstance()->setAct("race")->setCtl("inscription")->setDom("community")->send();
                     }
                 }
             }
@@ -222,7 +222,7 @@ class InscriptionController extends AppController
             if (Post::getInstance()->submit()) {
                 if ($this->sess_has('perso_id')) {
                     if ($this->UserService->save(Post::getInstance()->content(), "race", $this->sess_val('perso_id'))) {
-                        Redirect::getInstance()->setAct("sexe")->send();
+                        Redirect::getInstance()->setAct("sexe")->setCtl("inscription")->setDom("community")->send();
                     }
                 }
             }
@@ -252,7 +252,7 @@ class InscriptionController extends AppController
             if (Post::getInstance()->submit()) {
                 if ($this->sess_has('perso_id')) {
                     if ($this->UserService->save(Post::getInstance()->content(), "sexe", $this->sess_val('perso_id'))) {
-                        Redirect::getInstance()->setAct("personnage")->send();
+                        Redirect::getInstance()->setAct("personnage")->setCtl("inscription")->setDom("community")->send();
                     }
                 }
             }
@@ -274,7 +274,7 @@ class InscriptionController extends AppController
                 if ($this->sess_has('perso_id')) {
                     if ($this->UserService->save(Post::getInstance()->content(), "personnage", $this->sess_val('perso_id'))) {
                         FlashBuilder::create("creation du compte terminée. Vou pouvez vous connecter.", "success");
-                        Redirect::getInstance()->setAct("save")->send();
+                        Redirect::getInstance()->setAct("save")->setCtl("inscription")->setDom("community")->send();
                     }
                 }
             }

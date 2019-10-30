@@ -1,5 +1,8 @@
 <?php
-    $coord = array(
+
+use Core\Render\Url;
+
+$coord = array(
 
         1 => array(
 
@@ -23,7 +26,9 @@
         ),
     );
 ?>
-<form method="post" class="">
+
+<form method="post" action="<?php echo Url::generate("index","movement","game")?>">
+
     <input type="hidden" name="move" value="1">
 
 <?php foreach ($coord as $x => $dev ){ ?>

@@ -322,8 +322,6 @@ class PersonnageEntity extends Entity {
             return $this ;
     }
 
-
-
     /**
      * @return InventaireEntityQuestBook
      */
@@ -390,5 +388,8 @@ class PersonnageEntity extends Entity {
         return $this->sexe;
     }
 
-
+    public function getId(): int
+    {
+        return $this->id;
+    }
 }

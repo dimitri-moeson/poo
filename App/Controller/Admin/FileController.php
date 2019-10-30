@@ -93,40 +93,4 @@ class FileController extends AppController
 
         return $this->form_file("".$type);
     }
-
-    /**
-     * @deprecated
-     */
-    function _picture(){
-
-        File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Pictures");
-
-        $this->form = $this->generate("picture" ); //form_file("picture");
-
-        Render::getInstance()->setView("Admin/File");
-    }
-
-    /**
-     * @deprecated
-     */
-    function _style(){
-
-        File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Styles");
-
-        $this->form = $this->generate("style" ); //form_file("style");
-
-        Render::getInstance()->setView("Admin/File");
-    }
-
-    /**
-     * @deprecated
-     */
-    function _script(){
-
-        File::getInstance()->setUploadDir(Config::VIEW_DIR."/Assets/Scripts");
-
-        $this->form = $this->generate("script" ); //form_file("script");
-
-        Render::getInstance()->setView("Admin/File");
-    }
 }

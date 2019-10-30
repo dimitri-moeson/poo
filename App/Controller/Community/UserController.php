@@ -14,6 +14,7 @@ use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
+use Core\Render\Url;
 
 /**
  * Class PlayerController
@@ -31,26 +32,23 @@ class UserController extends AppController
     }
 
     /**
-     *
+     * deconnexion et redirection vers la racine du site
      */
     public function logout()
     {
         if(Post::getInstance()->submit())
         {
             $this->auth->logout();
-
-            Redirect::getInstance()->setCtl("default")->setAct("index")->send();
-
-            die("deconnexion...<br/>");
         }
+        Redirect::getInstance()->setCtl("default")->setAct("index")->setDom(null )->send();
+
+        die();
     }
 
     /**
      *
      */
     public function login(){
-
-        $this->error = false ;
 
         if(Post::getInstance()->submit()){
 
@@ -63,22 +61,24 @@ class UserController extends AppController
                 {
                     if ($this->auth->login($this->UserService->getUser()))
                     {
+                        Redirect::getInstance()->setCtl("default")->setAct("index");
+
                         if ($this->auth->hasRole('admin'))
                         {
-                            Redirect::getInstance()->setCtl("default")->setAct("index")->setDom("admin");
+                            Redirect::getInstance()->setDom("admin");
                         }
                         else
                         {
-                            Redirect::getInstance()->setCtl("test")->setAct("fiche");
+                            Redirect::getInstance()->setDom("game");
                         }
-                        Redirect::getInstance()->send();
                     }
                 }
             }
         }
 
-        $this->form = new Form(Post::getInstance()->content());
+        Redirect::getInstance()->send();
 
+        //$this->form = new Form(Post::getInstance()->content());
         //$this->categories = App::getInstance()->getTable("Blog\Categorie")->all();
     }
 

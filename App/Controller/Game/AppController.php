@@ -24,14 +24,14 @@ class AppController extends \App\Controller\AppController
     {
         parent::__construct();
 
-        // Auth
-
         $this->auth = new DatabaseAuth(App::getInstance()->getDb());
 
         $this->loadService("User");
         $this->loadService("Personnage");
         $this->loadService("Equipement");
         $this->loadService("Inventaire");
+        $this->loadService("Quest");
+        $this->loadService("Item");
 
         $this->loadModel("Game\Personnage\Personnage");
         $this->loadModel("Game\Item\Item");

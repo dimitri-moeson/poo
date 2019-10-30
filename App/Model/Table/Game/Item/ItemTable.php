@@ -52,6 +52,23 @@ class ItemTable extends GameTable
         return $this->request($statement , $attrib);
     }
 
+    public function randomOne($type){
+
+        $statement = QueryBuilder::init()->select("*")
+            ->from($this->getTable())
+            ->where("type = :type")
+            ->rand()
+            ->limit(1)
+        ;
+
+        $ent = $this->entityOf($type);
+
+        //Debugger::getInstance()->add($ent);
+
+        return  $this->db->prepare($statement, array("type"=> $type),$ent,true );
+
+    }
+
     /**
      * @param array $type
      *

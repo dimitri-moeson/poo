@@ -4,14 +4,19 @@ use App\Model\Service\EquipementService;
 use App\Model\Service\InventaireService;
 use App\Model\Service\PersonnageService;
 use Core\HTML\Env\Get;
+use Core\Render\Link;
 use Core\Render\Render;
 use Core\Render\Url;
+use Core\Request\Request;
 
 
 $_place = Get::getInstance()->val('place');
 
+$slug = Request::getInstance()->getSlug();
+
+echo $slug ;
+
 ?>
-test
 <div class="row">
 
     <div class="col-md-3">
@@ -32,7 +37,7 @@ test
         <div class="panel panel-info">
 
             <div class="panel-heading">
-                <div class="panel-title"><?php echo $legolas->getName() ?>
+                <div class="panel-title"><?php echo $legolas->getName() ?? "Personnage" ?>
                     <button class="btn btn-link pull-right" data-toggle="collapse" data-target="#collapse-stat" aria-expanded="true" aria-controls="collapse-stat">-</button>
                 </div>
             </div>
@@ -44,12 +49,16 @@ test
         <div class="panel panel-info">
 
             <div class="panel-heading">
-                <div class="panel-title"></div>
+                <div class="panel-title">Comp&eacute;tence
+                    <button class="btn btn-link pull-right" data-toggle="collapse" data-target="#collapse-skill" aria-expanded="true" aria-controls="collapse-skill">-</button>
+                </div>
             </div>
 
-            <div class="panel-body">
+            <div id="collapse-skill" class="panel-body">
 
-                <li><a href="<?php echo Url::generate("recolte","test") ?>"><i class="ra ra-sickle"></i>&nbsp;Recolte</a></li>
+                <li><a href="<?php echo Url::generate("recolte","skill","game") ?>"><i class="ra ra-sickle"></i>&nbsp;Recolte</a></li>
+
+                <li><?php echo new Link( Url::generate("recolte","skill","game") , "recolte" ) ?></li>
 
             </div>
         </div>
@@ -66,11 +75,11 @@ test
 
                     <div class="panel-heading">
                         <div class="panel-title">Carte
-                            <button class="btn btn-link pull-right" data-toggle="collapse" data-target="#collapse-map" aria-expanded="true" aria-controls="collapse-map">-</button>
+                            <button class="btn btn-link pull-right" data-toggle="collapse" data-target="#collapse-map" <?php echo $slug=="move" ? 'aria-expanded="true"' : '' ?> aria-controls="collapse-map">-</button>
                         </div>
                     </div>
 
-                    <div id="collapse-map" class="panel-body collapse">
+                    <div id="collapse-map" class="panel-body collapse <?php echo $slug=="move" ? 'in' : '' ?>">
 
                         <div class="col-md-3"><?php echo Render::getInstance()->block("boussole", array(
 
@@ -126,11 +135,11 @@ test
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <div class="panel-title">Sac - [<?php echo $_place ?>]
-                            <button class="btn btn-link pull-right" data-toggle="collapse" data-target="#collapse-sac" aria-expanded="true" aria-controls="collapse-sac">-</button>
+                            <button class="btn btn-link pull-right" data-toggle="collapse" data-target="#collapse-sac" <?php echo (!empty(trim($_place)) && !is_null($_place) ? 'aria-expanded="true"' : '') ?> aria-controls="collapse-sac">-</button>
                         </div>
                     </div>
 
-                    <div id="collapse-sac" class="panel-body collapse" <?php echo (!empty(trim($_place)) && !is_null($_place) ? 'aria-expanded="true"' : '') ?>">
+                    <div id="collapse-sac" class="panel-body collapse <?php echo (!empty(trim($_place)) && !is_null($_place) ? 'in' : '') ?>" <?php //echo (!empty(trim($_place)) && !is_null($_place) ? 'aria-expanded="true"' : '') ?> >
 
                     <div class="col-md-8 ">
                         <?php if($InventaireService instanceof InventaireService) echo $InventaireService->table("inventaire", $sacoche); ?>

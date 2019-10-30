@@ -11,6 +11,10 @@ namespace App\Controller\Admin;
 use App;
 use Core\Render\Render;
 
+/**
+ * Class Default\Controller
+ * @package App\Controller\Admin
+ */
 class DefaultController extends AppController
 {
     /**

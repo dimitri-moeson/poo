@@ -13,7 +13,9 @@ class Redirect extends Url
      */
     private static $_instance;
 
-
+    /**
+     * @return Redirect
+     */
     public static function getInstance( )
     {
         if(is_null(self::$_instance))
@@ -37,7 +39,11 @@ class Redirect extends Url
      */
     static function reload()
     {
-        self::location( self::buildQuery(Get::getInstance()->content('s')) );
+        $page = getenv('REQUEST_URI');
+        $sec = "1";
+        header("Refresh: $sec; url=$page");
+
+        //self::location( self::buildQuery(Get::getInstance()->content()) );
     }
 
     /**
@@ -55,26 +61,30 @@ class Redirect extends Url
     }
 
     /**
-     * lance une redirection depuis une entete web vers l'url passée en paramètre
+     * @api : lance une redirection depuis une entete web vers l'url passée en paramètre
      * @param $url
      */
-    private static function location($url)
+    private static function location($url = null )
     {
-        header("location:".$url);
+        $clean = ($url ?? "/");
+
+        header("location:".$clean );
         die;
     }
+
     /**
-     * @Nom 		:	redirectPage
      * @api  		:	lance une redirection depuis une page html vers l'url passée en paramètre
+     * @Nom 		:	redirectPage
      * @Paramètre 	:	une URL
      * @Retourne 	:	rien
-     * @Créé le 	:	01/01/2010 par Sékou Traoré
-     * @Ex d'appel	:	redirectPage('mon.php');
+     * @Ex d'appel	:	self::redirectPage('mon.php');
      * => redirige vers l'écran du monitoring
      **/
-    function redirectPage($url)
+    private static function redirectPage($url = null )
     {
-        echo('<meta http-equiv="refresh" content="0; URL='.$url.'">');
+        $clean =  ($url ?? "/");
+
+        echo '<meta http-equiv="refresh" content="0; URL='.$clean.'">' ;
         die;
     }
 
@@ -84,13 +94,15 @@ class Redirect extends Url
      */
     public function send()
     {
-        $_ctrl = is_null($this->dom) ? $this->getCtl() : $this->dom.".".$this->getCtl() ;
-        $_act = $this->getAct();
-        //$params = $this->getParams();
-
         if( Path::getInstance()->testActionPath($this->getAct(), $this->getCtl(), $this->getDom()))
         {
-            self::location($this->getPath());
+            $path = $this->getPath();
+
+            if($path != "error...")
+            {
+                self::location($path);
+                self::redirectPage($path);
+            }
         }
 
         return false ;
@@ -101,6 +113,6 @@ class Redirect extends Url
      */
     public function __toString()
     {
-        return $this->send();
+        return $this->getPath($this->getAct(), $this->getCtl(), $this->getDom());
     }
 }

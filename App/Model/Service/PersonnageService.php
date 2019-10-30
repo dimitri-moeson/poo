@@ -266,12 +266,12 @@ class PersonnageService extends Service
 
         $datas = array(
 
-            'name' => $personnage->getName(),
-            'description' => $personnage->getDescription(),
-            'img' => $personnage->getImg(),
-            'status' => $personnage->getStatus(),
-            'type' => $personnage->getType(),
-            'vie' => $personnage->getVie(),
+            'name' => "".$personnage->getName(),
+            'description' => "".$personnage->getDescription(),
+            'img' => $personnage->getImg() ?? "null",
+            'status' => $personnage->getStatus() ?? "normal",
+            'type' => $personnage->getType() ?? "null",
+            'vie' => $personnage->getVie() ?? 100 ,
         );
 
         //Journal::getInstance()->add( print_r($datas,1) );

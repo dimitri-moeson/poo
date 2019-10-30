@@ -53,12 +53,14 @@ class DefaultController extends AppController
             }
         }
 
-        $keywords = $this->Keyword->index($this->page->id);
+        if($this->page) {
+            $keywords = $this->Keyword->index($this->page->id);
 
-        Header::getInstance()->setTitle($this->page->titre);
-        Header::getInstance()->setKeywords(implode(",",$keywords ));
-        Header::getInstance()->setDescription($this->page->description);
+            Header::getInstance()->setTitle($this->page->titre);
+            Header::getInstance()->setKeywords(implode(",", $keywords));
+            Header::getInstance()->setDescription($this->page->description);
 
-        Render::getInstance()->setView("Default/Index");
+            Render::getInstance()->setView("Default/Index");
+        }
     }
 }

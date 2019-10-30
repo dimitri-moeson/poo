@@ -11,9 +11,10 @@ use App\Model\Service\MonstreService;
 use App\Model\Table\Game\Item\ItemTable;
 use Core\HTML\Env\Post;
 use Core\Redirect\Redirect;
+use Core\Render\Render;
 use Core\Session\FlashBuilder;
 
-class ArenaController
+class ArenaController extends AppController
 {
 
     /**
@@ -21,24 +22,27 @@ class ArenaController
      */
     public function __construct()
     {
+        parent::__construct();
         if($this->EquipementService instanceof EquipementService) {
             $this->EquipementService->setPersonnage($this->legolas);
         }
+
+        $this->loadService("Monstre");
     }
     /**
      *
      */
-    public function arene(){
+    public function roaster(){
 
-
-
-        if ( Post::getInstance()->has('defi') && Post::getInstance()->has('challenger'))// debut engagement
+        /**if ( Post::getInstance()->has('defi') && Post::getInstance()->has('challenger'))// debut engagement
         {
 
-        }
+        }**/
 
         if($this->Item instanceof ItemTable ) {
             $this->sacoche = $this->Item->typeListing(array("strum"), ItemMonstreEntity::class);
+
+            Render::getInstance()->setView("Game/Arena/Roaster");
         }
     }
 
@@ -59,7 +63,7 @@ class ArenaController
                 $_SESSION['defi'] = serialize($defi);
                 FlashBuilder::create( "combat lancé","success");
 
-                Redirect::getInstance()->setCtl('fight')->send();
+                Redirect::getInstance()->setCtl('fight')->setDom("game")->setAct("index")->send();
             }
         }
     }

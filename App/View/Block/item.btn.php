@@ -3,10 +3,7 @@
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Service\ItemService;
 use App\Model\Table\Game\Item\ItemTable;
-
-?>
-
-<?php
+use Core\Render\Url;
 
 if ($equip instanceof ItemEntity) {
 
@@ -23,35 +20,39 @@ if ($equip instanceof ItemEntity) {
             }
         }
 
-?>
-    <form method="post" class="item" >
-        <input type="hidden" name="place" value="<?php echo $equip->inventaire_id ?>"/>
-        <input type="hidden" name="repo" value="<?php echo ItemService::getInstance()->getRepo($equip) ?>"/>
-<?php
+
 
         $id_name = "item";
         $action_name = "inspect";
 
         $submit = true;
 
-            if ($block == "arene") {
+        if ($block == "arene") {
             $id_name = "challenger";
             $action_name = "defi";
+            $ctrl_name = "arena";
         }
         elseif ($block == "apprentissage") {
             $id_name = "craft";
-            $action_name = "enseignement";
+            $action_name = "apprentissage";
+            $ctrl_name = "skill";
         }
         elseif ($equip->getType() == "consommable") {
             if ($block == "recette") {
+
                 $id_name = "recette";
                 $action_name = "craft";
+                $ctrl_name = "skill";
+
             } elseif ($block == "inventaire") {
                 $id_name = "item";
                 $action_name = "conso";
+                $ctrl_name = "item";
+
             } elseif ($block == "fabrique") {
                 $id_name = "item";
-                $action_name = "fabrique";
+                $action_name = "craft";
+                $ctrl_name = "skill";
             }
 
             $attributes = array();
@@ -60,15 +61,21 @@ if ($equip instanceof ItemEntity) {
             if ($block == "recette") {
                 $id_name = "recette";
                 $action_name = "craft";
+                $ctrl_name = "skill";
+
             } elseif ($block == "equipement") {
                 $id_name = "retire";
                 $action_name = "change";
+                $ctrl_name = "default";
+
             } elseif ($block == "inventaire") {
                 $id_name = "equip";
                 $action_name = "change";
+                $ctrl_name = "default";
             } elseif ($block == "fabrique") {
                 $id_name = "item";
                 $action_name = "fabrique";
+                $ctrl_name = "skill";
             }
 
             if ($block !== "fabrique" && $block !== "recette" && $block !== "apprentissage") {
@@ -79,13 +86,18 @@ if ($equip instanceof ItemEntity) {
         else {
             $id_name = "composant";
             $action_name = "inspect";
+            $ctrl_name = "item";
             $attributes = array();
         }
 
         if ($block == "apprentissage" && $known) {
             $submit = false;
         }
-?>
+    ?>
+    <form method="post" class="item" action="<?php echo Url::generate("".$action_name,"".$ctrl_name,"game" , "".$equip->id ) ?>" >
+        <input type="hidden" name="place" value="<?php echo $equip->inventaire_id ?>"/>
+        <input type="hidden" name="repo" value="<?php echo ItemService::getInstance()->getRepo($equip) ?>"/>
+
         <input type="hidden" name="<?php echo $action_name ?>" value="<?php echo $equip->type ?>"/>
         <input type="hidden" name="<?php echo $id_name ?>" value="<?php echo $equip->id ?>"/>
 

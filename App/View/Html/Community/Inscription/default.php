@@ -36,12 +36,12 @@ use Core\Session\FlashBuilder; ?>
     <div class="col-sm-4 sidebar">
         <ul class="nav nav-sidebar">
 
-            <li><a href="<?php echo Url::generate("login","Inscription") ?>">Compte  <?php if(isset($player) && $player instanceof UserEntity ) echo $player->login ?></a></li>
-            <li><a href="<?php echo Url::generate("faction","Inscription") ?>">Faction <?php if(isset($legolas->faction) && $legolas instanceof PersonnageEntity ) echo $legolas->faction->name ?></a></li>
-            <li><a href="<?php echo Url::generate("classe","Inscription") ?>">classe <?php if(isset($legolas->classe) && $legolas instanceof PersonnageEntity ) echo $legolas->classe->name ?></a></li>
-            <li><a href="<?php echo Url::generate("race","Inscription") ?>">race <?php if(isset($legolas->race) && $legolas instanceof PersonnageEntity ) echo $legolas->race->name ?></a></li>
-            <li><a href="<?php echo Url::generate("sexe","Inscription") ?>">sexe <?php if(isset($legolas) && $legolas instanceof PersonnageEntity ) echo ( $legolas->sexe == 1 ? "homme" : ($legolas->sexe == 2 ? "femme" : "scion")) ?></a></li>
-            <li><a href="<?php echo Url::generate("personnage","Inscription") ?>">personnage <?php if(isset($legolas) && $legolas instanceof PersonnageEntity ) echo $legolas->name ?></a></li>
+            <li><a href="<?php echo Url::generate("login","Inscription", "community") ?>">Compte  <?php if(isset($player) && $player instanceof UserEntity ) echo $player->login ?></a></li>
+            <li><a href="<?php echo Url::generate("faction","Inscription", "community") ?>">Faction <?php if(isset($legolas->faction) && $legolas instanceof PersonnageEntity ) echo $legolas->faction->name ?></a></li>
+            <li><a href="<?php echo Url::generate("classe","Inscription", "community") ?>">classe <?php if(isset($legolas->classe) && $legolas instanceof PersonnageEntity ) echo $legolas->classe->name ?></a></li>
+            <li><a href="<?php echo Url::generate("race","Inscription", "community") ?>">race <?php if(isset($legolas->race) && $legolas instanceof PersonnageEntity ) echo $legolas->race->name ?></a></li>
+            <li><a href="<?php echo Url::generate("sexe","Inscription", "community") ?>">sexe <?php if(isset($legolas) && $legolas instanceof PersonnageEntity ) echo ( $legolas->sexe == 1 ? "homme" : ($legolas->sexe == 2 ? "femme" : "scion")) ?></a></li>
+            <li><a href="<?php echo Url::generate("personnage","Inscription", "community") ?>">personnage <?php if(isset($legolas) && $legolas instanceof PersonnageEntity ) echo $legolas->name ?></a></li>
 
         </ul>
     </div>

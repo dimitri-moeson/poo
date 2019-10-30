@@ -23,7 +23,9 @@ class Url
      * @param null $dom
      * @return Url/Rewrite/Redirect
      */
-    public static function generate($_act = null , $_ctl = null , $dom = null, $slug = null ){
+    public static function generate($_act = null , $_ctl = null , $dom = null  , $slug = null ){
+
+        //echo "<pre>".print_r( func_get_args(), 1 )."</pre>";
 
         $class = get_called_class();
 
@@ -33,11 +35,11 @@ class Url
         {
             if(!is_null($slug))
             {
-                //$obj->setParams(array($slug));
                 $obj->slg = $slug ;
             }
         }
         return $obj ;
+
     }
 
     /**
@@ -52,27 +54,6 @@ class Url
         $this->ctl = $_ctl ?? Request::getInstance()->getCtrl();
         $this->dom = $dom ?? null ;
         $this->slg = $slug ?? null ;
-    }
-
-    /**
-     * @deprecated
-     * @param null $_act
-     * @param null $_ctl
-     * @param null $dom
-     * @return bool
-     */
-    public function verif($_act = null ,$_ctl = null ,$dom = null )
-    {
-        $act = $_act ?? $this->getAct();
-
-        $ctrl = Path::getInstance()->testControlPath($_ctl,$dom);
-
-        if( Path::getInstance()->testActionPath($_act,$_ctl,$dom))
-        {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -94,44 +75,16 @@ class Url
             $params = $this->getParams();
             $_parameters = (isset($params) && !empty($params) ?  "?".self::buildQuery($params) : '');
 
-            return $this->dom_Construct($dom).
+            $var =  $this->dom_Construct($dom).
                 $this->ctl_Construct($ctl) .
                 $this->slug_Construct($slug) .
                 $this->act_Construct($act) . $_parameters ;
+
+            return trim($var) !== "" ? $var : DIRECTORY_SEPARATOR ;
         }
 
         return "error...";
 
-    }
-
-    /**
-     * @deprecated
-     * @param null $_ctl
-     * @param null $dom
-     * @return string
-     */
-    public function ctrl_Construct($_ctl = null , $dom = null )
-    {
-        $_ctrl =  $_ctl ?? $this->getCtl();
-
-        if($dom)
-        {
-            $ctrl = '\App\Controller\\'.ucfirst($dom).'\\'.ucfirst($_ctrl).'Controller';
-        }
-        elseif($this->getDom() != null )
-        {
-            $ctrl = '\App\Controller\\'.ucfirst($this->getDom()).'\\'.ucfirst($_ctrl).'Controller';
-        }
-        elseif($_ctrl)
-        {
-            $ctrl = '\App\Controller\\'.ucfirst($_ctrl).'Controller';
-        }
-        else//if($_ctrl)
-        {
-            $ctrl = '\App\Controller\\'.ucfirst($_ctrl).'Controller';
-        }
-
-        return $ctrl ;
     }
 
     /**
@@ -145,17 +98,16 @@ class Url
 
     public function dom_Construct($dom= null){
 
-        if(is_null($dom) ){
+        if (is_null($dom)) {
 
             return "";
         }
+        if( Path::getInstance()->testDomPath($dom)) {
 
-        //$_ctrl =  $dom ?? $this->getDom();
+            $ctl = DIRECTORY_SEPARATOR . strtolower($dom);
 
-        $ctl = DIRECTORY_SEPARATOR .strtolower($dom);
-
-        return $ctl ;
-
+            return $ctl;
+        }
     }
 
     /**
@@ -170,9 +122,9 @@ class Url
             return "";
         }
 
-        $ctl = DIRECTORY_SEPARATOR .strtolower($_ctl);
+            $ctl = DIRECTORY_SEPARATOR . strtolower($_ctl);
 
-        return $ctl ;
+            return $ctl;
     }
 
     /**

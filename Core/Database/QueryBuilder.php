@@ -27,6 +27,7 @@ class QueryBuilder
     private $insert = false;
     private $update = false;
     private $delete = false;
+    private $rand = false;
     private $limit ;
     private $offset ;
 
@@ -134,6 +135,13 @@ class QueryBuilder
     {
 
         $this->orders[] = "`$field` $sens";
+
+        return $this;
+    }
+
+    public function rand():self
+    {
+        $this->rand = true ;
 
         return $this;
     }
@@ -256,7 +264,16 @@ class QueryBuilder
             if (!empty($this->jointure)) $join = ' ' . implode(' ', $this->jointure);
             if (!empty($this->conditions)) $where = ' WHERE ' . implode(' AND ', $this->conditions);
             if (!empty($this->groups)) $group = ' GROUP BY ' . implode(', ', $this->groups);
-            if (!empty($this->orders)) $order = ' ORDER BY ' . implode(', ', $this->orders);
+
+            if(!$this->rand)
+            {
+                if (!empty($this->orders)) $order = ' ORDER BY ' . implode(', ', $this->orders);
+            }
+            elseif($this->rand)
+            {
+                $order = ' ORDER BY rand() ' ;
+            }
+
             if (!empty($this->limit)) $limit = ' LIMIT ' . $this->limit ;
             if (!empty($this->offset)) $offset = ' OFFSET ' .$this->offset  ;
         }

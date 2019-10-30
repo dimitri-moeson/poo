@@ -291,7 +291,7 @@ class MysqlDatabase extends Database
         $setter
     }
 ?>";
-            file_put_contents( Config::MODEL_DIR."/Entity/".ucfirst($name)."Entity.php",$content);
+            file_put_contents( ROOT."/generate/".ucfirst($name)."Entity.php",$content);
         }
 
     }

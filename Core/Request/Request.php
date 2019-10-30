@@ -6,6 +6,7 @@ use Core\Controller\Picture;
 use Core\Controller\Stylesheet;
 use Core\Debugger\Debugger;
 use Core\HTML\Env\Get;
+use Core\Path\Path;
 
 /**
  * Class Request
@@ -105,7 +106,7 @@ class Request
          */
         else
         {
-            $this->page =$this->dispatch($page);
+            $this->page = $this->dispatch($page);
         }
     }
 
@@ -158,6 +159,8 @@ class Request
 
             if( isset($ctr_path_a) && class_exists($ctr_path_a))
             {
+                Debugger::getInstance()->app("letter","a");
+                Debugger::getInstance()->app("ctr_path",$ctr_path_a);
                 $this->ctrl_name = $ctr_path_a ;
                 $this->dom = $page[0] ?? null;
                 $this->ctrl = $page[1] ?? "default";
@@ -167,19 +170,22 @@ class Request
                     $this->slug = $page[2] ?? null;
                     $this->action = $page[3] ?? "index";
                 }
-                elseif( isset($page[2]) && method_exists($ctr_path_a, $page[2]))
+            elseif( isset($page[2]) && method_exists($ctr_path_a, $page[2]))
                 {
                     $this->slug = null;
                     $this->action = $page[2] ?? "index";
                 }
-                else
+            else
                 {
                                 $this->slug =  $page[2] ?? null;
                     $page[3] =  $this->action = "index";
                 }
+
             }
         elseif( isset($ctr_path_b) && class_exists($ctr_path_b))
             {
+                Debugger::getInstance()->app("letter","b");
+                Debugger::getInstance()->app("ctr_path",$ctr_path_b);
                 $this->ctrl_name = $ctr_path_b ;
                 $this->dom = null ;
                 $this->ctrl = $page[0] ?? "default";
@@ -189,27 +195,42 @@ class Request
                     $this->slug = $page[1] ?? null;
                     $this->action = $page[2] ?? "index";
                 }
-                elseif(  isset($page[1]) && method_exists($ctr_path_b, $page[1]))
+            elseif( isset($page[1]) && method_exists($ctr_path_b, $page[1]))
                 {
                     $this->slug = null;
                     $this->action = $page[1] ?? "index";
                 }
-                else
+            else
                 {
                     $this->slug = $page[1] ?? null;
                     $this->action = $page[2] = "index";
                 }
+
             }
         elseif( isset($ctr_path_c) && class_exists($ctr_path_c))
             {
+                Debugger::getInstance()->app("letter","c");
+                Debugger::getInstance()->app("ctr_path",$ctr_path_c);
                 $this->ctrl_name = $ctr_path_c;
                 $this->dom = $page[0] ?? null;
                 $this->ctrl = "default";
-                $this->slug = null;
-                $this->action = $page[1] = "index";
+
+                if(  isset($page[1]) && method_exists($ctr_path_c, $page[1]))
+                {
+                    $this->slug = null;
+                    $this->action = $page[1] ?? "index";
+                }
+            else
+                {
+                    $this->slug = $page[1] ?? null;
+                    $this->action = "index";
+                }
+
             }
         elseif( isset($ctr_path_d) && class_exists($ctr_path_d))
             {
+                Debugger::getInstance()->app("letter","d");
+                Debugger::getInstance()->app("ctr_path",$ctr_path_d);
                 $this->ctrl_name = $ctr_path_d;
                 $this->dom = null;
                 $this->ctrl = "default";
@@ -218,6 +239,7 @@ class Request
             }
         else
             {
+                Debugger::getInstance()->app("letter","e");
                 $this->ctrl_name = '\App\Controller\DefaultController';
                 $this->dom = null ;
                 $this->ctrl = "default";
@@ -236,56 +258,6 @@ class Request
     {
         $this->slug = $slug;
         return $this;
-    }
-
-    private function verif_request($path,$page){
-
-        if( isset($path) && class_exists($path))
-        {
-            //echo "a dispatch<br/>";
-            $this->ctrl_name = $path ;
-            $this->dom = $page[0] ?? null;
-            $this->ctrl = $page[1] ?? "default";
-
-            if( isset($page[3]) && method_exists($path, $page[3]))
-            {
-                //echo "call3<br/>";
-                $this->slug = $page[2] ?? null;
-                $this->action = $page[3] ?? "index";
-            }
-            elseif( isset($page[2]) && method_exists($path, $page[2]))
-            {
-                //echo "call2<br/>";
-                $this->slug = null;
-                $this->action = $page[2] ?? "index";
-            }
-            elseif(  isset($page[1]) && method_exists($path, $page[1]))
-            {
-                //echo "call1<br/>";
-                $this->slug = null;
-                $this->action = $page[1] ?? "index";
-            }
-            else
-            {
-                //echo "call0<br/>";
-                $this->slug = null;
-                $this->action = "index";
-            }
-        }
-
-        return false ;
-
-    }
-
-    private function reader($path,$ctrl="default",$action="index",$slug=null,$dom=null){
-
-        echo "default dispatch<br/>";
-        $this->ctrl_name    = $path;
-        $this->dom          = $dom ;
-        $this->ctrl         = $ctrl;
-        $this->slug         = $slug;
-        $this->action       = $action;
-
     }
 
     /**

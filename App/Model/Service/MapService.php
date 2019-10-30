@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Model\Service;
-
 
 use App;
 use App\Model\Entity\Game\Item\ItemEntity;
@@ -87,7 +85,7 @@ class MapService extends Service
             //Debugger::getInstance()->add($datas);
 
             if ($this->InventaireBase instanceof InventaireTable) {
-                /*if (!isset($item->val) || !is_null($item->val) || $item->val == 0 || empty($item->val))
+                /**if (!isset($item->val) || !is_null($item->val) || $item->val == 0 || empty($item->val))
                     $this->InventaireBase->archive($item->inventaire_id);
                 else*/
                 if (!is_null($item->inventaire_id))
@@ -163,8 +161,10 @@ class MapService extends Service
         {
             if (isset($place->name))
             {
+                $icon = (trim($place->img) !=='' ? "<i class='" . $place->img . "'></i>" : "<o") ;
+
                 return "<a title='" . $place->type . "/" . $place->structure . "/" . $place->name . "' href='".$link."'>" .
-                    "<i class='" . $place->img . "'>o</i>" .
+                    $icon .
                     "</a>";
             }
             else {
@@ -187,6 +187,8 @@ class MapService extends Service
                 }
             }
 
+            $icon = (trim($place->img) !=='' ? "<i class='" . $place->img . "'></i>" : "o") ;
+
             if($info)
             {
                 if ($place->structure == 'mairie'){
@@ -194,34 +196,35 @@ class MapService extends Service
                     $link = Url::generate("quest", "test", null , $place->id );// "?p=test.quest&id=".$place->i_id;
 
                 }
-                if ($place->structure == 'ecole'){
+                elseif ($place->structure == 'ecole'){
 
-                    $link =  Url::generate("apprentissage", "test", null , $place->id );// "?p=test.apprentissage&id=".$place->i_id;
-
-                }
-                if ($place->structure == 'forge'){
-
-                    $link = Url::generate("craft", "test", null , $place->id );// "?p=test.craft&id=".$place->i_id;
+                    $link =  Url::generate("apprentissage", "place", "game" , $place->id );// "?p=test.apprentissage&id=".$place->i_id;
 
                 }
-                if ($place->structure == 'arene'){
+                elseif ($place->structure == 'forge'){
 
-                    $link = Url::generate("arene", "test", null , $place->id );//"?p=test.arene&id=".$place->i_id;
+                    $link = Url::generate("craft", "place", "game" , $place->id );// "?p=test.craft&id=".$place->i_id;
 
                 }
-                if ($place->structure == 'quest'){
+                elseif ($place->structure == 'arene'){
+
+                    $link = Url::generate("roaster", "arena", "game" , $place->id );//"?p=test.arene&id=".$place->i_id;
+
+                }
+                elseif ($place->structure == 'quest'){
 
                     /** @var possibilité d'avoir plusieurs quetes au meme emplacement */
                     $link = Url::generate("quest", "test", null , $place->id );//"?p=test.quest&id=".$place->i_id;
 
                 }
+                else {
+                    $link = "#".$place->structure;
+                }
 
-                //$link = Url::generate("$action", "test", null , $place->id ); //"?p=test.quest&id=".$place->i_id;
-
-                return "<a href='".$link."' title='" . $place->type ."/" . $place->structure . "'><i class='" . $place->img . "'></i></a>";
+                return "<a href='".$link."' title='" . $place->type ."/" . $place->structure . "'>$icon</a>";
             }
             else {
-                return "<a title='" . $place->type . "/" . $place->structure . "/" . $place->name . "'><i class='" . $place->img . "'></i></a>";
+                return "<a title='" . $place->type . "/" . $place->structure . "/" . $place->name . "'>$icon</a>";
             }
         }
         else

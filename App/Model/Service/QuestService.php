@@ -44,7 +44,7 @@ class QuestService extends Service
 
         if( $this->InventaireBase instanceof InventaireTable ) {
 
-            $sac = $this->InventaireBase->itemListing($perso->getId(), self::RUB_PERSO, self::TYPE_QUEST, null , ItemQuestEntity::class);
+            $sac = $this->InventaireBase->itemListing($perso->id, self::RUB_PERSO, self::TYPE_QUEST, null , ItemQuestEntity::class);
 
             foreach ($sac as $quest) {
 

@@ -117,7 +117,7 @@ $slg = Request::getInstance()->getSlug(); // Get::getInstance()->val('slug');
             </ul>
 
             <?php if($auth->logged()) {?>
-                <form method="post" action="<?php echo Url::generate("logout","user","community") ?>" class="navbar-form navbar-right">
+                <form method="post" action="<?php echo Url::generate("logout","user","community","x" ) ?>" class="navbar-form navbar-right">
                     <a href="<?php echo Url::generate("index","default","admin") ?>" class="btn btn-success"><i class="fa fa-cog"></i>Parametres</a>
                     <button type="submit" name="logout" value="logout" class="btn btn-success"><span class="glyphicon glyphicon-off"></span>Sign out</button>
                 </form>
