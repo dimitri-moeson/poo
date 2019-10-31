@@ -34,7 +34,7 @@ class PlayerController extends AppController
 
         $this->loadModel("User");
 
-        $this->auth = new DatabaseAuth(App::getInstance()->getDb());
+        //$this->auth = new DatabaseAuth(App::getInstance()->getDb());
     }
 
     /**

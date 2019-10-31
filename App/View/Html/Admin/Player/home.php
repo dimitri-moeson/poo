@@ -1,6 +1,13 @@
-<?php use Core\Auth\CryptAuth;
+<?php
+
+use Core\Auth\CryptAuth;
 use Core\Render\Render;
-use Core\Render\Url; ?>
+use Core\Render\Url;
+use Core\Auth\DatabaseAuth;
+
+$auth = new DatabaseAuth(App::getInstance()->getDb());
+
+?>
 
         <table id="item-table" class="table">
 

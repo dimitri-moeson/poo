@@ -2,7 +2,8 @@
 #debug-bar {
 
     position: fixed;
-    bottom:0;
+    bottom:30px;
+    right:0;
 }
 
 .debug {
@@ -12,6 +13,7 @@
     /*height:200px;*/
     overflow: auto;
     position: fixed;
-    bottom:30px;
+    bottom:60px;
+    right:0;
     display:none;
 }

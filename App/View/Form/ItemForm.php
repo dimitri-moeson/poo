@@ -120,6 +120,25 @@ class ItemForm
         return $cnt ;
     }
 
+    static function checkbox_img($selected , $type = null ){
+
+        $cnt = "<label>Icone</label><br/>";
+
+        foreach (self::icon_list as $group => $icons ){
+
+            $cnt .= "<fieldset><legend>$group</legend>";
+
+            foreach ( $icons as $class => $icon) {
+
+                $cnt .= "<div class='col-sm-3'><input  ".($class===$selected ? "checked" : "" )." type='radio' name='img' value='$class' />&nbsp;<i class='$class'></i>&nbsp;$icon</div>";
+            }
+
+            $cnt .= "</fieldset>";
+        }
+
+        return $cnt ;
+    }
+
     const icon_list = array(
 
         "amulette" => array(
@@ -193,6 +212,8 @@ class ItemForm
             "fa fa-home"  =>  "maison",
             "ra ra-tower"  =>"tour" ,
             "fa fa-industry" => "industry",
+            "ra ra-guarded-tower" => "guarded-tower",
+            "ra ra-heart-tower" => "heart-tower",
         ),
         "competence" => array(
 
@@ -231,6 +252,16 @@ class ItemForm
 
             "fa fa-sign-language" => "language",
             "fas fa-mitten" => "mitten",
+
+            "glyphicon glyphicon-thumbs-up" => "thumbs-up",
+            "glyphicon glyphicon-thumbs-down" => "thumbs-down",
+            "glyphicon glyphicon-hand-right" => "hand-right",
+            "glyphicon glyphicon-hand-left" => "hand-left",
+            "glyphicon glyphicon-hand-up" => "hand-up",
+            "glyphicon glyphicon-hand-down" => "hand-down",
+
+            "ra ra-hand" => "hand",
+            "ra ra-hand-emblem" => "hand-emblem",
         ),
         "metaux" => array(
 
@@ -260,6 +291,10 @@ class ItemForm
             "ra ra-trefoil-lily" => "trefoil-lily",
             "ra ra-zigzag-leaf" => "zigzag-leaf",
 
+            "glyphicon glyphicon-leaf" => "leaf",
+            "glyphicon glyphicon-tree-conifer" => "tree-conifer",
+            "glyphicon glyphicon-tree-deciduous" => "tree-deciduous",
+
         ),
         "statut" => array(
 
@@ -285,6 +320,10 @@ class ItemForm
             "ra ra-knight-helmet" => "knight-helmet",
             "ra ra-helmet" => "helmet",
             "ra ra-horns" => "horns",
+            "ra ra-crown" => "crown",
+            "ra ra-crown-of-thorns" => "crown-of-thorns",
+            "ra ra-queen-crown" => "queen-crown",
+            "ra ra-cracked-helm" => "cracked-helm",
         ),
         "torse" => array(
 
@@ -319,17 +358,27 @@ class ItemForm
             "ra ra-snail" => "snail",
             "ra ra-snake" => "snake",
             "ra ra-spider-face" => "spider-face",
-            "ra ra-spiked-tentacle" => "spiked-tentacle",
             "ra ra-spiral-shell" => "spiral-shell",
-            "ra ra-suckered-tentacle" => "suckered-tentacle",
-            "ra ra-tentacle" => "tentacle",
             "ra ra-two-dragons" => "two-dragons",
             "ra ra-venomous-snake" => "venomous-snake",
             "ra ra-wyvern" => "wyvern",
             "ra ra-wolf-head" => "wolf-head",
             "ra ra-wolf-howl" => "wolf-howl",
+        ),
+        "tentacle" => array(
+            "ra ra-spiked-tentacle" => "spiked",
+            "ra ra-suckered-tentacle" => "suckered",
+            "ra ra-tentacle" => "default",
 
         ),
+        "key" => array(
+
+            "ra ra-key" => "key",
+            "ra ra-key-basic" => "key-basic",
+            "ra ra-three-keys" => "three-keys",
+
+        ),
+
         "Sac" => array(
 
             "ra ra-ammo-bag" => "ammo-bag",
@@ -339,14 +388,10 @@ class ItemForm
             "ra ra-candle" => "candle",
             "ra ra-castle-flag" => "castle-flag",
             "ra ra-compass" => "compass",
-            "ra ra-crown" => "crown",
-            "ra ra-crown-of-thorns" => "crown-of-thorns",
             "ra ra-horseshoe" => "horseshoe",
             "ra ra-hourglass" => "hourglass",
             "ra ra-jigsaw-piece" => "jigsaw-piece",
             "ra ra-kettlebell" => "kettlebell",
-            "ra ra-key" => "key",
-            "ra ra-key-basic" => "key-basic",
             "ra ra-lantern-flame" => "lantern-flame",
             "ra ra-wrench" => "wrench",
             "ra ra-lit-candelabra" => "lit-candelabra",
@@ -374,16 +419,16 @@ class ItemForm
             "ra ra-spray-can" => "spray",
             "ra ra-stopwatch" => "stopwatch",
             "ra ra-syringe" => "syringe",
-            "ra ra-three-keys" => "three-keys",
             "ra ra-torch" => "torch",
             "ra ra-trophy" => "trophy",
             "ra ra-wooden-sign" => "wooden-sign",
 
-        ),
-        "cards-and-dice" => array(
-
             "ra ra-bottom-right" => "bottom-right",
             "ra ra-cancel" => "cancel",
+
+        ),
+        "cards" => array(
+
             "ra ra-clovers" => "clovers",
             "ra ra-clovers-card" => "clovers-card",
             "ra ra-diamonds" => "diamonds",
@@ -393,21 +438,41 @@ class ItemForm
             "ra ra-spades" => "spades",
             "ra ra-spades-card" => "spades-card",
             "ra ra-suits" => "suits",
-            "ra ra-chessboard" => "chessboard",
-            "ra ra-dice-one" => "dice-one",
-            "ra ra-dice-two" => "dice-two",
-            "ra ra-dice-three" => "dice-three",
-            "ra ra-dice-four" => "dice-four",
-            "ra ra-dice-five" => "dice-five",
-            "ra ra-dice-six" => "dice-six",
-            "ra ra-perspective-dice-one" => "perspective-dice-one",
-            "ra ra-perspective-dice-two" => "perspective-dice-two",
-            "ra ra-perspective-dice-three" => "perspective-dice-three",
-            "ra ra-perspective-dice-four" => "perspective-dice-four",
-            "ra ra-perspective-dice-five" => "perspective-dice-five",
-            "ra ra-perspective-dice-six" => "perspective-dice-six",
-            "ra ra-perspective-dice-random" => "perspective-dice-random",
         ),
+
+        "dice" => array(
+
+            "ra ra-dice-one" => "one",
+            "ra ra-dice-two" => "two",
+            "ra ra-dice-three" => "three",
+            "ra ra-dice-four" => "four",
+            "ra ra-dice-five" => "five",
+            "ra ra-dice-six" => "six"
+        ),
+
+        "perspective-dice" => array(
+
+            "ra ra-perspective-dice-one" => "one",
+            "ra ra-perspective-dice-two" => "two",
+            "ra ra-perspective-dice-three" => "three",
+            "ra ra-perspective-dice-four" => "four",
+            "ra ra-perspective-dice-five" => "five",
+            "ra ra-perspective-dice-six" => "six",
+            "ra ra-perspective-dice-random" => "random",
+        ),
+
+        "chess" => array(
+
+            "ra ra-chessboard" => "chessboard",
+            "glyphicon glyphicon-king" => "king",
+            "glyphicon glyphicon-queen" => "queen",
+            "glyphicon glyphicon-pawn" => "pawn",
+            "glyphicon glyphicon-bishop" => "bishop",
+            "glyphicon glyphicon-knight" => "knight",
+            "glyphicon glyphicon-tower" => "tower",
+
+        ),
+
         "nourriture" => array(
 
             "ra ra-acorn" => "acorn",
@@ -429,7 +494,17 @@ class ItemForm
             "ra ra-roast-chicken" => "roast-chicken",
             "ra ra-toast" => "toast",
 
+            "glyphicon glyphicon-ice-lolly" => "ice-lolly",
+            "glyphicon glyphicon-ice-lolly-tasted" => "ice-lolly-tasted",
+            "glyphicon glyphicon-cutlery" => "cutlery",
+            "glyphicon glyphicon-baby-formula" => "baby-formula",
+            "glyphicon glyphicon-apple" => "apple",
+            "glyphicon glyphicon-oil" => "oil",
+            "glyphicon glyphicon-grain" => "grain",
+            "glyphicon glyphicon-menu-hamburger" => "menu-hamburger",
+
         ),
+
         "astrology" => array(
 
             "ra ra-aquarius" => "aquarius",
@@ -467,6 +542,17 @@ class ItemForm
             "ra ra-poison-cloud" => "poison-cloud",
             "ra ra-tombstone" => "tombstone",
         ),
+        "level" => array(
+
+            "ra ra-level-two" => "two",
+            "ra ra-level-three" => "three",
+            "ra ra-level-four" => "four",
+            "glyphicon glyphicon-level-up" => "up",
+            "ra ra-level-two-advanced" => "two-advanced",
+            "ra ra-level-three-advanced" => "three-advanced",
+            "ra ra-level-four-advanced" => "four-advanced",
+
+        ),
         "magie" => array(
 
             "ra ra-brain-freeze" => "brain-freeze",
@@ -502,17 +588,10 @@ class ItemForm
             "ra ra-health-decrease" => "health-decrease",
             "ra ra-health-increase" => "health-increase",
             "ra ra-hospital-cross" => "hospital-cross",
-            "ra ra-hot-surface" => "hot-surface",
             "ra ra-hydra-shot" => "hydra-shot",
             "ra ra-incense" => "incense",
             "ra ra-kaleidoscope" => "kaleidoscope",
-            "ra ra-lava" => "lava",
-            "ra ra-level-four" => "level-four",
-            "ra ra-level-four-advanced" => "level-four-advanced",
-            "ra ra-level-three" => "level-three",
-            "ra ra-level-three-advanced" => "level-three-advanced",
-            "ra ra-level-two" => "level-two",
-            "ra ra-level-two-advanced" => "level-two-advanced",
+
             "ra ra-lightning" => "lightning",
             "ra ra-lightning-bolt" => "lightning-bolt",
             "ra ra-lightning-storm" => "lightning-storm",
@@ -526,6 +605,11 @@ class ItemForm
             "ra ra-triforce" => "triforce",
             "ra ra-two-hearts" => "two-hearts",
             "ra ra-water-drop" => "water-drop",
+        ),
+        "landing" => array(
+
+            "ra ra-hot-surface" => "hot-surface",
+            "ra ra-lava" => "lava",
         ),
         "weapons-and-armor" => array(
 
@@ -562,7 +646,6 @@ class ItemForm
             "ra ra-circular-saw" => "circular-saw",
             "ra ra-circular-shield" => "circular-shield",
             "ra ra-cluster-bomb" => "cluster-bomb",
-            "ra ra-cracked-helm" => "cracked-helm",
             "ra ra-cracked-shield" => "cracked-shield",
             "ra ra-croc-sword" => "croc-sword",
             "ra ra-crossbow" => "crossbow",
@@ -600,14 +683,12 @@ class ItemForm
             "ra ra-hammer-drop" => "hammer-drop",
             "ra ra-hand-saw" => "hand-saw",
             "ra ra-harpoon-trident" => "harpoon-trident",
-            "ra ra-helmet" => "helmet",
             "ra ra-horns" => "horns",
             "ra ra-heavy-shield" => "heavy-shield",
             "ra ra-implosion" => "implosion",
             "ra ra-jetpack" => "jetpack",
             "ra ra-kitchen-knives" => "kitchen-knives",
             "ra ra-knife" => "knife",
-            "ra ra-knight-helmet" => "knight-helmet",
             "ra ra-kunai" => "kunai",
             "ra ra-large-hammer" => "large-hammer",
             "ra ra-laser-blast" => "laser-blast",
@@ -673,10 +754,6 @@ class ItemForm
             "ra ra-forward" => "forward",
             "ra ra-glass-heart" => "glass-heart",
             "ra ra-groundbreaker" => "groundbreaker",
-            "ra ra-guarded-tower" => "guarded-tower",
-            "ra ra-hand" => "hand",
-            "ra ra-hand-emblem" => "hand-emblem",
-            "ra ra-heart-tower" => "heart-tower",
             "ra ra-heavy-fall" => "heavy-fall",
             "ra ra-help" => "help",
             "ra ra-hive-emblem" => "hive-emblem",
@@ -700,7 +777,6 @@ class ItemForm
             "ra ra-pawprint" => "pawprint",
             "ra ra-podium" => "podium",
             "ra ra-pyramids" => "pyramids",
-            "ra ra-queen-crown" => "queen-crown",
             "ra ra-radial-balance" => "radial-balance",
             "ra ra-reverse" => "reverse",
             "ra ra-scroll-unfurled" => "scroll-unfurled",
@@ -716,19 +792,210 @@ class ItemForm
             "ra ra-targeted" => "targeted",
             "ra ra-tic-tac-toe" => "tic-tac-toe",
             "ra ra-tooth" => "tooth",
-            "ra ra-tower" => "tower",
             "ra ra-trail" => "trail",
             "ra ra-turd" => "turd",
             "ra ra-uncertainty" => "uncertainty",
             "ra ra-underhand" => "underhand",
             "ra ra-x-mark" => "x-mark",
+
         ),
+
+        "record-format" => array(
+
+            "glyphicon glyphicon-sd-video" => "sd-video",
+            "glyphicon glyphicon-hd-video" => "hd-video",
+            "glyphicon glyphicon-subtitles" => "subtitles",
+            "glyphicon glyphicon-sound-stereo" => "sound-stereo",
+            "glyphicon glyphicon-sound-dolby" => "sound-dolby",
+            "glyphicon glyphicon-sound-5-1" => "sound-5-1",
+            "glyphicon glyphicon-sound-6-1" => "sound-6-1",
+            "glyphicon glyphicon-sound-7-1" => "sound-7-1",
+
+
+        ),
+
+        "record-player" => array(
+
+            "glyphicon glyphicon-step-backward" => "step-backward",
+            "glyphicon glyphicon-fast-backward" => "fast-backward",
+            "glyphicon glyphicon-backward" => "backward",
+            "glyphicon glyphicon-play" => "play",
+            "glyphicon glyphicon-pause" => "pause",
+            "glyphicon glyphicon-stop" => "stop",
+            "glyphicon glyphicon-forward" => "forward",
+            "glyphicon glyphicon-fast-forward" => "fast-forward",
+            "glyphicon glyphicon-step-forward" => "step-forward",
+            "glyphicon glyphicon-eject" => "eject",
+
+        ),
+
+        "Arrow" => array(
+
+            "glyphicon glyphicon-arrow-left" => "left",
+            "glyphicon glyphicon-arrow-right" => "right",
+            "glyphicon glyphicon-arrow-up" => "up",
+            "glyphicon glyphicon-arrow-down" => "down",
+
+            "glyphicon glyphicon-circle-arrow-left" => "circle-left",
+            "glyphicon glyphicon-circle-arrow-right" => "circle-right",
+            "glyphicon glyphicon-circle-arrow-up" => "circle-up",
+            "glyphicon glyphicon-circle-arrow-down" => "circle-down",
+
+            "glyphicon glyphicon-chevron-left" => "chevron-left",
+            "glyphicon glyphicon-chevron-right" => "chevron-right",
+            "glyphicon glyphicon-chevron-up" => "chevron-up",
+            "glyphicon glyphicon-chevron-down" => "chevron-down",
+
+            "glyphicon glyphicon-triangle-left" => "triangle-left",
+            "glyphicon glyphicon-triangle-right" => "triangle-right",
+            "glyphicon glyphicon-triangle-top" => "triangle-top",
+            "glyphicon glyphicon-triangle-bottom" => "triangle-bottom",
+
+            "glyphicon glyphicon-menu-left" => "menu-left",
+            "glyphicon glyphicon-menu-right" => "menu-right",
+            "glyphicon glyphicon-menu-up" => "menu-up",
+            "glyphicon glyphicon-menu-down" => "menu-down",
+
+        ),
+
+        "Floppy" => array(
+
+            "glyphicon glyphicon-floppy-disk" => "disk",
+            "glyphicon glyphicon-floppy-saved" => "saved",
+            "glyphicon glyphicon-floppy-save" => "save",
+            "glyphicon glyphicon-floppy-open" => "open",
+
+            "glyphicon glyphicon-record" => "record",
+            "glyphicon glyphicon-saved" => "saved",
+            "glyphicon glyphicon-save" => "save",
+            "glyphicon glyphicon-open" => "open",
+
+            "glyphicon glyphicon-copy" => "copy",
+            "glyphicon glyphicon-paste" => "paste",
+            "glyphicon glyphicon-save-file" => "save",
+            "glyphicon glyphicon-open-file" => "open",
+
+            "glyphicon glyphicon-floppy-remove" => "remove",
+            "glyphicon glyphicon-import" => "import",
+            "glyphicon glyphicon-export" => "export",
+            "glyphicon glyphicon-send" => "send",
+        ),
+
+        "Sort" => array(
+
+            "glyphicon glyphicon-sort-by-alphabet" => "alphabet",
+            "glyphicon glyphicon-sort-by-order" => "order",
+            "glyphicon glyphicon-sort-by-attributes" => "attributes",
+            "glyphicon glyphicon-sort" => "default",
+
+            "glyphicon glyphicon-sort-by-alphabet-alt" => "alphabet-alt",
+            "glyphicon glyphicon-sort-by-order-alt" => "order-alt",
+            "glyphicon glyphicon-sort-by-attributes-alt" => "attributes-alt",
+
+        ),
+
+        "editor" => array(
+
+            "glyphicon glyphicon-font" => "font",
+            "glyphicon glyphicon-bold" => "bold",
+            "glyphicon glyphicon-italic" => "italic",
+
+        ),
+
+        "align" => array(
+
+            "glyphicon glyphicon-align-left" => "left",
+            "glyphicon glyphicon-align-center" => "center",
+            "glyphicon glyphicon-align-right" => "right",
+            "glyphicon glyphicon-align-justify" => "justify",
+
+        ),
+
+        "text" => array(
+
+            "glyphicon glyphicon-text-height" => "text-height",
+            "glyphicon glyphicon-text-width" => "text-width",
+            "glyphicon glyphicon-text-size" => "text-size",
+            "glyphicon glyphicon-text-color" => "text-color",
+            "glyphicon glyphicon-text-background" => "text-background",
+
+        ),
+
+        "money" => array(
+
+            "glyphicon glyphicon-euro" => "euro",
+            "glyphicon glyphicon-eur" => "eur",
+            "glyphicon glyphicon-bitcoin" => "bitcoin",
+            "glyphicon glyphicon-btc" => "btc",
+            "glyphicon glyphicon-xbt" => "xbt",
+            "glyphicon glyphicon-yen" => "yen",
+            "glyphicon glyphicon-jpy" => "jpy",
+            "glyphicon glyphicon-ruble" => "ruble",
+            "glyphicon glyphicon-rub" => "rub",
+            "glyphicon glyphicon-usd" => "usd",
+            "glyphicon glyphicon-gbp" => "gbp",
+        ),
+
+        "object-align" => array(
+
+            "glyphicon glyphicon-object-align-top" => "top",
+            "glyphicon glyphicon-object-align-bottom" => "bottom",
+            "glyphicon glyphicon-object-align-horizontal" => "horizontal",
+            "glyphicon glyphicon-object-align-left" => "left",
+            "glyphicon glyphicon-object-align-vertical" => "vertical",
+            "glyphicon glyphicon-object-align-right" => "right",
+        ),
+
+        "sign" => array(
+
+            "glyphicon glyphicon-plus-sign" => "plus",
+            "glyphicon glyphicon-minus-sign" => "minus",
+            "glyphicon glyphicon-remove-sign" => "remove",
+            "glyphicon glyphicon-ok-sign" => "ok",
+            "glyphicon glyphicon-question-sign" => "question",
+            "glyphicon glyphicon-info-sign" => "info",
+            "glyphicon glyphicon-exclamation-sign" => "exclamation",
+            "glyphicon glyphicon-warning-sign" => "warning",
+
+        ),
+
+        "volume" => array(
+
+            "glyphicon glyphicon-headphones" => "headphones",
+            "glyphicon glyphicon-volume-off" => "off",
+            "glyphicon glyphicon-volume-down" => "down",
+            "glyphicon glyphicon-volume-up" => "up",
+        ),
+
+        "star" => array(
+
+            "glyphicon glyphicon-star" => "star",
+            "glyphicon glyphicon-star-empty" => "star-empty",
+        ),
+
+        "th" => array(
+
+            "glyphicon glyphicon-th-large" => "th-large",
+            "glyphicon glyphicon-th" => "th",
+            "glyphicon glyphicon-th-list" => "th-list",
+        ),
+
+        "zoom" => array(
+
+            "glyphicon glyphicon-zoom-in" => "zoom-in",
+            "glyphicon glyphicon-zoom-out" => "zoom-out",
+        ),
+
+        "log" => array(
+
+            "glyphicon glyphicon-log-in" => "log-in",
+            "glyphicon glyphicon-log-out" => "log-out",
+        ),
+
         "glyphicon" => array(
 
             "glyphicon glyphicon-asterisk" => "asterisk",
             "glyphicon glyphicon-plus" => "plus",
-            "glyphicon glyphicon-euro" => "euro",
-            "glyphicon glyphicon-eur" => "eur",
             "glyphicon glyphicon-minus" => "minus",
             "glyphicon glyphicon-cloud" => "cloud",
             "glyphicon glyphicon-envelope" => "envelope",
@@ -737,17 +1004,10 @@ class ItemForm
             "glyphicon glyphicon-music" => "music",
             "glyphicon glyphicon-search" => "search",
             "glyphicon glyphicon-heart" => "heart",
-            "glyphicon glyphicon-star" => "star",
-            "glyphicon glyphicon-star-empty" => "star-empty",
             "glyphicon glyphicon-user" => "user",
             "glyphicon glyphicon-film" => "film",
-            "glyphicon glyphicon-th-large" => "th-large",
-            "glyphicon glyphicon-th" => "th",
-            "glyphicon glyphicon-th-list" => "th-list",
             "glyphicon glyphicon-ok" => "ok",
             "glyphicon glyphicon-remove" => "remove",
-            "glyphicon glyphicon-zoom-in" => "zoom-in",
-            "glyphicon glyphicon-zoom-out" => "zoom-out",
             "glyphicon glyphicon-off" => "off",
             "glyphicon glyphicon-signal" => "signal",
             "glyphicon glyphicon-cog" => "cog",
@@ -766,10 +1026,6 @@ class ItemForm
             "glyphicon glyphicon-list-alt" => "list-alt",
             "glyphicon glyphicon-lock" => "lock",
             "glyphicon glyphicon-flag" => "flag",
-            "glyphicon glyphicon-headphones" => "headphones",
-            "glyphicon glyphicon-volume-off" => "volume-off",
-            "glyphicon glyphicon-volume-down" => "volume-down",
-            "glyphicon glyphicon-volume-up" => "volume-up",
             "glyphicon glyphicon-qrcode" => "qrcode",
             "glyphicon glyphicon-barcode" => "barcode",
             "glyphicon glyphicon-tag" => "tag",
@@ -778,15 +1034,6 @@ class ItemForm
             "glyphicon glyphicon-bookmark" => "bookmark",
             "glyphicon glyphicon-print" => "print",
             "glyphicon glyphicon-camera" => "camera",
-            "glyphicon glyphicon-font" => "font",
-            "glyphicon glyphicon-bold" => "bold",
-            "glyphicon glyphicon-italic" => "italic",
-            "glyphicon glyphicon-text-height" => "text-height",
-            "glyphicon glyphicon-text-width" => "text-width",
-            "glyphicon glyphicon-align-left" => "align-left",
-            "glyphicon glyphicon-align-center" => "align-center",
-            "glyphicon glyphicon-align-right" => "align-right",
-            "glyphicon glyphicon-align-justify" => "align-justify",
             "glyphicon glyphicon-list" => "list",
             "glyphicon glyphicon-indent-left" => "indent-left",
             "glyphicon glyphicon-indent-right" => "indent-right",
@@ -799,49 +1046,23 @@ class ItemForm
             "glyphicon glyphicon-share" => "share",
             "glyphicon glyphicon-check" => "check",
             "glyphicon glyphicon-move" => "move",
-            "glyphicon glyphicon-step-backward" => "step-backward",
-            "glyphicon glyphicon-fast-backward" => "fast-backward",
-            "glyphicon glyphicon-backward" => "backward",
-            "glyphicon glyphicon-play" => "play",
-            "glyphicon glyphicon-pause" => "pause",
-            "glyphicon glyphicon-stop" => "stop",
-            "glyphicon glyphicon-forward" => "forward",
-            "glyphicon glyphicon-fast-forward" => "fast-forward",
-            "glyphicon glyphicon-step-forward" => "step-forward",
-            "glyphicon glyphicon-eject" => "eject",
-            "glyphicon glyphicon-chevron-left" => "chevron-left",
-            "glyphicon glyphicon-chevron-right" => "chevron-right",
-            "glyphicon glyphicon-plus-sign" => "plus-sign",
-            "glyphicon glyphicon-minus-sign" => "minus-sign",
-            "glyphicon glyphicon-remove-sign" => "remove-sign",
-            "glyphicon glyphicon-ok-sign" => "ok-sign",
-            "glyphicon glyphicon-question-sign" => "question-sign",
-            "glyphicon glyphicon-info-sign" => "info-sign",
             "glyphicon glyphicon-screenshot" => "screenshot",
             "glyphicon glyphicon-remove-circle" => "remove-circle",
             "glyphicon glyphicon-ok-circle" => "ok-circle",
             "glyphicon glyphicon-ban-circle" => "ban-circle",
-            "glyphicon glyphicon-arrow-left" => "arrow-left",
-            "glyphicon glyphicon-arrow-right" => "arrow-right",
-            "glyphicon glyphicon-arrow-up" => "arrow-up",
-            "glyphicon glyphicon-arrow-down" => "arrow-down",
             "glyphicon glyphicon-share-alt" => "share-alt",
             "glyphicon glyphicon-resize-full" => "resize-full",
             "glyphicon glyphicon-resize-small" => "resize-small",
-            "glyphicon glyphicon-exclamation-sign" => "exclamation-sign",
             "glyphicon glyphicon-gift" => "gift",
-            "glyphicon glyphicon-leaf" => "leaf",
             "glyphicon glyphicon-fire" => "fire",
             "glyphicon glyphicon-eye-open" => "eye-open",
             "glyphicon glyphicon-eye-close" => "eye-close",
-            "glyphicon glyphicon-warning-sign" => "warning-sign",
             "glyphicon glyphicon-plane" => "plane",
             "glyphicon glyphicon-calendar" => "calendar",
             "glyphicon glyphicon-random" => "random",
             "glyphicon glyphicon-comment" => "comment",
             "glyphicon glyphicon-magnet" => "magnet",
-            "glyphicon glyphicon-chevron-up" => "chevron-up",
-            "glyphicon glyphicon-chevron-down" => "chevron-down",
+
             "glyphicon glyphicon-retweet" => "retweet",
             "glyphicon glyphicon-shopping-cart" => "shopping-cart",
             "glyphicon glyphicon-folder-close" => "folder-close",
@@ -852,16 +1073,6 @@ class ItemForm
             "glyphicon glyphicon-bullhorn" => "bullhorn",
             "glyphicon glyphicon-bell" => "bell",
             "glyphicon glyphicon-certificate" => "certificate",
-            "glyphicon glyphicon-thumbs-up" => "thumbs-up",
-            "glyphicon glyphicon-thumbs-down" => "thumbs-down",
-            "glyphicon glyphicon-hand-right" => "hand-right",
-            "glyphicon glyphicon-hand-left" => "hand-left",
-            "glyphicon glyphicon-hand-up" => "hand-up",
-            "glyphicon glyphicon-hand-down" => "hand-down",
-            "glyphicon glyphicon-circle-arrow-right" => "circle-arrow-right",
-            "glyphicon glyphicon-circle-arrow-left" => "circle-arrow-left",
-            "glyphicon glyphicon-circle-arrow-up" => "circle-arrow-up",
-            "glyphicon glyphicon-circle-arrow-down" => "circle-arrow-down",
             "glyphicon glyphicon-globe" => "globe",
             "glyphicon glyphicon-wrench" => "wrench",
             "glyphicon glyphicon-tasks" => "tasks",
@@ -874,121 +1085,47 @@ class ItemForm
             "glyphicon glyphicon-link" => "link",
             "glyphicon glyphicon-phone" => "phone",
             "glyphicon glyphicon-pushpin" => "pushpin",
-            "glyphicon glyphicon-usd" => "usd",
-            "glyphicon glyphicon-gbp" => "gbp",
-            "glyphicon glyphicon-sort" => "sort",
-            "glyphicon glyphicon-sort-by-alphabet" => "sort-by-alphabet",
-            "glyphicon glyphicon-sort-by-alphabet-alt" => "sort-by-alphabet-alt",
-            "glyphicon glyphicon-sort-by-order" => "sort-by-order",
-            "glyphicon glyphicon-sort-by-order-alt" => "sort-by-order-alt",
-            "glyphicon glyphicon-sort-by-attributes" => "sort-by-attributes",
-            "glyphicon glyphicon-sort-by-attributes-alt" => "sort-by-attributes-alt",
             "glyphicon glyphicon-unchecked" => "unchecked",
             "glyphicon glyphicon-expand" => "expand",
             "glyphicon glyphicon-collapse-down" => "collapse-down",
             "glyphicon glyphicon-collapse-up" => "collapse-up",
-            "glyphicon glyphicon-log-in" => "log-in",
             "glyphicon glyphicon-flash" => "flash",
-            "glyphicon glyphicon-log-out" => "log-out",
             "glyphicon glyphicon-new-window" => "new-window",
-            "glyphicon glyphicon-record" => "record",
-            "glyphicon glyphicon-save" => "save",
-            "glyphicon glyphicon-open" => "open",
-            "glyphicon glyphicon-saved" => "saved",
-            "glyphicon glyphicon-import" => "import",
-            "glyphicon glyphicon-export" => "export",
-            "glyphicon glyphicon-send" => "send",
-            "glyphicon glyphicon-floppy-disk" => "floppy-disk",
-            "glyphicon glyphicon-floppy-saved" => "floppy-saved",
-            "glyphicon glyphicon-floppy-remove" => "floppy-remove",
-            "glyphicon glyphicon-floppy-save" => "floppy-save",
-            "glyphicon glyphicon-floppy-open" => "floppy-open",
             "glyphicon glyphicon-credit-card" => "credit-card",
             "glyphicon glyphicon-transfer" => "transfer",
-            "glyphicon glyphicon-cutlery" => "cutlery",
             "glyphicon glyphicon-header" => "header",
             "glyphicon glyphicon-compressed" => "compressed",
             "glyphicon glyphicon-earphone" => "earphone",
             "glyphicon glyphicon-phone-alt" => "phone-alt",
-            "glyphicon glyphicon-tower" => "tower",
             "glyphicon glyphicon-stats" => "stats",
-            "glyphicon glyphicon-sd-video" => "sd-video",
-            "glyphicon glyphicon-hd-video" => "hd-video",
-            "glyphicon glyphicon-subtitles" => "subtitles",
-            "glyphicon glyphicon-sound-stereo" => "sound-stereo",
-            "glyphicon glyphicon-sound-dolby" => "sound-dolby",
-            "glyphicon glyphicon-sound-5-1" => "sound-5-1",
-            "glyphicon glyphicon-sound-6-1" => "sound-6-1",
-            "glyphicon glyphicon-sound-7-1" => "sound-7-1",
             "glyphicon glyphicon-copyright-mark" => "copyright-mark",
             "glyphicon glyphicon-registration-mark" => "registration-mark",
             "glyphicon glyphicon-cloud-download" => "cloud-download",
             "glyphicon glyphicon-cloud-upload" => "cloud-upload",
-            "glyphicon glyphicon-tree-conifer" => "tree-conifer",
-            "glyphicon glyphicon-tree-deciduous" => "tree-deciduous",
+
             "glyphicon glyphicon-cd" => "cd",
-            "glyphicon glyphicon-save-file" => "save-file",
-            "glyphicon glyphicon-open-file" => "open-file",
-            "glyphicon glyphicon-level-up" => "level-up",
-            "glyphicon glyphicon-copy" => "copy",
-            "glyphicon glyphicon-paste" => "paste",
             "glyphicon glyphicon-alert" => "alert",
             "glyphicon glyphicon-equalizer" => "equalizer",
-            "glyphicon glyphicon-king" => "king",
-            "glyphicon glyphicon-queen" => "queen",
-            "glyphicon glyphicon-pawn" => "pawn",
-            "glyphicon glyphicon-bishop" => "bishop",
-            "glyphicon glyphicon-knight" => "knight",
-            "glyphicon glyphicon-baby-formula" => "baby-formula",
             "glyphicon glyphicon-tent" => "tent",
             "glyphicon glyphicon-blackboard" => "blackboard",
             "glyphicon glyphicon-bed" => "bed",
-            "glyphicon glyphicon-apple" => "apple",
             "glyphicon glyphicon-erase" => "erase",
             "glyphicon glyphicon-hourglass" => "hourglass",
             "glyphicon glyphicon-lamp" => "lamp",
             "glyphicon glyphicon-duplicate" => "duplicate",
             "glyphicon glyphicon-piggy-bank" => "piggy-bank",
             "glyphicon glyphicon-scissors" => "scissors",
-            "glyphicon glyphicon-bitcoin" => "bitcoin",
-            "glyphicon glyphicon-btc" => "btc",
-            "glyphicon glyphicon-xbt" => "xbt",
-            "glyphicon glyphicon-yen" => "yen",
-            "glyphicon glyphicon-jpy" => "jpy",
-            "glyphicon glyphicon-ruble" => "ruble",
-            "glyphicon glyphicon-rub" => "rub",
             "glyphicon glyphicon-scale" => "scale",
-            "glyphicon glyphicon-ice-lolly" => "ice-lolly",
-            "glyphicon glyphicon-ice-lolly-tasted" => "ice-lolly-tasted",
+
             "glyphicon glyphicon-education" => "education",
             "glyphicon glyphicon-option-horizontal" => "option-horizontal",
             "glyphicon glyphicon-option-vertical" => "option-vertical",
-            "glyphicon glyphicon-menu-hamburger" => "menu-hamburger",
             "glyphicon glyphicon-modal-window" => "modal-window",
-            "glyphicon glyphicon-oil" => "oil",
-            "glyphicon glyphicon-grain" => "grain",
             "glyphicon glyphicon-sunglasses" => "sunglasses",
-            "glyphicon glyphicon-text-size" => "text-size",
-            "glyphicon glyphicon-text-color" => "text-color",
-            "glyphicon glyphicon-text-background" => "text-background",
-            "glyphicon glyphicon-object-align-top" => "object-align-top",
-            "glyphicon glyphicon-object-align-bottom" => "object-align-bottom",
-            "glyphicon glyphicon-object-align-horizontal" => "object-align-horizontal",
-            "glyphicon glyphicon-object-align-left" => "object-align-left",
-            "glyphicon glyphicon-object-align-vertical" => "object-align-vertical",
-            "glyphicon glyphicon-object-align-right" => "object-align-right",
-            "glyphicon glyphicon-triangle-right" => "triangle-right",
-            "glyphicon glyphicon-triangle-left" => "triangle-left",
-            "glyphicon glyphicon-triangle-bottom" => "triangle-bottom",
-            "glyphicon glyphicon-triangle-top" => "triangle-top",
+
             "glyphicon glyphicon-console" => "console",
             "glyphicon glyphicon-superscript" => "superscript",
             "glyphicon glyphicon-subscript" => "subscript",
-            "glyphicon glyphicon-menu-left" => "menu-left",
-            "glyphicon glyphicon-menu-right" => "menu-right",
-            "glyphicon glyphicon-menu-down" => "menu-down",
-            "glyphicon glyphicon-menu-up" => "menu-up",
-
         ),
     );
 

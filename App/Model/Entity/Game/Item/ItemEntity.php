@@ -9,7 +9,7 @@ use Core\Model\Entity\Entity;
 /**
  * Class ItemEntity
  * @package App\ItemEntity
- * test
+ * test edit
  */
 class ItemEntity extends Entity
 {
@@ -276,7 +276,7 @@ class ItemEntity extends Entity
        return array_merge(
 
            ItemEntity::type_arr['batiment'] ,
-           ItemEntity::type_arr['aventure'] ,
+           ItemEntity::type_arr['aventure']
        );
     }
 

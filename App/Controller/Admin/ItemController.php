@@ -40,7 +40,6 @@ class ItemController extends AppController
     {
         $form = new Form($post);
 
-        $form->addInput("img", ItemForm::select_img(@$post->img) ) ;
         $form->addInput("type", ItemForm::select_typ(@$post->type ?? $post["type"]) ) ;
         $form->addInput("objet", ItemForm::select_obj(@$post->objet) ) ;
 
@@ -73,6 +72,17 @@ class ItemController extends AppController
 
 
         return $form ;
+    }
+
+    private function form_icon($post){
+
+        $form = new Form($post);
+        $form->addInput("img", ItemForm::checkbox_img(@$post->img) ) ;
+
+        $form->submit("Enregistrer");
+
+        return $form ;
+
     }
     /**
      * @param null $type
@@ -203,6 +213,9 @@ class ItemController extends AppController
         Render::getInstance()->setView("Admin/Item/single"); // , compact('post','categories','success','form'));
     }
 
+    /**
+     * @param $id
+     */
     public function descript($id){
 
         if(Post::getInstance()->submit()) {
@@ -239,6 +252,48 @@ class ItemController extends AppController
         $this->form = $this->form_descript($this->post);
 
         Render::getInstance()->setView("Admin/Item/descript"); // , compact('post','categories','success','form'));
+
+    }
+
+    /**
+     * @param $id
+     */
+    public function icone($id){
+
+        if(Post::getInstance()->submit()) {
+
+            if($this->Item->update( $id, Post::getInstance()->content("post")))
+            {
+                FlashBuilder::create("item modifié","success");
+
+                Redirect::getInstance()->setSlg($id)
+                    ->setDom("admin")->setAct("icone")->setCtl("item")
+                    ->send();
+            }
+        }
+
+        if(!is_null($id)) {
+
+            $this->post = $this->Item->find($id);
+            if (!$this->post) $this->notFound("single item");
+
+            $type = $this->post->type;
+        }
+
+        Header::getInstance()->setTitle($this->post->titre);
+
+        if(!is_null($type)) {
+            $this->posts = $this->Item->typeListing([$type]);
+            $this->type = $type;
+            Request::getInstance()->setSlug($type);
+        }else {
+            $this->posts = $this->Item->all();
+            $this->type = null ;
+        }
+
+        $this->form = $this->form_icon($this->post);
+
+        Render::getInstance()->setView("Admin/Item/icone"); // , compact('post','categories','success','form'));
 
     }
 }
