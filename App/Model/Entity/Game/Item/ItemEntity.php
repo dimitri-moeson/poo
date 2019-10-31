@@ -9,6 +9,7 @@ use Core\Model\Entity\Entity;
 /**
  * Class ItemEntity
  * @package App\ItemEntity
+ * test
  */
 class ItemEntity extends Entity
 {
@@ -56,7 +57,10 @@ class ItemEntity extends Entity
 
         "aventure" => array(
 
-            "quest"
+            "quest",
+            "journaliere",
+            "histoire",
+            "epreuve",
         ),
 
         "batiment" => array(
@@ -142,36 +146,8 @@ class ItemEntity extends Entity
             "defensif"
 
         ),
-
     );
-/**
-    const craftable_types = array(
 
-        "consommable",
-        "casque"  ,
-        "epaule"  ,
-        "amulette" ,
-        "brassard"  ,
-        "botte",
-        "torse" ,
-        "bague" ,
-        "ceinture" ,
-        "arme"  ,
-        "bouclier" ,
-        "jambe" ,
-        "gant",
-        "épée",
-        "hache",
-        "javelot",
-        "bouclier",
-        "pistolet",
-        "fusil",
-        "arc",
-        "lance",
-        "hallebarde",
-        "espadon",
-    );
-**/
     /**
      * ItemEntity constructor.
      * @param $nom
@@ -183,6 +159,10 @@ class ItemEntity extends Entity
             $this->recette = new InventaireRecetteEntity();
     }
 
+    /**
+     * @param ItemEntity $item
+     * @return ItemEntity
+     */
     public static function create(ItemEntity $item ):self
     {
         $classe_name = __NAMESPACE__."\Item".ucfirst(strtolower($item->getType()))."Entity";
@@ -209,13 +189,27 @@ class ItemEntity extends Entity
             return $this->val;
     }
 
+    /**
+     * @return mixed
+     */
     public function getStat()
     {
         if(isset($this->stat))
             return $this->stat;
     }
 
+    /**
+     * @return bool
+     */
     public function isEquipable(){
+
+        $equipable = self::getEquipableTypeArray();
+
+        if(in_array($this->getType(),$equipable)){
+
+            return true ;
+        }
+        return false ;
 
         if(in_array($this->getType(),self::type_arr["equipement"])){
 
@@ -282,7 +276,7 @@ class ItemEntity extends Entity
        return array_merge(
 
            ItemEntity::type_arr['batiment'] ,
-           array('quest')
+           ItemEntity::type_arr['aventure'] ,
        );
     }
 
@@ -329,6 +323,9 @@ class ItemEntity extends Entity
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getMaxVal()
     {
         return $this->getVal();

@@ -51,6 +51,7 @@ class PlaceController extends AppController
 
         if($this->Item instanceof ItemTable ) {
             $this->sacoche = $this->Item->typeListing(array("strum"), ItemMonstreEntity::class);
+            $_SESSION["position"]["batiment"]["id"] = $id;
 
             Render::getInstance()->setView("Game/Arena/Roaster");
         }
