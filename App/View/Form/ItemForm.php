@@ -261,7 +261,6 @@ class ItemForm
             "glyphicon glyphicon-hand-down" => "hand-down",
 
             "ra ra-hand" => "hand",
-            "ra ra-hand-emblem" => "hand-emblem",
         ),
         "metaux" => array(
 
@@ -286,7 +285,6 @@ class ItemForm
             "ra ra-palm-tree" => "palm-tree",
             "ra ra-pine-tree" => "pine-tree",
             "ra ra-sprout" => "sprout",
-            "ra ra-sprout-emblem" => "sprout-emblem",
             "ra ra-super-mushroom" => "super-mushroom",
             "ra ra-trefoil-lily" => "trefoil-lily",
             "ra ra-zigzag-leaf" => "zigzag-leaf",
@@ -411,7 +409,6 @@ class ItemForm
             "ra ra-ringing-bell" => "ringing-bell",
             "ra ra-rune-stone" => "rune-stone",
             "ra ra-sheriff" => "sheriff",
-            "ra ra-ship-emblem" => "ship-emblem",
             "ra ra-shotgun-shell" => "shotgun-shell",
             "ra ra-slash-ring" => "slash-ring",
             "ra ra-snorkel" => "snorkel",
@@ -576,9 +573,6 @@ class ItemForm
             "ra ra-fairy-wand" => "fairy-wand",
             "ra ra-fire-breath" => "fire-breath",
             "ra ra-fire-ring" => "fire-ring",
-            "ra ra-fire-symbol" => "fire-symbol",
-            "ra ra-flame-symbol" => "flame-symbol",
-            "ra ra-frost-emblem" => "frost-emblem",
             "ra ra-frostfire" => "frostfire",
             "ra ra-gem" => "gem",
             "ra ra-gem-pendant" => "gem-pendant",
@@ -600,7 +594,8 @@ class ItemForm
             "ra ra-small-fire" => "small-fire",
             "ra ra-snowflake" => "snowflake",
             "ra ra-sun" => "sun",
-            "ra ra-sun-symbol" => "sun-symbol",
+
+
             "ra ra-sunbeams" => "sunbeams",
             "ra ra-triforce" => "triforce",
             "ra ra-two-hearts" => "two-hearts",
@@ -721,6 +716,26 @@ class ItemForm
             "ra ra-zebra-shield" => "zebra-shield",
 
         ),
+
+        "symbol" => array(
+
+            "ra ra-fire-symbol" => "fire",
+            "ra ra-flame-symbol" => "flame",
+            "ra ra-sun-symbol" => "sun",
+        ),
+
+        "emblem" => array(
+
+            "ra ra-castle-emblem" => "castle",
+            "ra ra-hive-emblem" => "hive",
+            "ra ra-ocean-emblem" => "ocean",
+            "ra ra-frost-emblem" => "frost",
+            "ra ra-hand-emblem" => "hand",
+            "ra ra-sprout-emblem" => "sprout",
+            "ra ra-ship-emblem" => "ship",
+
+        ),
+
         "rpg-icons" => array(
 
             "ra ra-ankh" => "ankh",
@@ -735,7 +750,6 @@ class ItemForm
             "ra ra-campfire" => "campfire",
             "ra ra-candle-fire" => "candle-fire",
             "ra ra-capitol" => "capitol",
-            "ra ra-castle-emblem" => "castle-emblem",
             "ra ra-circle-of-circles" => "circle-of-circles",
             "ra ra-crowned-heart" => "crowned-heart",
             "ra ra-cubes" => "cubes",
@@ -756,7 +770,6 @@ class ItemForm
             "ra ra-groundbreaker" => "groundbreaker",
             "ra ra-heavy-fall" => "heavy-fall",
             "ra ra-help" => "help",
-            "ra ra-hive-emblem" => "hive-emblem",
             "ra ra-hole-ladder" => "hole-ladder",
             "ra ra-hood" => "hood",
             "ra ra-horn-call" => "horn-call",
@@ -768,7 +781,6 @@ class ItemForm
             "ra ra-mining-diamonds" => "mining-diamonds",
             "ra ra-mountains" => "mountains",
             "ra ra-nodular" => "nodular",
-            "ra ra-ocean-emblem" => "ocean-emblem",
             "ra ra-omega" => "omega",
             "ra ra-on-target" => "on-target",
             "ra ra-ophiuchus" => "ophiuchus",

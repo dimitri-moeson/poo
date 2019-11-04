@@ -1,7 +1,7 @@
 
--- CREATE DATABASE id9493469_test;
+-- CREATE DATABASE data_test;
 
--- USE id9493469_test;
+-- USE data_test ;
 
 -- table ACCES --
 
