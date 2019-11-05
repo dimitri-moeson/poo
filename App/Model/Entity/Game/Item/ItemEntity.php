@@ -115,6 +115,16 @@ class ItemEntity extends Entity
 
     const categorie_arr = array(
 
+        "mission" => array(
+
+            "recolte",
+            "collecte",
+            "kill",
+            "escorte",
+            "livraison"
+
+        ),
+
         "consommable" => array(
 
             "soin"  ,

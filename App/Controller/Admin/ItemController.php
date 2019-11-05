@@ -30,6 +30,7 @@ class ItemController extends AppController
         parent::__construct();
 
         $this->loadModel("Game\Item\Item");
+        $this->loadModel("Game\Inventaire\Inventaire");
     }
 
     /**
@@ -45,17 +46,6 @@ class ItemController extends AppController
 
         $form->input("name", array('label' => "Nom"));
         $form->input("vie", array('label' => "Moyenne"));
-
-        //$form->select("type", array('options' => ItemEntity::type_arr , 'label' => "type"), ItemEntity::type_arr );
-        //$form->select("objet", array('options' => ItemEntity::categorie_arr , 'label' => "Categorie"), ItemEntity::categorie_arr );
-
-        if(is_array($post) || !isset($post->id))
-        {}
-
-
-        /** if(is_object($post) && isset($post->id)){
-
-         }*/
 
         $form->submit("Enregistrer");
 
@@ -83,6 +73,27 @@ class ItemController extends AppController
 
         return $form ;
 
+    }
+
+    private function form_mission($post, $link = null ){
+
+        $form =new Form($link);
+
+        if(isset($link->id))
+            $form->input("action", array("type"=>"hidden","name"=>"action","value"=>"edition"))
+                ->input("id", array("type"=>"hidden","name"=>"id","value"=>@$link->id));
+        else
+            $form->input("action", array("type"=>"hidden","name"=>"action","value"=>"ajout"));
+
+        $form->input("parent_id", array("type"=>"hidden","name"=>"parent_id","value"=>@$link->parent_id))
+            ->input("rubrique", array("type"=>"hidden","name"=>"rubrique","value"=>@$post->type))
+            ->input("val")
+            ->select("child_id",array("name"=>"child_id","value"=>@$link->child_id),[])
+            ->addInput("type", ItemForm::select_obj(@$link->type,"mission") )
+            ->submit("reg")
+        ;
+
+        return $form ;
     }
     /**
      * @param null $type
@@ -295,5 +306,73 @@ class ItemController extends AppController
 
         Render::getInstance()->setView("Admin/Item/icone"); // , compact('post','categories','success','form'));
 
+    }
+
+    /**
+     * if type => in "aventure"
+     * @param $id
+     */
+    public function mission($id)
+    {
+        if(Post::getInstance()->submit()) {
+
+            if(Post::getInstance()->has("id")) {
+
+                $_id = Post::getInstance()->has("id");
+
+                if ($this->Inventaire->update($_id, Post::getInstance()->content("post"))) {
+                    FlashBuilder::create("cible modifié", "success");
+
+                }
+            }
+            else
+            {
+                if ($this->Inventaire->create(Post::getInstance()->content("post"))) {
+                    FlashBuilder::create("cible ajouté", "success");
+
+
+                }
+            }
+            Redirect::getInstance()->setSlg($id)
+                ->setDom("admin")->setAct("mission")->setCtl("item")
+                ->send();
+        }
+        if(!is_null($id)) {
+
+            $this->post = $this->Item->find($id);
+            if (!$this->post) $this->notFound("single item");
+
+            $type = $this->post->type;
+            $this->linked = $this->Inventaire->findBy(array("parent_id" => $id));
+        }
+
+        Header::getInstance()->setTitle($this->post->titre);
+
+        if(!is_null($type)) {
+            $this->posts = $this->Item->typeListing([$type]);
+            $this->type = $type;
+            Request::getInstance()->setSlug($type);
+        }else {
+            $this->posts = $this->Item->all();
+            $this->type = null ;
+        }
+
+        foreach($this->linked as $x => $link) {
+
+            $this->forms[$x] = array(
+
+                "label" => "Editer Mission",
+                "form" => $this->form_mission($this->post, $link)
+            );
+        }
+
+        $this->forms[] = array(
+
+            "label" => "Ajouter Mission",
+            "form" => $this->form_mission($this->post)
+        );
+
+
+        Render::getInstance()->setView("Admin/Item/mission"); // , compact('post','categories','success','form'));
     }
 }

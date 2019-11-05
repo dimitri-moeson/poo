@@ -11,6 +11,7 @@
     max-height: 500px;
     min-height: 100px;
     /*height:200px;*/
+    width: 600px;
     overflow: auto;
     position: fixed;
     bottom:60px;

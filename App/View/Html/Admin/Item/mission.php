@@ -1,5 +1,7 @@
 <?php
 
+use App\View\Form\ItemForm;
+use Core\HTML\Form\Form;
 use Core\Render\Render;
 use Core\Render\Url;
 use Core\Session\FlashBuilder;
@@ -11,15 +13,19 @@ use Core\Session\FlashBuilder;
 <?php echo FlashBuilder::create()->get() ?>
 <?php echo Render::getInstance()->block("admin.itm.tabs", array(
 
-    "p" => "descript",
+    "p" => "mission",
     "post" => $post
 )); ?>
 
 
 <div class="tab-content col-sm-12">
 
-    <form action="" method="post">
-        <?php echo $form ?>
-    </form>
+    <?php
 
+    foreach ($forms as $form)
+    {
+        echo "<h2>".$form["label"]."</h2>";
+        echo $form["form"] ;
+    }
+    ?>
 </div>

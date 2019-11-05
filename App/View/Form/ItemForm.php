@@ -42,22 +42,32 @@ class ItemForm
      * @param $selected
      * @return string
      */
-    static function select_obj($selected){
+    static function select_obj($selected, $grp = null ){
 
         $cnt = "<label>Objet</label><br/><select class='show-tick' name='objet' data-live-search='true' >";
         $cnt .= "<option>...</option>";
 
+        if(is_null($grp)) {
+            foreach (ItemEntity::categorie_arr as $group => $icons) {
 
-        foreach (ItemEntity::categorie_arr as $group => $icons ){
+                $cnt .= "<optgroup label='$group'>";
 
-            $cnt .= "<optgroup label='$group'>";
+                foreach ($icons as $class) {
 
-            foreach ( $icons as $class ) {
+                    $cnt .= "<option " . ($class === $selected ? "selected" : "") . "  value='$class' >$class</option>";
+                }
 
-                $cnt .= "<option ".($class===$selected ? "selected" : "" )."  value='$class' >$class</option>";
+                $cnt .= "</optgroup>";
+            }
+        }
+        else {
+
+            foreach (ItemEntity::categorie_arr[$grp] as $class) {
+
+                    $cnt .= "<option " . ($class === $selected ? "selected" : "") . "  value='$class' >$class</option>";
+
             }
 
-            $cnt .= "</optgroup>";
         }
 
         $cnt .= "</select>";
@@ -124,13 +134,17 @@ class ItemForm
 
         $cnt = "<label>Icone</label><br/>";
 
-        foreach (self::icon_list as $group => $icons ){
+        foreach (self::icon_list as $group => $icons )
+        {
+            $cnt .= "<br/>";
+            $cnt .= "<fieldset>";
+            $cnt .= "<legend>$group</legend>";
 
-            $cnt .= "<fieldset><legend>$group</legend>";
-
-            foreach ( $icons as $class => $icon) {
-
-                $cnt .= "<div class='col-sm-3'><input  ".($class===$selected ? "checked" : "" )." type='radio' name='img' value='$class' />&nbsp;<i class='$class'></i>&nbsp;$icon</div>";
+            foreach ( $icons as $class => $icon)
+            {
+                $cnt .= "<div class='col-sm-3'>";
+                $cnt .= "<input  ".($class===$selected ? "checked" : "" )." type='radio' name='img' value='$class' />&nbsp;<i class='$class'></i>&nbsp;".$icon;
+                $cnt .= "</div>";
             }
 
             $cnt .= "</fieldset>";
@@ -146,10 +160,11 @@ class ItemForm
             "ra ra-gem-pendant" => "amulette"  ,
             "fas fa-medal" =>"medaille"  ,
             "fas fa-award" => "cocarde" ,
-        ),
-        "electronics" => array(
 
-            "ra ra-alien-fire" => "alien-fire",
+        ),
+
+        "batteries" => array(
+
             "ra ra-batteries" => "batteries",
             "ra ra-battery-0" => "battery-0",
             "ra ra-battery-25" => "battery-25",
@@ -160,6 +175,12 @@ class ItemForm
             "ra ra-battery-negative" => "battery-negative",
             "ra ra-battery-positive" => "battery-positive",
             "ra ra-battery-white" => "battery-white",
+        ),
+
+        "electronics" => array(
+
+            "ra ra-alien-fire" => "alien-fire",
+
             "ra ra-clockwork" => "clockwork",
             "ra ra-cog" => "cog",
             "ra ra-cog-wheel" => "cog-wheel",
@@ -197,30 +218,36 @@ class ItemForm
             "ra ra-wireless-signal" => "wireless-signal",
 
         ),
+
         "anneau" => array(
 
              "fas fa-ring" => "bague 1",
              "ra ra-fire-ring" => "bague de feu"
 
         ),
+
         "batiment" => array(
+
             "fa fa-institution" => "institut",
             "fa fa-bank" => "bank",
             "ra ra-capitol" => "capitol",
             "fa fa-building" => "building",
-            "fa fa-building-o"   =>"building 2" ,
+            // "fa fa-building-o"   =>"building 2" ,
             "fa fa-home"  =>  "maison",
             "ra ra-tower"  =>"tour" ,
             "fa fa-industry" => "industry",
             "ra ra-guarded-tower" => "guarded-tower",
             "ra ra-heart-tower" => "heart-tower",
+
         ),
+
         "competence" => array(
 
             "ra ra-spinning-sword" => "spinning-sword",
             "ra ra-bolt-shield" => "bolt-shield"
 
         ),
+
         "consommable" => array(
 
             "ra ra-bottle-vapors" => "bottle-vapors",
@@ -235,12 +262,15 @@ class ItemForm
             "ra ra-vial" => "vial",
             "ra ra-vase" => "vase",
 
-
         ),
+
         "forge" => array(
+
             "ra ra-forging"  => "forging",
             "ra ra-anvil" => "anvil"
+
         ),
+
         "pnj" => array(
 
             "fa fa-female"    =>"femme",
@@ -248,6 +278,7 @@ class ItemForm
             "fa fa-child"  => "enfant",
 
         ),
+
         "mains" => array(
 
             "fa fa-sign-language" => "language",
@@ -262,16 +293,19 @@ class ItemForm
 
             "ra ra-hand" => "hand",
         ),
+
         "metaux" => array(
 
             "ra ra-gold-bar"  => "lingot"
         ),
+
         "pieds" => array(
 
             "ra ra-boot-stomp" => "boot-stomp",
             "ra ra-shoe-prints" =>  "semelle",
             "ra ra-footprint" => "nus" ,
         ),
+
         "plantes" => array(
 
             "ra ra-clover" => "clover",
@@ -294,12 +328,12 @@ class ItemForm
             "glyphicon glyphicon-tree-deciduous" => "tree-deciduous",
 
         ),
+
         "statut" => array(
 
 
             "ra ra-double-team" => "double-team",
             "ra ra-falling" => "falling",
-            "ra ra-monster-skull" => "monster-skull",
             "ra ra-muscle-fat" => "muscle-fat",
             "ra ra-muscle-up" => "muscle-up",
             "ra ra-player" => "player",
@@ -313,6 +347,7 @@ class ItemForm
             "ra ra-player-teleport" => "teleport",
             "ra ra-player-thunder-struck" => "thunder-struck",
         ),
+
         "tete" => array(
 
             "ra ra-knight-helmet" => "knight-helmet",
@@ -323,10 +358,12 @@ class ItemForm
             "ra ra-queen-crown" => "queen-crown",
             "ra ra-cracked-helm" => "cracked-helm",
         ),
+
         "torse" => array(
 
             "ra ra-vest" => "veste"
         ),
+
         "Animaux" => array(
 
             "ra ra-beetle" => "beetle",
@@ -363,12 +400,15 @@ class ItemForm
             "ra ra-wolf-head" => "wolf-head",
             "ra ra-wolf-howl" => "wolf-howl",
         ),
+
         "tentacle" => array(
+
             "ra ra-spiked-tentacle" => "spiked",
             "ra ra-suckered-tentacle" => "suckered",
             "ra ra-tentacle" => "default",
 
         ),
+
         "key" => array(
 
             "ra ra-key" => "key",
@@ -424,6 +464,7 @@ class ItemForm
             "ra ra-cancel" => "cancel",
 
         ),
+
         "cards" => array(
 
             "ra ra-clovers" => "clovers",
@@ -443,19 +484,20 @@ class ItemForm
             "ra ra-dice-two" => "two",
             "ra ra-dice-three" => "three",
             "ra ra-dice-four" => "four",
+
+            "ra ra-perspective-dice-one" => "perspective one",
+            "ra ra-perspective-dice-two" => "perspective two",
+            "ra ra-perspective-dice-three" => "perspective three",
+            "ra ra-perspective-dice-four" => "perspective four",
+
             "ra ra-dice-five" => "five",
-            "ra ra-dice-six" => "six"
-        ),
+            "ra ra-perspective-dice-five" => "perspective five",
 
-        "perspective-dice" => array(
+            "ra ra-dice-six" => "six",
+            "ra ra-perspective-dice-six" => "perspective six",
 
-            "ra ra-perspective-dice-one" => "one",
-            "ra ra-perspective-dice-two" => "two",
-            "ra ra-perspective-dice-three" => "three",
-            "ra ra-perspective-dice-four" => "four",
-            "ra ra-perspective-dice-five" => "five",
-            "ra ra-perspective-dice-six" => "six",
             "ra ra-perspective-dice-random" => "random",
+
         ),
 
         "chess" => array(
@@ -517,6 +559,7 @@ class ItemForm
             "ra ra-taurus" => "taurus",
             "ra ra-virgo" => "virgo",
         ),
+
         "dangers" => array(
 
             "ra ra-acid" => "acid",
@@ -539,6 +582,7 @@ class ItemForm
             "ra ra-poison-cloud" => "poison-cloud",
             "ra ra-tombstone" => "tombstone",
         ),
+
         "level" => array(
 
             "ra ra-level-two" => "two",
@@ -550,6 +594,7 @@ class ItemForm
             "ra ra-level-four-advanced" => "four-advanced",
 
         ),
+
         "magie" => array(
 
             "ra ra-brain-freeze" => "brain-freeze",
@@ -601,11 +646,13 @@ class ItemForm
             "ra ra-two-hearts" => "two-hearts",
             "ra ra-water-drop" => "water-drop",
         ),
+
         "landing" => array(
 
             "ra ra-hot-surface" => "hot-surface",
             "ra ra-lava" => "lava",
         ),
+
         "weapons-and-armor" => array(
 
             "ra ra-arcane-mask" => "arcane-mask",
@@ -733,34 +780,44 @@ class ItemForm
             "ra ra-hand-emblem" => "hand",
             "ra ra-sprout-emblem" => "sprout",
             "ra ra-ship-emblem" => "ship",
+        ),
 
+        "wing" => array(
+
+            "ra ra-angel-wings" => "angel-wings",
+            "ra ra-batwings" => "batwings",
+            "ra ra-dragon-wing" => "dragon",
+            "ra ra-feather-wing" => "feather",
+            "ra ra-feathered-wing" => "feathered",
+
+        ),
+
+        "skull" => array(
+
+            "ra ra-skull" => "normal",
+            "ra ra-broken-skull" => "broken",
+            "ra ra-death-skull" => "death",
+            "ra ra-desert-skull" => "desert",
+            "ra ra-skull-trophy" => "trophy",
+            "ra ra-monster-skull" => "monster",
         ),
 
         "rpg-icons" => array(
 
             "ra ra-ankh" => "ankh",
-            "ra ra-angel-wings" => "angel-wings",
             "ra ra-anchor" => "anchor",
-            "ra ra-batwings" => "batwings",
             "ra ra-bell" => "bell",
             "ra ra-bird-mask" => "bird-mask",
             "ra ra-bowling-pin" => "bowling-pin",
             "ra ra-bridge" => "bridge",
-            "ra ra-broken-skull" => "broken-skull",
             "ra ra-campfire" => "campfire",
             "ra ra-candle-fire" => "candle-fire",
             "ra ra-capitol" => "capitol",
-            "ra ra-circle-of-circles" => "circle-of-circles",
             "ra ra-crowned-heart" => "crowned-heart",
             "ra ra-cubes" => "cubes",
             "ra ra-cut-palm" => "cut-palm",
             "ra ra-cycle" => "cycle",
-            "ra ra-death-skull" => "death-skull",
             "ra ra-demolish" => "demolish",
-            "ra ra-desert-skull" => "desert-skull",
-            "ra ra-dragon-wing" => "dragon-wing",
-            "ra ra-feather-wing" => "feather-wing",
-            "ra ra-feathered-wing" => "feathered-wing",
             "ra ra-fedora" => "fedora",
             "ra ra-fluffy-swirl" => "fluffy-swirl",
             "ra ra-footprint" => "footprint",
@@ -797,8 +854,6 @@ class ItemForm
             "ra ra-shovel" => "shovel",
             "ra ra-sideswipe" => "sideswipe",
             "ra ra-site" => "site",
-            "ra ra-skull" => "skull",
-            "ra ra-skull-trophy" => "skull-trophy",
             "ra ra-spawn-node" => "spawn-node",
             "ra ra-splash" => "splash",
             "ra ra-targeted" => "targeted",
@@ -930,6 +985,15 @@ class ItemForm
             "glyphicon glyphicon-text-size" => "text-size",
             "glyphicon glyphicon-text-color" => "text-color",
             "glyphicon glyphicon-text-background" => "text-background",
+        ),
+
+        "circle" => array(
+
+            "glyphicon glyphicon-remove-circle" => "remove",
+            "glyphicon glyphicon-ok-circle" => "ok",
+            "glyphicon glyphicon-ban-circle" => "ban",
+            "glyphicon glyphicon-play-circle" => "play",
+            "ra ra-circle-of-circles" => "circles",
 
         ),
 
@@ -1032,7 +1096,6 @@ class ItemForm
             "glyphicon glyphicon-download" => "download",
             "glyphicon glyphicon-upload" => "upload",
             "glyphicon glyphicon-inbox" => "inbox",
-            "glyphicon glyphicon-play-circle" => "play-circle",
             "glyphicon glyphicon-repeat" => "repeat",
             "glyphicon glyphicon-refresh" => "refresh",
             "glyphicon glyphicon-list-alt" => "list-alt",
@@ -1059,9 +1122,7 @@ class ItemForm
             "glyphicon glyphicon-check" => "check",
             "glyphicon glyphicon-move" => "move",
             "glyphicon glyphicon-screenshot" => "screenshot",
-            "glyphicon glyphicon-remove-circle" => "remove-circle",
-            "glyphicon glyphicon-ok-circle" => "ok-circle",
-            "glyphicon glyphicon-ban-circle" => "ban-circle",
+
             "glyphicon glyphicon-share-alt" => "share-alt",
             "glyphicon glyphicon-resize-full" => "resize-full",
             "glyphicon glyphicon-resize-small" => "resize-small",
@@ -1074,7 +1135,6 @@ class ItemForm
             "glyphicon glyphicon-random" => "random",
             "glyphicon glyphicon-comment" => "comment",
             "glyphicon glyphicon-magnet" => "magnet",
-
             "glyphicon glyphicon-retweet" => "retweet",
             "glyphicon glyphicon-shopping-cart" => "shopping-cart",
             "glyphicon glyphicon-folder-close" => "folder-close",
@@ -1114,7 +1174,6 @@ class ItemForm
             "glyphicon glyphicon-registration-mark" => "registration-mark",
             "glyphicon glyphicon-cloud-download" => "cloud-download",
             "glyphicon glyphicon-cloud-upload" => "cloud-upload",
-
             "glyphicon glyphicon-cd" => "cd",
             "glyphicon glyphicon-alert" => "alert",
             "glyphicon glyphicon-equalizer" => "equalizer",
@@ -1128,13 +1187,11 @@ class ItemForm
             "glyphicon glyphicon-piggy-bank" => "piggy-bank",
             "glyphicon glyphicon-scissors" => "scissors",
             "glyphicon glyphicon-scale" => "scale",
-
             "glyphicon glyphicon-education" => "education",
             "glyphicon glyphicon-option-horizontal" => "option-horizontal",
             "glyphicon glyphicon-option-vertical" => "option-vertical",
             "glyphicon glyphicon-modal-window" => "modal-window",
             "glyphicon glyphicon-sunglasses" => "sunglasses",
-
             "glyphicon glyphicon-console" => "console",
             "glyphicon glyphicon-superscript" => "superscript",
             "glyphicon glyphicon-subscript" => "subscript",

@@ -80,13 +80,24 @@ class Table
      * @param null $attrs
      * @return array
      */
-    public function list($key,$value, $statement = null, $attrs = null  )
+    public function list($key,$value, $attrs = null , $statement = null )
     {
-        if(is_null($statement))
+        if(is_null($attrs) && is_null($statement) )
+        {
             $records = $this->all();
+        }
+        elseif(is_null($statement) && !is_null($attrs))
+        {
+            $records =$this->findBy($attrs);
+        }
+        elseif(!is_null($statement) && is_null($attrs))
+        {
+            $records = $this->request($statement);
+        }
         else
-            $records = $this->request($statement , $attrs);
-
+        {
+            $records = $this->request($statement, $attrs);
+        }
         $return = array();
 
         foreach ($records as $record)
@@ -144,16 +155,18 @@ class Table
             foreach ($attr as $key => $val )
                 $statement->where(" `".$this->getTable()."`.`$key` = :$key ");
 
-            if(is_array($orderBy)) {
-                foreach ($orderBy as $ord => $sens) {
+            if(!is_null($orderBy)) {
+                if (is_array($orderBy)) {
+                    foreach ($orderBy as $ord => $sens) {
 
-                    if(is_numeric($sens))
-                        $statement->order($ord);
-                    else
-                        $statement->order($ord, $sens);
+                        if (is_numeric($sens))
+                            $statement->order($ord);
+                        else
+                            $statement->order($ord, $sens);
+                    }
+                } else {
+                    $statement->orders($orderBy);
                 }
-            }else{
-                $statement->orders($orderBy);
             }
             $statement
                 ->limit($limit)
