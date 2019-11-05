@@ -53,6 +53,10 @@ class ItemController extends AppController
         return $form ;
     }
 
+    /**
+     * @param $post
+     * @return Form
+     */
     private function form_descript($post)
     {
         $form = new Form($post);
@@ -64,6 +68,10 @@ class ItemController extends AppController
         return $form ;
     }
 
+    /**
+     * @param $post
+     * @return Form
+     */
     private function form_icon($post){
 
         $form = new Form($post);
@@ -75,6 +83,11 @@ class ItemController extends AppController
 
     }
 
+    /**
+     * @param $post
+     * @param null $link
+     * @return Form
+     */
     private function form_mission($post, $link = null ){
 
         $form =new Form($link);
@@ -95,6 +108,7 @@ class ItemController extends AppController
 
         return $form ;
     }
+
     /**
      * @param null $type
      */
@@ -373,6 +387,6 @@ class ItemController extends AppController
         );
 
 
-        Render::getInstance()->setView("Admin/Item/mission"); // , compact('post','categories','success','form'));
+        Render::getInstance()->setView("Admin/Item/mission");
     }
 }
