@@ -23,6 +23,7 @@ class WikiController extends AppController
         parent::__construct();
 
         $this->loadModel("Game\Item\Item");
+        $this->loadModel("Game\Inventaire\Inventaire");
     }
 
     /**
@@ -68,6 +69,12 @@ class WikiController extends AppController
         {
             $this->posts = $this->Item->all();
             $this->type = null ;
+        }
+        $linked = $this->Inventaire->findBy(array("parent_id" => $id,"rubrique"=>$type));
+
+        foreach($linked as $x => $link){
+
+            $this->linked[ $link->type ][$x] = $link ;
         }
 
         Render::getInstance()->setView("Game/Wiki/Single"); // , compact('post','categories','success','form'));

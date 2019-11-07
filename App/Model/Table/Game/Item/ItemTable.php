@@ -15,7 +15,11 @@ use Core\Database\QueryBuilder;
 
 class ItemTable extends GameTable
 {
-
+    /**
+     * @param Int $id
+     * @param string $model
+     * @return array|mixed
+     */
     public function get($id, $model = ItemEntity::class )
     {
         $statement = Query::from("item")->select('*')
@@ -53,6 +57,10 @@ class ItemTable extends GameTable
         return $this->request($statement , $attrib);
     }
 
+    /**
+     * @param $type
+     * @return array|mixed
+     */
     public function randomOne($type){
 
         $statement = QueryBuilder::init()->select("*")
@@ -110,6 +118,14 @@ class ItemTable extends GameTable
         return $this->request($statement , $attrib, false , $model );
     }
 
+    /**
+     * @param Int $id
+     * @param Int|null $parent
+     * @param null $rubrique
+     * @param null $type
+     * @param string $model
+     * @return array|mixed
+     */
     public function getWithInventaire(Int $id,Int $parent = null ,$rubrique = null ,$type = null, $model = ItemEntity::class){
 
         // var_dump(func_get_args());

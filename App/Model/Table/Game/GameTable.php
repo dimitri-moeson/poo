@@ -38,6 +38,11 @@ class GameTable extends Table
 
     }
 
+    /**
+     * @param string $type
+     * @param null $repo
+     * @return mixed
+     */
     protected function entityOf($type ="" , $repo = null ){
 
         $ucfTable = ucfirst($this->getTable());
@@ -52,6 +57,10 @@ class GameTable extends Table
         return $ent ;
     }
 
+    /**
+     * @param $type
+     * @return array|mixed
+     */
     public function allOf($type){
 
         $statement = QueryBuilder::init()->select("*")

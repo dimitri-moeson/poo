@@ -6,13 +6,14 @@ use Core\Session\FlashBuilder;
 
 ?>
 
-<h1><?php echo isset($post) ? $post->titre : "Nouvel item" ?></h1>
+<h1><?php echo isset($post) ? $post->name : "Nouvel item" ?></h1>
 
 <?php echo FlashBuilder::create()->get() ?>
 <?php echo Render::getInstance()->block("admin.itm.tabs", array(
 
     "p" => "descript",
     "post" => $post
+
 )); ?>
 
 

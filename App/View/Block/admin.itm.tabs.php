@@ -1,19 +1,116 @@
 <?php use App\Model\Entity\Game\Item\ItemEntity;
 use Core\Render\Url;
+?>
 
-if(isset($post)){ ?>
+<?php if(isset($post)){ ?>
+
     <ul class='nav nav-tabs nav-justified'>
-        <li><a href=#' ><?php echo $post->type ?></a></li>
-        <li class='<?php echo $p =="single" ? 'active' :'' ?>'><a href='<?php echo Url::generate("single","Item","admin",$post->id);?>' >Params</a></li>
-        <li class='<?php echo $p =="descript" ? 'active' :'' ?>'><a href='<?php echo Url::generate("descript","Item","admin",$post->id);?>' >Descript</a></li>
-        <li class='<?php echo $p =="icone" ? 'active' :'' ?>'><a href='<?php echo Url::generate("icone","Item","admin",$post->id);?>' >Icone</a></li>
+
+        <li class='<?php echo $p =="single" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("single","Item","admin",$post->id);?>' >Params</a></li>
+        <li class='<?php echo $p =="descript" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("descript","Item","admin",$post->id);?>' >Descript</a></li>
+        <li class='<?php echo $p =="icone" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("icone","Item","admin",$post->id);?>' >Icone</a></li>
 
     <?php if( in_array($post->type , ItemEntity::type_arr["aventure"]) ) { ?>
 
-        <li class='<?php echo $p =="mission" ? 'active' :'' ?>'><a href='<?php echo Url::generate("mission","Item","admin",$post->id);?>' >mission</a></li>
+        <li class='<?php echo $p =="mission" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("mission","Item","admin",$post->id);?>' >mission</a>
+        </li>
 
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["politique"]) ) { ?>
 
-        <?php } ?>
+        <li class='<?php echo $p =="ressource" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("ressource","Item","admin",$post->id);?>' >ressource</a>
+        </li>
+        <li class='<?php echo $p =="attribut" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("attribut","Item","admin",$post->id);?>' >attribut</a>
+        </li>
+
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["classe"]) ) { ?>
+
+        <li class='<?php echo $p =="ressource" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("ressource","Item","admin",$post->id);?>' >ressource</a>
+        </li>
+        <li class='<?php echo $p =="attribut" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("attribut","Item","admin",$post->id);?>' >attribut</a>
+        </li>
+
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["faune"]) ) { ?>
+
+        <li class='<?php echo $p =="ressource" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("ressource","Item","admin",$post->id);?>' >ressource</a>
+        </li>
+        <li class='<?php echo $p =="attribut" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("attribut","Item","admin",$post->id);?>' >attribut</a>
+        </li>
+
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["competence"]) ) { ?>
+
+        <li class='<?php echo $p =="ressource" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("ressource","Item","admin",$post->id);?>' >ressource</a>
+        </li>
+        <li class='<?php echo $p =="attribut" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("attribut","Item","admin",$post->id);?>' >attribut</a>
+        </li>
+
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["arme_1_main"]) ) { ?>
+
+        <li class='<?php echo $p =="ressource" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("ressource","Item","admin",$post->id);?>' >ressource</a>
+        </li>
+        <li class='<?php echo $p =="attribut" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("attribut","Item","admin",$post->id);?>' >attribut</a>
+        </li>
+        <li class='<?php echo $p =="craft" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("craft","Item","admin",$post->id);?>' >craft</a>
+        </li>
+
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["arme_2_main"]) ) { ?>
+
+        <li class='<?php echo $p =="ressource" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("ressource","Item","admin",$post->id);?>' >ressource</a>
+        </li>
+        <li class='<?php echo $p =="attribut" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("attribut","Item","admin",$post->id);?>' >attribut</a>
+        </li>
+        <li class='<?php echo $p =="craft" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("craft","Item","admin",$post->id);?>' >craft</a>
+        </li>
+
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["equipement"]) ) { ?>
+
+        <li class='<?php echo $p =="ressource" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("ressource","Item","admin",$post->id);?>' >ressource</a>
+        </li>
+        <li class='<?php echo $p =="attribut" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("attribut","Item","admin",$post->id);?>' >attribut</a>
+        </li>
+        <li class='<?php echo $p =="craft" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("craft","Item","admin",$post->id);?>' >craft</a>
+        </li>
+
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["item"]) ) { ?>
+
+        <li class='<?php echo $p =="ressource" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("ressource","Item","admin",$post->id);?>' >ressource</a>
+        </li>
+        <li class='<?php echo $p =="attribut" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("attribut","Item","admin",$post->id);?>' >attribut</a>
+        </li>
+        <li class='<?php echo $p =="craft" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("craft","Item","admin",$post->id);?>' >craft</a>
+        </li>
+
+    <?php } elseif( in_array($post->type , ItemEntity::type_arr["batiment"]) ) { ?>
+
+        <li class='<?php echo $p =="catalogue" ? 'active' : '' ?>'>
+            <a href='<?php echo Url::generate("catalogue","Item","admin",$post->id);?>' >catalogue</a>
+        </li>
+
+    <?php } ?>
 
     </ul>
+
 <?php } ?>

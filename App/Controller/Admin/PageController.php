@@ -45,7 +45,7 @@ class PageController extends AppController
     {
         $form = new Form($post);
 
-        $categories = $this->Article->listing('page');
+        //$categories = $this->Article->listing('page');
 
         $form->input("titre", array('label' => "titre article"))
             ->input("menu", array('label' => "menu article"))
@@ -103,7 +103,7 @@ class PageController extends AppController
 
         $this->form = $this->form_article(Post::getInstance()->content('post'));
 
-        Render::getInstance()->setView("Admin/Page/single"); // , compact('form','categories'));
+        Render::getInstance()->setView("Admin/Page/single");
     }
 
     /**
@@ -132,7 +132,7 @@ class PageController extends AppController
             }
         }
 
-        Render::getInstance()->setView("Admin/Page/delete"); // , compact('posts','categories'));
+        Render::getInstance()->setView("Admin/Page/delete");
     }
 
     /**
@@ -166,7 +166,7 @@ class PageController extends AppController
             $this->form = $this->form_article($this->post,$keywords);
         }
 
-        Render::getInstance()->setView("Admin/Page/single"); // , compact('post','categories','success','form'));
+        Render::getInstance()->setView("Admin/Page/single");
     }
 
     public function content($id){
@@ -196,7 +196,7 @@ class PageController extends AppController
         }
 
 
-        Render::getInstance()->setView("Admin/Page/content"); // , compact('post','categories','success','form'));
+        Render::getInstance()->setView("Admin/Page/content");
     }
 
 

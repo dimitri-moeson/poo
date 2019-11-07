@@ -22,7 +22,7 @@ class ItemEntity extends Entity
         "politique" => array(
 
             "faction",
-            "guilde",
+            "philosophie",
             "race"
 
         ),
@@ -111,6 +111,15 @@ class ItemEntity extends Entity
             "ressource",
             "statistique"
         ),
+
+        "competence" => array(
+
+            "attaque",
+            "defense",
+            "soin",
+            "renforcement",
+            "débilitation"
+        )
     );
 
     const categorie_arr = array(
@@ -156,6 +165,12 @@ class ItemEntity extends Entity
             "defensif"
 
         ),
+
+        "personnage" => array(
+
+            "bonus",
+            "malus"
+        )
     );
 
     /**

@@ -42,9 +42,9 @@ class ItemForm
      * @param $selected
      * @return string
      */
-    static function select_obj($selected, $grp = null ){
+    static function select_obj($name="objet",$selected, $grp = null ){
 
-        $cnt = "<label>Objet</label><br/><select class='show-tick' name='objet' data-live-search='true' >";
+        $cnt = "<label>Objet</label><br/><select class='show-tick' name='$name' data-live-search='true' >";
         $cnt .= "<option>...</option>";
 
         if(is_null($grp)) {
@@ -80,21 +80,31 @@ class ItemForm
      * @param $selected
      * @return string
      */
-    static function select_typ($selected){
+    static function select_typ($selected, $type = null ){
 
         $cnt = "<label>Type</label><br/><select class='show-tick' name='type' data-live-search='true' >";
         $cnt .= "<option>...</option>";
 
-        foreach (ItemEntity::type_arr as $group => $icons ){
+        if(is_null($type)) {
+            foreach (ItemEntity::type_arr as $group => $icons ){
 
-            $cnt .= "<optgroup label='$group'>";
+                $cnt .= "<optgroup label='$group'>";
 
-            foreach ( $icons as $class ) {
+                foreach ( $icons as $class ) {
 
-                $cnt .= "<option ".($class===$selected ? "selected" : "" )."  value='$class' >$class</option>";
+                    $cnt .= "<option ".($class===$selected ? "selected" : "" )."  value='$class' >$class</option>";
+                }
+
+                $cnt .= "</optgroup>";
             }
+        }
+        else {
 
-            $cnt .= "</optgroup>";
+            foreach (ItemEntity::type_arr[$type] as $class) {
+
+                $cnt .= "<option " . ($class === $selected ? "selected" : "") . "  value='$class' >$class</option>";
+
+            }
         }
 
         $cnt .= "</select>";
