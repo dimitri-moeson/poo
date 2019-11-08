@@ -104,7 +104,8 @@ class ItemEntity extends Entity
         "personnage" => array(
 
             "ressource",
-            "statistique"
+            "statistique",
+            "caractere"
         ),
 
         "competence" => array(
@@ -175,6 +176,13 @@ class ItemEntity extends Entity
             "support",
             "sapeur"
         ),
+
+        "action" => array(
+
+            "requis",
+            "ajout",
+            "cout",
+        )
     );
 
     /**

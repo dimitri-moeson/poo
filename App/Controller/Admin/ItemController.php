@@ -238,27 +238,25 @@ class ItemController extends AppController
         if(Post::getInstance()->submit()) {
 
             $datas = array(
-                "parent_id" =>$id ,
+                "parent_id" => $id ,
                 "rubrique" => Post::getInstance()->val("rubrique"),
                 "child_id" => Post::getInstance()->val("child_id"),
                 "type" => Post::getInstance()->val("type"),
                 "val" => Post::getInstance()->val("val"),
+                "caract" => Post::getInstance()->val("caract")
             );
 
             if(Post::getInstance()->has("id")) {
 
-                $_id = Post::getInstance()->has("id");
+                $_id = intval(Post::getInstance()->has("id"));
 
-                if ($this->Inventaire->update($_id, $datas)) {
+                if ($this->Inventaire->update($_id, $datas))
                     FlashBuilder::create("cible modifié", "success");
-
-                }
             }
             else
             {
-                if ($this->Inventaire->create($datas)) {
+                if ($this->Inventaire->create($datas))
                     FlashBuilder::create("cible ajouté", "success");
-                }
             }
 
             return true ;
@@ -283,22 +281,21 @@ class ItemController extends AppController
         Header::getInstance()->setTitle($this->post->titre);
 
         $linked = $this->Inventaire->findBy(array("parent_id" => $id));
-        $items =  $this->Item->list("id","name");
-
+        $items =  $this->Item->typeListing(array('strum',"composant")) ; //request($statementT);
 
         foreach($linked as $x => $link) {
 
             $this->forms[$x] = array(
 
                 "label" => "Editer caractéristique",
-                "form" => ItemForm::_mission($this->post, $link,$items)
+                "form" => ItemForm::_mission($this->post, $link,$items,$x)
             );
         }
 
         $this->forms[] = array(
 
             "label" => "Ajouter caractéristique",
-            "form" => ItemForm::_mission($this->post,null,$items)
+            "form" => ItemForm::_mission($this->post,null,$items, @($x++))
         );
 
         Render::getInstance()->setView("Admin/Item/mission");
@@ -321,21 +318,22 @@ class ItemController extends AppController
         Header::getInstance()->setTitle($this->post->titre);
 
         $linked = $this->Inventaire->findBy(array("parent_id" => $id,"type"=>"statistique","rubrique"=>$this->post->type));
-        $items = $this->Item->list("id", "name",["type"=>"statistique"]);
+        //$items = $this->Item->list("id", "name",["type"=>"statistique"]);
+        $items =  $this->Item->typeListing(array('statistique')) ; //request($statementT);
 
         foreach($linked as $x => $link) {
 
             $this->forms[$x] = array(
 
                 "label" => "Editer statistique",
-                "form" => ItemForm::_attribut($this->post, $link,$items)
+                "form" => ItemForm::_attribut($this->post, $link,$items,$x)
             );
         }
 
         $this->forms[] = array(
 
             "label" => "Ajouter statistique",
-            "form" => ItemForm::_attribut($this->post, null, $items)
+            "form" => ItemForm::_attribut($this->post, null, $items, @($x++))
         );
 
         Render::getInstance()->setView("Admin/Item/mission");
@@ -355,21 +353,22 @@ class ItemController extends AppController
         Header::getInstance()->setTitle($this->post->titre);
 
         $linked = $this->Inventaire->findBy(array("parent_id" => $id,"type"=>"ressource","rubrique"=>$this->post->type));
-        $items = $this->Item->list("id", "name",["type"=>"ressource"]);
+        //$items = $this->Item->list("id", "name",["type"=>"ressource"]);
+        $items =  $this->Item->typeListing(array('ressource')) ; //request($statementT);
 
         foreach($linked as $x => $link) {
 
             $this->forms[$x] = array(
 
                 "label" => "Editer ressource",
-                "form" => ItemForm::_ressource($this->post, $link,$items)
+                "form" => ItemForm::_ressource($this->post, $link,$items,$x)
             );
         }
 
         $this->forms[] = array(
 
             "label" => "Ajouter ressource",
-            "form" => ItemForm::_ressource($this->post, null, $items)
+            "form" => ItemForm::_ressource($this->post, null, $items, @($x++))
         );
 
         Render::getInstance()->setView("Admin/Item/mission");
@@ -392,21 +391,22 @@ class ItemController extends AppController
         Header::getInstance()->setTitle($this->post->titre);
 
         $linked = $this->Inventaire->findBy(array("parent_id" => $id,"type"=>"composant","rubrique"=>$this->post->type));
-        $items = $this->Item->list("id", "name",["type"=>"composant"]);
+        //$items = $this->Item->list("id", "name",["type"=>"composant"]);
+        $items =  $this->Item->typeListing(array('composant')) ; //request($statementT);
 
         foreach($linked as $x => $link) {
 
             $this->forms[$x] = array(
 
                 "label" => "Editer composant",
-                "form" => ItemForm::_craft($this->post, $link,$items)
+                "form" => ItemForm::_craft($this->post, $link,$items,$x)
             );
         }
 
         $this->forms[] = array(
 
             "label" => "Ajouter composant",
-            "form" => ItemForm::_craft($this->post,null,$items)
+            "form" => ItemForm::_craft($this->post,null,$items, @($x++))
         );
 
         Render::getInstance()->setView("Admin/Item/mission");

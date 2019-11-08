@@ -1,6 +1,6 @@
 <?php
 
-namespace HTML\Icon;
+namespace Core\HTML\Icon;
 
 
 class Icon
@@ -8,12 +8,11 @@ class Icon
 
     const icon_list = array(
 
-        "amulette" => array(
-
+        "amulette" => array
+        (
             "ra ra-gem-pendant" => "amulette"  ,
             "fas fa-medal" =>"medaille"  ,
             "fas fa-award" => "cocarde" ,
-
         ),
 
         "batteries" => array(

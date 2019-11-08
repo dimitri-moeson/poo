@@ -10,11 +10,11 @@ use Core\Session\FlashBuilder;
 
 <?php echo FlashBuilder::create()->get() ?>
 
-<?php echo Render::getInstance()->block("admin.itm.tabs", array(
+<?php echo isset($post) ? Render::getInstance()->block("admin.itm.tabs", array(
 
     "p" => "single",
-    "post" => $post
-)); ?>
+    "post" => $post ?? null
+)) : "" ; ?>
 
 <div class="tab-content col-sm-12">
 
@@ -55,7 +55,7 @@ use Core\Session\FlashBuilder;
         </table>
     </div>
 
-    <form action="" method="post">
+    <form class="col-sm-5" action="" method="post">
         <?php echo $form ?>
     </form>
 

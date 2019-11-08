@@ -15,7 +15,8 @@ class MapForm
 
     static function selectTerrain($selected , $icons = null ){
 
-        $cnt = "<label>Terrain</label><br/><select size='5' class='custom-select show-tick' name='terrain' data-show-icon='true' data-live-search='true'>";
+        // size='5' class='custom-select show-tick'
+        $cnt = "<label>Terrain</label><br/><select name='terrain' data-show-icon='true' data-live-search='true'>";
 
         $cnt .= "<option>---</option>";
 
@@ -34,7 +35,8 @@ class MapForm
 
     static function selectInstall($selected , $icons = null ){
 
-        $cnt = "<label>Installé</label><br/><select size='5' class='custom-select show-tick' name='install' data-show-icon='true' data-live-search='true'>";
+        // size='5' class='custom-select show-tick'
+        $cnt = "<label>Installé</label><br/><select name='install' data-show-icon='true' data-live-search='true'>";
 
         $cnt .= "<option>---</option>";
 

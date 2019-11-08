@@ -78,17 +78,19 @@ class MysqlDatabase extends Database
     public function exec($statement, $attrs = null){
 
         try {
-            if (is_null($attrs)) {
+            if (is_null($attrs))
+            {
                 $res = $this->getPDO()->query($statement);
 
                 return [$res];
-            } else {
-
+            }
+            else
+            {
                 $req = $this->getPDO()->prepare($statement);
 
                 foreach ($attrs as $field => $value ){
 
-                    if(is_numeric($value))
+                    if(is_numeric($value) or is_integer($value))
                     {
                         $req->bindValue(":" . $field, $value, PDO::PARAM_INT);
                     }
@@ -96,10 +98,13 @@ class MysqlDatabase extends Database
                     {
                         $req->bindValue(":" . $field, $value, PDO::PARAM_STR);
                     }
-
+                else
+                    {
+                        $req->bindValue(":" . $field, $value );
+                    }
                 }
 
-                $res = $req->execute(); // $attrs
+                $res = $req->execute();
 
                 return [$req, $res];
             }

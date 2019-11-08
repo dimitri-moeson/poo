@@ -20,6 +20,10 @@ class Input
     private $class;
     private $i_name;
     /**
+     * @var Surround $surround
+     */
+    private $surround;
+    /**
      * @var array
      */
     private $options;
@@ -39,6 +43,7 @@ class Input
         $this->value = $options["value"] ?? null;
         $this->class = $options["class"] ?? null;
         $this->options = $options ?? array() ;
+        $this->surround = new Surround("surround_".$name);
     }
 
     /**
@@ -158,7 +163,16 @@ class Input
                 $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='" . $this->type . "' id='" . $this->type . "-" . $this->name . "' name='" . $this->i_name . "' value='" . $this->value . "' />";
                 break;
         }
-        return ($html_label . "\n\r" . $html_input); // $this->surround
+
+        if( $this->type ==="hidden")
+        {
+            return $html_input ;
+        }
+        else
+        {
+            $s = $this->surround ;
+            return ("<$s>".$html_label . "\n\r" . $html_input."</$s>");
+        }
 
     }
 
@@ -183,6 +197,24 @@ class Input
 
         return $content ;
 
+    }
+
+    /**
+     * @return Surround
+     */
+    public function getSurround(): Surround
+    {
+        return $this->surround;
+    }
+
+    /**
+     * @param Surround $surround
+     */
+    public function setSurround(Surround $surround): Input
+    {
+        $this->surround = $surround;
+
+        return $this ;
     }
 
 }

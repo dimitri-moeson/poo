@@ -19,10 +19,10 @@ use Core\Session\FlashBuilder;
 
             <table class="table">
 
-            <?php foreach($linked as $type => $links) { ?>
+            <?php foreach($linked as $typ => $links) { ?>
 
                 <tr>
-                    <th colspan="3"><h2><?php echo $type ?></h2></th>
+                    <th colspan="3"><h2><?php echo $typ ?></h2></th>
                 </tr>
                 <tr>
                     <th>child</th>
@@ -37,7 +37,6 @@ use Core\Session\FlashBuilder;
                         <td><?php echo $link->val ?></td>
                         <td><?php echo $link->caract ?></td>
                     </tr>
-
 
                     <?php if( in_array($post->type , ItemEntity::type_arr["aventure"]) ) { ?>
 

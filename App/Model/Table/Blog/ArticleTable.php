@@ -37,14 +37,7 @@ class ArticleTable extends Table
      * @return array|mixed
      */
     public function recup($slug){
-/**
-        $statement = QueryBuilder::init()->select('a.*')
-            ->from('article','a')
-            ->where('a.slug = :slug ')
-            ->orders("date DESC");
 
-        //return $this->request( $statement, array('slug' => $slug),true,ArticleEntity::class );
-*/
         return $this->findOneBy(array("slug"=> $slug));
 
     }
@@ -53,17 +46,7 @@ class ArticleTable extends Table
      * @return array|mixed
      */
     public function default(){
-/**
-        $statement = QueryBuilder::init()->select('a.*')
-            ->from('article','a')
-            ->where('a.type = "page" ')
-            ->where('a.default = 1 ')
-            ->orders("a.id DESC");
 
-        //echo $statement ;
-
-        //return $this->request( $statement, null ,true,ArticleEntity::class );
-**/
         return $this->findOneBy(array("type" => "page", "default"=> 1));
     }
 
@@ -72,9 +55,8 @@ class ArticleTable extends Table
      */
     public function all(){
 
-        $statement = QueryBuilder::init()->select('a.*')/** , 'c.nom as cat_titre' */
+        $statement = QueryBuilder::init()->select('a.*')
             ->from('article','a')
-        //    ->join('categorie','c.id = a.categorie_id','left','c')
         ;
 
         return $this->request( $statement );
@@ -126,7 +108,7 @@ class ArticleTable extends Table
             $attr["parent"] = $parent;
         }
 
-        return $this->list("id","titre", $statement ,$attr);
+        return $this->list("id","titre",$attr, $statement );
 
     }
 

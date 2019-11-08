@@ -12,6 +12,7 @@ class Form
     private $data = array();
     private $configs = [];
     private $separations = [];
+    private $surround;
 
     /**
      * @param $form
@@ -34,6 +35,10 @@ class Form
     public function __construct($data = null)
     {
         $this->data = $data;
+
+        $this->surround = new Surround("default");
+        $this->surround->setType("div");
+        $this->surround->setClass("row");
         return $this;
     }
 
@@ -111,14 +116,19 @@ class Form
     public function input(string $name, array $options = []):?self
     {
         $value    = $options['value'] ?? $this->getValue($name);
-        //$surround = $options['surround'] ?? 'p';
 
         $options['name'] = $options['name'] ?? $name;
         $options['type'] = $options['type'] ?? "text";
+        $surround = $options['surround']['type'] ?? $this->surround->getType() ?? 'div';
+        $s_cls = $options['surround']['class'] ?? $this->surround->getClass() ?? 'row';
+
         $this->inputs[$name] = new Input($name, $options);
+
         if( $this->inputs[$name] instanceof Input)
         {
             $this->inputs[$name]->setValue($value);//->surround($surround);
+            $this->inputs[$name]->getSurround()->setType($surround);
+            $this->inputs[$name]->getSurround()->setClass($s_cls);
         }
 
         if(isset($options['conf'])) $this->confirm_input($name,$options);
@@ -133,21 +143,32 @@ class Form
      */
     public function pswd(string $name, array $options = []):?self
     {
+        $this->input($name, $options);
+        $this->inputs[$name]->setType("password");
+        return $this;
+        /**
         $value    = $options['value'] ?? $this->getValue($name);
-        //$surround = $options['surround'] ?? 'p';
 
         $options['type'] = $options['type'] ?? "password";
         $options['name'] = $options['name'] ?? $name;
 
         $this->inputs[$name] = new Input($name, $options);
+
         if( $this->inputs[$name] instanceof Input)
         {
             $this->inputs[$name]->setValue($value);//->surround($surround);
         }
 
+        if(isset($options['surround'])) {
+            $surround = $options['surround']['type'] ?? $this->surround->getType() ?? 'p';
+            $s_cls = $options['surround']['class'] ?? $this->surround->getClass() ?? 'row';
+
+            $this->inputs[$name]->getSurround()->setType($surround);
+            $this->inputs[$name]->getSurround()->setClass($s_cls);
+        }
         if(isset($options['conf'])) $this->confirm_input($name,$options);
 
-        return $this;
+        return $this;**/
     }
 
     /**
@@ -159,6 +180,7 @@ class Form
         if($options['conf'])
         {
             $value    = $options['value'] ?? $this->getValue($name);
+            $surround = $options['surround']['type'] ?? 'p';
 
             $options['label'] = "Confirmer ".strtolower($options['label']);
             $options['name'] = $options['name']."_conf" ?? $name."_conf";
@@ -167,6 +189,7 @@ class Form
             if( $this->inputs[$name."_conf"] instanceof Input)
             {
                 $this->inputs[$name."_conf"]->setValue($value);//->surround($surround);
+                //$this->inputs[$name]->getSurround()->setType($surround);
             }
             $options['conf'] = false ;
         }
@@ -224,9 +247,9 @@ class Form
      *
      * @return string
      */
-    public function submit(string $send):?self
+    public function submit(string $send, array $options = []):?self
     {
-        $this->input("submit");
+        $this->input("submit",$options);
         $this->inputs["submit"]->setType("submit")->setValue($send);
         return $this;
     }
@@ -239,17 +262,28 @@ class Form
         $string = "<form enctype='multipart/form-data' method='" . ( $this->configs["method"] ?? "post" ) . "' " . ($this->configs["attr"] ?? '') . " action='" . ($this->configs["action"] ?? '') . "'>";
         foreach ($this->inputs as $name => $html_input)
         {
-            if( ($this->inputs[$name] instanceof Input) && $this->inputs[$name]->getType() ==="hidden")
-            {
-                $string .= $html_input ;
-            }
-            else
-            {
-                $string .= "<p>".$html_input."</p><br/>";
-            }
+            $string .= $html_input ;
         }
         $string .= "</form>";
         return $string;
+    }
+
+    /**
+     * @param mixed $surround
+     * @return Form
+     */
+    public function setSurround($surround)
+    {
+        $this->surround = $surround;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSurround()
+    {
+        return $this->surround;
     }
 
 }

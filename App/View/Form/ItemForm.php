@@ -4,7 +4,7 @@ namespace App\View\Form;
 
 use App\Model\Entity\Game\Item\ItemEntity;
 use Core\HTML\Form\Form;
-use HTML\Icon\Icon;
+use Core\HTML\Icon\Icon;
 
 class ItemForm
 {
@@ -43,9 +43,9 @@ class ItemForm
      * @param $selected
      * @return string
      */
-    private static function select_obj($name="objet",$selected, $grp = null ){
-
-        $cnt = "<label>Objet</label><br/><select class='show-tick' name='$name' data-live-search='true' >";
+    private static function select_obj($name="objet",$selected, $grp = null, $class = "row" ){
+        //class='show-tick'
+        $cnt = "<div class='$class'><label>Objet</label><select  name='$name' data-live-search='true' >";
         $cnt .= "<option>...</option>";
 
         if(is_null($grp)) {
@@ -65,13 +65,13 @@ class ItemForm
 
             foreach (ItemEntity::categorie_arr[$grp] as $class) {
 
-                    $cnt .= "<option " . ($class === $selected ? "selected" : "") . "  value='$class' >$class</option>";
+                $cnt .= "<option " . ($class === $selected ? "selected" : "") . "  value='$class' >$class</option>";
 
             }
 
         }
 
-        $cnt .= "</select>";
+        $cnt .= "</select></div>";
 
         return $cnt ;
 
@@ -82,8 +82,8 @@ class ItemForm
      * @return string
      */
     private static function select_typ($selected, $type = null ){
-
-        $cnt = "<label>Type</label><br/><select class='show-tick' name='type' data-live-search='true' >";
+        //class='show-tick'
+        $cnt = "<div class='row'><label>Type</label><select  name='type' data-live-search='true' >";
         $cnt .= "<option>...</option>";
 
         if(is_null($type)) {
@@ -108,7 +108,7 @@ class ItemForm
             }
         }
 
-        $cnt .= "</select>";
+        $cnt .= "</select></div>";
 
         return $cnt ;
 
@@ -119,8 +119,8 @@ class ItemForm
      * @return string
      */
     private static function select_img($selected , $type = null ){
-
-        $cnt = "<label>Icone</label><br/><select size='5' class='custom-select show-tick' name='img' data-show-icon='true' data-live-search='true'>";
+        //class='custom-select show-tick'
+        $cnt = "<label>Icone</label><select  name='img' data-show-icon='true' data-live-search='true'>";
 
         $cnt .= "<option>...</option>";
 
@@ -226,7 +226,7 @@ class ItemForm
         $form =new Form($link);
 
         if (!empty($link)) {
-            if(isset($link->id))
+            if(isset($link->id) && !empty($link->id))
                 $form->input("action", array("type"=>"hidden","name"=>"action","value"=>"edition"))
                     ->input("id", array("type"=>"hidden","name"=>"id","value"=>@$link->id));
             else
@@ -239,60 +239,91 @@ class ItemForm
         return $form ;
     }
 
+    private static function selectChild($selected , $icons = null, $label, $index ){
+        //class='custom-select show-tick'
+        $cnt = "<div class='col-sm-4'>
+                    <label>$label</label>
+                    <select id='child_id_$index' name='child_id' data-show-icon='true' data-live-search='true'>";
+
+        $cnt .= "<option>---</option>";
+
+        foreach ( $icons as  $icon) {
+
+            $cnt .= "<option ".($icon->id===$selected ? "selected" : "" )."  
+            value='".$icon->id."' 
+            data-content='<i class=\"".$icon->getImg()."\"></i> ".$icon->getName()."'>".
+                $icon->getName()."</option>";
+        }
+
+        $cnt .= "</select></div>";
+
+        return $cnt ;
+    }
+
+
     /**
      * @param $post
      * @param null $link
      * @return Form
      */
-    static function _mission($post, $link = null, $items){
+    static function _mission($post, $link = null, $items, $index){
 
         $form = self::_inventaire($post, $link);
 
-        $form->input("val", array("name"=>"val","label"=>"quantité"));
+        $surround = array("type" => "div", "class" => "col-sm-4");
 
-        $form->select("child_id",array("name"=>"child_id","value"=>@$link->child_id,"label"=>"cible"),$items);
+        $form->addInput("type", self::select_obj("type",@$link->type,"mission","col-sm-4") );
+        $form->addInput("child_id", self::selectChild(@$link->child_id,$items,"cible", $index ));
+        $form->input("val", array("name"=>"val","label"=>"quantité", "surround" => $surround , "id" => "val_".$index));
 
-        $form->addInput("type", self::select_obj("type",@$link->type,"mission") );
+        /**
+            elseif( in_array($post->type , ItemEntity::type_arr["classe"]) ) { }
+            elseif( in_array($post->type , ItemEntity::type_arr["faune"]) ) {  }
+            elseif( in_array($post->type , ItemEntity::type_arr["arme_1_main"]) ) {  }
+            elseif( in_array($post->type , ItemEntity::type_arr["equipement"]) ) { }
+            elseif( in_array($post->type , ItemEntity::type_arr["arme_2_main"]) ) {  }
+            elseif( in_array($post->type , ItemEntity::type_arr["batiment"]) ) { }
+         **/
 
-        /** elseif( in_array($post->type , ItemEntity::type_arr["classe"]) ) { }
-        elseif( in_array($post->type , ItemEntity::type_arr["faune"]) ) {  }
-        elseif( in_array($post->type , ItemEntity::type_arr["arme_1_main"]) ) {  }
-        elseif( in_array($post->type , ItemEntity::type_arr["equipement"]) ) { }
-        elseif( in_array($post->type , ItemEntity::type_arr["arme_2_main"]) ) {  }
-        elseif( in_array($post->type , ItemEntity::type_arr["batiment"]) ) { }**/
-        $form->submit("reg");
+        $form->submit("reg",array("name"=>"val", "surround" => $surround));
 
         return $form ;
     }
 
-    static function _attribut($post, $link = null , $items )
+    static function _attribut($post, $link = null , $items,$index )
     {
         $form = self::_inventaire($post, $link);
 
-        $form->input("type", array("type"=>"hidden","name"=>"type","value"=>"statistique"));
-        $form->input("val", array("name"=>"val","label"=>"score"));
+        $surround = array("type" => "div", "class" => "col-sm-3");
 
-        $form->select("child_id", array("name" => "child_id", "value" => @$link->child_id,"label" => "caractéristique"), $items);
+        $form->addInput("print_r", print_r($link,1));
+        $form->input("type", array("type"=>"hidden" ,"name"=>"type","value"=>"statistique"));
+        $form->addInput("child_id", self::selectChild(@$link->child_id,$items,"caractéristique",$index));
+        $form->input("val", array("name"=>"val", "surround" => $surround ,"label"=>"score", "id" => "val_".$index));
+        $form->addInput("caract", self::select_obj("caract",@$link->caract,"action","col-sm-4" ));
 
+        //$form->select("child_id", array("name" => "child_id", "surround" => $surround , "value" => @$link->child_id,"label" => "caractéristique"), $items);
         //$form->addInput("type", ItemForm::select_obj("type", @$link->type, "personnage"));
 
-        $form->submit("reg");
+        $form->submit("reg",array("surround" => $surround));
 
         return $form;
     }
 
-    static function _ressource($post, $link = null , $items )
+    static function _ressource($post, $link = null , $items,$index )
     {
         $form = self::_inventaire($post, $link);
 
+        $surround = array("type" => "div", "class" => "col-sm-4");
+
         $form->input("type", array("type"=>"hidden","name"=>"type","value"=>"ressource"));
-        $form->input("val", array("name"=>"val","label"=>"score"));
+        $form->addInput("child_id", self::selectChild(@$link->child_id,$items,"ressource",$index));
+        $form->input("val", array("name"=>"val", "surround" => $surround ,"label"=>"score", "id" => "val_".$index));
 
-        $form->select("child_id", array("name" => "child_id", "value" => @$link->child_id,"label" => "ressource"), $items);
-
+        //$form->select("child_id", array("name" => "child_id", "surround" => $surround , "value" => @$link->child_id,"label" => "ressource"), $items);
         //$form->addInput("type", ItemForm::select_obj("type", @$link->type, "personnage"));
 
-        $form->submit("reg");
+        $form->submit("reg",array("name"=>"val", "surround" => $surround));
 
         return $form;
     }
@@ -303,17 +334,20 @@ class ItemForm
      * @param $items
      * @return Form
      */
-    static function _craft($post, $link = null,$items )
+    static function _craft($post, $link = null,$items,$index )
     {
 
         $form = self::_inventaire($post, $link);
 
+        $surround = array("type" => "div", "class" => "col-sm-4");
+
         $form->input("type", array("type"=>"hidden","name"=>"type","value"=>"composant"));
-        $form->input("val", array("name"=>"val","label"=>"quantité"));
+        $form->input("val", array("name"=>"val", "surround" => $surround ,"label"=>"quantité", "id" => "val_".$index));
 
-        $form->select("child_id", array("name" => "child_id", "value" => @$link->child_id,"label" => "composant"), $items);
+        //$form->select("child_id", array("name" => "child_id", "surround" => $surround , "value" => @$link->child_id,"label" => "composant"), $items);
+        $form->addInput("child_id", self::selectChild(@$link->child_id,$items,"composant",$index ));
 
-        $form->submit("reg");
+        $form->submit("reg",array("name"=>"val", "surround" => $surround));
 
         return $form;
     }

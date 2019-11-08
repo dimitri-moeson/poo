@@ -232,12 +232,12 @@ class Table
 
         if(is_null($id)){
 
-            $sql_parts['createAt'] = " createAt = :createAt ";
+            $sql_parts['createAt'] = " `createAt` = :createAt ";
                 $attrs['createAt'] = date("Y-m-d H:i:s");
 
         }
 
-        $sql_parts['updateAt'] = " updateAt = :updateAt ";
+        $sql_parts['updateAt'] = " `updateAt` = :updateAt ";
             $attrs['updateAt'] = date("Y-m-d H:i:s");
 
         return array ( $sql_parts , $attrs );
