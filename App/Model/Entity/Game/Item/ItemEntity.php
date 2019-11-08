@@ -24,7 +24,6 @@ class ItemEntity extends Entity
             "faction",
             "philosophie",
             "race"
-
         ),
 
         "classe" => array(
@@ -32,10 +31,6 @@ class ItemEntity extends Entity
             "cac",
             "distant",
             "caster",
-            "tank",
-            "healer",
-            "support",
-            "sapeur"
         ),
 
         "arme_1_main" => array(
@@ -170,7 +165,16 @@ class ItemEntity extends Entity
 
             "bonus",
             "malus"
-        )
+        ),
+
+        "role" => array(
+
+            "tank",
+            "degat",
+            "healer",
+            "support",
+            "sapeur"
+        ),
     );
 
     /**

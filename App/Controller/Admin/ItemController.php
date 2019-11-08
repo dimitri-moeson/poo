@@ -33,151 +33,6 @@ class ItemController extends AppController
         $this->loadModel("Game\Inventaire\Inventaire");
     }
 
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_article($post)
-    {
-        $form = new Form($post);
-
-        $form->addInput("type", ItemForm::select_typ(@$post->type ?? $post["type"]) ) ;
-        $form->addInput("objet", ItemForm::select_obj("objet",@$post->objet) ) ;
-
-        $form->input("name", array('label' => "Nom"));
-        $form->input("vie", array('label' => "Moyenne"));
-
-        $form->submit("Enregistrer");
-
-
-        return $form ;
-    }
-
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_descript($post)
-    {
-        $form = new Form($post);
-        $form->input("description", array('type' => 'textarea', 'label' => "Descriptif", "class" => "editor"));
-
-        $form->submit("Enregistrer");
-
-
-        return $form ;
-    }
-
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_icon($post){
-
-        $form = new Form($post);
-        $form->addInput("img", ItemForm::checkbox_img(@$post->img) ) ;
-
-        $form->submit("Enregistrer");
-
-        return $form ;
-
-    }
-
-    private function form_inventaire($post, $link = null){
-
-        $form =new Form($link);
-
-        if(isset($link->id))
-            $form->input("action", array("type"=>"hidden","name"=>"action","value"=>"edition"))
-                ->input("id", array("type"=>"hidden","name"=>"id","value"=>@$link->id));
-        else
-            $form->input("action", array("type"=>"hidden","name"=>"action","value"=>"ajout"));
-
-        $form->input("parent_id", array("type"=>"hidden","name"=>"parent_id","value"=>@$link->parent_id))
-            ->input("rubrique", array("type"=>"hidden","name"=>"rubrique","value"=>@$post->type));
-
-        return $form ;
-    }
-
-    /**
-     * @param $post
-     * @param null $link
-     * @return Form
-     */
-    private function form_mission($post, $link = null, $items){
-
-        $form = $this->form_inventaire($post, $link);
-
-        $form->input("val", array("name"=>"val","label"=>"quantité"));
-
-        $form->select("child_id",array("name"=>"child_id","value"=>@$link->child_id,"label"=>"cible"),$items);
-
-       $form->addInput("type", ItemForm::select_obj("type",@$link->type,"mission") );
-
-       /** elseif( in_array($post->type , ItemEntity::type_arr["classe"]) ) { }
-        elseif( in_array($post->type , ItemEntity::type_arr["faune"]) ) {  }
-        elseif( in_array($post->type , ItemEntity::type_arr["arme_1_main"]) ) {  }
-        elseif( in_array($post->type , ItemEntity::type_arr["equipement"]) ) { }
-        elseif( in_array($post->type , ItemEntity::type_arr["arme_2_main"]) ) {  }
-        elseif( in_array($post->type , ItemEntity::type_arr["batiment"]) ) { }**/
-        $form->submit("reg");
-
-        return $form ;
-    }
-
-    private function form_attribut($post, $link = null , $items )
-    {
-        $form = $this->form_inventaire($post, $link);
-
-        $form->input("type", array("type"=>"hidden","name"=>"type","value"=>"statistique"));
-        $form->input("val", array("name"=>"val","label"=>"score"));
-
-        $form->select("child_id", array("name" => "child_id", "value" => @$link->child_id,"label" => "caractéristique"), $items);
-
-        //$form->addInput("type", ItemForm::select_obj("type", @$link->type, "personnage"));
-
-        $form->submit("reg");
-
-        return $form;
-    }
-
-    private function form_ressource($post, $link = null , $items )
-    {
-        $form = $this->form_inventaire($post, $link);
-
-        $form->input("type", array("type"=>"hidden","name"=>"type","value"=>"ressource"));
-        $form->input("val", array("name"=>"val","label"=>"score"));
-
-        $form->select("child_id", array("name" => "child_id", "value" => @$link->child_id,"label" => "ressource"), $items);
-
-        //$form->addInput("type", ItemForm::select_obj("type", @$link->type, "personnage"));
-
-        $form->submit("reg");
-
-        return $form;
-    }
-
-    /**
-     * @param $post
-     * @param null $link
-     * @param $items
-     * @return Form
-     */
-    private function form_craft($post, $link = null,$items )
-    {
-
-        $form = $this->form_inventaire($post, $link);
-
-        $form->input("type", array("type"=>"hidden","name"=>"type","value"=>"composant"));
-        $form->input("val", array("name"=>"val","label"=>"quantité"));
-
-        $form->select("child_id", array("name" => "child_id", "value" => @$link->child_id,"label" => "composant"), $items);
-
-        $form->submit("reg");
-
-        return $form;
-    }
-
         /**
      * @param null $type
      */
@@ -219,7 +74,7 @@ class ItemController extends AppController
             $this->type = null ;
         }
 
-        $this->form = $this->form_article(Post::getInstance()->content('post'));
+        $this->form = ItemForm::_article(Post::getInstance()->content('post'));
 
         Render::getInstance()->setView("Admin/Item/single"); // , compact('form','categories'));
     }
@@ -314,7 +169,7 @@ class ItemController extends AppController
 
 
 
-        $this->form = $this->form_article($this->post);
+        $this->form = ItemForm::_article($this->post);
 
         Render::getInstance()->setView("Admin/Item/single"); // , compact('post','categories','success','form'));
     }
@@ -340,7 +195,7 @@ class ItemController extends AppController
 
         Header::getInstance()->setTitle($this->post->titre);
 
-        $this->form = $this->form_descript($this->post);
+        $this->form = ItemForm::_descript($this->post);
 
         Render::getInstance()->setView("Admin/Item/descript"); // , compact('post','categories','success','form'));
 
@@ -368,7 +223,7 @@ class ItemController extends AppController
         Header::getInstance()->setTitle($this->post->titre);
 
 
-        $this->form = $this->form_icon($this->post);
+        $this->form = ItemForm::_icon($this->post);
 
         Render::getInstance()->setView("Admin/Item/icone"); // , compact('post','categories','success','form'));
 
@@ -411,29 +266,6 @@ class ItemController extends AppController
     }
 
     /**
-     * @param $id
-     * @param $categorie
-     */
-    private function init_forms_inventaire($categorie, $linked , $items ){
-
-        foreach($linked as $x => $link) {
-
-            $this->forms[$x] = array(
-
-                "label" => "Editer $categorie",
-                "form" => $this->form_craft($this->post, $link,$items)
-            );
-        }
-
-        $this->forms[] = array(
-
-            "label" => "Ajouter $categorie",
-            "form" => $this->form_craft($this->post,null,$items)
-        );
-
-    }
-
-    /**
      * if type => in "aventure"
      * @param $id
      */
@@ -459,14 +291,14 @@ class ItemController extends AppController
             $this->forms[$x] = array(
 
                 "label" => "Editer caractéristique",
-                "form" => $this->form_mission($this->post, $link,$items)
+                "form" => ItemForm::_mission($this->post, $link,$items)
             );
         }
 
         $this->forms[] = array(
 
             "label" => "Ajouter caractéristique",
-            "form" => $this->form_mission($this->post,null,$items)
+            "form" => ItemForm::_mission($this->post,null,$items)
         );
 
         Render::getInstance()->setView("Admin/Item/mission");
@@ -496,14 +328,14 @@ class ItemController extends AppController
             $this->forms[$x] = array(
 
                 "label" => "Editer statistique",
-                "form" => $this->form_attribut($this->post, $link,$items)
+                "form" => ItemForm::_attribut($this->post, $link,$items)
             );
         }
 
         $this->forms[] = array(
 
             "label" => "Ajouter statistique",
-            "form" => $this->form_attribut($this->post, null, $items)
+            "form" => ItemForm::_attribut($this->post, null, $items)
         );
 
         Render::getInstance()->setView("Admin/Item/mission");
@@ -530,14 +362,14 @@ class ItemController extends AppController
             $this->forms[$x] = array(
 
                 "label" => "Editer ressource",
-                "form" => $this->form_ressource($this->post, $link,$items)
+                "form" => ItemForm::_ressource($this->post, $link,$items)
             );
         }
 
         $this->forms[] = array(
 
             "label" => "Ajouter ressource",
-            "form" => $this->form_ressource($this->post, null, $items)
+            "form" => ItemForm::_ressource($this->post, null, $items)
         );
 
         Render::getInstance()->setView("Admin/Item/mission");
@@ -567,14 +399,14 @@ class ItemController extends AppController
             $this->forms[$x] = array(
 
                 "label" => "Editer composant",
-                "form" => $this->form_craft($this->post, $link,$items)
+                "form" => ItemForm::_craft($this->post, $link,$items)
             );
         }
 
         $this->forms[] = array(
 
             "label" => "Ajouter composant",
-            "form" => $this->form_craft($this->post,null,$items)
+            "form" => ItemForm::_craft($this->post,null,$items)
         );
 
         Render::getInstance()->setView("Admin/Item/mission");
