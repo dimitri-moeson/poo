@@ -38,7 +38,7 @@ use Core\Session\FlashBuilder;
                         <td><?php echo $link->caract ?></td>
                     </tr>
 
-                    <?php if( in_array($post->type , ItemEntity::type_arr["aventure"]) ) { ?>
+                    <?php /**if( in_array($post->type , ItemEntity::type_arr["aventure"]) ) { ?>
 
                     <?php } elseif( in_array($post->type , ItemEntity::type_arr["politique"]) ) { ?>
 
@@ -54,7 +54,7 @@ use Core\Session\FlashBuilder;
 
                     <?php } elseif( in_array($post->type , ItemEntity::type_arr["batiment"]) ) { ?>
 
-                    <?php } ?>
+                    <?php }**/ ?>
 
                 <?php } ?>
 

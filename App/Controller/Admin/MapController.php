@@ -27,7 +27,6 @@ class MapController extends AppController
         $this->loadModel("Game\Item\Item");
         $this->loadModel("Game\Inventaire\Inventaire");
         $this->loadService("Map");
-
     }
 
     /**

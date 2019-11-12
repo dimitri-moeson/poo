@@ -103,7 +103,7 @@ class ItemEntity extends Entity
 
         "personnage" => array(
 
-            "ressource",
+            "source",
             "statistique",
             "caractere"
         ),

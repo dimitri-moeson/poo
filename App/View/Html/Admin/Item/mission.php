@@ -20,13 +20,13 @@ use Core\Session\FlashBuilder;
 
 
 <div class="tab-content col-sm-12">
-
     <?php
-
-    foreach ($forms as $form)
-    {
-        echo "<h2>".$form["label"]."</h2>";
-        echo $form["form"] ;
-    }
+        foreach ($forms as $form)
+        {
+            echo "<div class='row'>";
+            echo "<h2>".$form["label"]."</h2>";
+            echo $form["form"] ;
+            echo "</div>";
+        }
     ?>
 </div>

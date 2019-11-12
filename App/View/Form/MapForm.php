@@ -24,8 +24,8 @@ class MapForm
 
             $cnt .= "<option ".($icon->id===$selected ? "selected" : "" )."  
             value='".$icon->id."' 
-            data-content='<i class=\"".$icon->getImg()."\"></i> ".$icon->getName()."'>".
-                $icon->getName()."</option>";
+            data-content='<i class=\"".$icon->getImg()."\"></i> ".$icon->getName()."'/>";
+            //    $icon->getName()."</option>";
         }
 
         $cnt .= "</select>";
@@ -44,8 +44,8 @@ class MapForm
 
             $cnt .= "<option ".($icon->id===$selected ? "selected" : "" )."  
             value='".$icon->id."' 
-            data-content='<i class=\"".$icon->getImg()."\"></i> ".$icon->getName()."'>".
-                $icon->getName()."</option>";
+            data-content='<i class=\"".$icon->getImg()."\"></i> ".$icon->getName()."'/>";
+            //    $icon->getName()."</option>";
         }
 
         $cnt .= "</select>";

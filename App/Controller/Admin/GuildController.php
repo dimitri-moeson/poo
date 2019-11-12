@@ -9,6 +9,7 @@
 namespace App\Controller\Admin;
 
 use App;
+use App\View\Form\GuildForm;
 use Core\Auth\CryptAuth;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Get;
@@ -35,24 +36,6 @@ class GuildController extends AppController
         $this->loadModel("Game\Guild\Guild");
 
         $this->auth = new DatabaseAuth(App::getInstance()->getDb());
-    }
-
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_Guild($post)
-    {
-        $form = new Form($post);
-
-        $form
-            ->input("name")
-
-            ->textarea("presente",array('type' => 'textarea', 'label' => "Presentation", "class" => "editor"))
-
-            ->submit("Enregistrer");
-
-        return $form ;
     }
 
     /**
@@ -119,7 +102,7 @@ class GuildController extends AppController
 
         Header::getInstance()->setTitle($this->post->login);
 
-        $this->form = $this->form_Guild($this->post);
+        $this->form = GuildForm::_Guild($this->post);
 
         Render::getInstance()->setView("Admin/Guild/single");
     }

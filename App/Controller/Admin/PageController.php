@@ -10,6 +10,7 @@ namespace App\Controller\Admin;
 
 use App;
 use App\Model\Service\ArticleService;
+use App\View\Form\PageForm;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
@@ -37,38 +38,6 @@ class PageController extends AppController
         //allOf("page",null,"position");
     }
 
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_article($post,$keywords = [])
-    {
-        $form = new Form($post);
-
-        //$categories = $this->Article->listing('page');
-
-        $form->input("titre", array('label' => "titre article"))
-            ->input("menu", array('label' => "menu article"))
-            ->input("keyword", array('type' => 'textarea', 'label' => "keyword (séparés par des virgules)", "value" => implode(",",$keywords) ))
-            ->input("description", array('type' => 'textarea', 'label' => "Description/Extrait" ))
-            ->choice("default",array( "type" => "radio"),array( 1 => "Oui", 0 => "Non"))
-            ->input("type",array("type"=>"hidden", "value"=>"article"))
-            ->input("type",array("type"=>"hidden", "value"=>"article"))
-            ->submit("Enregistrer");
-
-        return $form ;
-    }
-
-    private function form_content($post)
-    {
-        $form = new Form($post);
-
-        $form
-            ->input("contenu", array('type' => 'textarea', 'label' => "contenu", "class" => "editor"))
-            ->submit("Enregistrer");
-
-        return $form ;
-    }
 
     /**
      *
@@ -101,7 +70,7 @@ class PageController extends AppController
             }
         }
 
-        $this->form = $this->form_article(Post::getInstance()->content('post'));
+        $this->form = PageForm::_article(Post::getInstance()->content('post'));
 
         Render::getInstance()->setView("Admin/Page/single");
     }
@@ -163,7 +132,7 @@ class PageController extends AppController
 
             Header::getInstance()->setTitle($this->post->titre);
 
-            $this->form = $this->form_article($this->post,$keywords);
+            $this->form = PageForm::_article($this->post,$keywords);
         }
 
         Render::getInstance()->setView("Admin/Page/single");
@@ -192,7 +161,7 @@ class PageController extends AppController
 
             Header::getInstance()->setTitle($this->post->titre);
 
-            $this->form = $this->form_content($this->post);
+            $this->form = PageForm::_content($this->post);
         }
 
 

@@ -223,14 +223,19 @@ class ItemForm
     private static function _inventaire($post, $link = null){
 
         /** @var Form $form */
-        $form =new Form($link);
+        $form = new Form($link);
 
-        if (!empty($link)) {
+        if (!is_null($link) && !empty($link))
+        {
             if(isset($link->id) && !empty($link->id))
-                $form->input("action", array("type"=>"hidden","name"=>"action","value"=>"edition"))
-                    ->input("id", array("type"=>"hidden","name"=>"id","value"=>@$link->id));
+            {
+                $form->input("action", array("type" => "hidden", "name" => "action", "value" => "edition"))
+                    ->input("id", array("type" => "hidden", "name" => "id", "value" => @$link->id));
+            }
             else
-                $form->input("action", array("type"=>"hidden","name"=>"action","value"=>"ajout"));
+            {
+                $form->input("action", array("type" => "hidden", "name" => "action", "value" => "ajout"));
+            }
         }
 
         $form->input("parent_id", array("type"=>"hidden","name"=>"parent_id","value"=>@$link->parent_id))
@@ -251,8 +256,8 @@ class ItemForm
 
             $cnt .= "<option ".($icon->id===$selected ? "selected" : "" )."  
             value='".$icon->id."' 
-            data-content='<i class=\"".$icon->getImg()."\"></i> ".$icon->getName()."'>".
-                $icon->getName()."</option>";
+            data-content='<i class=\"".$icon->getImg()."\"></i> ".$icon->getName()."'/>";
+            //    $icon->getName()."</option>";
         }
 
         $cnt .= "</select></div>";
@@ -285,7 +290,7 @@ class ItemForm
             elseif( in_array($post->type , ItemEntity::type_arr["batiment"]) ) { }
          **/
 
-        $form->submit("reg",array("name"=>"val", "surround" => $surround));
+        $form->submit("reg",array("surround" => $surround));
 
         return $form ;
     }
@@ -296,7 +301,7 @@ class ItemForm
 
         $surround = array("type" => "div", "class" => "col-sm-3");
 
-        $form->addInput("print_r", print_r($link,1));
+        //$form->addInput("print_r", print_r($link,1));
         $form->input("type", array("type"=>"hidden" ,"name"=>"type","value"=>"statistique"));
         $form->addInput("child_id", self::selectChild(@$link->child_id,$items,"caractéristique",$index));
         $form->input("val", array("name"=>"val", "surround" => $surround ,"label"=>"score", "id" => "val_".$index));
@@ -323,7 +328,7 @@ class ItemForm
         //$form->select("child_id", array("name" => "child_id", "surround" => $surround , "value" => @$link->child_id,"label" => "ressource"), $items);
         //$form->addInput("type", ItemForm::select_obj("type", @$link->type, "personnage"));
 
-        $form->submit("reg",array("name"=>"val", "surround" => $surround));
+        $form->submit("reg",array("surround" => $surround));
 
         return $form;
     }
@@ -347,7 +352,7 @@ class ItemForm
         //$form->select("child_id", array("name" => "child_id", "surround" => $surround , "value" => @$link->child_id,"label" => "composant"), $items);
         $form->addInput("child_id", self::selectChild(@$link->child_id,$items,"composant",$index ));
 
-        $form->submit("reg",array("name"=>"val", "surround" => $surround));
+        $form->submit("reg",array("surround" => $surround));
 
         return $form;
     }

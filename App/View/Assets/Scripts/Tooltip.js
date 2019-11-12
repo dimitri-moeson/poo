@@ -37,9 +37,9 @@ $(document).ready(function(){
         },
         "select": {
             "rows": {
-                _: "%d lignes séléctionnées",
-                0: "Aucune ligne séléctionnée",
-                1: "1 ligne séléctionnée"
+                _: "%d lignes s&eacute;l&eacute;ctionn&eacute;es",
+                0: "Aucune ligne s&eacute;l&eacute;ctionn&eacute;e",
+                1: "1 ligne s&eacute;l&eacute;ctionn&eacute;e"
             }
         }
     };
@@ -53,7 +53,10 @@ $(document).ready(function(){
                 //"dom": 'Bfrtip',
                 "pagingType": "full_numbers",
                 //"scrollX": true ,
-                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                "lengthMenu": [
+                    [5, 10, 25, 50, -1],
+                    [5, 10, 25, 50, "All"]
+                ],
                 "stateSave": true,
 
                 "aoColumnDefs": [
@@ -63,9 +66,15 @@ $(document).ready(function(){
                     'pageLength'
                 ],
 
-                "language": datatable_lng
+                "language": datatable_lng,
+                "initComplete": function( settings, json ) {
+                    //$('div.loading').remove();
+                    $('select[name="item-table_length"]').addClass( "dtbl-itm-length" );
+                }
             });
         }
+
+        $.fn.dataTable.ext.classes.sLengthSelect = 'dtbl-itm-length';
     }
 
     if($('#item-list').length > 0 ) {
@@ -77,7 +86,10 @@ $(document).ready(function(){
                 //"dom": 'Bfrtip',
                 "pagingType": "full_numbers",
                 //"scrollX": true ,
-                "lengthMenu": [[5, 10], [5, 10]],
+                "lengthMenu": [
+                    [5, 10],
+                    [5, 10]
+                ],
                 "ordering": false,
                 "stateSave": true,
 
@@ -88,9 +100,14 @@ $(document).ready(function(){
                     'pageLength'
                 ],
 
-                "language": datatable_lng
+                "language": datatable_lng,
+                "initComplete": function( settings, json ) {
+                    //$('div.loading').remove();
+                    $('select[name="item-list_length"]').addClass( "dtbl-itm-length" );
+                }
             });
         }
+        $.fn.dataTable.ext.classes.sLengthSelect = 'dtbl-itm-length';
     }
 
     if($('form.item').length > 0 ) {
@@ -143,9 +160,6 @@ $(document).ready(function(){
                     // A case for each action. Your actions here
                     case "remove":
                         //alert("jeter " + $(this).data("cible"));
-
-
-
                         break;
                     case "second":
                         alert("second " + $(this).data("cible"));

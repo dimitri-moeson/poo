@@ -4,6 +4,7 @@
 namespace App\Controller\Admin;
 
 use App;
+use App\View\Form\PersonnageForm;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
@@ -19,17 +20,6 @@ class PersonnageController extends AppController
         parent::__construct();
 
         $this->loadModel("Game\Personnage\Personnage");
-    }
-
-    private function form_perso($post)
-    {
-        $form = new Form($post);
-
-        $form->input("titre", array('name' => "Nom"))
-            ->choice("sexe", array('name' => "genre"),array( 1 => "homme" , 2 => "femme"))
-            ->submit("Enregistrer");
-
-        return $form ;
     }
 
     public function index()
@@ -88,6 +78,6 @@ class PersonnageController extends AppController
 
         Header::getInstance()->setTitle($this->post->titre);
 
-        $this->form = $this->form_perso($this->post);
+        $this->form = PersonnageForm::admin_perso($this->post);
     }
 }

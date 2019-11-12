@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 
 use App;
+use App\View\Form\SqlForm;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Render\Render;
@@ -17,27 +18,6 @@ class SqlController extends AppController
     public function __construct()
     {
         parent::__construct();
-    }
-
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_sql($post)
-    {
-        $form = new Form($post);
-
-        $form->textarea("request", array(
-
-            'name' => "request" ,
-            "label" => "Requête" ,
-            "data-show-icon" => 'true',
-            "data-content" => '<i class="glyphicon glyphicon-console"></i> Requête',
-
-        ))
-            ->submit("Executer");
-
-        return $form ;
     }
 
     /**
@@ -80,7 +60,7 @@ class SqlController extends AppController
             $this->result = App::getInstance()->getDb()->query(Post::getInstance()->val("request"));
         }
 
-        $this->form = $this->form_sql(Post::getInstance()->content());
+        $this->form = SqlForm::_sql(Post::getInstance()->content());
 
         Render::getInstance()->setView("Admin/sql"); // , compact('posts','categories'));
     }

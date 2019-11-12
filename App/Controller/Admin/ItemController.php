@@ -33,7 +33,7 @@ class ItemController extends AppController
         $this->loadModel("Game\Inventaire\Inventaire");
     }
 
-        /**
+    /**
      * @param null $type
      */
     public function index($type = null )
@@ -246,9 +246,26 @@ class ItemController extends AppController
                 "caract" => Post::getInstance()->val("caract")
             );
 
-            if(Post::getInstance()->has("id")) {
+            $edit = false ;
 
-                $_id = intval(Post::getInstance()->has("id"));
+            if(Post::getInstance()->has("id"))
+            {
+                if(Post::getInstance()->has("action"))
+                {
+                    if(Post::getInstance()->val("action")=="edition")
+                    {
+                        $edit = true ;
+                    }
+                    if(Post::getInstance()->val("action")=="ajout")
+                    {
+                        $edit = true ;
+                    }
+                }
+            }
+
+            if($edit)
+            {
+                $_id = intval(Post::getInstance()->val("id"));
 
                 if ($this->Inventaire->update($_id, $datas))
                     FlashBuilder::create("cible modifié", "success");
@@ -258,7 +275,7 @@ class ItemController extends AppController
                 if ($this->Inventaire->create($datas))
                     FlashBuilder::create("cible ajouté", "success");
             }
-
+            // die("submit_inventaire return");
             return true ;
         }
     }
@@ -339,6 +356,9 @@ class ItemController extends AppController
         Render::getInstance()->setView("Admin/Item/mission");
     }
 
+    /**
+     * @param $id
+     */
     public function ressource($id)
     {
         $this->getItemSluged($id);
