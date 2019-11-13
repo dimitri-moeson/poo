@@ -25,8 +25,6 @@ class Url
      */
     public static function generate($_act = null , $_ctl = null , $dom = null  , $slug = null ){
 
-        //echo "<pre>".print_r( func_get_args(), 1 )."</pre>";
-
         $class = get_called_class();
 
         $obj = new $class($_act , $_ctl , $dom);
@@ -39,7 +37,6 @@ class Url
             }
         }
         return $obj ;
-
     }
 
     /**

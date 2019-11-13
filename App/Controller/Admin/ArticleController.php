@@ -10,6 +10,7 @@ namespace App\Controller\Admin;
 
 use App;
 use App\Model\Service\ArticleService;
+use App\View\Form\ArticleForm;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
@@ -42,43 +43,6 @@ class ArticleController extends AppController
     }
 
     /**
-     * @param $post
-     * @return Form
-     */
-    private function form_article($post,$keywords = [])
-    {
-        $form = new Form($post);
-
-        $categories = $this->Article->listing('categorie');
-
-        $form->input("titre", array('label' => "titre article"))
-            ->input("menu", array('label' => "menu article"))
-            ->input("keyword", array('type' => 'textarea', 'label' => "keyword (séparés par des virgules)", "value" => implode(",",$keywords) ))
-            ->input("description", array('type' => 'textarea', 'label' => "Description/Extrait" ))
-            ->select("parent_id", array('options' => $categories, 'label' => "Categorie"),$categories)
-            ->input("date", array('type' => 'date', 'label' => "ajouté"))
-            ->input("type",array("type"=>"hidden", "value"=>"article"))
-            ->submit("Enregistrer");
-
-        return $form ;
-    }
-
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_content($post)
-    {
-        $form = new Form($post);
-
-        $form
-            ->input("contenu", array('type' => 'textarea', 'label' => "contenu", "class" => "editor"))
-            ->submit("Enregistrer");
-
-        return $form ;
-    }
-
-    /**
      *
      */
     public function index()
@@ -105,8 +69,9 @@ class ArticleController extends AppController
                 }
             }
         }
+        $categories = $this->Article->listing('categorie');
 
-        $this->form = $this->form_article(Post::getInstance()->content('post'));
+        $this->form = ArticleForm::_article(Post::getInstance()->content('post'),[],$categories);
 
         Render::getInstance()->setView("Admin/Blog/single"); // , compact('form','categories'));
     }
@@ -165,10 +130,28 @@ class ArticleController extends AppController
             if (!$this->post) $this->notFound("single post");
 
             $keywords = $this->Keyword->index($id);
+            $categories = $this->Article->listing('categorie');
 
             Header::getInstance()->setTitle($this->post->titre);
 
-            $this->form = $this->form_article($this->post,$keywords);
+            $this->form = ArticleForm::_article($this->post,$keywords, $categories);
+
+            /**$cnt = $this->form->submition();
+
+            if($cnt !== false){
+
+                Post::getInstance()->val("type","article");
+
+                if($this->ArticleService instanceof ArticleService) {
+                    if ($this->ArticleService->record($id)) {
+                        FlashBuilder::create("article modifié", "success");
+                    }
+                    Redirect::getInstance()->setParams(array("id" => $id))
+                        ->setAct("edit")->setCtl("article")->setDom("admin")
+                        ->send();
+                }
+
+            }**/
         }
 
 
@@ -201,7 +184,7 @@ class ArticleController extends AppController
 
             Header::getInstance()->setTitle($this->post->titre);
 
-            $this->form = $this->form_content($this->post);
+            $this->form = ArticleForm::_content($this->post);
         }
 
 

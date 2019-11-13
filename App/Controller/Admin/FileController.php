@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App;
+use App\View\Form\FileForm;
 use Core\Config;
 use Core\HTML\Env\File;
 use Core\HTML\Env\Post;
@@ -36,22 +37,6 @@ class FileController extends AppController
 
         Render::getInstance()->setView("Admin/File");
 
-    }
-
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_file($type = "picture")
-    {
-        $form = new Form(array( 'type' => $type ));
-
-        $form->input("type", array('type' => "hidden"))
-            ->input("nom", array('label' => "Nom"))
-            ->input("src", array('type' => "file"))
-            ->submit("Enregistrer");
-
-        return $form ;
     }
 
     /**
@@ -91,6 +76,6 @@ class FileController extends AppController
 
         $this->files = $this->File->allOf($type);
 
-        return $this->form_file("".$type);
+        return FileForm::form_file("".$type);
     }
 }

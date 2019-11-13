@@ -50,6 +50,31 @@ class GlobalRequest
     }
 
     /**
+     * @param $donnees
+     * @return array|string
+     */
+    public function clean($donnees)
+    {
+        if (is_array($donnees))
+        {
+            foreach ($donnees as $n => $v)
+            {
+                $donnees[$n] = $this->clean($v);
+            }
+        }
+        else
+        {
+            $donnees = trim($donnees);
+            $donnees = stripslashes($donnees);
+            $donnees = htmlspecialchars($donnees);
+            $donnees = htmlentities($donnees);
+            $donnees = mysqli_real_escape_string($donnees);
+        }
+       //echo "clean(out):".print_r($donnees,1)."<br/>";
+        return $donnees;
+    }
+
+    /**
      * Si value est renseigné, change le contenue de Key
      * retourne la valueur de key
      * @param $key
@@ -58,6 +83,7 @@ class GlobalRequest
      */
     public function val(string $key = "index", $value = null)
     {
+        // edition
         if (!is_null($value))
         {
             if ($this->call == "Post") {
@@ -75,19 +101,20 @@ class GlobalRequest
             return;
         }
 
+        // retour de la val
         if (self::has($key)) {
 
             if ($this->call == "Post") {
 
-                return $_POST[$key] ?? null;
+                return $this->clean($_POST[$key]) ?? null;
 
             } elseif ($this->call == "Get") {
 
-                return $_GET[$key] ?? null;
+                return $this->clean($_GET[$key]) ?? null;
 
             } else {
 
-                return $_REQUEST[$key] ?? null;
+                return $this->clean($_REQUEST[$key]) ?? null;
 
             }
             return;
@@ -100,11 +127,11 @@ class GlobalRequest
     public function content(){
 
         if ($this->call == "Post") {
-            return $_POST ;
+            return $this->clean($_POST) ;
         } elseif ($this->call == "Get") {
-            return $_GET ;
+            return $this->clean($_GET) ;
         } else {
-            return $_REQUEST;
+            return $this->clean($_REQUEST);
         }
     }
 
@@ -114,11 +141,10 @@ class GlobalRequest
      */
     public function submit()
     {
-
         $called = strtoupper($this->call);
+        $method = strtoupper(getenv('REQUEST_METHOD'));
 
-        //if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || strtoupper($_SERVER['REQUEST_METHOD']) === 'GET') {
-        if (strtoupper($_SERVER['REQUEST_METHOD']) === $called){
+        if ( $method === $called){
 
             return self::$instances[ $this->call ]->submit();
 

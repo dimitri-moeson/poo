@@ -9,6 +9,7 @@
 namespace App\Controller\Admin;
 
 use App;
+use App\View\Form\ArticleForm;
 use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
@@ -33,23 +34,7 @@ class CategorieController extends AppController
         $this->loadService("Article");
     }
 
-    /**
-     * @param $post
-     * @return Form
-     */
-    private function form_categorie($post,$keywords = array())
-    {
-        $form = new Form($post);
 
-        $form->input("titre", array('label' => "Titre Cat"))
-            ->input("menu", array('label' => "menu article"))
-            ->input("keyword", array('type' => 'textarea', 'label' => "keyword (séparés par des virgules)", "value" => implode(",",$keywords) ))
-            ->input("description", array('type' => 'textarea', 'label' => "Description" ))
-            //->input("type",array("type"=>"hidden" ,"value" =>"categorie"))
-            ->submit("Enregistrer");
-
-        return $form ;
-    }
 
     /**
      *
@@ -81,7 +66,7 @@ class CategorieController extends AppController
 
         }
 
-        $this->form = $this->form_categorie(Post::getInstance()->content());
+        $this->form = ArticleForm::_categorie(Post::getInstance()->content());
 
         Render::getInstance()->setView("Admin/Blog/Categorie/single");
     }
@@ -145,7 +130,7 @@ class CategorieController extends AppController
 
         Header::getInstance()->setTitle($this->post->titre);
 
-        $this->form = $this->form_categorie($this->post,$keywords);
+        $this->form = ArticleForm::_categorie($this->post,$keywords);
 
         Render::getInstance()->setView("Admin/Blog/Categorie/single");
     }

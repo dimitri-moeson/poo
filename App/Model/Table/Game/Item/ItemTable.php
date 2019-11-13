@@ -53,7 +53,8 @@ class ItemTable extends GameTable
             $statement->where( "e.type in (".implode(',', $r_type).") ");
         }
 
-        //var_dump($statement , $attrib );
+        //echo $statement ;
+        //var_dump($attrib );
         return $this->request($statement , $attrib);
     }
 

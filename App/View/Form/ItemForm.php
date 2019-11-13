@@ -334,11 +334,11 @@ class ItemForm
     }
 
     /**
-     * @param $post
-     * @param null $link
-     * @param $items
-     * @return Form
-     */
+ * @param $post
+ * @param null $link
+ * @param $items
+ * @return Form
+ */
     static function _craft($post, $link = null,$items,$index )
     {
 
@@ -348,6 +348,32 @@ class ItemForm
 
         $form->input("type", array("type"=>"hidden","name"=>"type","value"=>"composant"));
         $form->input("val", array("name"=>"val", "surround" => $surround ,"label"=>"quantité", "id" => "val_".$index));
+
+        //$form->select("child_id", array("name" => "child_id", "surround" => $surround , "value" => @$link->child_id,"label" => "composant"), $items);
+        $form->addInput("child_id", self::selectChild(@$link->child_id,$items,"composant",$index ));
+
+        $form->submit("reg",array("surround" => $surround));
+
+        return $form;
+    }
+
+    /**
+     * @param $post
+     * @param null $link
+     * @param $items
+     * @return Form
+     */
+    static function _catalogue($post, $link = null,$items,$index )
+    {
+
+        $form = self::_inventaire($post, $link);
+
+        $surround = array("type" => "div", "class" => "col-sm-4");
+
+        $form->input("type", array("type"=>"hidden","name"=>"type","value"=>"composant"));
+        $form->input("val", array("type"=>"hidden","name"=>"val","value"=> -1 ));
+
+            //array("name"=>"val", "surround" => $surround ,"label"=>"quantité", "id" => "val_".$index));
 
         //$form->select("child_id", array("name" => "child_id", "surround" => $surround , "value" => @$link->child_id,"label" => "composant"), $items);
         $form->addInput("child_id", self::selectChild(@$link->child_id,$items,"composant",$index ));

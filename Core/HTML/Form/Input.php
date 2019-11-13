@@ -151,7 +151,7 @@ class Input
                 }
                 break;
             case 'textarea':
-                $html_input = "<textarea class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' id='text-" . $this->name . "' name='" . $this->i_name . "'>" . $this->value . "</textarea>";
+                $html_input = "<textarea class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' id='text-" . $this->name . "' name='" . $this->i_name . "'>" . addslashes($this->value) . "</textarea>";
                 break;
             case 'date':
             case 'datetime':
@@ -160,7 +160,7 @@ class Input
                 $html_input = "<input type='text' class='form-control " . $this->class . " datepicker' data-date-format='dd/mm/yyyy'  ".$html_option." placeholder='" . $this->label . "' id='date-" . $this->name . "' name='" . $this->i_name . "' value='".$date->format("d/m/Y")."' />";
                 break;
             default:
-                $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='" . $this->type . "' id='" . $this->type . "-" . $this->name . "' name='" . $this->i_name . "' value='" . $this->value . "' />";
+                $html_input = "<input class='form-control " . $this->class . "' ".$html_option." placeholder='" . $this->label . "' type='" . $this->type . "' id='" . $this->type . "-" . $this->name . "' name='" . $this->i_name . "' ".'value="' . $this->value . '"'." />";
                 break;
         }
 

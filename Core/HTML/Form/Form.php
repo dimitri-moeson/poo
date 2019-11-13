@@ -1,6 +1,8 @@
 <?php
 
 namespace Core\HTML\Form;
+use Core\HTML\Env\GlobalRequest;
+
 /**
  * Class Form
  * genere formulaire
@@ -13,6 +15,33 @@ class Form
     private $configs = [];
     private $separations = [];
     private $surround;
+
+    /**
+     *
+     */
+    public function submition()
+    {
+        if(GlobalRequest::getInstance()->submit())
+        {
+            $submit = array();
+            foreach ($this->inputs as $name => $input)
+            {
+                if(GlobalRequest::getInstance()->has($name))
+                {
+                    if ($name !== "token" && $name !== "submit")
+                    {
+                        $value = GlobalRequest::getInstance()->val($name);
+
+                        $submit[$name] = $value;
+                    }
+                }
+            }
+
+            return $submit ;
+        }
+
+        return false ;
+    }
 
     /**
      * @param $form
@@ -38,7 +67,7 @@ class Form
 
         $this->surround = new Surround("default");
         $this->surround->setType("div");
-        $this->surround->setClass("row");
+        $this->surround->setClass("row col-sm-12");
         return $this;
     }
 
@@ -120,7 +149,7 @@ class Form
         $options['name'] = $options['name'] ?? $name;
         $options['type'] = $options['type'] ?? "text";
         $surround = $options['surround']['type'] ?? $this->surround->getType() ?? 'div';
-        $s_cls = $options['surround']['class'] ?? $this->surround->getClass() ?? 'row';
+        $s_cls = $options['surround']['class'] ?? $this->surround->getClass() ?? 'row col-sm-12';
 
         $this->inputs[$name] = new Input($name, $options);
 
@@ -130,6 +159,9 @@ class Form
             $this->inputs[$name]->getSurround()->setType($surround);
             $this->inputs[$name]->getSurround()->setClass($s_cls);
         }
+
+        $options['surround']['type'] = $surround ;
+        $options['surround']['class'] = $s_cls ;
 
         if(isset($options['conf'])) $this->confirm_input($name,$options);
 
@@ -145,30 +177,8 @@ class Form
     {
         $this->input($name, $options);
         $this->inputs[$name]->setType("password");
+
         return $this;
-        /**
-        $value    = $options['value'] ?? $this->getValue($name);
-
-        $options['type'] = $options['type'] ?? "password";
-        $options['name'] = $options['name'] ?? $name;
-
-        $this->inputs[$name] = new Input($name, $options);
-
-        if( $this->inputs[$name] instanceof Input)
-        {
-            $this->inputs[$name]->setValue($value);//->surround($surround);
-        }
-
-        if(isset($options['surround'])) {
-            $surround = $options['surround']['type'] ?? $this->surround->getType() ?? 'p';
-            $s_cls = $options['surround']['class'] ?? $this->surround->getClass() ?? 'row';
-
-            $this->inputs[$name]->getSurround()->setType($surround);
-            $this->inputs[$name]->getSurround()->setClass($s_cls);
-        }
-        if(isset($options['conf'])) $this->confirm_input($name,$options);
-
-        return $this;**/
     }
 
     /**
@@ -179,8 +189,7 @@ class Form
 
         if($options['conf'])
         {
-            $value    = $options['value'] ?? $this->getValue($name);
-            $surround = $options['surround']['type'] ?? 'p';
+            $value = $options['value'] ?? $this->getValue($name);
 
             $options['label'] = "Confirmer ".strtolower($options['label']);
             $options['name'] = $options['name']."_conf" ?? $name."_conf";
@@ -188,8 +197,7 @@ class Form
             $this->inputs[$name."_conf"] = new Input($name."_conf", $options);
             if( $this->inputs[$name."_conf"] instanceof Input)
             {
-                $this->inputs[$name."_conf"]->setValue($value);//->surround($surround);
-                //$this->inputs[$name]->getSurround()->setType($surround);
+                $this->inputs[$name."_conf"]->setValue($value);
             }
             $options['conf'] = false ;
         }

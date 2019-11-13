@@ -431,4 +431,42 @@ class ItemController extends AppController
 
         Render::getInstance()->setView("Admin/Item/mission");
     }
+
+    /**
+     * @param $id
+     */
+    public function catalogue($id)
+    {
+        $this->getItemSluged($id);
+
+        if($this->submit_inventaire($id)){
+
+            Redirect::getInstance()->setSlg($id)
+                ->setDom("admin")->setAct("catalogue")->setCtl("item")
+                ->send();
+        }
+
+        Header::getInstance()->setTitle($this->post->titre);
+
+        $linked = $this->Inventaire->findBy(array("parent_id" => $id,"type"=>"composant","rubrique"=>$this->post->type));
+
+        $items =  $this->Item->typeListing(ItemEntity::getEquipableTypeArray()) ; //request($statementT);
+
+        foreach($linked as $x => $link) {
+
+            $this->forms[$x] = array(
+
+                "label" => "Editer composant",
+                "form" => ItemForm::_catalogue($this->post, $link,$items,$x)
+            );
+        }
+
+        $this->forms[] = array(
+
+            "label" => "Ajouter composant",
+            "form" => ItemForm::_catalogue($this->post,null,$items, @($x++))
+        );
+
+        Render::getInstance()->setView("Admin/Item/mission");
+    }
 }

@@ -38,23 +38,23 @@ class AccountController extends AppController
 
             $this->cryptor = CryptAuth::getInstance($this->auth->getEncryptionKey());
             Render::getInstance()->setView("Community/Account/show");
-
         }
     }
 
     /**
      *
      */
-    public function show(){
+    public function show()
+    {
 
     }
 
     /**
      *
      */
-    public function edit(){
-
-        if(Post::getInstance()->submit())
+    public function edit()
+    {
+        /**if(Post::getInstance()->submit())
         {
             if($this->User instanceof UserTable)
             {
@@ -67,12 +67,31 @@ class AccountController extends AppController
                 }
             }
 
-        }
+        }*/
+
         $this->form = new Form($this->player);
 
         $this->form//->init()
             ->input("login", array("type" => "text","label" => "login"))
             ->submit("suivant");
+
+        $cnt = $this->form->submition();
+
+        if($cnt !== false){
+
+            if($this->User instanceof UserTable)
+            {
+                if ($this->User->exists_login($cnt["login"],$this->player) == false)
+                {
+                    $this->User->update( $this->auth->getUser('id'), $cnt );
+                }
+                else {
+                    FlashBuilder::create("already login...","alert");
+                }
+            }
+        }
+
+        Render::getInstance()->setView("Community/Account/form");
     }
 
     /**
@@ -80,7 +99,7 @@ class AccountController extends AppController
      */
     public function pswd(){
 
-        if(Post::getInstance()->submit())
+        /**if(Post::getInstance()->submit())
         {
             $this->UserService->pswd(
 
@@ -89,7 +108,7 @@ class AccountController extends AppController
                 Post::getInstance()->val("new_pswd_conf")
 
             );
-        }
+        }**/
         $pswd =  isset($this->player) ? CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($this->player->pswd) : Post::getInstance()->val('pswd');
 
         $this->form = new Form($this->player);
@@ -99,6 +118,18 @@ class AccountController extends AppController
             ->pswd("old_pswd",array("conf" => false ,"label" => "Ancien Mot de passe", "value" => $pswd))
             ->submit("suivant")
         ;
+        $cnt = $this->form->submition();
+
+        if($cnt !== false) {
+
+            $this->UserService->pswd(
+
+                $cnt["old_pswd"] ,
+                $cnt["new_pswd"] ,
+                $cnt["new_pswd_conf"]
+
+            );
+        }
 
         Render::getInstance()->setView("Community/Account/form");
     }
@@ -108,7 +139,7 @@ class AccountController extends AppController
      */
     public function mail()
     {
-        if(Post::getInstance()->submit())
+        /**if(Post::getInstance()->submit())
         {
             if ($this->User->exists_mail(Post::getInstance()->val("new_mail"),$this->player) == false) {
                 $this->UserService->email(
@@ -121,7 +152,7 @@ class AccountController extends AppController
             }else {
                 FlashBuilder::create("already mail...","alert");
             }
-        }
+        }**/
         $pswd =  isset($this->player) ? CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($this->player->pswd) : Post::getInstance()->val('pswd');
 
         $this->form = new Form($this->player);
@@ -132,7 +163,23 @@ class AccountController extends AppController
             ->submit("suivant")
         ;
 
-        Render::getInstance()->setView("Community/Account/form");
+        $cnt = $this->form->submition();
 
+        if($cnt !== false) {
+
+            if ($this->User->exists_mail( $cnt["new_mail"],$this->player) == false) {
+                $this->UserService->email(
+
+                    $cnt["pswd"],
+                    $cnt["new_mail"],
+                    $cnt["new_mail_conf"]
+
+                );
+            }else {
+                FlashBuilder::create("already mail...","alert");
+            }
+        }
+
+            Render::getInstance()->setView("Community/Account/form");
     }
 }
