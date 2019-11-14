@@ -19,6 +19,7 @@ use App\Model\Entity\Game\Inventaire\InventaireEntity;
 use App\Model\Entity\Game\Inventaire\InventaireKnowledgeEntity;
 use App\Model\Entity\Game\Inventaire\InventaireSpellBookEntity;
 use App\Model\Entity\Game\Map\MapEntity;
+use App\Model\Entity\UserEntity;
 use Core\Debugger\Debugger;
 use Core\Model\Entity\Entity;
 
@@ -51,6 +52,10 @@ class PersonnageEntity extends Entity {
      */
     private $equipement;
 
+    /**
+     * @var UserEntity
+     */
+    protected $player;
     /**
      * @param string $classe
      * @param $nom

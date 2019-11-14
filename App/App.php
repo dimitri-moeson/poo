@@ -91,7 +91,10 @@ class App
 
                 call_user_func_array(array($ctrl, $action),array($slug));
 
-                Render::getInstance($request->getPage())->exec($ctrl);
+                $dom = $request->getDom();
+                $ctl = $request->getCtrl();
+
+                Render::getInstance([$dom,$ctl,$action])->exec($ctrl);
             }
 
             if (DEBUG) {

@@ -20,7 +20,7 @@ class Surround
     {
         $this->name = $name;
         $this->type = $options['type'] ?? "div";
-        $this->class = $options["class"] ?? "row";
+        $this->class = $options["class"] ?? "row col-sm-12";
         $this->id = $options["id"] ?? null;
 
         $this->called = 0;
@@ -44,7 +44,7 @@ class Surround
             return $this->type ;
         }
         else {
-            return ;
+            return '';
         }
     }
 

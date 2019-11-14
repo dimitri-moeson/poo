@@ -5,6 +5,7 @@ use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use App\Model\Entity\Journal;
 use Core\HTML\Env\Post;
+use Core\Render\Url;
 
 if ($defi instanceof Defi) {
 
@@ -45,7 +46,12 @@ if ($defi instanceof Defi) {
                             <div class="panel-title"><?php echo $suivi ?></div>
                         </div>
 
-                        <div class="panel-body"><?php echo Journal::getInstance()->view(); ?></div>
+                        <div class="panel-body"><?php
+
+                            echo Journal::getInstance()->view();
+                            echo $CombatService->resume();
+
+                        ?></div>
                     </div>
                 </div>
 
@@ -56,20 +62,28 @@ if ($defi instanceof Defi) {
                         </div>
 
                         <div class="panel-body">
-                            <form method="post" action="">
 
                                 <?php if ($defi->count() > 1) { ?>
 
-                                    <input type="submit" name="action" value="combat">
-                                    <input type="submit" name="action" value="fuite">
+                            <form method="post" action="<?php echo Url::generate("deroule","fight","game") ?>">
+                                <input type="hidden" name="action" value="combat"/>
+                                <button type="submit"><i class="ra ra-sword"></i></button>
+                            </form>
+
+                            <form method="post" action="<?php echo Url::generate("fuite","fight","game") ?>">
+                                <input type="hidden" name="action" value="fuite"/>
+                                <button type="submit"><i class="ra ra-player-lift"></i></button>
+                            </form>
 
                                 <?php } elseif (Post::getInstance()->has('bilan')) { ?>
 
-                                    <input type="submit" name="bilan" value="Victoire">
+                            <form method="post" action="<?php echo Url::generate("bilan","fight","game") ?>">
+                                <input type="submit" name="bilan" value="Victoire"/>
+                                <button type="submit"><i class="ra ra-player-lift"></i></button>
+                            </form>
 
                                 <?php } ?>
 
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -104,10 +118,11 @@ if ($defi instanceof Defi) {
 
 
                                         <?php if($legolas->id === $joueur->id) {?>
-                                        <form class="pull-right" method="post" action="">
+                                        <form class="pull-right" method="post" action="<?php echo Url::generate("attaque","fight","game") ?>">
                                             <input type="hidden" name="rank" value="<?php echo $x ?>"/>
                                             <input type="hidden" name="cible" value="<?php echo $pe->id ?>"/>
-                                            <input type="submit" name="action" value="attaque"/>
+                                            <input type="hidden" name="action" value="attaque"/>
+                                            <button type="submit"><i class="ra ra-crossed-swords"></i></button>
                                         </form>
                                         <?php } ?>
 

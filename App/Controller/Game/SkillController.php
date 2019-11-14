@@ -64,14 +64,18 @@ class SkillController extends AppController
     /**
      *
      */
-    public function craft()
+    public function fabrique()
     {
+        $viewText = $this->legolas->getName() . " tente un craft.";
+
         if($this->ItemService instanceof ItemService)
         {
-            if (Post::getInstance()->has('craft')) {
+            if (Post::getInstance()->has('fabrique')) {
 
                 Journal::getInstance()->add($this->legolas->getName() . " tente un craft<br/>");
+
                 $repo = Post::getInstance()->val('repo') ?? null;
+
                 $potion = $this->ItemService->getCraftable(Post::getInstance()->val('item'), $repo);
 
                 if($this->PersonnageService instanceof PersonnageService)
@@ -83,15 +87,12 @@ class SkillController extends AppController
                     if ($craft === true)    $viewText = $this->legolas->getName() . " fabrique " . $potion->getName() . "<br/>";
                 elseif ($craft === 2)       $viewText = $this->legolas->getName() . " n'a pas tous les ingrédients à sa disposition pour fabriquer " . $potion->getName() . ".<br/>";
                 elseif ($craft === 3)       $viewText = $this->legolas->getName() . " ne connait pas la recette " . $potion->getName();
-                elseif ($craft === 4)       $viewText = " erreur inconnue ";
+                elseif ($craft === 4)       $viewText = " erreur inconnue 1";
+                else                        $viewText = " erreur inconnue 2";
 
             }
 
-           // $this->craftables = $this->ItemService->listCraftable($this->legolas->id);
         }
-
-        //if($this->Inventaire instanceof InventaireTable )
-        //    $this->sacoche = $this->Inventaire->itemListing($this->legolas->id , "personnage" , "sac", array("composant"), ItemEntity::class );
 
         FlashBuilder::create( "$viewText","success");
 

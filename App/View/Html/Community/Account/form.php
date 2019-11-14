@@ -1,5 +1,7 @@
 <?php
 use Core\Render\Url;
+use Core\Session\FlashBuilder;
+
 ?>
 
 <h1><?php echo $player->login ?></h1>
@@ -7,7 +9,18 @@ use Core\Render\Url;
 <div class="row">
 
     <div class="col-sm-8">
-        <?php echo $form ?>
+
+        <div class="panel panel-info">
+
+            <div class="panel-heading">
+                <div class="panel-title"></div>
+            </div>
+
+            <div class="panel-body">
+
+                <?php echo $form ?>
+            </div>
+        </div>
     </div>
 
     <div class="col-sm-4 sidebar">

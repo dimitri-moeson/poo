@@ -12,6 +12,7 @@
                     <th>Statut</th>
                     <th>Vie</th>
                     <th>Genre</th>
+                    <th>Joueur</th>
                 </tr>
 
             </thead>
@@ -27,7 +28,7 @@
                 <td><?php echo $personnage->getStatus() ?></td>
                 <td><?php echo $personnage->getVie() ?></td>
                 <td><?php echo $personnage->getSexe() == 2 ? "Femme" : "Homme" ?></td>
-
+                <td><?php echo @$User->find($personnage->user_id)->login ?></td>
                 <td><?php foreach($personnage->getStats()->getContainer() as $stats){ ?>
                         <?php echo $stats->getName(); ?>
                     <?php } ?></td>

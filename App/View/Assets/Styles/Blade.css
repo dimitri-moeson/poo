@@ -166,10 +166,10 @@ select[name="*_length"]{
 .right-click-menu li:hover {
     background-color: #DEF;
 }
-
+/**
 .dataTables_length{
     width: 35%;
 }
 .dtbl-itm-length {
     width:50%;
-}
+}**/

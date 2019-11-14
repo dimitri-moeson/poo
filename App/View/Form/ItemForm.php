@@ -43,9 +43,9 @@ class ItemForm
      * @param $selected
      * @return string
      */
-    private static function select_obj($name="objet",$selected, $grp = null, $class = "row" ){
+    private static function select_obj($name="objet",$selected, $grp = null, $class = "row col-sm-12" ){
         //class='show-tick'
-        $cnt = "<div class='$class'><label>Objet</label><select  name='$name' data-live-search='true' >";
+        $cnt = "<div class='$class'><label>Objet</label><br/><select  name='$name' data-live-search='true' >";
         $cnt .= "<option>...</option>";
 
         if(is_null($grp)) {
@@ -83,7 +83,7 @@ class ItemForm
      */
     private static function select_typ($selected, $type = null ){
         //class='show-tick'
-        $cnt = "<div class='row'><label>Type</label><select  name='type' data-live-search='true' >";
+        $cnt = "<div class='row col-sm-12'><label>Type</label><br/><select  name='type' data-live-search='true' >";
         $cnt .= "<option>...</option>";
 
         if(is_null($type)) {
@@ -120,7 +120,7 @@ class ItemForm
      */
     private static function select_img($selected , $type = null ){
         //class='custom-select show-tick'
-        $cnt = "<label>Icone</label><select  name='img' data-show-icon='true' data-live-search='true'>";
+        $cnt = "<label>Icone</label><br/><select  name='img' data-show-icon='true' data-live-search='true'>";
 
         $cnt .= "<option>...</option>";
 
@@ -247,7 +247,7 @@ class ItemForm
     private static function selectChild($selected , $icons = null, $label, $index ){
         //class='custom-select show-tick'
         $cnt = "<div class='col-sm-4'>
-                    <label>$label</label>
+                    <label>$label</label><br/>
                     <select id='child_id_$index' name='child_id' data-show-icon='true' data-live-search='true'>";
 
         $cnt .= "<option>---</option>";

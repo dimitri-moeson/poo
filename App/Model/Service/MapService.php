@@ -208,7 +208,7 @@ class MapService extends Service
                 }
                 elseif ($place->structure == 'arene'){
 
-                    $link = Url::generate("arenan", "place", "game" , $place->id );//"?p=test.arene&id=".$place->i_id;
+                    $link = Url::generate("arena", "place", "game" , $place->id );//"?p=test.arene&id=".$place->i_id;
 
                 }
                 elseif ($place->structure == 'quest'){

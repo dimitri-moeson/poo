@@ -2,7 +2,7 @@
 
 use App\Model\Service\MapService;
 
-$max_x = $x + ( $block == 'admin' ? 4 : 2);
+$max_x = $x + ( $block == 'admin' ? 4: 2);
 $min_x = $x - ( $block == 'admin' ? 5: 2);
 
 $max_y = $y + ( $block == 'admin' ? 4: 2);
@@ -10,7 +10,12 @@ $min_y = $y - ( $block == 'admin' ? 5: 2);
 
 $size =  ( $block == 'admin' ? 1: 2);
 
+/**
+ * @var MapService $MapService
+ */
 $MapService = MapService::getInstance();
+
+echo $block."<br/>";
 ?>
 
 <div class="row">
@@ -35,7 +40,21 @@ $MapService = MapService::getInstance();
 
             <div data-placement="top" data-toggle="tooltip" title="<?php echo "$a:$b" ?>"
                  class="col-xs-<?php echo $size ?> bg-success rounded text-center">
-                <?php echo $block == 'admin' ? $MapService->adminPlace(($alentours[$a][$b] ?? null), $a, $b) : $MapService->place($alentours[$a][$b] ?? null) ; ?>
+<?php
+
+                if ($block === 'admin')
+                {
+                    echo $MapService->adminPlace(($alentours[$a][$b] ?? null), $a, $b);
+                }
+                elseif ($block === 'game')
+                {
+                    echo $MapService->place($alentours[$a][$b] ?? null);
+                }
+                else{
+
+                    echo "$a:$b";
+                }
+?>
             </div>
 
         <?php } ?>

@@ -36,21 +36,19 @@ class FightController extends AppController
         Render::getInstance()->setTemplate("test.combat");
 
         $this->loadService("Combat");
-        //$this->loadService("Combat");
-
         $this->loadService("Monstre");
 
         if (isset($_SESSION['defi']))
         {
             $this->defi = unserialize($_SESSION['defi']);
         }
-        else // debut engagement
+        /**else // debut engagement
         {
             $merlin = $this->Personnage->find(2);
             $harry = $this->Personnage->find(3);
 
             $this->defi = new Defi(array($merlin, $harry, $this->legolas));
-        }
+        **/
 
 
     }
@@ -64,41 +62,19 @@ class FightController extends AppController
 
     }
 
-    /**
-     * le joueur lance une attaque de base.
-     */
-    public function attaque(){
 
-        if ($this->defi instanceof Defi)
-        {
-            if ($this->CombatService instanceof CombatService)
-            {
-                $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));//$this->Personnage->find(Post::getInstance()->val('cible'));
 
-                $this->CombatService->ciblage($this->defi, $cible);
 
-                $_SESSION['defi'] = serialize($this->defi);
-            }
-        }
-    }
-
-    /**
-     * le joueur fuit l'affrontement...
-     */
-    public function fuite(){
-
-        FlashBuilder::create( $this->legolas->getName() . "a fui combat" ,"success");
-
-        Redirect::getInstance()->setAct("fiche");
-    }
 
     /**
      * fin du combat
      */
     public function bilan(){
 
-        if ($this->defi instanceof Defi) {
-            if ($this->CombatService instanceof CombatService) {
+        if ($this->defi instanceof Defi)
+        {
+            if ($this->CombatService instanceof CombatService)
+            {
                 $mess = null;
 
                 $player = $this->defi->current();
@@ -108,9 +84,10 @@ class FightController extends AppController
 
                 $potion = ItemConsommableEntity::init("potion", "soin", "vie", 15);
 
-                if ($player instanceof PersonnageEntity) {
-                    if ($this->PersonnageService->ramasse($player, $potion)) {
-
+                if ($player instanceof PersonnageEntity)
+                {
+                    if ($this->PersonnageService->ramasse($player, $potion))
+                    {
                         $mess .= $player->getName() . " ramasse " . $potion->getName();
                         FlashBuilder::create($mess, "success");
 
@@ -128,8 +105,83 @@ class FightController extends AppController
 
         if ($this->defi instanceof Defi)
             if($this->CombatService instanceof CombatService)
-                $this->CombatService->deroule($this->defi);
+                $this->defi = $this->CombatService->deroule($this->defi);
+        $_SESSION['defi'] = serialize($this->defi);
+        Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
 
+
+    }
+
+    /**
+     * le joeur passe son tour
+     * le combat suit son cours
+     */
+    public function deroule()
+    {
+        if ($this->defi instanceof Defi) {
+            if ($this->CombatService instanceof CombatService) {
+                if (Post::getInstance()->has('action')) {
+                    $action = Post::getInstance()->val('action');
+
+                    if ($action == 'combat') {
+                        $this->defi = $this->CombatService->deroule($this->defi);
+                    }
+                    $_SESSION['defi'] = serialize($this->defi);
+                    Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
+
+                }
+            }
+        }
+    }
+
+    /**
+     * le joueur fuit l'affrontement...
+     */
+    public function fuite()
+    {
+        if ($this->defi instanceof Defi) {
+            if ($this->CombatService instanceof CombatService) {
+                if (Post::getInstance()->has('action')) {
+                    $action = Post::getInstance()->val('action');
+
+                    if ( $action == 'fuite')
+                    {
+                        FlashBuilder::create( $this->legolas->getName() . "a fui combat" ,"success");
+                        Redirect::getInstance()->setAct("index")->setCtl("default")->setDom("game")->send();
+                    }
+
+                    Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
+
+                }
+            }
+        }
+    }
+
+    /**
+     * le joueur lance une attaque de base sur une cible precise
+     *
+     *
+     */
+    public function attaque()
+    {
+        if ($this->defi instanceof Defi)
+        {
+            if ($this->CombatService instanceof CombatService)
+            {
+                if (Post::getInstance()->has('action'))
+                {
+                    $action = Post::getInstance()->val('action');
+
+                    if ( $action == 'attaque')
+                    {
+                        $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));
+                        $this->defi = $this->CombatService->ciblage($this->defi, $cible);
+                        $_SESSION['defi'] = serialize($this->defi);
+                    }
+                    Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
+                }
+            }
+        }
     }
 
     /**
@@ -137,28 +189,51 @@ class FightController extends AppController
      */
     public function default()
     {
-
         if ($this->defi instanceof Defi)
         {
             if($this->CombatService instanceof CombatService)
             {
                 if(Post::getInstance()->has('action'))
                 {
-                    if (Post::getInstance()->val('action') == 'attaque')
-                    {
+                    $action = Post::getInstance()->val('action');
 
-                    }
-                    elseif ( Post::getInstance()->val('action') == 'combat')
+                    /**if ( $action == 'attaque')
                     {
-                    }
-                    elseif ( Post::getInstance()->val('action') == 'fuite')
+                        $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));
+                        $this->CombatService->ciblage($this->defi, $cible);
+                    }**/
+                    // else
+                    /**if ( $action == 'combat')
                     {
-
-                    }
+                        $this->CombatService->deroule($this->defi);
+                    }**/
+                    //else
+                    /**if ( $action == 'fuite')
+                    {
+                        FlashBuilder::create( $this->legolas->getName() . "a fui combat" ,"success");
+                        Redirect::getInstance()->setAct("default")->setCtl("game");
+                    }**/
                 }
                 else if (Post::getInstance()->has('bilan')) {
 
+                    $mess = null ;
 
+                    $player = $this->defi->current();
+
+                    $mess .= $player->getName() . "est sorti vainqueur du combat";
+                    unset($_SESSION['defi']);
+
+                    $potion = ItemConsommableEntity::init("potion", "soin", "vie", 15);
+
+                    if( $player instanceof PersonnageEntity) {
+                        if ($this->PersonnageService->ramasse($player, $potion)) {
+
+                            $mess .= $player->getName() . " ramasse " . $potion->getName();
+                            FlashBuilder::create( $mess ,"success");
+
+                            Redirect::getInstance()->setAct("fiche")->send();
+                        }
+                    }
                 }
             }
         }

@@ -92,6 +92,8 @@ class Render
      */
     public function initView(Array $page = array()){
 
+        var_dump($page);
+
         if (is_null($this->view)) {
             $page = array_map('ucfirst', $page);
             $this->view = implode(DIRECTORY_SEPARATOR, $page);

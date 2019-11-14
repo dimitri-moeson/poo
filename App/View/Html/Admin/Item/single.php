@@ -6,7 +6,7 @@ use Core\Session\FlashBuilder;
 
 ?>
 
-<h1><?php echo isset($post) ? $post->titre : "Nouvel item" ?></h1>
+
 
 <?php echo FlashBuilder::create()->get() ?>
 
@@ -56,7 +56,22 @@ use Core\Session\FlashBuilder;
     </div>
 
     <form class="col-sm-5" action="" method="post">
-        <?php echo $form ?>
+        <?php //echo $form ?>
+
+
+        <div class="panel panel-info">
+
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <h1><?php echo isset($post) && !is_null($post) && !empty($post) ? $post->titre : "Nouvel item" ?></h1>
+                </div>
+            </div>
+
+            <div class="panel-body">
+
+                <?php echo $form ?>
+            </div>
+        </div>
     </form>
 
 </div>

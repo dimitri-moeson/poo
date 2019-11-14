@@ -96,7 +96,7 @@ class Defi implements Iterator, ArrayAccess, Countable
 	function has_next()
 	{
 	    $next = $this->position+1;
-        return isset($this->array[$next]);
+        return isset($this->array[$next]) && !is_null($this->array[$next]) && !empty($this->array[$next]) ;
 
         //return ($this->position != ($this->count()-1) ? true : false ) ;
 	}

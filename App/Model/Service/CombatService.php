@@ -4,6 +4,7 @@
 namespace App\Model\Service;
 
 
+use App\Model\Entity\Game\Combat\Combat;
 use App\Model\Entity\Game\Combat\Defi;
 use App\Model\Entity\Game\Combat\Round;
 use App\Model\Entity\Game\CombattantTrait;
@@ -13,6 +14,8 @@ use App\Model\Service;
 
 class CombatService extends Service
 {
+    public $suivi;
+
     public function __construct()
     {
         parent::__construct();
@@ -42,34 +45,32 @@ class CombatService extends Service
      */
     function attaque(Defi $defi, $pe, $cible){
 
-        Journal::getInstance()->add($pe->getName() . " cible " . $cible->getName() . "<br/>");
-
-        //Journal::getInstance()->add( print_r(array_keys($defi->participants()),1));
-
         $k = $this->position($defi, $cible) ?? 0 ;
 
-        //Journal::getInstance()->add(" cible " . $cible->getName() . " à la position ".$k."<br/>");
+        $this->suivi .= $pe->getName() . " cible " . $cible->getName() . " à la position ".$k."<br/>";
 
         if ($pe != $cible) {
+
+            $atk = $pe->getStats()->getScore("offensif");
+            $def = $cible->getStats()->getScore("defensif");
+
+            $this->suivi .= "atk =".$atk."<br/>";
+            $this->suivi .= "def =".$def."<br/>";
+
             $pe->attaque($cible);
             $cible->record = true ;
-        } /**else {
-
-            $pe->charge(-1);
-            $pe->record = true ;
-        }**/
-
+        }
 
         if ($cible->deces()) {
             $defi->remove($cible);
         }else {
             $defi->offsetSet($k,$cible);
 
-            //Journal::getInstance()->add(" cible " . $cible->getName() . " est réaffecté avec ".$cible->getVie()." PV<br/>");
+            $this->suivi .= " cible " . $cible->getName() . " est réaffecté avec ".$cible->getVie()." PV<br/>";
 
         }
 
-        //Journal::getInstance()->add($pe->getName() . " enregistre combat contre " . $cible->getName() . "<br/>");
+        $this->suivi .= $pe->getName() . " enregistre combat contre " . $cible->getName() . "<br/>";
 
         if($this->PersonnageService instanceof PersonnageService){
 
@@ -80,6 +81,9 @@ class CombatService extends Service
                 $this->PersonnageService->save($cible);
 
         }
+
+        return $defi ;
+
     }
 
     function deroule(Defi $defi){
@@ -93,9 +97,18 @@ class CombatService extends Service
 
 
         $this->ciblage($defi,$cible);
+
+        return $defi ;
+
     }
 
+    /**
+     * @param Defi $defi
+     * @param $cible
+     */
     function ciblage(Defi $defi,$cible){
+
+        $this->suivi .= "ciblage<br/>";
 
         $fight = $defi->getFight();
         $pe = $defi->current();
@@ -104,6 +117,7 @@ class CombatService extends Service
 
         if($pe == $passe->getPerso()) {
 
+
             $this->attaque($defi, $pe,$cible);
 
             $this->suivant($defi , $round , $fight);
@@ -111,22 +125,48 @@ class CombatService extends Service
         }
         else
         {
-            Journal::getInstance()->add("erreur ordre passage...<br/>");
+            $this->suivi .= "erreur ordre passage...<br/>";
         }
+
+        $_SESSION['combat']["suivi"] = $this->suivi;
+
+        return $defi ;
+
     }
 
-    function suivant($defi = null , $round = null , $fight = null ){
+    function suivant(Defi $defi = null , Round $round = null , Combat $fight = null ){
+
+        $this->suivi .= "Au suivant ?<br/>";
 
         if ($defi->has_next())// on passe au personnage suivant...
         {
+            $this->suivi .= "personnage suivant<br/>";
+
             $defi->next();
             $round->next();
         }
         else // tout les persos ont joué pour ce tour ...
         {
+            $this->suivi .= "round suivant<br/>";
             $round = Round::launch($defi, $fight);
             $fight->ajoute($round)->next();
         }
+
+        $_SESSION['combat']["suivi"] = $this->suivi;
+
+        return $defi ;
+    }
+
+    /**
+     * @return mixed
+     */
+    function resume(){
+
+        $suivi =  $_SESSION['combat']["suivi"];
+
+        unset( $_SESSION['combat']["suivi"]);
+
+        return $suivi ;
     }
 
     function savePerso(PersonnageEntity $personnage)

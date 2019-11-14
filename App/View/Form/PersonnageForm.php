@@ -12,8 +12,8 @@ class PersonnageForm
     {
         $form = new Form($post);
 
-        $form->input("titre", array('name' => "Nom"))
-            ->choice("sexe", array('name' => "genre"),array( 1 => "homme" , 2 => "femme"))
+        $form->input("name", array('name' => "Name","label"=>"Nom"))
+            ->choice("sexe", array('name' => "sexe","label"=>"Genre"),array( 1 => "homme" , 2 => "femme"))
             ->submit("Enregistrer");
 
         return $form ;

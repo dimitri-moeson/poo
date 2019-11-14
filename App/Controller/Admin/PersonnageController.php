@@ -20,6 +20,7 @@ class PersonnageController extends AppController
         parent::__construct();
 
         $this->loadModel("Game\Personnage\Personnage");
+        $this->loadModel("User");
     }
 
     public function index()

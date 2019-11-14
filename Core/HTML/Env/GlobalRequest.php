@@ -68,7 +68,7 @@ class GlobalRequest
             $donnees = stripslashes($donnees);
             $donnees = htmlspecialchars($donnees);
             $donnees = htmlentities($donnees);
-            $donnees = mysqli_real_escape_string($donnees);
+            //$donnees = mysqli_real_escape_string(null, $donnees);
         }
        //echo "clean(out):".print_r($donnees,1)."<br/>";
         return $donnees;

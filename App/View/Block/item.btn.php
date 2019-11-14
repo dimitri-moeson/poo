@@ -27,17 +27,20 @@ if ($equip instanceof ItemEntity) {
 
         $submit = true;
 
-        if ($block == "arene") {
+        if ($block == "arene")
+        {
             $id_name = "challenger";
             $action_name = "defi";
             $ctrl_name = "arena";
         }
-        elseif ($block == "apprentissage") {
+        elseif ($block == "apprentissage")
+        {
             $id_name = "craft";
             $action_name = "apprentissage";
             $ctrl_name = "skill";
         }
-        elseif ($equip->getType() == "consommable") {
+        elseif ($equip->getType() == "consommable")
+        {
             if ($block == "recette") {
 
                 $id_name = "recette";
@@ -72,7 +75,8 @@ if ($equip instanceof ItemEntity) {
                 $id_name = "equip";
                 $action_name = "change";
                 $ctrl_name = "default";
-            } elseif ($block == "fabrique") {
+            }
+            elseif ($block == "fabrique") {
                 $id_name = "item";
                 $action_name = "fabrique";
                 $ctrl_name = "skill";
