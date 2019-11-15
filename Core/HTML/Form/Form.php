@@ -136,6 +136,8 @@ class Form
             return $this->data[$index] ?? null;
     }
 
+
+
     /**
      * @param       $name
      * @param array $options
@@ -177,6 +179,14 @@ class Form
     {
         $this->input($name, $options);
         $this->inputs[$name]->setType("password");
+
+        return $this;
+    }
+
+    public function number(string $name, array $options = []):?self
+    {
+        $this->input($name, $options);
+        $this->inputs[$name]->setType("number");
 
         return $this;
     }

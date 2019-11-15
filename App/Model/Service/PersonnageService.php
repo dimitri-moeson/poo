@@ -145,6 +145,7 @@ class PersonnageService extends Service
                 and perso_stat.type in ("'.self::TYPE_STAT.'","'.self::TYPE_RES.'")
                 and perso_stat.rubrique = "'.self::RUB_PERSO.'" 
             where stat.id = perso_stat.child_id
+                and perso.id = "'.$personnage->getId().'"
 		) ,0 )  -- stat personnage
 		+
         IFNULL((select sum(obj_stat.val) 
@@ -156,7 +157,7 @@ class PersonnageService extends Service
                     and obj_stat.type in ("'.self::TYPE_STAT.'","'.self::TYPE_RES.'")
                     and obj_stat.rubrique = "'.self::RUB_OBJ.'" 
                 where stat.id = obj_stat.child_id
-
+                and perso.id = "'.$personnage->getId().'"
 		) ,0 ) -- stat equipement
 		
 		as val

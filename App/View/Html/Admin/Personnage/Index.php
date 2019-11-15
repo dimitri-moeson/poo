@@ -9,10 +9,9 @@
                     <th>Nom</th>
                     <th>Histoire</th>
                     <th>Classe</th>
-                    <th>Statut</th>
-                    <th>Vie</th>
                     <th>Genre</th>
                     <th>Joueur</th>
+                    <th>Actions</th>
                 </tr>
 
             </thead>
@@ -24,14 +23,9 @@
                 <td><?php echo $personnage->id ?></td>
                 <td><?php echo $personnage->getName() ?></td>
                 <td><?php echo $personnage->getDescription() ?></td>
-                <td><?php echo $personnage->getType() ?></td>
-                <td><?php echo $personnage->getStatus() ?></td>
-                <td><?php echo $personnage->getVie() ?></td>
+                <td><?php echo @$Item->find($personnage->getType())->name ?></td>
                 <td><?php echo $personnage->getSexe() == 2 ? "Femme" : "Homme" ?></td>
                 <td><?php echo @$User->find($personnage->user_id)->login ?></td>
-                <td><?php foreach($personnage->getStats()->getContainer() as $stats){ ?>
-                        <?php echo $stats->getName(); ?>
-                    <?php } ?></td>
                 <td><?php echo Render::getInstance()->block("admin.list.btn", array(
 
                         "p" => "personnage",

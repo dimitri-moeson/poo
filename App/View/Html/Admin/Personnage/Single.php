@@ -1,20 +1,14 @@
-<h1><?php echo $post->titre ?></h1>
-
-<?php if ($success) { ?>
-
-    <div class="alert alert-success">
-        enregistrement.
-    </div>
 
 
-<?php } ?>
+<h1><?php echo $post->name ?></h1>
+
 
 <div class="row">
 
-        <form action="" method="post">
+        <?php //echo $PersonnageService->status($post); ?>
+        <?php echo $form ?>
 
-            <?php echo $form ?>
-
-        </form>
 
 </div>
+
+<pre><?php //print_r($post) ?></pre>

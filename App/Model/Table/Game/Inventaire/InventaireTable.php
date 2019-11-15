@@ -58,10 +58,6 @@ class InventaireTable extends GameTable
             $statement->where( "e.type in (".implode(',', $r_type).") ");
         }
 
-        //echo $statement ;
-        //print_r($attrib);
-       //echo "<br/>";
-
         return $this->db->prepare($statement , $attrib, $model, false) ;
     }
 

@@ -120,6 +120,12 @@ class ItemEntity extends Entity
 
     const categorie_arr = array(
 
+        "status" => array(
+
+            "normal",
+            "mort"
+        ),
+
         "mission" => array(
 
             "recolte",
@@ -302,6 +308,14 @@ class ItemEntity extends Entity
             self::type_arr['arme_2_main'] ,
             array('consommable')
 
+        );
+    }
+
+    public static function getClasseArray(){
+
+        return array_merge(
+
+            ItemEntity::type_arr['classe']
         );
     }
 
