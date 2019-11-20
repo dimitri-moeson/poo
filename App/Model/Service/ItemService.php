@@ -7,18 +7,15 @@
  */
 namespace App\Model\Service ;
 
-use App\Model\Entity\Game\Inventaire\InventaireEntity;
-use App\Model\Entity\Game\Inventaire\InventaireEquipementEntity;
-use App\Model\Entity\Game\Inventaire\InventaireRecetteEntity;
-use App\Model\Entity\Game\Item\ItemConsommableEntity;
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Item\ItemMonstreEntity;
-use App\Model\Entity\Game\Item\ItemQuestEntity;
 use App\Model\Service;
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
-use Core\Debugger\Debugger;
+
 use Exception;
+
+use App\Model\Heritage\Game\Item\ItemMonstreEntity;
+use App\Model\Heritage\Game\Inventaire\InventaireRecetteEntity;
 
 class ItemService extends Service
 {

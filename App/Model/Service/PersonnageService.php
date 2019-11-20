@@ -8,25 +8,16 @@
 
 namespace App\Model\Service;
 
-use App\Model\Heritage\Game\Item\ItemQuestEntity;
-use App\Model\Heritage\Game\Item\ItemRessourceEntity;
-use App\Model\Heritage\Game\Item\ItemSpellEntity;
-use App\Model\Heritage\Game\Item\ItemStatEntity;
-use App\Model\Heritage\Game\Inventaire\InventaireStatEntity;
 use App\Model\Heritage\Game\Inventaire\InventaireEquipementEntity;
 use App\Model\Heritage\Game\Item\ItemEquipementEntity;
 
 use App\Model\Object\Journal;
 
 use App;
-use App\Model\Entity\Game\Inventaire\InventaireEntity;
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Map\MapEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use App\Model\Service;
 use App\Model\Table\Game\Inventaire\InventaireTable;
-use App\Model\Table\Game\Item\ItemTable;
-use Core\Debugger\Debugger;
 use Core\HTML\Form\Form;
 use Core\Render\Render;
 use Exception;
