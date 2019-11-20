@@ -8,7 +8,6 @@
 
 namespace Core\Database;
 
-use Core\Config;
 use Core\Debugger\Debugger;
 use \PDO;
 use PDOException;
@@ -20,7 +19,6 @@ use PDOStatement;
  */
 class MysqlDatabase extends Database
 {
-
     private $db_name;
     private $db_type;
     private $db_user;

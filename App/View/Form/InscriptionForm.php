@@ -5,14 +5,12 @@ namespace App\View\Form;
 
 
 use App\Model\Entity\UserEntity;
-use App\Model\Service\PersonnageService;
 use App\Model\Service\UserService;
 use Core\Auth\CryptAuth;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
 use Core\Session\FlashBuilder;
-use Exception;
 
 class InscriptionForm
 {

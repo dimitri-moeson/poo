@@ -4,7 +4,7 @@
 namespace App\Model\Comportement;
 
 
-use App\Model\Entity\Game\Inventaire\InventaireRecetteEntity;
+use App\Model\Heritage\Game\Inventaire\InventaireRecetteEntity;
 
 trait CraftTrait
 {

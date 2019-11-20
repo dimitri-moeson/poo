@@ -1,7 +1,6 @@
 <?php
 
 use Core\Render\Render;
-use Core\Render\Url;
 
 ?>
 <h1><?php echo $post->titre ?></h1>

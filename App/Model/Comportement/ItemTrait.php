@@ -4,7 +4,7 @@
 namespace App\Model\Comportement;
 
 
-use App\Model\Entity\Game\Inventaire\InventaireRecetteEntity;
+use App\Model\Heritage\Game\Inventaire\InventaireRecetteEntity;
 use App\Model\Entity\Game\Item\ItemEntity;
 
 trait ItemTrait
@@ -192,6 +192,11 @@ trait ItemTrait
     private $recette ;
 
 
+    public function initItem()
+    {
+        if($this->isCraftable())
+            $this->recette = new InventaireRecetteEntity();
+    }
     /**
      * @return mixed
      */

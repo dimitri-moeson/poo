@@ -88,12 +88,8 @@ class PersonnageService extends Service
     {
         try {
 
-            var_dump($this->PersonnageBase);
-
             /** @var PersonnageEntity $personnage */
             $personnage = $this->PersonnageBase->findOneBy(array("user_id" => $user_id));
-
-
 
             if ($personnage instanceof PersonnageEntity) {
 
@@ -130,7 +126,6 @@ class PersonnageService extends Service
 
                 return $personnage;
             }
-            return null ;
         }
         catch (Exception $e){
             var_dump($e);

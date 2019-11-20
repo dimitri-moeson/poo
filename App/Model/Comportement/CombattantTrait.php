@@ -3,11 +3,11 @@
 
 namespace App\Model\Comportement;
 
-use App\Model\Entity\Game\Inventaire\InventaireRessourceEntity;
-use App\Model\Entity\Game\Inventaire\InventaireStatEntity;
+use App\Model\Heritage\Game\Inventaire\InventaireRessourceEntity;
+use App\Model\Heritage\Game\Inventaire\InventaireStatEntity;
 use App\Model\Entity\Game\Map\MapEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
-use App\Model\Entity\Journal;
+use App\Model\Object\Journal;
 use Core\Debugger\Debugger;
 
 Trait CombattantTrait

@@ -1,9 +1,7 @@
 <?php
 
 use App\Model\Entity\Game\Item\ItemEntity;
-use Core\Render\Render;
 use Core\Render\Url;
-use Core\Session\FlashBuilder;
 
 ?>
 

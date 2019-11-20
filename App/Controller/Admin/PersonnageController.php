@@ -7,12 +7,9 @@ use App;
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Service\PersonnageService;
 use App\View\Form\PersonnageForm;
-use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
-use Core\HTML\Form\Form;
 use Core\HTML\Header\Header;
 use Core\Redirect\Redirect;
-use Core\Render\Render;
 use Core\Session\FlashBuilder;
 
 class PersonnageController extends AppController

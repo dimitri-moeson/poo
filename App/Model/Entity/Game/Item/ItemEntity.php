@@ -23,8 +23,7 @@ class ItemEntity extends Entity
      */
     public function __construct()
     {
-        if($this->isCraftable())
-            $this->recette = new InventaireRecetteEntity();
+
     }
 
     /**

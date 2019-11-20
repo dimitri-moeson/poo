@@ -1,8 +1,6 @@
 <?php
 namespace App\Model\Entity\Game\Map ;
 
-use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Heritage\Game\Item\ItemEntityTerrain;
 use App\Model\Heritage\Game\Item\ItemTerrainEntity;
 
 /**

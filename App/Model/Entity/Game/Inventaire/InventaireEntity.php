@@ -2,7 +2,6 @@
 namespace App\Model\Entity\Game\Inventaire;
 
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Journal;
 use ArrayAccess;
 use Core\Model\Entity\Entity;
 use Countable;
@@ -98,7 +97,7 @@ class InventaireEntity extends Entity implements ArrayAccess, Countable  {
     /**
      * @return Item|null
      */
-    public function getRand(): ?Item{
+    public function getRand(): ?ItemEntity{
 
         if(!empty($this->container))
             return array_rand($this->container,1);
