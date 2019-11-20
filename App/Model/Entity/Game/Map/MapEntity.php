@@ -2,8 +2,8 @@
 namespace App\Model\Entity\Game\Map ;
 
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Item\ItemEntityTerrain;
-use App\Model\Entity\Game\Item\ItemTerrainEntity;
+use App\Model\Heritage\Game\Item\ItemEntityTerrain;
+use App\Model\Heritage\Game\Item\ItemTerrainEntity;
 
 /**
  * Created by PhpStorm.

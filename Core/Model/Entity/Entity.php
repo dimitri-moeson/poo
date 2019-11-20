@@ -172,7 +172,6 @@ class OffEntity
                 $this->$name = $val ;
             }
         }
-        // TODO: Implement __set() method.
         /**elseif (strpos($name, "_id") !== false)
         {
         list($name, $value) = $this->getForeignObj($name, $val);

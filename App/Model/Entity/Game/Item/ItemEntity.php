@@ -2,6 +2,7 @@
 namespace App\Model\Entity\Game\Item;
 
 use App\Model\Comportement\DataTrait;
+use App\Model\Comportement\ItemTrait;
 use App\Model\Entity\Game\Inventaire\InventaireRecetteEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use Core\Model\Entity\Entity;
@@ -14,7 +15,7 @@ use Core\Model\Entity\Entity;
 class ItemEntity extends Entity
 {
     use DataTrait;
-
+    use ItemTrait;
     /**
      * ItemEntity constructor.
      * @param $nom
