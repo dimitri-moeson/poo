@@ -3,7 +3,6 @@
 
 namespace App\Controller\Game;
 
-
 use App\Model\Object\Game\Combat\Defi;
 use App\Model\Heritage\Game\Item\ItemMonstreEntity;
 use App\Model\Service\EquipementService;

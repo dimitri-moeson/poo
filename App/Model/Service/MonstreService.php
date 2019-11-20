@@ -1,11 +1,9 @@
 <?php
 
-
 namespace App\Model\Service;
 
-
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Item\ItemMonstreEntity;
+use App\Model\Heritage\Game\Item\ItemMonstreEntity;
 use App\Model\Service;
 use App\Model\Table\Game\Item\ItemTable;
 use Core\Render\Render;
@@ -13,9 +11,6 @@ use Exception;
 
 class MonstreService extends Service
 {
-
-    #egion __construct
-
     /**
      * PersonnageService constructor.
      */
@@ -34,8 +29,6 @@ class MonstreService extends Service
         }
     }
 
-    #endregion
-
     public function getFightable(Int $strum_id = null)
     {
         if($this->ItemBase instanceof ItemTable)
@@ -45,7 +38,6 @@ class MonstreService extends Service
             $strum = $this->ItemService->generateRandomCharac($strum);
 
         return $strum ;
-
     }
 
     public function status( ItemEntity $personnage = null): ?String

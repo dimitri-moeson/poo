@@ -39,7 +39,6 @@ class DefaultController extends AppController
             $this->loadService("Map");
             $this->loadService("Movement");
             $this->loadService("Quest");
-
         }
     }
 
@@ -99,9 +98,6 @@ class DefaultController extends AppController
         $this->inventaire();
 
         $this->map();
-
-        //echo " dom : none cntl : default action :  index perso : ";
-        //var_dump($this->legolas);
 
         Render::getInstance()->setView("Game/Index");
     }

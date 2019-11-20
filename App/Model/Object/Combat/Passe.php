@@ -3,7 +3,7 @@
 
 namespace App\Model\Object\Game\Combat;
 
-use App\Model\Entity\Journal;
+use App\Model\Object\Journal;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 
 /**

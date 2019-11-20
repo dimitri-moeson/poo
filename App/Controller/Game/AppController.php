@@ -22,7 +22,7 @@ class AppController extends \App\Controller\AppController
     /**
      * @var App\Model\Entity\Game\Personnage\PersonnageEntity|null
      */
-    protected $legolas;
+    public $legolas;
 
     public function __construct()
     {

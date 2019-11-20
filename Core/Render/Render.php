@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Core\Render;
-
 
 use Core\Config;
 use Core\Controller\Controller;
 use Core\Debugger\Debugger;
 use Core\HTML\Template\Template;
-use Core\Request\Request;
 use Exception;
 
 class Render
@@ -108,10 +105,12 @@ class Render
             $this->initView($page);
     }
 
+    /**
+     * @param Controller $controller
+     * @throws Exception
+     */
     public function exec(Controller $controller)
     {
-
-        var_dump($controller);
         $view_filename = $this->viewPath . "/" . $this->view . ".php";
         $template_filename = Config::VIEW_DIR. "/Templates/" . $this->template . ".php";
 
@@ -119,11 +118,13 @@ class Render
 
         try
         {
+            $data = (array)$controller ;
+
             if(file_exists($view_filename))
             {
                 ob_start();
 
-                extract((array)$controller);
+                extract($data);
                 require_once $view_filename;
                 $content = ob_get_clean();
             }

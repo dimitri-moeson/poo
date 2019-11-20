@@ -6,7 +6,7 @@ namespace App\Model\Service;
 
 use App\Model\Entity\Game\Map\MapEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
-use App\Model\Entity\Journal;
+use App\Model\Object\Journal;
 use App\Model\Service;
 use Core\Redirect\Redirect;
 
