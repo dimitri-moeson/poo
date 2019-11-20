@@ -160,13 +160,20 @@ class MysqlDatabase extends Database
     public function setFetchMode( PDOStatement $res, $class_name = null ){
         try {
 
-            if (is_null($class_name)) {
-                $res->setFetchMode(PDO::FETCH_OBJ);
-            } elseif (is_object($class_name)) {
-                $res->setFetchMode(PDO::FETCH_INTO, $class_name);
-            } elseif (class_exists($class_name)) {
+            if (is_string($class_name) && class_exists("\\".$class_name,true ))
+            {
                 $res->setFetchMode(PDO::FETCH_CLASS, $class_name);
-            } else {
+            }
+        elseif (is_object($class_name))
+            {
+                $res->setFetchMode(PDO::FETCH_INTO, $class_name);
+            }
+        /**elseif (is_null($class_name))
+            {
+                $res->setFetchMode(PDO::FETCH_OBJ);
+            }**/
+            else
+            {
                 $res->setFetchMode(PDO::FETCH_OBJ);
             }
 

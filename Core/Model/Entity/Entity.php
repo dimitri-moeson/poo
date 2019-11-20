@@ -7,12 +7,26 @@
  */
 namespace Core\Model\Entity ;
 
+use Core\Debugger\Debugger;
+use DateTime;
+use ReflectionClass;
+use ReflectionProperty;
+
 /**
  * Class Entity
  * @package Core\Model\Entity
  */
 class Entity
 {
+    /**
+     * @var int $id
+     */
+    protected $id ;
+
+    protected $createAt ;
+    protected $updateAt ;
+    protected $deleteAt ;
+
     /**
      * @param $name
      * @return mixed
@@ -29,6 +43,63 @@ class Entity
             return $this->$name;
         /** ->getValue() */
     }
+
+    /**
+     * @param $name
+     * @param $val
+     */
+    function __set($name, $val)
+    {
+        if(is_string($val))
+        {
+            $format = "Y-m-d H:i:s";
+            $forma2 = "Y-m-d";
+
+            $value = DateTime::createFromFormat($format, $val);
+            $valu2 = DateTime::createFromFormat($forma2, $val);
+
+            if ($value && $value->format($format) == $val) {
+
+                Debugger::getInstance()->add("<b>".$name. "</b> correspond à une date.") ;
+
+                $val = $value ;
+            }
+
+            if ($valu2 && $valu2->format($forma2) == $val) {
+
+                Debugger::getInstance()->add("<b>".$name. "</b> correspond à une date.") ;
+
+                $val = $valu2 ;
+            }
+
+        }
+
+        $this->$name = $val;
+
+        $class = get_class($this) ;
+/**
+        try {
+            echo "$class, $name ";
+            @($ref = new ReflectionProperty( $class, $name));
+
+            if($ref){
+
+                echo "reflection found";
+
+            }else {
+                echo "no reflection....";
+            }
+            echo "<br/>";
+        }
+        catch(\Exception $e ){
+
+            Debugger::getInstance()->add( " Entity error -> ".$class."::".$name." - ". $e->getMessage());
+
+            echo "<br/>";
+
+        }**/
+    }
+
 }
 
 class OffEntity
@@ -60,7 +131,7 @@ class OffEntity
      *
      * @return $this
      */
-    function __set($name, $val)
+    function __set1($name, $val)
     {
         if (strpos($name, 'date_') !== false)
         {
@@ -77,6 +148,40 @@ class OffEntity
         $this->$name = $value;
     }
 
+    /**
+     * @param $name
+     * @param $val
+     */
+    function __set2($name, $val)
+    {
+        if(is_int($val))
+        {
+            $this->$name = $val ;
+        }
+
+        if(is_string($val))
+        {
+            $format = "Y-m-d H:i:s";
+            $value = DateTime::createFromFormat($format, $val);
+
+            if ($value && $value->format($format) == $val) {
+                $this->$name = $value;
+            }
+            else {
+
+                $this->$name = $val ;
+            }
+        }
+        // TODO: Implement __set() method.
+        /**elseif (strpos($name, "_id") !== false)
+        {
+        list($name, $value) = $this->getForeignObj($name, $val);
+        }**/
+        else
+        {
+            $this->$name = $val ;
+        }
+    }
 
     public function slugify($text)
     {

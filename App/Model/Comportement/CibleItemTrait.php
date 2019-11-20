@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Model\Entity\Game;
+namespace App\Model\Comportement ;
 
 
 use App\Model\Entity\Game\Item\ItemEntity;

@@ -15,7 +15,7 @@ use Core\Render\Url;
 class MapService extends Service
 {
     /**
-     * @var PersonnageEntity
+     * @var PersonnageEntity $personnage
      */
     private $personnage;
 

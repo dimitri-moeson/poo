@@ -142,7 +142,7 @@ $sql_rub = $ctl_ === "sql";
                             <li><a class="active" href="<?php echo Url::generate("index","map","admin") ?>">Map</a></li>
                             <li><a href="#itmSubmenu" data-toggle="collapse" aria-expanded="<?php echo $item_rub ? "true" : "false" ?>" class="dropdown-toggle">Item<i class="fa fa-fw fa-angle-down pull-right"></i></a>
                                 <ul class="<?php echo $item_rub ? "in" : "collapse" ?>" id="itmSubmenu">
-                                    <?php foreach (ItemEntity::type_arr as $cat => $items) { ?>
+                                    <?php foreach (ItemEntity::$type_arr as $cat => $items) { ?>
                                         <li>
                                             <a href="#<?php echo $cat ?>Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><?php echo $cat ?><i class="fa fa-fw fa-angle-down pull-right"></i></a>
                                             <ul class="<?php echo in_array($slg ,$items) ? "in" : "collapse" ?>" id="<?php echo $cat ?>Submenu">

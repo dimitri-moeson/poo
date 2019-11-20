@@ -16,12 +16,12 @@ class InventaireEntity extends Entity implements ArrayAccess, Countable  {
     protected $container = array();
 
     public function __construct() {}
-
+/**
     public function __toString()
     {
-        return $this->container;
+        return "".$this->container;
     }
-
+**/
     public function offsetSet($offset, $value) {
         if (is_null($offset)) {
             $this->container[] = $value;

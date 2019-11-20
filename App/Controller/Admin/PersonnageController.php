@@ -17,23 +17,33 @@ use Core\Session\FlashBuilder;
 
 class PersonnageController extends AppController
 {
+    /**
+     * PersonnageController constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
         parent::__construct();
 
-        $this->loadModel("Game\Personnage\Personnage");
         $this->loadModel("User");
         $this->loadModel("Game\Item\Item");
         $this->loadModel("Game\Inventaire\Inventaire");
+        $this->loadModel("Game\Personnage\Personnage");
 
         $this->loadService("Personnage");
    }
 
+    /**
+     *
+     */
     public function index()
     {
         $this->personnages = $this->Personnage->all();
     }
 
+    /**
+     *
+     */
     public function delete(){
 
         if(Post::getInstance()->submit()) {
@@ -78,7 +88,7 @@ class PersonnageController extends AppController
                 "type" => Post::getInstance()->val("type"),
                 "faction_id" => Post::getInstance()->val("faction_id"),
                 "race_id" => Post::getInstance()->val("race_id"),
-                "status" => ItemEntity::categorie_arr["status"][$id_status]
+                "status" => ItemEntity::$categorie_arr["status"][$id_status]
             );
 
             if($this->Personnage->update($id, $datas )){
@@ -121,9 +131,9 @@ class PersonnageController extends AppController
 
         $this->categories = $this->Personnage->list('id','nom');
 
-        Header::getInstance()->setTitle($this->post->titre);
+        Header::getInstance()->setTitle($this->post->getName());
 
-        $classes =  $this->Item->typeListing(ItemEntity::type_arr["classe"]) ;
+        $classes =  $this->Item->typeListing(ItemEntity::$type_arr["classe"]) ;
         $factions =  $this->Item->typeListing(["faction"]) ;
         $races =  $this->Item->typeListing(["race"]) ;
 

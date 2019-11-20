@@ -10,7 +10,7 @@ use Core\Render\Url;
 
         <div class="panel panel-info">
             <div class="panel-heading">
-                <div class="panel-title"> <h2><?php echo $categorie->titre ?></h2></div>
+                <div class="panel-title"> <h2><?php echo $post->parent->titre ?></h2></div>
             </div>
 
             <div class="panel-body">

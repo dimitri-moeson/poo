@@ -46,7 +46,7 @@ class PersonnageForm
 
                 "surround" => array("class" =>  "col-sm-2")
 
-            ),ItemEntity::categorie_arr["status"])
+            ),ItemEntity::$categorie_arr["status"])
 
 
             ->choice("sexe", array(

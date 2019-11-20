@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Model\Entity\Game;
+namespace App\Model\Comportement;
 
 
 trait clbleMultiTrait

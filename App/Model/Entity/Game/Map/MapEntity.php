@@ -20,11 +20,8 @@ class MapEntity
 
     public $terrain ;
 
-
-
     public static function init($x , $y, $terrain = null )
     {
-
         $map = new self();
         $map->x = $x ;
         $map->y = $y ;

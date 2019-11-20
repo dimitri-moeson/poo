@@ -13,6 +13,11 @@ use Core\Redirect\Redirect;
 class MovementService extends Service
 {
     /**
+     * @var PersonnageEntity
+     */
+    private $personnage;
+
+    /**
      * PersonnageService constructor.
      */
     public function __construct()
@@ -39,15 +44,17 @@ class MovementService extends Service
 
         Journal::getInstance()->add( $this->personnage->getName() . " se deplace vers [" . $map->x . ":". $map->y."]<br/>");
 
-        if($this->PersonnageService instanceof PersonnageService)
+        if($this->PersonnageService instanceof PersonnageService) {
             $this->PersonnageService->save($this->personnage);
-
+        }
         $random = rand(1,100);
 
         if($random<=25){
             // declenche un combat aleatoire
             Redirect::getInstance()->setAct("combat")->setCtl("test")->send();
         }
+
+        return true ;
     }
 
 }

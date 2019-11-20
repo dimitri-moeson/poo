@@ -6,7 +6,7 @@
  * Time: 21:20
  */
 
-namespace App\Model\Entity\Game;
+namespace App\Model\Comportement;
 
 
 trait StatsTrait

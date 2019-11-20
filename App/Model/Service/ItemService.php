@@ -48,7 +48,7 @@ class ItemService extends Service
 
         $type = $item->getType();
 
-        $emplacements = ItemEntity::type_arr["equipement"]; //InventaireEquipementEntity::getPlaces();
+        $emplacements = ItemEntity::$type_arr["equipement"]; //InventaireEquipementEntity::getPlaces();
 
         if(in_array($type,$emplacements)){
 
@@ -93,9 +93,9 @@ class ItemService extends Service
 
         $craftable_types = ItemEntity::getCraftableTypeArray(); /**array_merge(
 
-            ItemEntity::type_arr['equipement'] ,
-            ItemEntity::type_arr['arme_1_main'] ,
-            ItemEntity::type_arr['arme_2_main'] ,
+            ItemEntity::$type_arr['equipement'] ,
+            ItemEntity::$type_arr['arme_1_main'] ,
+            ItemEntity::$type_arr['arme_2_main'] ,
             array('consommable')
 
         );**/

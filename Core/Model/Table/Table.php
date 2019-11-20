@@ -52,7 +52,7 @@ class Table
      */
     public function request($statement, $attrs = null, $one = false , $model = null  ){
 
-        $ent = $model ?? str_replace("Table","Entity",get_class($this));  // get_called_class()
+        $ent = $model ?? str_replace("Table","Entity",get_class($this));
 
         if(is_null($attrs))
         {
@@ -173,7 +173,7 @@ class Table
                 ->offset($offset);
         }
 
-        return $this->request($statement, $attr, false  );
+        return $this->request($statement, $attr, false );
     }
 
     /**

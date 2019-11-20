@@ -1,8 +1,10 @@
 <?php
 
 
-namespace App\Model\Entity\Game;
+namespace App\Model\Comportement;
 
+
+use App\Model\Entity\Game\Item\ItemEntity;
 
 trait DataTrait
 {
@@ -31,7 +33,10 @@ trait DataTrait
         return $this->type;
     }
 
-    /** @var  */
+    /**
+     * on cherche l'item enregistré de l'objet...
+     * @var ItemEntity
+     */
     public $type ;
 
     /**

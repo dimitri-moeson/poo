@@ -8,6 +8,7 @@ use App;
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Service\PersonnageService;
 use App\Model\Service\UserService;
+use App\View\Form\InscriptionForm;
 use Core\Auth\CryptAuth;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Post;
@@ -45,111 +46,13 @@ class InscriptionController extends AppController
     }
 
     /**
-     * @param $index
-     * @return bool
-     */
-    private function sess_has($index){
-
-        if( isset($_SESSION['inscription'][$index]))
-        {
-            $val = $_SESSION['inscription'][$index] ;
-
-            $null  = is_null($val) ? 1 : 0 ;
-            $empty =   empty($val) ? 1 : 0 ;
-
-            if($null == 0 && $empty == 0 )
-            {
-                return true ;
-            }
-        }
-    }
-
-    /**
-     * @param $index
-     * @return mixed
-     */
-    private function sess_val($index)
-    {
-        if( isset($_SESSION['inscription'][$index]))
-        {
-            $val = $_SESSION['inscription'][$index] ;
-
-            $null  =   is_null($val) ? 1 : 0 ;
-            $empty =     empty($val) ? 1 : 0 ;
-
-            if($null == 0 && $empty == 0 )
-            {
-                return $val ;
-            }
-        }
-    }
-    /**
-     * @param bool $redirect
-     * @return bool
-     */
-    private function verif($redirect = true ){
-
-        try {
-            if (!$this->sess_has('user_id') && $redirect) {
-                FlashBuilder::create("creation du compte éronnée. Veuillez reprendre.", "alert");
-                Redirect::getInstance()->setAct("login")->setCtl("inscription")->setDom("community")->send();
-            }
-
-            if ($this->sess_has('user_id')) {
-
-                $this->player = $this->User->find($this->sess_val('user_id'));
-
-                if ($this->sess_has('perso_id')) {
-                    if ($this->PersonnageService instanceof PersonnageService) {
-                        $this->legolas = $this->PersonnageService->recup($this->sess_val('perso_id'));
-                    }
-                }
-
-                if (!$this->legolas) $this->notFound("personnage");
-            }
-
-            return true;
-        }
-        catch (Exception $e){
-            var_dump($e);
-        }
-    }
-
-    /**
      * @brief renseigne identifiants de compte
      */
     public function login()
     {
-        if(Post::getInstance()->submit())
-        {
-            if($this->UserService instanceof UserService)
-            {
-                if ($this->UserService->save(Post::getInstance()->content(), "login"))
-                {
-                    if ($this->sess_has('user_id'))
-                    {
-                        Redirect::getInstance()->setAct("faction")->setCtl("inscription")->setDom("community")->send();
-                    }
-                }
-            }
-        }
+        InscriptionForm::submit($this->UserService,"login","faction");
 
-        $this->verif(false);
-
-        $this->form = new Form($this->player ?? $_POST);
-
-        $pswd =  isset($this->player) ? CryptAuth::getInstance($this->auth->getEncryptionKey())->decrypt($this->player->pswd) : Post::getInstance()->val('pswd');
-
-        $this->form
-            ->input("login")
-            ->input("mail",array("label" => "Email","name"=>"mail"))
-            ->pswd("pswd", array(
-                "conf" => true,
-                "label" => "Mot de passe",
-                'value' => $pswd
-            ))
-            ->submit("suivant")
-        ;
+        $this->form = InscriptionForm::login($this->player, $this->auth);
     }
 
     /**
@@ -158,29 +61,11 @@ class InscriptionController extends AppController
      */
     public function faction()
     {
-        if($this->verif()) {
-            if (Post::getInstance()->submit()) {
-                if ($this->sess_has('perso_id')) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "faction", $this->sess_val('perso_id'))) {
-                        Redirect::getInstance()->setAct("classe")->setCtl("inscription")->setDom("community")->send();
-                    }
-                }
-            }
+        InscriptionForm::submit($this->UserService,"faction","classe");
 
-            $this->factions = $this->Item->typeListing(array("faction")); //listFaction();
+        $factions = $this->Item->typeListing(["faction"]); //listFaction();
 
-            $this->form = new Form($_POST);
-
-            foreach ($this->factions as $x => $faction) {
-                $this->form->input("faction_" . $x, array(
-
-                    "type" => "submit",
-                    "name" => "faction",
-                    "label" => "<i class='" . $faction->img . "'/></i><br/>" . $faction->name,
-                    "value" => $faction->id
-                ));
-            }
-        }
+        $this->form = InscriptionForm::faction($factions);
     }
 
     /**
@@ -188,29 +73,11 @@ class InscriptionController extends AppController
      */
     public function classe()
     {
-        if($this->verif()) {
-            if (Post::getInstance()->submit()) {
-                if ($this->sess_has('perso_id')) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "classe", $this->sess_val('perso_id'))) {
-                        Redirect::getInstance()->setAct("race")->setCtl("inscription")->setDom("community")->send();
-                    }
-                }
-            }
+        InscriptionForm::submit($this->UserService,"classe","race");
 
-            $this->classes = $this->Item->typeListing(ItemEntity::type_arr["classe"]); //listClasse();
+        $classes = $this->Item->typeListing(ItemEntity::$type_arr["classe"]); //listClasse();
 
-            $this->form = new Form($_POST);
-
-            foreach ($this->classes as $x => $classe) {
-                $this->form->input("classe_" . $x, array(
-
-                    "type" => "submit",
-                    "name" => "classe",
-                    "label" => "<i class='" . $classe->img . "'/></i><br/>" . $classe->name,
-                    "value" => $classe->id
-                ));
-            }
-        }
+        $this->form = InscriptionForm::faction($classes);
     }
 
     /**
@@ -218,29 +85,11 @@ class InscriptionController extends AppController
      */
     public function race()
     {
-        if($this->verif()) {
-            if (Post::getInstance()->submit()) {
-                if ($this->sess_has('perso_id')) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "race", $this->sess_val('perso_id'))) {
-                        Redirect::getInstance()->setAct("sexe")->setCtl("inscription")->setDom("community")->send();
-                    }
-                }
-            }
+        InscriptionForm::submit($this->UserService,"race","sexe");
 
-            $this->races = $this->Item->typeListing(array("race")); //listClasse();
+        $races = $this->Item->typeListing(["race"]); //listClasse();
 
-            $this->form = new Form();
-
-            foreach ($this->races as $x => $race) {
-                $this->form->input("race_" . $x, array(
-
-                    "type" => "submit",
-                    "name" => "race",
-                    "label" => "<i class='" . $race->img . "'/></i><br/>" . $race->name,
-                    "value" => $race->id
-                ));
-            }
-        }
+        $this->form = InscriptionForm::race($races);
     }
 
     /**
@@ -248,20 +97,9 @@ class InscriptionController extends AppController
      */
     public function sexe()
     {
-        if($this->verif()) {
-            if (Post::getInstance()->submit()) {
-                if ($this->sess_has('perso_id')) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "sexe", $this->sess_val('perso_id'))) {
-                        Redirect::getInstance()->setAct("personnage")->setCtl("inscription")->setDom("community")->send();
-                    }
-                }
-            }
+        InscriptionForm::submit($this->UserService,"sexe","personnage");
 
-            $this->form = new Form($_POST);
-
-            $this->form->input("sexe_0", array("name" => "sexe", "type" => "submit", "label" => "Homme", "value" => 1));
-            $this->form->input("sexe_1", array("name" => "sexe", "type" => "submit", "label" => "Femme", "value" => 2));
-        }
+        $this->form = InscriptionForm::sexe();
     }
 
     /**
@@ -269,23 +107,9 @@ class InscriptionController extends AppController
      */
     public function personnage()
     {
-        if($this->verif()) {
-            if (Post::getInstance()->submit()) {
-                if ($this->sess_has('perso_id')) {
-                    if ($this->UserService->save(Post::getInstance()->content(), "personnage", $this->sess_val('perso_id'))) {
-                        FlashBuilder::create("creation du compte terminée. Vou pouvez vous connecter.", "success");
-                        Redirect::getInstance()->setAct("save")->setCtl("inscription")->setDom("community")->send();
-                    }
-                }
-            }
-            if ($this->sess_has('user_id')) {
-                $this->form = new Form($this->legolas ?? $_POST);
-                $this->form
-                    ->input("nom", array("name" => "nom", "type" => "text", "label" => "Nom du personnage"))
-                    ->input("description", array("name" => "description", "type" => "textarea", "label" => "Histoire"))
-                    ->submit("Terminer");
-            }
-        }
+        InscriptionForm::submit($this->UserService,"personnage","save");
+
+        $this->form = InscriptionForm::personnage($this->legolas);
     }
 
     /**

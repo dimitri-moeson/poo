@@ -8,6 +8,7 @@
 namespace App\Controller;
 
 use App;
+use App\Model\Table\Blog\ArticleTable;
 use Core\Auth\DatabaseAuth;
 use Core\Config;
 use Core\Controller\Controller;
@@ -36,7 +37,9 @@ class AppController extends Controller
 
         $this->loadModel("Blog\Article");
 
-        $this->menu = $this->Article->allOf("page");
+        if($this->Article instanceof ArticleTable)
+            $this->menu = $this->Article->findBy( ["type" => "page" ], ["position" => "desc"] );//allOf("page");
+
         $this->auth = new DatabaseAuth(App::getInstance()->getDb());
     }
 

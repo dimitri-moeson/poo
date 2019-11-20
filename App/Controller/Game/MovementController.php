@@ -58,13 +58,15 @@ class MovementController extends AppController
 
                 $pos = $this->MapService->search($coord);
 
-                if ($this->MovementService instanceof MovementService)
-                    $this->MovementService->move($pos);
+                if ($this->MovementService instanceof MovementService) {
+                   if( $this->MovementService->move($pos)) {
 
-                FlashBuilder::create($this->legolas->getName() . " se deplace " . print_r($coord, 1), "success");
+                       FlashBuilder::create($this->legolas->getName() . " se deplace " . print_r($coord, 1), "success");
+                       Redirect::getInstance()->setAct("index")->setCtl("default")->setDom("game")->setSlg("move")->send();
+                   }
+                }
             }
         }
-        Redirect::getInstance()->setAct("index")->setCtl("default")->setDom("game")->setSlg("move")->send();
     }
 
 }

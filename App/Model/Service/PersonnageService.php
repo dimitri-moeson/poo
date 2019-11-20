@@ -8,19 +8,21 @@
 
 namespace App\Model\Service;
 
+use App\Model\Heritage\Game\Item\ItemQuestEntity;
+use App\Model\Heritage\Game\Item\ItemRessourceEntity;
+use App\Model\Heritage\Game\Item\ItemSpellEntity;
+use App\Model\Heritage\Game\Item\ItemStatEntity;
+use App\Model\Heritage\Game\Inventaire\InventaireStatEntity;
+use App\Model\Heritage\Game\Inventaire\InventaireEquipementEntity;
+use App\Model\Heritage\Game\Item\ItemEquipementEntity;
+
+use App\Model\Object\Journal;
+
 use App;
 use App\Model\Entity\Game\Inventaire\InventaireEntity;
-use App\Model\Entity\Game\Inventaire\InventaireEquipementEntity;
-use App\Model\Entity\Game\Inventaire\InventaireStatEntity;
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Item\ItemEquipementEntity;
-use App\Model\Entity\Game\Item\ItemQuestEntity;
-use App\Model\Entity\Game\Item\ItemRessourceEntity;
-use App\Model\Entity\Game\Item\ItemSpellEntity;
-use App\Model\Entity\Game\Item\ItemStatEntity;
 use App\Model\Entity\Game\Map\MapEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
-use App\Model\Entity\Journal;
 use App\Model\Service;
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
@@ -86,8 +88,12 @@ class PersonnageService extends Service
     {
         try {
 
+            var_dump($this->PersonnageBase);
+
             /** @var PersonnageEntity $personnage */
             $personnage = $this->PersonnageBase->findOneBy(array("user_id" => $user_id));
+
+
 
             if ($personnage instanceof PersonnageEntity) {
 
@@ -224,14 +230,14 @@ class PersonnageService extends Service
 
     function getPosition(PersonnageEntity $personnage) : PersonnageEntity
     {
+        if($personnage->getPosition() == null) {
+            if (!empty($personnage->position_id))
+                $map = $this->MapBase->find($personnage->position_id);
+            else
+                $map = $this->MapService->search(array('x' => 0, 'y' => 0));
 
-        if(!empty($personnage->position_id))
-            $map = $this->MapBase->find($personnage->position_id);
-        else
-            $map = $this->MapService->search(array('x' => 0, 'y' => 0 ));
-
-        $personnage->setPosition($map);
-
+            $personnage->setPosition($map);
+        }
         return $personnage ;
     }
 

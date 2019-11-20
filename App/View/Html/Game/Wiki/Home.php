@@ -30,7 +30,7 @@ use Core\Session\FlashBuilder;
 
     <ul class="nav nav-sidebar">
 
-    <?php foreach (ItemEntity::type_arr as $cat => $items) { ?>
+    <?php foreach (ItemEntity::$type_arr as $cat => $items) { ?>
         <li>
             <a href="#<?php echo $cat ?>Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><?php echo $cat ?><i class="fa fa-fw fa-angle-down pull-right"></i></a>
             <ul class="<?php echo in_array($type ,$items) ? "in" : "collapse" ?>" id="<?php echo $cat ?>Submenu">

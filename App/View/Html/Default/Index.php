@@ -24,4 +24,6 @@
         </div>
     </div>
 
+    <pre><?php var_dump($page) ?></pre>
+
 </div>

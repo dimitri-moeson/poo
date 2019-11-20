@@ -38,21 +38,21 @@ use Core\Session\FlashBuilder;
                         <td><?php echo $link->caract ?></td>
                     </tr>
 
-                    <?php /**if( in_array($post->type , ItemEntity::type_arr["aventure"]) ) { ?>
+                    <?php /**if( in_array($post->type , ItemEntity::$type_arr["aventure"]) ) { ?>
 
-                    <?php } elseif( in_array($post->type , ItemEntity::type_arr["politique"]) ) { ?>
+                    <?php } elseif( in_array($post->type , ItemEntity::$type_arr["politique"]) ) { ?>
 
-                    <?php } elseif( in_array($post->type , ItemEntity::type_arr["classe"]) ) { ?>
+                    <?php } elseif( in_array($post->type , ItemEntity::$type_arr["classe"]) ) { ?>
 
-                    <?php } elseif( in_array($post->type , ItemEntity::type_arr["faune"]) ) { ?>
+                    <?php } elseif( in_array($post->type , ItemEntity::$type_arr["faune"]) ) { ?>
 
-                    <?php } elseif( in_array($post->type , ItemEntity::type_arr["arme_1_main"]) ) { ?>
+                    <?php } elseif( in_array($post->type , ItemEntity::$type_arr["arme_1_main"]) ) { ?>
 
-                    <?php } elseif( in_array($post->type , ItemEntity::type_arr["arme_2_main"]) ) { ?>
+                    <?php } elseif( in_array($post->type , ItemEntity::$type_arr["arme_2_main"]) ) { ?>
 
-                    <?php } elseif( in_array($post->type , ItemEntity::type_arr["equipement"]) ) { ?>
+                    <?php } elseif( in_array($post->type , ItemEntity::$type_arr["equipement"]) ) { ?>
 
-                    <?php } elseif( in_array($post->type , ItemEntity::type_arr["batiment"]) ) { ?>
+                    <?php } elseif( in_array($post->type , ItemEntity::$type_arr["batiment"]) ) { ?>
 
                     <?php }**/ ?>
 
@@ -82,7 +82,7 @@ use Core\Session\FlashBuilder;
 
         <ul class="nav nav-sidebar">
 
-            <?php foreach (ItemEntity::type_arr as $cat => $items) { ?>
+            <?php foreach (ItemEntity::$type_arr as $cat => $items) { ?>
                 <li>
                     <a href="#<?php echo $cat ?>Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><?php echo $cat ?><i class="fa fa-fw fa-angle-down pull-right"></i></a>
                     <ul class="<?php echo in_array($type ,$items) ? "in" : "collapse" ?>" id="<?php echo $cat ?>Submenu">

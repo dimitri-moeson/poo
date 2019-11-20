@@ -22,8 +22,8 @@ class ItemForm
         $form->addInput("objet", self::select_obj($post->objet) ) ;
 
 
-            //$form->select("type", array('options' => ItemEntity::type_arr , 'label' => "type"), ItemEntity::type_arr );
-            //$form->select("objet", array('options' => ItemEntity::categorie_arr , 'label' => "objet"), ItemEntity::categorie_arr );
+            //$form->select("type", array('options' => ItemEntity::$type_arr , 'label' => "type"), ItemEntity::$type_arr );
+            //$form->select("objet", array('options' => ItemEntity::$categorie_arr , 'label' => "objet"), ItemEntity::$categorie_arr );
          /*   if(is_array($post) || !isset($post->id))
             {
             }
@@ -49,7 +49,7 @@ class ItemForm
         $cnt .= "<option>...</option>";
 
         if(is_null($grp)) {
-            foreach (ItemEntity::categorie_arr as $group => $icons) {
+            foreach (ItemEntity::$categorie_arr as $group => $icons) {
 
                 $cnt .= "<optgroup label='$group'>";
 
@@ -63,7 +63,7 @@ class ItemForm
         }
         else {
 
-            foreach (ItemEntity::categorie_arr[$grp] as $class) {
+            foreach (ItemEntity::$categorie_arr[$grp] as $class) {
 
                 $cnt .= "<option " . ($class === $selected ? "selected" : "") . "  value='$class' >$class</option>";
 
@@ -87,7 +87,7 @@ class ItemForm
         $cnt .= "<option>...</option>";
 
         if(is_null($type)) {
-            foreach (ItemEntity::type_arr as $group => $icons ){
+            foreach (ItemEntity::$type_arr as $group => $icons ){
 
                 $cnt .= "<optgroup label='$group'>";
 
@@ -101,7 +101,7 @@ class ItemForm
         }
         else {
 
-            foreach (ItemEntity::type_arr[$type] as $class) {
+            foreach (ItemEntity::$type_arr[$type] as $class) {
 
                 $cnt .= "<option " . ($class === $selected ? "selected" : "") . "  value='$class' >$class</option>";
 
@@ -282,12 +282,12 @@ class ItemForm
         $form->input("val", array("name"=>"val","label"=>"quantité", "surround" => $surround , "id" => "val_".$index));
 
         /**
-            elseif( in_array($post->type , ItemEntity::type_arr["classe"]) ) { }
-            elseif( in_array($post->type , ItemEntity::type_arr["faune"]) ) {  }
-            elseif( in_array($post->type , ItemEntity::type_arr["arme_1_main"]) ) {  }
-            elseif( in_array($post->type , ItemEntity::type_arr["equipement"]) ) { }
-            elseif( in_array($post->type , ItemEntity::type_arr["arme_2_main"]) ) {  }
-            elseif( in_array($post->type , ItemEntity::type_arr["batiment"]) ) { }
+            elseif( in_array($post->type , ItemEntity::$type_arr["classe"]) ) { }
+            elseif( in_array($post->type , ItemEntity::$type_arr["faune"]) ) {  }
+            elseif( in_array($post->type , ItemEntity::$type_arr["arme_1_main"]) ) {  }
+            elseif( in_array($post->type , ItemEntity::$type_arr["equipement"]) ) { }
+            elseif( in_array($post->type , ItemEntity::$type_arr["arme_2_main"]) ) {  }
+            elseif( in_array($post->type , ItemEntity::$type_arr["batiment"]) ) { }
          **/
 
         $form->submit("reg",array("surround" => $surround));

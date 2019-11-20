@@ -7,11 +7,18 @@
  */
 namespace App\Model\Entity\Blog ;
 
+use App\Model\Entity\UserEntity;
+use App\Model\Table\Blog\ArticleTable;
 use Core\Model\Entity\Entity;
 use Core\Render\Url;
 
 class ArticleEntity extends Entity
 {
+    /**
+     * @var string $type
+     */
+    public $type = "default" ;
+
     /**
      * @return string
      */
@@ -33,6 +40,8 @@ class ArticleEntity extends Entity
     }
 
     /**
+     *
+     * texte raccourci...
      * @return string
      */
     public function getExtrait(){
@@ -42,5 +51,23 @@ class ArticleEntity extends Entity
         $html .= "<a href='".$this->getUrl()."'>Voir la suite</a>";
 
         return  $html ;
+    }
+
+    public function __set($name, $val)
+    {
+        parent::__set($name, $val);
+
+        if($name == "author_id") {
+
+            $this->author = \App::getInstance()->getTable("User")->find($val);
+            unset($this->$name);
+        }
+
+        if($name == "parent_id") {
+
+            $this->parent = \App::getInstance()->getTable("Blog\Article")->find($val);
+            unset($this->$name);
+
+        }
     }
 }
