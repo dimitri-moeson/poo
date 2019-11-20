@@ -4,11 +4,9 @@
 namespace App\Controller\Game;
 
 
-use App\Model\Entity\Game\Item\ItemMonstreEntity;
-use App\Model\Entity\Journal;
+use App\Model\Heritage\Game\Item\ItemMonstreEntity;
 use App\Model\Service\ItemService;
 use App\Model\Service\PersonnageService;
-use App\Model\Service\QuestService;
 use App\Model\Table\Game\Item\ItemTable;
 use Core\HTML\Env\Post;
 use Core\Render\Render;

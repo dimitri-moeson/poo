@@ -9,6 +9,7 @@ use Core\Render\Render;
 use Core\Render\Url;
 use Core\Request\Request;
 
+var_dump($legolas);
 
 $_place = Get::getInstance()->val('place');
 

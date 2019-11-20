@@ -4,13 +4,11 @@
 namespace App\Controller\Game;
 
 
-use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
-use App\Model\Entity\Journal;
+use App\Model\Object\Journal;
 use App\Model\Service\ItemService;
 use App\Model\Service\PersonnageService;
 use App\Model\Service\QuestService;
-use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
 use Core\HTML\Env\Post;
 use Core\Redirect\Redirect;

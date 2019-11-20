@@ -2,7 +2,6 @@
 namespace App\Model\Table\Game\Personnage ;
 
 use App\Model\Table\Game\GameTable;
-use Core\Database\QueryBuilder;
 
 /**
  * Created by PhpStorm.

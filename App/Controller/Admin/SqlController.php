@@ -7,7 +7,6 @@ namespace App\Controller\Admin;
 use App;
 use App\View\Form\SqlForm;
 use Core\HTML\Env\Post;
-use Core\HTML\Form\Form;
 use Core\Render\Render;
 
 class SqlController extends AppController

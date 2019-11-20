@@ -3,16 +3,13 @@
 namespace App\Controller\Game ;
 
 use App;
-use App\Model\Entity\Game\Item\ItemConsommableEntity;
+use App\Model\Heritage\Game\Item\ItemConsommableEntity;
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Item\ItemEquipementEntity;
-use App\Model\Entity\Game\Item\ItemMonstreEntity;
-use App\Model\Entity\Journal;
+use App\Model\Heritage\Game\Item\ItemMonstreEntity;
+use App\Model\Object\Journal;
 
-use App\Model\Entity\Game\Combat\Defi;
-use App\Model\Entity\Game\Personnage\Archer;
+use App\Model\Object\Game\Combat\Defi;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
-use App\Model\Entity\Game\Personnage\Voleur;
 
 use App\Model\Service\CombatService;
 use App\Model\Service\MonstreService;
@@ -36,7 +33,6 @@ use Core\HTML\Form\Form;
 use App\Model\Service\EquipementService;
 use Core\Redirect\Redirect;
 use Core\Render\Render;
-use Core\Request\Request;
 use Core\Session\FlashBuilder;
 
 /**

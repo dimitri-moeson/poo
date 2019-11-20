@@ -19,6 +19,10 @@ use Core\Redirect\Redirect;
 class AppController extends \App\Controller\AppController
 {
     protected $template = 'game';
+    /**
+     * @var App\Model\Entity\Game\Personnage\PersonnageEntity|null
+     */
+    protected $legolas;
 
     public function __construct()
     {

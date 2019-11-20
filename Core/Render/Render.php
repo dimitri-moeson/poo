@@ -110,6 +110,8 @@ class Render
 
     public function exec(Controller $controller)
     {
+
+        var_dump($controller);
         $view_filename = $this->viewPath . "/" . $this->view . ".php";
         $template_filename = Config::VIEW_DIR. "/Templates/" . $this->template . ".php";
 

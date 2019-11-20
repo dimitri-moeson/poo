@@ -10,9 +10,7 @@ use App\Model\Service;
 use App\Model\Table\UserTable;
 use Core\Auth\CryptAuth;
 use Core\Auth\DatabaseAuth;
-use Core\Auth\UserAuth;
 use Core\Database\QueryBuilder;
-use Core\HTML\Env\Post;
 use Core\Session\FlashBuilder;
 use Exception;
 

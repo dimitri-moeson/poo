@@ -7,8 +7,6 @@ namespace App\Model\Service;
 use App;
 use App\Model\Service;
 use Core\Auth\DatabaseAuth;
-use Core\Database\QueryBuilder;
-use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 
 class ArticleService extends Service

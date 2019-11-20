@@ -5,15 +5,10 @@ namespace App\Controller\Game;
 
 
 use App;
-use App\Model\Entity\Game\Combat\Defi;
-use App\Model\Entity\Game\Item\ItemConsommableEntity;
-use App\Model\Entity\Game\Item\ItemEntity;
+use App\Model\Object\Game\Combat\Defi;
+use App\Model\Heritage\Game\Item\ItemConsommableEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use App\Model\Service\CombatService;
-use App\Model\Service\EquipementService;
-use App\Model\Service\PersonnageService;
-use App\Model\Table\Game\Inventaire\InventaireTable;
-use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Post;
 use Core\Redirect\Redirect;
 use Core\Render\Render;

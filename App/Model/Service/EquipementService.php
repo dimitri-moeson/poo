@@ -3,18 +3,16 @@
 
 namespace App\Model\Service;
 
+use App\Model\Heritage\Game\Item\ItemEquipementEntity;
+use App\Model\Heritage\Game\Inventaire\InventaireEquipementEntity;
 
-use App\Model\Entity\Game\Inventaire\InventaireEntity;
-use App\Model\Entity\Game\Inventaire\InventaireEquipementEntity;
+use App\Model\Object\Journal;
+
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Item\ItemEquipementEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
-use App\Model\Entity\Journal;
 use App\Model\Service;
 use App\Model\Table\Game\Inventaire\InventaireTable;
 use App\Model\Table\Game\Item\ItemTable;
-use App\Model\Table\Game\Personnage\PersonnageTable;
-use Core\Debugger\Debugger;
 use Core\Render\Render;
 
 /**

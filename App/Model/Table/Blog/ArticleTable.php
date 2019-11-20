@@ -8,7 +8,6 @@
 namespace App\Model\Table\Blog ;
 
 use App\Model\Entity\Blog\ArticleEntity;
-use Core\Database\Query;
 use Core\Database\QueryBuilder;
 use Core\Model\Table\Table;
 

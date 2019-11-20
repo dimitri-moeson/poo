@@ -7,11 +7,8 @@
  */
 namespace App\Model\Table\Game\Inventaire;
 
-use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Table\Game\GameTable;
-use Core\Database\Query;
 use Core\Database\QueryBuilder;
-use Core\Debugger\Debugger;
 
 class InventaireTable extends GameTable
 {

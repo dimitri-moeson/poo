@@ -7,7 +7,6 @@ namespace App\Model\Service;
 use App;
 use App\Model\Service;
 use Core\Auth\DatabaseAuth;
-use Core\HTML\Env\Post;
 use App\Model\Table\Game\Guild\MemberTable;
 
 class GuildService extends Service

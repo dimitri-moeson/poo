@@ -13,7 +13,6 @@ use App\Controller\AppController;
 use App\Model\Service\ArticleService;
 use App\Model\Table\Blog\ArticleTable;
 use Core\Auth\DatabaseAuth;
-use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
 use Core\HTML\Header\Header;

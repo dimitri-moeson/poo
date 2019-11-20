@@ -5,7 +5,6 @@ namespace App\Controller\Game;
 
 
 use App\Model\Service\EquipementService;
-use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
 use Core\Redirect\Redirect;
 use Core\Session\FlashBuilder;

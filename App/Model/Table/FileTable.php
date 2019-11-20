@@ -3,7 +3,6 @@
 
 namespace App\Model\Table;
 
-
 use App\Model\Entity\FileEntity;
 use Core\Database\QueryBuilder;
 use Core\Model\Table\Table;

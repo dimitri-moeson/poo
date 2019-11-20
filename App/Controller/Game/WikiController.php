@@ -6,12 +6,8 @@ namespace App\Controller\Game;
 
 use App;
 use App\Model\Table\Game\Item\ItemTable;
-use Core\HTML\Env\Post;
 use Core\HTML\Header\Header;
-use Core\Redirect\Redirect;
 use Core\Render\Render;
-use Core\Request\Request;
-use Core\Session\FlashBuilder;
 
 class WikiController extends AppController
 {

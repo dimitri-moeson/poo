@@ -10,11 +10,8 @@ namespace App\Controller\Admin;
 
 use App;
 use App\View\Form\GuildForm;
-use Core\Auth\CryptAuth;
 use Core\Auth\DatabaseAuth;
-use Core\HTML\Env\Get;
 use Core\HTML\Env\Post;
-use Core\HTML\Form\Form;
 use Core\HTML\Header\Header;
 use Core\Redirect\Redirect;
 use Core\Render\Render;

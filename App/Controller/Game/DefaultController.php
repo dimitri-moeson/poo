@@ -4,21 +4,14 @@ namespace App\Controller\Game;
 
 use App;
 use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use App\Model\Service\EquipementService;
 use App\Model\Service\MapService;
 use App\Model\Service\MovementService;
-use App\Model\Service\PersonnageService;
-use App\Model\Service\UserService;
 use App\Model\Table\Game\Inventaire\InventaireTable;
-use Core\Auth\DatabaseAuth;
 use Core\Debugger\Debugger;
 use Core\HTML\Env\Get;
-use Core\HTML\Env\Post;
 use Core\HTML\Form\Form;
-use Core\Redirect\Redirect;
 use Core\Render\Render;
-use Core\Session\FlashBuilder;
 
 /**
  * Class DefaultController
@@ -106,6 +99,9 @@ class DefaultController extends AppController
         $this->inventaire();
 
         $this->map();
+
+        //echo " dom : none cntl : default action :  index perso : ";
+        //var_dump($this->legolas);
 
         Render::getInstance()->setView("Game/Index");
     }

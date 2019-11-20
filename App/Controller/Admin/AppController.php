@@ -8,7 +8,6 @@
 namespace App\Controller\Admin;
 
 use App;
-use Core\Auth\DatabaseAuth;
 use Core\HTML\Header\Header;
 use Core\Render\Render;
 

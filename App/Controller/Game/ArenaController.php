@@ -4,14 +4,11 @@
 namespace App\Controller\Game;
 
 
-use App\Model\Entity\Game\Combat\Defi;
-use App\Model\Entity\Game\Item\ItemMonstreEntity;
+use App\Model\Object\Game\Combat\Defi;
+use App\Model\Heritage\Game\Item\ItemMonstreEntity;
 use App\Model\Service\EquipementService;
 use App\Model\Service\MonstreService;
-use App\Model\Table\Game\Item\ItemTable;
-use Core\HTML\Env\Post;
 use Core\Redirect\Redirect;
-use Core\Render\Render;
 use Core\Session\FlashBuilder;
 
 class ArenaController extends AppController

@@ -12,9 +12,7 @@ use App;
 use App\Model\Service\UserService;
 use Core\Auth\DatabaseAuth;
 use Core\HTML\Env\Post;
-use Core\HTML\Form\Form;
 use Core\Redirect\Redirect;
-use Core\Render\Url;
 
 /**
  * Class PlayerController

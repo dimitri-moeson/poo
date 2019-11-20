@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table ;
 
-
 use App\Model\Entity\UserEntity;
 use Core\Database\QueryBuilder;
 use Core\Model\Table\Table;
