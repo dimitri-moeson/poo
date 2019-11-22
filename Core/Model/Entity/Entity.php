@@ -45,59 +45,38 @@ class Entity
     }
 
     /**
+     * @param $val
+     * @param $format
+     * @return bool|DateTime
+     */
+    protected function getDateTime($val,$format){
+
+        $value = DateTime::createFromFormat($format, $val);
+
+        if ( ( $value instanceof DateTime) && $value->format($format) == $val) {
+
+            return $value ;
+        }
+
+        return $val ;
+
+    }
+
+    /**
      * @param $name
      * @param $val
      */
     function __set($name, $val)
     {
-        if(is_string($val))
+        //echo "entity __set($name)<br/>";
+        if( in_array( $name , array("createAt","updateAt","deleteAt") ))
         {
             $format = "Y-m-d H:i:s";
-            $forma2 = "Y-m-d";
 
-            $value = DateTime::createFromFormat($format, $val);
-            $valu2 = DateTime::createFromFormat($forma2, $val);
-
-            if ($value && $value->format($format) == $val) {
-
-                Debugger::getInstance()->add("<b>".$name. "</b> correspond à une date.") ;
-
-                $val = $value ;
-            }
-
-            if ($valu2 && $valu2->format($forma2) == $val) {
-
-                Debugger::getInstance()->add("<b>".$name. "</b> correspond à une date.") ;
-
-                $val = $valu2 ;
-            }
-
+            $val = $this->getDateTime($val , $format );
         }
 
         $this->$name = $val;
-
-        $class = get_class($this) ;
-/**
-        try {
-            echo "$class, $name ";
-            @($ref = new ReflectionProperty( $class, $name));
-
-            if($ref){
-
-                echo "reflection found";
-
-            }else {
-                echo "no reflection....";
-            }
-            echo "<br/>";
-        }
-        catch(\Exception $e ){
-
-            Debugger::getInstance()->add( " Entity error -> ".$class."::".$name." - ". $e->getMessage());
-
-            echo "<br/>";
-
-        }**/
     }
 
 }

@@ -129,6 +129,21 @@ class ItemService extends Service
         return $this->ItemBase->typeListing(array("quest"));
     }
 
+    /**
+     * @param Int|null $personnage_id
+     * @return mixed
+     */
+    public function homeQuest( Int $personnage_id = null ){
+
+        if(!is_null($personnage_id)){
+
+            if($this->ItemBase instanceof ItemTable )
+                return $this->ItemBase->getInventaire($personnage_id , array("quest") );
+        }
+        return $this->ItemBase->typeListing(array("quest"));
+    }
+
+
     public function getFightable(Int $strum_id = null){
 
         if($this->ItemBase instanceof ItemTable)

@@ -7,6 +7,7 @@
  */
 namespace App\Model\Table\Game\Inventaire;
 
+use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Table\Game\GameTable;
 use Core\Database\QueryBuilder;
 
@@ -20,7 +21,7 @@ class InventaireTable extends GameTable
      * @param null $model
      * @return array|mixed
      */
-    public function itemListing($parent_id = null , $i_rubrique = null , $i_type = null , $e_types = array() , $model = null ){
+    public function itemListing($parent_id = null , $i_rubrique = null , $i_type = null , $e_types = array() , $model = ItemEntity::class ){
 
         $statement = QueryBuilder::init()
             ->select('e.*','i.id as inventaire_id','i.type as inventaire_type','i.rubrique as inventaire_rubrique', 'i.val', 'i.caract')

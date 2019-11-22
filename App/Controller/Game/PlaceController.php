@@ -34,7 +34,10 @@ class PlaceController extends AppController
                 $this->PersonnageService->accepte($this->legolas, $quest2);
         }
 
-        $this->questable = $this->ItemService->listQuest();
+        if($this->ItemService instanceof ItemService)
+            $this->questable = $this->ItemService->homeQuest($id);
+
+        var_dump($this->questable);
     }
 
     /**

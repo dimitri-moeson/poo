@@ -3,8 +3,9 @@
 namespace App\Controller\Community;
 
 use App;
+use App\Controller\AppController as AppParentController;
 
-class AppController extends \App\Controller\AppController
+class AppController extends AppParentController
 {
     public function __construct()
     {

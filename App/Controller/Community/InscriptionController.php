@@ -45,7 +45,7 @@ class InscriptionController extends AppController
     {
         InscriptionForm::submit($this->UserService,"login","faction");
 
-        $this->form = InscriptionForm::login($this->player, $this->auth);
+        $this->form = InscriptionForm::login($this->auth);
     }
 
     /**

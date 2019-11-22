@@ -7,6 +7,7 @@
  */
 namespace App\Model\Entity\Blog ;
 
+use App\Model\Comportement\PageTrait;
 use App\Model\Entity\UserEntity;
 use App\Model\Table\Blog\ArticleTable;
 use Core\Model\Entity\Entity;
@@ -14,48 +15,28 @@ use Core\Render\Url;
 
 class ArticleEntity extends Entity
 {
-    /**
-     * @var string $type
-     */
-    public $type = "default" ;
+    use PageTrait;
 
     /**
-     * @return string
+     * @param $name
+     * @return mixed
      */
-    public function getUrl(){
+    public function __get($name)
+    {
+        $val =  parent::__get($name);
 
-        if($this->type == "article")
-        {
-            return Url::generate("show", "article","blog", $this->slug);
-        }
-
-        if($this->type == "categorie")
-        {
-            return Url::generate("categorie", "article","blog",$this->slug);
-        }
-
-        if($this->type == "page")  return "/".$this->slug ;
-
-        return "/?p=".$this->type."&slug=".$this->slug ;
+        return $val ;
     }
 
     /**
-     *
-     * texte raccourci...
-     * @return string
+     * @param $name
+     * @param $val
      */
-    public function getExtrait(){
-
-        $html = "<p>".$this->description."</p>";
-        $html .= "<p>".substr($this->contenu,0 ,200 )."...</p>";
-        $html .= "<a href='".$this->getUrl()."'>Voir la suite</a>";
-
-        return  $html ;
-    }
-
     public function __set($name, $val)
     {
         parent::__set($name, $val);
+
+        //echo "ArticleEntity __set($name)<br/>";
 
         if($name == "author_id") {
 
@@ -69,5 +50,22 @@ class ArticleEntity extends Entity
             unset($this->$name);
 
         }
+
+        if($name == "date")
+        {
+            $forma2 = "Y-m-d";
+
+            $valu2 = $this->getDateTime($val , $forma2 );
+
+            //print_r($valu2);
+
+            if (($valu2 instanceof DateTime)&& $valu2->format($forma2) == $val) {//$valu2 ) {
+
+                $this->$name = $valu2 ;
+            }
+
+        }
+
+        return $this ;
     }
 }

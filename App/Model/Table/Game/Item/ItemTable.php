@@ -178,4 +178,47 @@ class ItemTable extends GameTable
 
         return $this->request($statement, $attrib, true, $model );
     }
+
+    function getInventaire( $parent, Array $types = array() , Array $rubriques = array(), $model = ItemEntity::class){
+
+        /** @var  $statement */
+        $statement = QueryBuilder::init()
+            ->select('e.*','i.id as inventaire_id','i.type as inventaire_type','i.rubrique as inventaire_rubrique', 'i.val','i.caract')
+            ->from("item",'e')
+            ->join('inventaire', ' i.child_id = e.id ', 'left', 'i')
+        ;
+
+        $attrib = array();
+
+        if(!is_null($parent)){
+
+            $statement->where('i.parent_id = :parent');
+            $attrib['parent'] = $parent ;
+        }
+
+        if(!empty($types)) {
+            $r_type = array();
+
+            foreach ($types as $x => $type) {
+                $attrib['id_typ_' . $x] = $type;
+                $r_type[$x] = ':id_typ_' . $x;
+            }
+            $statement->where( "e.type in (".implode(',', $r_type).") ");
+        }
+
+        if(!empty($rubriques)) {
+            $r_rub = array();
+
+            foreach ($rubriques as $x => $rub) {
+                $attrib['id_rub_' . $x] = $rub;
+                $r_rub[$x] = ':id_rub_' . $x;
+            }
+            $statement->where( "i.rubrique in (".implode(',', $r_rub).") ");
+        }
+
+        //echo $statement ;
+
+        return $this->request($statement , $attrib, false , $model );
+
+    }
 }

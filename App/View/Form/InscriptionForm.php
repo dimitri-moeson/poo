@@ -89,11 +89,11 @@ class InscriptionForm
      * @param $auth
      * @return Form
      */
-    public static function login(UserEntity $player, $auth ){
+    public static function login( $auth ){
 
-        $form = new Form($player ?? Post::getInstance()->content() );
+        $form = new Form(Post::getInstance()->content() );
 
-        $pswd =  isset($player) ? CryptAuth::getInstance($auth->getEncryptionKey())->decrypt($player->pswd) : Post::getInstance()->val('pswd');
+        $pswd = Post::getInstance()->val('pswd');
 
         $form
             ->input("login")

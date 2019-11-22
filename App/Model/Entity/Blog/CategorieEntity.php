@@ -7,13 +7,11 @@
  */
 namespace App\Model\Entity\Blog ;
 
+use App\Model\Comportement\PageTrait;
 use Core\Model\Entity\Entity;
 use Core\Render\Url;
 
 class CategorieEntity extends Entity
 {
-    public function getUrl()
-    {
-        return Url::generate("categorie","article","blog", $this->id );
-    }
+    use PageTrait;
 }
