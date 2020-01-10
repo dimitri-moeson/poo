@@ -54,6 +54,10 @@ class GameTable extends Table
             $ent = str_replace( $ucfTable."\\".$ucfTable,$ucfTable."\\".$repo."\\".$ucfTable,$ent);  // get_called_class()
         }
 
+        if(!class_exists($ent)){
+            $ent = str_replace( "\Entity\\","\Heritage\\",$ent);  // get_called_class()
+        }
+
         return $ent ;
     }
 

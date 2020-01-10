@@ -59,9 +59,11 @@ class MovementController extends AppController
                 $pos = $this->MapService->search($coord);
 
                 if ($this->MovementService instanceof MovementService) {
-                   if( $this->MovementService->move($pos)) {
 
-                       FlashBuilder::create($this->legolas->getName() . " se deplace " . print_r($coord, 1), "success");
+                    $random = $this->MovementService->move($pos);
+                   if( $random >= 50 ) {
+
+                       FlashBuilder::create($this->legolas->getName() . " se deplace ($random) " . print_r($coord, 1), "success");
                        Redirect::getInstance()->setAct("index")->setCtl("default")->setDom("game")->setSlg("move")->send();
                    }
                 }

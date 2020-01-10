@@ -43,6 +43,7 @@ Trait CombattantTrait
         $this->ressources = new InventaireRessourceEntity();
 
     }
+
     /**
      * le personnage est-il decedé ?
      * @return bool
@@ -156,8 +157,6 @@ Trait CombattantTrait
 
         return $this ;
     }
-
-
 
     /**
      * @param int $vie

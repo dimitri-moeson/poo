@@ -60,10 +60,8 @@ class PersonnageController extends AppController
                     Redirect::getInstance()
                         ->setDom("admin")->setAct("index")->setCtl("personnage")
                         ->send();
-
                 }
             }
-
         }
     }
 
@@ -88,10 +86,10 @@ class PersonnageController extends AppController
                 "status" => ItemEntity::$categorie_arr["status"][$id_status]
             );
 
-            if($this->Personnage->update($id, $datas )){
-
-                foreach(Post::getInstance()->val("stats") as $itm_id => $val ){
-
+            if($this->Personnage->update($id, $datas ))
+            {
+                foreach(Post::getInstance()->val("stats") as $itm_id => $val )
+                {
                     $dts = array(
 
                         "child_id" => $itm_id,
@@ -102,28 +100,32 @@ class PersonnageController extends AppController
 
                     $inventaire = $this->Inventaire->findOneBy( $dts );
 
-                   $edit =  array("val" => $val);
+                    $edit =  array("val" => $val);
 
-                    if($inventaire !== false) {
+                    if($inventaire !== false)
+                    {
                         $this->Inventaire->update($inventaire->id,$edit);
-                    } else {
-
+                    }
+                    else
+                    {
                         $this->Inventaire->create( array_merge( $dts , $edit ));
                     }
                 }
-
             }
-
         }
 
-        if(!is_null($id)) {
-
+        if(!is_null($id))
+        {
             $this->post = $this->Personnage->find($id);
             if (!$this->post) $this->notFound("single perso");
         }
+
         if ($this->PersonnageService instanceof PersonnageService)
         {
-            $this->post = $this->PersonnageService->recup($this->post->user_id);
+            if($this->post->user_id != null)
+            {
+                $this->post = $this->PersonnageService->restor($this->post);
+            }
         }
 
         $this->categories = $this->Personnage->list('id','nom');

@@ -8,10 +8,7 @@
 namespace App\Model\Entity\Blog ;
 
 use App\Model\Comportement\PageTrait;
-use App\Model\Entity\UserEntity;
-use App\Model\Table\Blog\ArticleTable;
 use Core\Model\Entity\Entity;
-use Core\Render\Url;
 
 class ArticleEntity extends Entity
 {

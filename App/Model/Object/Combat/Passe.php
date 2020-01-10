@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Model\Object\Game\Combat;
+namespace App\Model\Object\Combat;
 
 use App\Model\Object\Journal;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;

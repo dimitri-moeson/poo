@@ -4,12 +4,12 @@
 namespace App\Model\Service;
 
 
-use App\Model\Entity\Game\Combat\Combat;
-use App\Model\Entity\Game\Combat\Defi;
-use App\Model\Entity\Game\Combat\Round;
-use App\Model\Entity\Game\CombattantTrait;
+use App\Model\Object\Combat\Combat;
+use App\Model\Object\Combat\Defi;
+use App\Model\Object\Combat\Round;
+use App\Model\Comportement\CombattantTrait;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
-use App\Model\Entity\Journal;
+use App\Model\Object\Journal;
 use App\Model\Service;
 
 class CombatService extends Service
@@ -115,13 +115,11 @@ class CombatService extends Service
         $round = $fight->current(); //unserialize($_SESSION['combat']['round']) ;
         $passe = $round->current(); //unserialize($_SESSION['combat']['passe']) ;
 
-        if($pe == $passe->getPerso()) {
-
-
+        if($pe == $passe->getPerso())
+        {
             $this->attaque($defi, $pe,$cible);
 
             $this->suivant($defi , $round , $fight);
-
         }
         else
         {
@@ -162,11 +160,17 @@ class CombatService extends Service
      */
     function resume(){
 
-        $suivi =  $_SESSION['combat']["suivi"];
+        if(isset($_SESSION['combat']))
+        {
+            if (isset($_SESSION['combat']["suivi"]))
+            {
+                $suivi = $_SESSION['combat']["suivi"];
 
-        unset( $_SESSION['combat']["suivi"]);
+                unset($_SESSION['combat']["suivi"]);
 
-        return $suivi ;
+                return $suivi;
+            }
+        }
     }
 
     function savePerso(PersonnageEntity $personnage)

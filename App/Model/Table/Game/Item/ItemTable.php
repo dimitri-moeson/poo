@@ -73,8 +73,6 @@ class ItemTable extends GameTable
 
         $ent = $this->entityOf($type);
 
-        //Debugger::getInstance()->add($ent);
-
         return  $this->db->prepare($statement, array("type"=> $type),$ent,true );
 
     }

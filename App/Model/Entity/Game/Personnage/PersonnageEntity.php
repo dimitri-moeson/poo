@@ -4,19 +4,11 @@ namespace App\Model\Entity\Game\Personnage ;
 use App\Model\Comportement\DataTrait;
 use App\Model\Comportement\CombattantTrait;
 use App\Model\Comportement\PersonnageTrait;
-use App\Model\Entity\Game\Inventaire\InventaireArmementEntity;
-use App\Model\Entity\Game\Inventaire\InventaireEquipementEntity;
-use App\Model\Entity\Game\Item\ItemStatEntity;
 
-use App\Model\Entity\Game\Inventaire\InventaireQuestBookEntity;
-use App\Model\Entity\Game\Item\ItemEntity;
-use App\Model\Entity\Game\Item\ItemSpellEntity;
-use App\Model\Entity\Game\Inventaire\InventaireEntity;
-use App\Model\Entity\Game\Inventaire\InventaireKnowledgeEntity;
-use App\Model\Entity\Game\Inventaire\InventaireSpellBookEntity;
 use App\Model\Entity\UserEntity;
-use Core\Debugger\Debugger;
 use Core\Model\Entity\Entity;
+
+use App;
 
 /**
  * App PersonnageEntity
@@ -44,7 +36,10 @@ class PersonnageEntity extends Entity {
     protected $sexe;
 
 
-
+    /**
+     * @param $name
+     * @param $val
+     */
     public function __set($name, $val)
     {
         parent::__set($name, $val);
@@ -52,7 +47,7 @@ class PersonnageEntity extends Entity {
         if($name == "type"){
             if( is_integer($val)) {
 
-                $this->classe = \App::getInstance()->getTable("Game\Item\Item")->find($val);
+                $this->classe = App::getInstance()->getTable("Game\Item\Item")->find($val);
 
             }else {
                 $this->classe = $val ;
@@ -62,26 +57,26 @@ class PersonnageEntity extends Entity {
 
         if($name == "user_id") {
 
-            $this->player = \App::getInstance()->getTable("User")->find($val);
+            $this->player = App::getInstance()->getTable("User")->find($val);
             unset($this->$name);
         }
 
         if($name == "race_id") {
 
-            $this->race = \App::getInstance()->getTable("Game\Item\Item")->find($val);
+            $this->race = App::getInstance()->getTable("Game\Item\Item")->find($val);
             unset($this->$name);
 
         }
         if($name == "faction_id") {
 
-            $this->faction = \App::getInstance()->getTable("Game\Item\Item")->find($val);
+            $this->faction = App::getInstance()->getTable("Game\Item\Item")->find($val);
             unset($this->$name);
 
         }
 
         if($name == "position_id") {
 
-            $this->position = \App::getInstance()->getTable("Game\Map\Map")->find($val);
+            $this->position = App::getInstance()->getTable("Game\Map\Map")->find($val);
             unset($this->$name);
 
         }
@@ -91,6 +86,7 @@ class PersonnageEntity extends Entity {
      * @var UserEntity
      */
     protected $player;
+
     /**
      * @param string $classe
      * @param $nom

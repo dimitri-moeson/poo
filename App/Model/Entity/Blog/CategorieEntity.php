@@ -9,7 +9,6 @@ namespace App\Model\Entity\Blog ;
 
 use App\Model\Comportement\PageTrait;
 use Core\Model\Entity\Entity;
-use Core\Render\Url;
 
 class CategorieEntity extends Entity
 {

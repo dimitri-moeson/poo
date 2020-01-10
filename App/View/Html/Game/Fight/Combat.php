@@ -1,21 +1,27 @@
 <?php
 
-use App\Model\Entity\Game\Combat\Defi;
+use App\Model\Object\Combat\Defi;
 use App\Model\Entity\Game\Item\ItemEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
-use App\Model\Entity\Journal;
+use App\Model\Object\Journal;
 use Core\HTML\Env\Post;
 use Core\Render\Url;
 
 if ($defi instanceof Defi) {
 
-    $joueur = $defi->getFight()->current()->current()->getPerso();
+    $combat = $defi->getFight() ;
+    $round = $combat->current();
+    $passe = $round->current();
+    $joueur = $passe->getPerso();
 
     $suivi = "";
 
     if ($defi->count() > 1) {
 
-        $suivi = "Round : " . $defi->getFight()->count() . " - Passe : " . ($defi->getFight()->current()->key() + 1) . "/" . $defi->getFight()->current()->count();
+        $suivi = "Round : " .$combat->count() . " - Passe : " . ($round->key() + 1) . "/" . $round->count();
+    } else {
+
+        $suivi = "defi count : ".$defi->count() ;
     }
     ?>
     <div class="row">
@@ -81,6 +87,13 @@ if ($defi instanceof Defi) {
                                 <input type="submit" name="bilan" value="Victoire"/>
                                 <button type="submit"><i class="ra ra-player-lift"></i></button>
                             </form>
+
+                                <?php } else { ?>
+
+                                    <form method="post" action="<?php echo Url::generate("fuite","fight","game") ?>">
+                                        <input type="hidden" name="action" value="fuite"/>
+                                        <button type="submit"><i class="ra ra-player-lift"></i></button>
+                                    </form>
 
                                 <?php } ?>
 

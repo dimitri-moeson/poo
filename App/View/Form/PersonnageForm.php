@@ -31,22 +31,30 @@ class PersonnageForm
             ))
             ->input("name", array(
 
-                "surround" => array("class" =>  "col-sm-2"),
+                "surround" => array("class" =>  "col-sm-3"),
                 'name' => "name",
                 "label"=>"Nom"
             ))
+            ->input("player", array(
+
+                "surround" => array("class" =>  "col-sm-3"),
+                'name' => "player",
+                "readonly" => "readonly",
+                "disabled" => "disabled",
+                "label"=>"Joueur"
+            ))
             ->input("vie", array(
 
-                "surround" => array("class" =>  "col-sm-2"),
+                "surround" => array("class" =>  "col-sm-3"),
                 'name' => "vie",
                 "label"=>"vie",
                 "value" => $post->vie
             ))
             ->select("status", array(
 
-                "surround" => array("class" =>  "col-sm-2")
+                "surround" => array("class" =>  "col-sm-3")
 
-            ),ItemEntity::$categorie_arr["status"])
+            ),ItemEntity::getStatusArray())
 
 
             ->choice("sexe", array(

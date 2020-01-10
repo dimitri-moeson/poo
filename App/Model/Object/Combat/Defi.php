@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Object\Game\Combat ;
+namespace App\Model\Object\Combat ;
 
 use App\Model\Object\Journal;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
@@ -20,8 +20,10 @@ class Defi implements Iterator, ArrayAccess, Countable
      * Defi constructor.
      */
     public function __construct(Array $array = array()) {
+
 		$this->array = $array;
 		$this->fight = Combat::init($this);
+
         //Journal::getInstance()->add("nouveau defi<br/>");
     }
 

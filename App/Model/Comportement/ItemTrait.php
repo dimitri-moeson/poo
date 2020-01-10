@@ -285,6 +285,14 @@ trait ItemTrait
         );
     }
 
+    public static function getStatusArray(){
+
+        return array_merge(
+
+            ItemEntity::$categorie_arr['status']
+        );
+    }
+
     public static function getClasseArray(){
 
         return array_merge(

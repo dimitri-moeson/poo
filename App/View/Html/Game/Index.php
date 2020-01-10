@@ -80,7 +80,12 @@ $slug = Request::getInstance()->getSlug();
                         <div class="col-md-3"><?php echo Render::getInstance()->block("boussole", array(
 
                                 "center" => '<i class="fa fa-male"></i>',
-                            )) ?></div>
+                            )) ?>
+                            <hr/>
+                            <?php if (!is_null($legolas->getPosition())) { ?>
+                                <i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-map-marker" title="Position" ></i>: [<?php echo $legolas->getPosition()->x ?>:<?php echo $legolas->getPosition()->y ?>]<br/>
+                            <?php } ?>
+                        </div>
 
                         <div class="col-md-9">
                             <?php echo Render::getInstance()->block("map", array(
@@ -94,6 +99,8 @@ $slug = Request::getInstance()->getSlug();
                             )); ?></div>
 
                     </div>
+
+
                 </div>
 
             </div>

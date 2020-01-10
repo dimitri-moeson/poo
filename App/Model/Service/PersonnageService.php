@@ -84,43 +84,50 @@ class PersonnageService extends Service
 
             if ($personnage instanceof PersonnageEntity) {
 
-                if( $this->InventaireBase instanceof InventaireTable ) {
-                    $sac = $this->InventaireBase->itemListing($personnage->id, self::RUB_PERSO, null , array(), ItemEntity::class );
+               $personnage = $this->restor($personnage);
 
-                    foreach ($sac as $composant) {
-
-                        if ($composant instanceof ItemEntity) {
-
-                            /** OK **/
-                            if ($composant->inventaire_type == self::TYPE_SAC) {
-                                $personnage->ajoute($composant);
-                            }
-                        elseif ($composant->inventaire_type == self::TYPE_RECETTE) {
-                                $personnage->assimile($composant);
-                            }
-                        elseif ($composant->inventaire_type == self::TYPE_QUEST) {
-                                $personnage->ajoute($composant);
-                            }
-                        elseif ($composant->inventaire_type == self::TYPE_SPELL) {
-                                $personnage->apprend($composant);
-                            }
-                        }
-                    }
-                }
-
-                $personnage = $this->getEquipement($personnage);
-                $personnage = $this->getPosition($personnage);
-                $personnage = $this->getCaracteristique($personnage);
-                $personnage = $this->getFaction($personnage);
-                $personnage = $this->getRace($personnage);
-                $personnage = $this->getClasse($personnage);
-
-                return $personnage;
+               return $personnage ;
             }
         }
         catch (Exception $e){
             var_dump($e);
         }
+    }
+
+    public function restor(PersonnageEntity $personnage ): ?PersonnageEntity{
+
+        if( $this->InventaireBase instanceof InventaireTable ) {
+            $sac = $this->InventaireBase->itemListing($personnage->id, self::RUB_PERSO, null , array(), ItemEntity::class );
+
+            foreach ($sac as $composant) {
+
+                if ($composant instanceof ItemEntity) {
+
+                    /** OK **/
+                    if ($composant->inventaire_type == self::TYPE_SAC) {
+                        $personnage->ajoute($composant);
+                    }
+                    elseif ($composant->inventaire_type == self::TYPE_RECETTE) {
+                        $personnage->assimile($composant);
+                    }
+                    elseif ($composant->inventaire_type == self::TYPE_QUEST) {
+                        $personnage->ajoute($composant);
+                    }
+                    elseif ($composant->inventaire_type == self::TYPE_SPELL) {
+                        $personnage->apprend($composant);
+                    }
+                }
+            }
+        }
+
+        $personnage = $this->getEquipement($personnage);
+        $personnage = $this->getPosition($personnage);
+        $personnage = $this->getCaracteristique($personnage);
+        $personnage = $this->getFaction($personnage);
+        $personnage = $this->getRace($personnage);
+        $personnage = $this->getClasse($personnage);
+
+        return $personnage;
     }
 
     /**
@@ -178,6 +185,10 @@ class PersonnageService extends Service
 
     }
 
+    /**
+     * @param PersonnageEntity $personnage
+     * @return PersonnageEntity
+     */
     function getClasse(PersonnageEntity $personnage) :PersonnageEntity
     {
         if(!isset($personnage->classe) or empty($personnage->classe) ) {
@@ -190,6 +201,10 @@ class PersonnageService extends Service
         return $personnage ;
     }
 
+    /**
+     * @param PersonnageEntity $personnage
+     * @return PersonnageEntity
+     */
     function getRace(PersonnageEntity $personnage) :PersonnageEntity
     {
         if(!isset($personnage->race) or empty($personnage->race) ) {
@@ -202,6 +217,10 @@ class PersonnageService extends Service
         return $personnage ;
     }
 
+    /**
+     * @param PersonnageEntity $personnage
+     * @return PersonnageEntity
+     */
     function getFaction(PersonnageEntity $personnage) :PersonnageEntity
     {
         if(!isset($personnage->faction) or empty($personnage->faction) ) {
@@ -214,6 +233,10 @@ class PersonnageService extends Service
         return $personnage ;
     }
 
+    /**
+     * @param PersonnageEntity $personnage
+     * @return PersonnageEntity
+     */
     function getPosition(PersonnageEntity $personnage) : PersonnageEntity
     {
         if($personnage->getPosition() == null) {
@@ -352,6 +375,11 @@ class PersonnageService extends Service
         return $personnage ;
     }
 
+    /**
+     * @param PersonnageEntity $personnage
+     * @param ItemEntity $item
+     * @return bool|null
+     */
     function craft(PersonnageEntity $personnage, ItemEntity $item )
     {
         $craftable = $personnage->craftable($item);

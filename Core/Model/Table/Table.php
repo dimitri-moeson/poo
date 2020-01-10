@@ -140,6 +140,28 @@ class Table
 
     /**
      * @param array $attr
+     * @param null $limit
+     * @return array|mixed
+     */
+    public function random(Array $attr = array(), $limit = null)
+    {
+        $statement = Query::from($this->getTable())
+            ->select('*');
+
+        if($statement instanceof QueryBuilder) {
+
+            foreach ($attr as $key => $val )
+                $statement->where(" `".$this->getTable()."`.`$key` = :$key ");
+
+            $statement->rand()
+                ->limit($limit);
+        }
+
+        return $this->request($statement, $attr, false );
+    }
+
+    /**
+     * @param array $attr
      * @param array $orderBy
      * @param null $limit
      * @param null $offset

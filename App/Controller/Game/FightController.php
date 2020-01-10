@@ -5,7 +5,7 @@ namespace App\Controller\Game;
 
 
 use App;
-use App\Model\Object\Game\Combat\Defi;
+use App\Model\Object\Combat\Defi;
 use App\Model\Heritage\Game\Item\ItemConsommableEntity;
 use App\Model\Entity\Game\Personnage\PersonnageEntity;
 use App\Model\Service\CombatService;
@@ -45,16 +45,21 @@ class FightController extends AppController
             $this->defi = new Defi(array($merlin, $harry, $this->legolas));
         **/
 
-
+        // print_r($this->defi);
     }
 
     /**
      *
      */
     public function index(){
+        if ($this->defi instanceof Defi) {
+            if ($this->CombatService instanceof CombatService) {
+
+                echo "test...";
+            }
+        }
 
         Render::getInstance()->setView("Game/Fight/Combat");
-
     }
 
 

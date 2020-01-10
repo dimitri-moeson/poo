@@ -31,8 +31,13 @@ class MonstreService extends Service
 
     public function getFightable(Int $strum_id = null)
     {
-        if($this->ItemBase instanceof ItemTable)
-            $strum = $this->ItemBase->get($strum_id,ItemMonstreEntity::class);
+        if($this->ItemBase instanceof ItemTable) {
+
+            if(!is_null($strum_id))
+                $strum = $this->ItemBase->get($strum_id, ItemMonstreEntity::class);
+            else
+                $strum = $this->ItemBase->randomOne("strum");
+        }
 
         if($this->ItemService instanceof ItemService )
             $strum = $this->ItemService->generateRandomCharac($strum);
