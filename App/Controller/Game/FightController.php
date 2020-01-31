@@ -33,83 +33,83 @@ class FightController extends AppController
         $this->loadService("Combat");
         $this->loadService("Monstre");
 
-        if (isset($_SESSION['defi']))
-        {
+        if (isset($_SESSION['defi'])) {
             $this->defi = unserialize($_SESSION['defi']);
         }
-        /**else // debut engagement
+    }
+
+    /**
+     * @return bool
+     */
+    private function verif_valid_fight()
+    {
+        if (isset($this->defi) && !empty($this->defi) && !is_null($this->defi))
         {
-            $merlin = $this->Personnage->find(2);
-            $harry = $this->Personnage->find(3);
+            if ($this->defi instanceof Defi)
+            {
+                if ($this->CombatService instanceof CombatService)
+                {
+                    return true;
+                }
+            }
+        }
 
-            $this->defi = new Defi(array($merlin, $harry, $this->legolas));
-        **/
-
-        // print_r($this->defi);
+        return false;
     }
 
     /**
      *
      */
-    public function index(){
-        if ($this->defi instanceof Defi) {
-            if ($this->CombatService instanceof CombatService) {
+    public function index()
+    {
+        if ($this->verif_valid_fight()) {
 
-                echo "test...";
-            }
+            echo "test...";
+
+            Render::getInstance()->setView("Game/Fight/Combat");
         }
-
-        Render::getInstance()->setView("Game/Fight/Combat");
     }
-
-
-
 
 
     /**
      * fin du combat
      */
-    public function bilan(){
+    public function bilan()
+    {
+        if ($this->verif_valid_fight()) {
+            $mess = null;
 
-        if ($this->defi instanceof Defi)
-        {
-            if ($this->CombatService instanceof CombatService)
-            {
-                $mess = null;
+            $player = $this->defi->current();
 
-                $player = $this->defi->current();
+            $mess .= $player->getName() . "est sorti vainqueur du combat";
+            unset($_SESSION['defi']);
 
-                $mess .= $player->getName() . "est sorti vainqueur du combat";
-                unset($_SESSION['defi']);
+            $potion = ItemConsommableEntity::init("potion", "soin", "vie", 15);
 
-                $potion = ItemConsommableEntity::init("potion", "soin", "vie", 15);
+            if ($player instanceof PersonnageEntity) {
+                if ($this->PersonnageService->ramasse($player, $potion)) {
+                    $mess .= $player->getName() . " ramasse " . $potion->getName();
+                    FlashBuilder::create($mess, "success");
 
-                if ($player instanceof PersonnageEntity)
-                {
-                    if ($this->PersonnageService->ramasse($player, $potion))
-                    {
-                        $mess .= $player->getName() . " ramasse " . $potion->getName();
-                        FlashBuilder::create($mess, "success");
-
-                        Redirect::getInstance()->setAct("fiche")->send();
-                    }
+                    Redirect::getInstance()->setAct("fiche")->send();
                 }
             }
+
+
         }
     }
 
     /**
      * le joueur a passé son tour
      */
-    function next(){
-
-        if ($this->defi instanceof Defi)
-            if($this->CombatService instanceof CombatService)
-                $this->defi = $this->CombatService->deroule($this->defi);
-        $_SESSION['defi'] = serialize($this->defi);
-        Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
-
-
+    function next()
+    {
+        if ($this->verif_valid_fight())
+        {
+            $this->defi = $this->CombatService->deroule($this->defi);
+            $_SESSION['defi'] = serialize($this->defi);
+            Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
+        }
     }
 
     /**
@@ -118,19 +118,20 @@ class FightController extends AppController
      */
     public function deroule()
     {
-        if ($this->defi instanceof Defi) {
-            if ($this->CombatService instanceof CombatService) {
-                if (Post::getInstance()->has('action')) {
-                    $action = Post::getInstance()->val('action');
+        if ($this->verif_valid_fight())
+        {
 
-                    if ($action == 'combat') {
-                        $this->defi = $this->CombatService->deroule($this->defi);
-                    }
-                    $_SESSION['defi'] = serialize($this->defi);
-                    Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
+            if (Post::getInstance()->has('action')) {
+                $action = Post::getInstance()->val('action');
 
+                if ($action == 'combat') {
+                    $this->defi = $this->CombatService->deroule($this->defi);
                 }
+                $_SESSION['defi'] = serialize($this->defi);
+                Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
+
             }
+
         }
     }
 
@@ -139,21 +140,20 @@ class FightController extends AppController
      */
     public function fuite()
     {
-        if ($this->defi instanceof Defi) {
-            if ($this->CombatService instanceof CombatService) {
-                if (Post::getInstance()->has('action')) {
-                    $action = Post::getInstance()->val('action');
+        if ($this->verif_valid_fight()) {
 
-                    if ( $action == 'fuite')
-                    {
-                        FlashBuilder::create( $this->legolas->getName() . "a fui combat" ,"success");
-                        Redirect::getInstance()->setAct("index")->setCtl("default")->setDom("game")->send();
-                    }
+            if (Post::getInstance()->has('action')) {
+                $action = Post::getInstance()->val('action');
 
-                    Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
-
+                if ($action == 'fuite') {
+                    FlashBuilder::create($this->legolas->getName() . "a fui combat", "success");
+                    Redirect::getInstance()->setAct("index")->setCtl("default")->setDom("game")->send();
                 }
+
+                Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
+
             }
+
         }
     }
 
@@ -164,23 +164,19 @@ class FightController extends AppController
      */
     public function attaque()
     {
-        if ($this->defi instanceof Defi)
+        if ($this->verif_valid_fight())
         {
-            if ($this->CombatService instanceof CombatService)
-            {
-                if (Post::getInstance()->has('action'))
-                {
-                    $action = Post::getInstance()->val('action');
+            if (Post::getInstance()->has('action')) {
+                $action = Post::getInstance()->val('action');
 
-                    if ( $action == 'attaque')
-                    {
-                        $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));
-                        $this->defi = $this->CombatService->ciblage($this->defi, $cible);
-                        $_SESSION['defi'] = serialize($this->defi);
-                    }
-                    Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
+                if ($action == 'attaque') {
+                    $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));
+                    $this->defi = $this->CombatService->ciblage($this->defi, $cible);
+                    $_SESSION['defi'] = serialize($this->defi);
                 }
+                Redirect::getInstance()->setAct("index")->setCtl("fight")->setDom("game")->send();
             }
+
         }
     }
 
@@ -189,55 +185,50 @@ class FightController extends AppController
      */
     public function default()
     {
-        if ($this->defi instanceof Defi)
-        {
-            if($this->CombatService instanceof CombatService)
-            {
-                if(Post::getInstance()->has('action'))
-                {
-                    $action = Post::getInstance()->val('action');
+        if ($this->verif_valid_fight()) {
+            if (Post::getInstance()->has('action')) {
 
-                    /**if ( $action == 'attaque')
-                    {
-                        $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));
-                        $this->CombatService->ciblage($this->defi, $cible);
-                    }**/
-                    // else
-                    /**if ( $action == 'combat')
-                    {
-                        $this->CombatService->deroule($this->defi);
-                    }**/
-                    //else
-                    /**if ( $action == 'fuite')
-                    {
-                        FlashBuilder::create( $this->legolas->getName() . "a fui combat" ,"success");
-                        Redirect::getInstance()->setAct("default")->setCtl("game");
-                    }**/
-                }
-                else if (Post::getInstance()->has('bilan')) {
+                $action = Post::getInstance()->val('action');
 
-                    $mess = null ;
+                /**if ( $action == 'attaque')
+                 * {
+                 * $cible = $this->defi->offsetGet(Post::getInstance()->val('rank'));
+                 * $this->CombatService->ciblage($this->defi, $cible);
+                 * }**/
+                // else
+                /**if ( $action == 'combat')
+                 * {
+                 * $this->CombatService->deroule($this->defi);
+                 * }**/
+                //else
+                /**if ( $action == 'fuite')
+                 * {
+                 * FlashBuilder::create( $this->legolas->getName() . "a fui combat" ,"success");
+                 * Redirect::getInstance()->setAct("default")->setCtl("game");
+                 * }**/
 
-                    $player = $this->defi->current();
+            } else if (Post::getInstance()->has('bilan')) {
 
-                    $mess .= $player->getName() . "est sorti vainqueur du combat";
-                    unset($_SESSION['defi']);
+                $mess = null;
 
-                    $potion = ItemConsommableEntity::init("potion", "soin", "vie", 15);
+                $player = $this->defi->current();
 
-                    if( $player instanceof PersonnageEntity) {
-                        if ($this->PersonnageService->ramasse($player, $potion)) {
+                $mess .= $player->getName() . "est sorti vainqueur du combat";
+                unset($_SESSION['defi']);
 
-                            $mess .= $player->getName() . " ramasse " . $potion->getName();
-                            FlashBuilder::create( $mess ,"success");
+                $potion = ItemConsommableEntity::init("potion", "soin", "vie", 15);
 
-                            Redirect::getInstance()->setAct("fiche")->send();
-                        }
+                if ($player instanceof PersonnageEntity) {
+                    if ($this->PersonnageService->ramasse($player, $potion)) {
+
+                        $mess .= $player->getName() . " ramasse " . $potion->getName();
+                        FlashBuilder::create($mess, "success");
+
+                        Redirect::getInstance()->setAct("fiche")->send();
                     }
                 }
             }
         }
 
     }
-
 }

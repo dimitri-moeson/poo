@@ -90,10 +90,10 @@ if ($defi instanceof Defi) {
 
                                 <?php } else { ?>
 
-                                    <form method="post" action="<?php echo Url::generate("fuite","fight","game") ?>">
-                                        <input type="hidden" name="action" value="fuite"/>
-                                        <button type="submit"><i class="ra ra-player-lift"></i></button>
-                                    </form>
+                            <form method="post" action="<?php echo Url::generate("fuite","fight","game") ?>">
+                                <input type="hidden" name="action" value="fuite"/>
+                                <button type="submit"><i class="ra ra-player-lift"></i></button>
+                            </form>
 
                                 <?php } ?>
 

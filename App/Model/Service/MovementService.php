@@ -63,7 +63,7 @@ class MovementService extends Service
     }
 
     /**
-     *
+     * @param $random
      */
     private function randomFight($random){
 
@@ -73,13 +73,12 @@ class MovementService extends Service
 
             if($strum instanceof ItemStrumEntity) {
                 $strum->setPosition($this->personnage->getPosition());
-            }
+
                 $defi = new Defi(array($this->personnage, $strum));
 
                 $_SESSION['defi'] = serialize($defi);
-                FlashBuilder::create( "combat aléatoire lancé($random)","success");
-
-
+                FlashBuilder::create("combat aléatoire lancé($random)", "success");
+            }
         }
     }
 
